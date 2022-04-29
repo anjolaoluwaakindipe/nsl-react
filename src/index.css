@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+  .heading1{
+    @apply text-primaryColor text-3xl font-bold
+  }
+  .heading-info1{
+    @apply text-darkTextColor text-sm
+  }
+  .btn1{
+    @apply px-7 py-4 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all
+  }
+}
