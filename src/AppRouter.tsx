@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { CreateAccount, EmailVerification, PhoneVerification, Login , LoanApplication} from "./pages";
+import { CreateAccount, EmailVerification, PhoneVerification, Login , LoanApplication, LoanPaymentOptions} from "./pages";
 
 function AppRouter() {
     return (
@@ -16,6 +16,10 @@ function AppRouter() {
                 <Route
                     path="/phone-verification"
                     element={<PhoneVerification />}
+                />
+                <Route
+                    path="/loan-payment-options"
+                    element={< LoanPaymentOptions/>}
                 />
             </Routes>
         </>
