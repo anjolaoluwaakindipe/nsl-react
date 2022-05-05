@@ -4,6 +4,9 @@ import PhoneVerification from "./PhoneVerification";
 import Login from "./Login";
 import LoanApplication from "./LoanApplication";
 import LoanPaymentOptions from "./LoanPaymentOptions";
+import LoanInformation from "./LoanInformation";
+import TotalLoanInformation from "./TotalLoanInformation";
+import LoanContract from "./LoanContract";
 
 export {
     CreateAccount,
@@ -11,5 +14,8 @@ export {
     PhoneVerification,
     Login,
     LoanApplication,
-    LoanPaymentOptions
+    LoanPaymentOptions,
+    LoanInformation,
+    TotalLoanInformation,
+    LoanContract
 };

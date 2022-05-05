@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { CreateAccount, EmailVerification, PhoneVerification, Login , LoanApplication, LoanPaymentOptions} from "./pages";
+import { CreateAccount, LoanContract, EmailVerification, PhoneVerification, Login, LoanApplication, LoanInformation, LoanPaymentOptions, TotalLoanInformation } from "./pages";
 
 function AppRouter() {
     return (
@@ -11,7 +11,7 @@ function AppRouter() {
                     path="/email-verification"
                     element={<EmailVerification />}
                 />
-                <Route path= '/loan-application' element={<LoanApplication/>}/>
+                <Route path='/loan-application' element={<LoanApplication />} />
                 <Route path="/login" element={<Login />} />
                 <Route
                     path="/phone-verification"
@@ -19,8 +19,19 @@ function AppRouter() {
                 />
                 <Route
                     path="/loan-payment-options"
-                    element={< LoanPaymentOptions/>}
+                    element={< LoanPaymentOptions />}
                 />
+                <Route
+                    path="/loan-information"
+                    element={<LoanInformation />} />
+
+                <Route
+                    path="/total-loan-information"
+                    element={<TotalLoanInformation />} />
+
+<Route
+                    path="/loan-contract"
+                    element={<LoanContract />} />
             </Routes>
         </>
     );
