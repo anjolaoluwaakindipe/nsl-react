@@ -12,6 +12,11 @@ code {
         monospace;
 }
 
+input {
+    outline: none;
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -25,5 +30,8 @@ code {
     }
     .btn1 {
         @apply px-7 py-4 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all disabled:opacity-10;
+    }
+    .error1 {
+        @apply text-xs text-red-900;
     }
 }

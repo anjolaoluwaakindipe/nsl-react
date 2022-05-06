@@ -1,6 +1,13 @@
-import React from "react";
+import React, { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import { CreateAccount, EmailVerification, PhoneVerification, Login , LoanApplication, LoanPaymentOptions} from "./pages";
+
+const CreateAccount = lazy(() => import("./pages/CreateAccount"));
+const EmailVerification = lazy(() => import("./pages/EmailVerification"));
+const LoanApplication = lazy(() => import("./pages/LoanApplication"));
+const PhoneVerification = lazy(() => import("./pages/PhoneVerification"));
+const Login = lazy(() => import("./pages/Login"));
+const LoanPaymentOptions = lazy(() => import("./pages/LoanPaymentOptions"));
+const UpdateProfile = lazy(()=>import("./pages/UpdateProfile"))
 
 function AppRouter() {
     return (
@@ -11,7 +18,7 @@ function AppRouter() {
                     path="/email-verification"
                     element={<EmailVerification />}
                 />
-                <Route path= '/loan-application' element={<LoanApplication/>}/>
+                <Route path="/loan-application" element={<LoanApplication />} />
                 <Route path="/login" element={<Login />} />
                 <Route
                     path="/phone-verification"
@@ -19,8 +26,9 @@ function AppRouter() {
                 />
                 <Route
                     path="/loan-payment-options"
-                    element={< LoanPaymentOptions/>}
+                    element={<LoanPaymentOptions />}
                 />
+                <Route path="/update-profile/*" element={<UpdateProfile/>}/>                
             </Routes>
         </>
     );
