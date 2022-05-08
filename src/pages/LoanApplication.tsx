@@ -34,7 +34,6 @@ function LoanApplication() {
             tenor: "",
             interest: "",
             narration: "",
-            termsAndCondition: false,
         },
         resolver: joiResolver(loanApplicationFormSchema),
     });
@@ -47,12 +46,19 @@ function LoanApplication() {
                 <TopBar />
                 <Header />
 
-                {nextPage?(<Form2
-                    register={register}
-                    watch={watch}
-                    handleSubmit={handleSubmit}
-                />):(
-                    <Form1 register={register} errors={errors} handleSubmit={handleSubmit} setNextPage={setNextPage} />
+                {nextPage ? (
+                    <Form2
+                        register={register}
+                        watch={watch}
+                        handleSubmit={handleSubmit}
+                    />
+                ) : (
+                    <Form1
+                        register={register}
+                        errors={errors}
+                        handleSubmit={handleSubmit}
+                        setNextPage={setNextPage}
+                    />
                 )}
             </>
         </DefaultLayout>

@@ -1,8 +1,16 @@
-import React from "react";
+import React, { lazy } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import DefaultLayout from "../components/layout/DefaultLayout";
-import { PersonalDetailsForm } from "../components/pages/UpdateProfile";
 
+const EmploymentDetailsForm = lazy(
+    () => import("../components/pages/UpdateProfile/EmploymentDetailsForm")
+);
+const PersonalDetailsForm = lazy(
+    () => import("../components/pages/UpdateProfile/PersonalDetailsForm")
+);
+const AccountDetailsForm = lazy(
+    () => import("../components/pages/UpdateProfile/AccountDetailsForm")
+);
 
 function Header() {
     return (
@@ -14,21 +22,36 @@ function Header() {
 }
 
 function UpdateProfile() {
-    
-    
-    
     return (
         <Routes>
             <Route element={<DefaultLayout />}>
-              <Route element={<Header/>}>
-
-                  <Route
-                      path="/personal-details"
-                      element={<PersonalDetailsForm />}
-                  />
-                  {/* j */}
-              </Route>
-              
+                <Route element={<Header />}>
+                    <Route
+                        path="/personal-details"
+                        element={
+                            <React.Suspense>
+                                <PersonalDetailsForm />
+                            </React.Suspense>
+                        }
+                    />
+                    <Route
+                        path="/employment-details"
+                        element={
+                            <React.Suspense>
+                                <EmploymentDetailsForm />
+                            </React.Suspense>
+                        }
+                    />
+                    <Route
+                        path="/account-details"
+                        element={
+                            <React.Suspense>
+                                <AccountDetailsForm />
+                            </React.Suspense>
+                        }
+                    />
+                    {/* j */}
+                </Route>
             </Route>
         </Routes>
     );

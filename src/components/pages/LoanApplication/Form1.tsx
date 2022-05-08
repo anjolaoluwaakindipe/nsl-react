@@ -19,9 +19,9 @@ type LoanApplicationForm1Props = {
 };
 
 function Form1({ register, errors, handleSubmit, setNextPage }: LoanApplicationForm1Props) {
-    const onSubmit = handleSubmit((data) => {
+    const onSubmit =() => {
         setNextPage(true)
-    });
+    }
 
     return (
         <>
