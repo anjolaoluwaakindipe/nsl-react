@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { CreateAccount, LoanContract, EmailVerification, PhoneVerification, Login, LoanApplication, LoanInformation, LoanPaymentOptions, TotalLoanInformation } from "./pages";
+import { CreateAccount, TotalAdminDashboard, LoanContract, EmailVerification, PhoneVerification, Login, LoanApplication, LoanInformation, LoanPaymentOptions, TotalLoanInformation } from "./pages";
 
 function AppRouter() {
     return (
@@ -29,9 +29,13 @@ function AppRouter() {
                     path="/total-loan-information"
                     element={<TotalLoanInformation />} />
 
-<Route
+                <Route
                     path="/loan-contract"
                     element={<LoanContract />} />
+
+                <Route
+                    path="/total-admin-dashboard"
+                    element={<TotalAdminDashboard />} />
             </Routes>
         </>
     );

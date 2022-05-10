@@ -7,7 +7,7 @@ import LoanPaymentOptions from "./LoanPaymentOptions";
 import LoanInformation from "./LoanInformation";
 import TotalLoanInformation from "./TotalLoanInformation";
 import LoanContract from "./LoanContract";
-
+import TotalAdminDashboard from "./TotalAdminDashboard";
 export {
     CreateAccount,
     EmailVerification,
@@ -17,5 +17,6 @@ export {
     LoanPaymentOptions,
     LoanInformation,
     TotalLoanInformation,
-    LoanContract
+    LoanContract,
+    TotalAdminDashboard
 };
