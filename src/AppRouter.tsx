@@ -13,6 +13,7 @@ const LoanInformation = lazy(()=>import("./pages/LoanInformation"))
 const TotalLoanInformation = lazy(()=>import("./pages/TotalLoanInformation"))
 const LoanContract = lazy(()=>import("./pages/LoanContract"))
 const TotalAdminDashboard = lazy(()=>import("./pages/TotalAdminDashboard"))
+const Dashboard = lazy(()=>import ("./pages/Dashboard"))
 
 
 function AppRouter() {
@@ -50,6 +51,11 @@ function AppRouter() {
                 <Route
                     path="/total-admin-dashboard"
                     element={<TotalAdminDashboard />} />
+
+                    <Route
+                        path="/dashboard"
+                        element={<Dashboard/>}
+                        />
 
                 
                 <Route path="/update-profile/*" element={<UpdateProfile/>}/>                

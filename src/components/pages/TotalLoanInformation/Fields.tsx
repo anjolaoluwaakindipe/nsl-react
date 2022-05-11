@@ -232,7 +232,7 @@ function Fields() {
                     <textarea className="w-full h-90 p-2 border rounded focus:outline-none bg-bgColor focus:ring-gray-300 focus:ring-1"
                         name="comment" placeholder=""></textarea>
                 </div>
-                <button className="px-5 py-2 text-sm text-blue-100 bg-primaryColor rounded float-right ">Save</button>
+                <button className="px-5 py-2 text-sm text-white bg-primaryColor rounded float-right ">Save</button>
 
             </div>
 
