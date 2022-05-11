@@ -22,10 +22,10 @@ const useForms =  ({
             | React.ChangeEvent<HTMLInputElement>
             | React.ChangeEvent<HTMLTextAreaElement>
     ) => {
-        setFormFields({
+        setFormFields((preval)=>({
             ...formFields,
-            [e.target.name]: e.target.value,
-        });
+            [e.target.name]:(e.target.validity.valid? e.target.value: preval[e.target.name]),
+        }));
     };
 
     // handles submission and errors
@@ -36,7 +36,6 @@ const useForms =  ({
     };
 
     useEffect(()=>{
-        console.log(callback)
         if(Object.keys(errors).length === 0 && isSubmitting){
             setSubmitButtonDisabled(true)
             callback && callback()

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // layout
 import DefaultLayout from "../components/layout/DefaultLayout";
@@ -6,9 +6,25 @@ import DefaultLayout from "../components/layout/DefaultLayout";
 // icons
 import { FaAngleLeft } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
-import { LoanOption } from "../components/pages/LoanPaymentOptions";
+
+// components
+import {
+    LoanOption,
+    TransferForm,
+} from "../components/pages/LoanPaymentOptions";
+import BankCardForm from "../components/pages/LoanPaymentOptions/BankCardForm";
 
 function LoanPaymentOptions() {
+    const [selectedOption, setSelectedOption] = useState("");
+
+    const handleChange = (value: string) => {
+        if (value === selectedOption) {
+            setSelectedOption("");
+            return;
+        }
+        setSelectedOption(value);
+    };
+
     return (
         <DefaultLayout>
             <>
@@ -22,8 +38,26 @@ function LoanPaymentOptions() {
                 </div>
 
                 <div className="pt-10 space-y-4">
-                    <LoanOption name="transfer">Transfer</LoanOption>
-                    <LoanOption name="bankCard">Bank Card</LoanOption>
+                    <LoanOption
+                        value="transfer"
+                        onClick={handleChange}
+                        label=" Transfer"
+                        isSelected={
+                            selectedOption === "transfer" ? true : false
+                        }
+                    >
+                        <TransferForm />
+                    </LoanOption>
+                    <LoanOption
+                        value="bankCard"
+                        onClick={handleChange}
+                        label="Bank Card"
+                        isSelected={
+                            selectedOption === "bankCard" ? true : false
+                        }
+                    >
+                        <BankCardForm />
+                    </LoanOption>
                 </div>
             </>
         </DefaultLayout>

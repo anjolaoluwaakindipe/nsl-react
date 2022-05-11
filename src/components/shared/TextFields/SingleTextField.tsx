@@ -6,6 +6,7 @@ export default function SingleTextField(props: SingleTextFieldProps) {
         <div className="border-0 border-b-2  w-full">
             <label htmlFor={props.name}>{props.label}</label>
             <input
+            maxLength={props.maxLength}
                 type={props.type}
                 name={props.name}
                 id={props.id}
