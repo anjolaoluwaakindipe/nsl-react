@@ -1,24 +1,20 @@
 import React from "react";
 
-import DefaultLayout from "../components/layout/DefaultLayout";
+import {
+    Header,
+    LoanStatGroup,
+    LoanActivity,
+} from "../components/pages/TotalAdminDashboard";
 
-import { FaAngleLeft } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
-
-
-import { Header,TopBar, LoanActivity } from "../components/pages/TotalAdminDashboard";
-
-function TotalAdminDashboard(){
-
-    return(
-        <DefaultLayout>
-            <>
-            <TopBar/>
-            <Header />
-            <LoanActivity/>
-
-            </>
-        </DefaultLayout>
+function TotalAdminDashboard() {
+    return (
+        <div className="bg-bgColor2 ">
+            <div className="md:max-w-6xl md:mx-auto w-full">
+                <Header />
+                <LoanStatGroup />
+                <LoanActivity />
+            </div>
+        </div>
     );
 }
 

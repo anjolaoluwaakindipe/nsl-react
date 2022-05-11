@@ -1,15 +1,11 @@
 import React from "react";
-import { useForm } from "react-hook-form";
 import Progress from "./Progress";
 import { useNavigate } from "react-router-dom";
 
 function AccountDetailsForm() {
     const navigate = useNavigate();
 
-    const {
-        register,
-        formState: { errors },
-    } = useForm();
+    
 
     const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
