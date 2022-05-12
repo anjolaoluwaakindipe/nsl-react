@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ModalState } from "../typings";
 
 const initialState: ModalState = {
-    isOpen: true,
+    isOpen: false,
     callBack: () => {},
     isCancellable: true,
     modalName: "",
