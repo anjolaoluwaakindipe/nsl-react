@@ -17,7 +17,7 @@ input {
 }
 
 .scrollbar::-webkit-scrollbar {
-    width: 2px;
+    width: 7px;
     height: 7px;
 }
 
@@ -30,6 +30,7 @@ input {
     background: transparent;
     border-radius: 100vh;
     transition: all 100ms ease-in-out;
+    cursor: pointer;
 }
 
 .scrollbar::-webkit-scrollbar-thumb:hover {
