@@ -4,6 +4,7 @@ import {
     Header,
     LoanStatGroup,
     LoanActivity,
+    GraphSection,
 } from "../components/pages/TotalAdminDashboard";
 
 function TotalAdminDashboard() {
@@ -12,6 +13,7 @@ function TotalAdminDashboard() {
             <div className="md:max-w-6xl md:mx-auto w-full">
                 <Header />
                 <LoanStatGroup />
+                <GraphSection/>
                 <LoanActivity />
             </div>
         </div>
