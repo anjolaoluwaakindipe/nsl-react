@@ -15,7 +15,7 @@ function LoanBalanceCard(prop:LoanBalanceCardProp) {
             <h2 className="  text-primaryColor text-lg">{prop.title}</h2>
             <h4 className=" font-bold text-primaryColor text-2xl ">{prop.amount}</h4>
             <h6 className=" text-primaryColor font-light italic text-xs float-left">{prop.tenor} 
-            <span className=" text-primaryColor text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline bg-gray-200 text-gray-700 rounded-full float-right"> {prop.days} </span>
+            <span className=" text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline bg-gray-200 text-gray-700 rounded-full float-right"> {prop.days} </span>
             </h6>
             
         </div>

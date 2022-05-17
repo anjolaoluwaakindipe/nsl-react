@@ -1,7 +1,10 @@
 import React, { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
+// paths
+import { paths } from "./utils/constants/allPaths"; 
 
+// pages
 const CreateAccount = lazy(() => import("./pages/CreateAccount"));
 const EmailVerification = lazy(() => import("./pages/EmailVerification"));
 const LoanApplication = lazy(() => import("./pages/LoanApplication"));
@@ -20,45 +23,45 @@ function AppRouter() {
     return (
         <>
             <Routes>
-                <Route path="/create-account" element={<CreateAccount />} />
+                <Route path={paths.CREATE_ACCOUNT} element={<CreateAccount />} />
                 <Route
-                    path="/email-verification"
+                    path={paths.EMAIL_VERIFICATION}
                     element={<EmailVerification />}
                 />
 
-                <Route path="/loan-application" element={<LoanApplication />} />
-                <Route path="/login" element={<Login />} />
+                <Route path={paths.LOAN_APPLICATION} element={<LoanApplication />} />
+                <Route path={paths.LOGIN} element={<Login />} />
                 <Route
-                    path="/phone-verification"
+                    path={paths.PHONE_VERIFICATION}
                     element={<PhoneVerification />}
                 />
                 <Route
-                    path="/loan-payment-options"
+                    path={paths.LOAN_PAYMENT_OPTIONS}
                     element={<LoanPaymentOptions />}
                 />
                 <Route
-                    path="/loan-information"
+                    path={paths.LOAN_INFORMATION}
                     element={<LoanInformation />} />
 
                 <Route
-                    path="/total-loan-information"
+                    path={paths.TOTAL_LOAN_INFORMATION}
                     element={<TotalLoanInformation />} />
 
                 <Route
-                    path="/loan-contract"
+                    path={paths.LOAN_CONTRACT}
                     element={<LoanContract />} />
 
                 <Route
-                    path="/total-admin-dashboard"
+                    path={paths.TOTAL_ADMIN_DASHBOARD}
                     element={<TotalAdminDashboard />} />
 
                     <Route
-                        path="/dashboard"
+                        path={paths.USER_DASHBOARD}
                         element={<Dashboard/>}
                         />
 
                 
-                <Route path="/update-profile/*" element={<UpdateProfile/>}/>                
+                <Route path={paths.UPDATE_PROFILE.base + "/*"} element={<UpdateProfile/>}/>                
 
             </Routes>
         </>

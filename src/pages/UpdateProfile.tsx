@@ -2,6 +2,10 @@ import React, { lazy } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import DefaultLayout from "../components/layout/DefaultLayout";
 
+// paths
+import { paths } from "../utils/constants/allPaths";
+
+// form components
 const EmploymentDetailsForm = lazy(
     () => import("../components/pages/UpdateProfile/EmploymentDetailsForm")
 );
@@ -27,7 +31,7 @@ function UpdateProfile() {
             <Route element={<DefaultLayout />}>
                 <Route element={<Header />}>
                     <Route
-                        path="/personal-details"
+                        path={paths.UPDATE_PROFILE.PERSONAL_DETAILS}
                         element={
                             <React.Suspense>
                                 <PersonalDetailsForm />
@@ -35,7 +39,7 @@ function UpdateProfile() {
                         }
                     />
                     <Route
-                        path="/employment-details"
+                        path={paths.UPDATE_PROFILE.EMPLOYMENT_DETAILS}
                         element={
                             <React.Suspense>
                                 <EmploymentDetailsForm />
@@ -43,7 +47,7 @@ function UpdateProfile() {
                         }
                     />
                     <Route
-                        path="/account-details"
+                        path={paths.UPDATE_PROFILE.ACCOUNT_DETAILS}
                         element={
                             <React.Suspense>
                                 <AccountDetailsForm />

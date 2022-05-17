@@ -5,7 +5,7 @@ import LoanPerformanceGraph from "./LoanPerformanceGraph";
 function GraphSection() {
     return (
         <div className="p-5 md:p-10 bg-white mt-10 flex flex-col md:flex-row md:items-center md:space-x-4">
-            <div className="md:w-3/4 w-full h-80">
+            <div className="md:w-3/4 w-full h-96">
                 <LoanPerformanceGraph />
             </div>
 
