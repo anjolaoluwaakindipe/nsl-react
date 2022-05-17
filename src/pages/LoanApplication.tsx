@@ -1,7 +1,7 @@
 import React from "react";
 
 // react-hook-forms
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { loanApplicationFormSchema } from "../utils/validation/loanApplication"; // joi validation
 
@@ -28,10 +28,10 @@ function LoanApplication() {
         handleSubmit,
         getValues,
         watch,
+        control,
     } = useForm<LoanApplicationFormInfo>({
         defaultValues: {
             amount: "",
-            tenor: "",
             interest: "",
             narration: "",
         },
@@ -58,6 +58,9 @@ function LoanApplication() {
                         errors={errors}
                         handleSubmit={handleSubmit}
                         setNextPage={setNextPage}
+                        Controller={Controller}
+                        control={control}
+                        watch = {watch}
                     />
                 )}
             </>

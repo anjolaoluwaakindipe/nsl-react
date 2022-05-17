@@ -7,6 +7,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.Dropdown-option {
+    cursor: pointer;
+    width: 100%;
+}
+
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
@@ -31,6 +36,10 @@ input {
     border-radius: 100vh;
     transition: all 100ms ease-in-out;
     cursor: pointer;
+}
+
+.scrollbar-visible::-webkit-scrollbar-thumb {
+    background: gray;
 }
 
 .scrollbar::-webkit-scrollbar-thumb:hover {

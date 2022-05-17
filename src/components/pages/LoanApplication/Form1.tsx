@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
 import CurrencyInput from "react-currency-input-field";
+import Dropdown from "react-dropdown";
 
 // Used to Accept react-hook-form values
 import {
+    Control,
+    ControllerProps,
     FieldErrors,
+    FieldValues,
     UseFormHandleSubmit,
     UseFormRegister,
+    UseFormWatch,
 } from "react-hook-form";
 
 // types
@@ -15,13 +20,45 @@ type LoanApplicationForm1Props = {
     register: UseFormRegister<LoanApplicationFormInfo>;
     errors?: FieldErrors<LoanApplicationFormInfo>;
     handleSubmit: UseFormHandleSubmit<LoanApplicationFormInfo>;
-    setNextPage: React.Dispatch<React.SetStateAction<boolean>>
+    setNextPage: React.Dispatch<React.SetStateAction<boolean>>;
+    control: Control<LoanApplicationFormInfo, any>;
+    watch: UseFormWatch<LoanApplicationFormInfo>;
+
+    Controller: <
+        TFieldValues extends FieldValues = FieldValues,
+        TName extends import("react-hook-form/dist/types").Path<TFieldValues> = import("react-hook-form/dist/types").Path<TFieldValues>
+    >(
+        props: ControllerProps<TFieldValues, TName>
+    ) => import("react").ReactElement<
+        any,
+        string | import("react").JSXElementConstructor<any>
+    >;
 };
 
-function Form1({ register, errors, handleSubmit, setNextPage }: LoanApplicationForm1Props) {
-    const onSubmit =() => {
-        setNextPage(true)
-    }
+function Form1({
+    register,
+    errors,
+    handleSubmit,
+    setNextPage,
+    Controller,
+    watch,
+    control,
+}: LoanApplicationForm1Props) {
+    const onSubmit = () => {
+        setNextPage(true);
+    };
+
+    const watchTenor = watch("tenor");
+
+    const tenorDropdownOptions = [
+        { value: "20 days", label: "20 days" },
+        { value: "30 days", label: "30 days" },
+        { value: "Two Months", label: "Two Months" },
+        { value: "Three Months", label: "Three Months" },
+        { value: "Four Months", label: "Four Months" },
+        { value: "Five Months", label: "Five Months" },
+        { value: "Six Months", label: "Six Months" },
+    ];
 
     return (
         <>
@@ -58,23 +95,38 @@ function Form1({ register, errors, handleSubmit, setNextPage }: LoanApplicationF
                         />
                     </div>
                     {
-                        <p className="text-xs text-red-900 ">
+                        <p className="text-xs text-red-900  ">
                             {errors?.amount?.message}
                         </p>
                     }
                 </div>
 
                 <div>
-                    <div className=" border-0 border-b-2  border-underlineColor ">
-                        <label htmlFor="tenor"></label>
-                        <input
-                            type="text"
-                            {...register("tenor")}
-                            id="LoanApplcation_tenor"
-                            className="outline-none pb-4  border-0 "
-                            placeholder="Tenor"
+                    <div className=" border-0 border-b-2  border-underlineColor   ">
+                        <Controller
+                            name="tenor"
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                                <Dropdown
+                                    options={tenorDropdownOptions}
+                                    onChange={onChange}
+                                    value={value}
+                                    placeholder="Tenor"
+                                    className="relative"
+                                    placeholderClassName={
+                                        watchTenor
+                                            ? "text-black"
+                                            : "text-gray-400"
+                                    }
+                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer"
+                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
+                                />
+                            )}
                         />
+
+                        <label htmlFor="tenor"></label>
                     </div>
+
                     {
                         <p className="text-xs text-red-900 ">
                             {errors?.tenor?.message}
