@@ -10,7 +10,7 @@ type LoanBalanceCardProp = {
 
 function LoanBalanceCard(prop:LoanBalanceCardProp) {
     return (
-        <div className="flex flex-col space-y-3  bg-white px-7 py-5 rounded-sm">
+        <div className="flex flex-col space-y-3  bg-white px-7 py-5 p-10 rounded-sm md:overflow-scroll">
             <h6 className="italic text-xs font-light">{prop.status}</h6>
             <h2 className="  text-primaryColor text-lg">{prop.title}</h2>
             <h4 className=" font-bold text-primaryColor text-2xl ">{prop.amount}</h4>
