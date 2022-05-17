@@ -12,6 +12,7 @@ import {
     UseFormRegister,
     UseFormWatch,
 } from "react-hook-form";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
 // types
 import { LoanApplicationFormInfo } from "../../../typings";
@@ -110,6 +111,8 @@ function Form1({
                                 <Dropdown
                                     options={tenorDropdownOptions}
                                     onChange={onChange}
+                                    arrowClosed={<IoMdArrowDropdown />}
+                                    arrowOpen={<IoMdArrowDropup />}
                                     value={value}
                                     placeholder="Tenor"
                                     className="relative"
@@ -118,7 +121,7 @@ function Form1({
                                             ? "text-black"
                                             : "text-gray-400"
                                     }
-                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer"
+                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
                                     menuClassName="absolute  left-0 top-16 w-full bg-gray-100 h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
                                 />
                             )}
