@@ -25,49 +25,90 @@ function AppRouter() {
             <Routes>
                 <Route
                     path={paths.CREATE_ACCOUNT}
-                    element={<CreateAccount />}
+                    element={
+                        <React.Suspense>
+                            <CreateAccount />
+                        </React.Suspense>
+                    }
                 />
                 <Route
                     path={paths.EMAIL_VERIFICATION}
-                    element={<EmailVerification />}
+                    element={
+                        <React.Suspense>
+                            <EmailVerification />
+                        </React.Suspense>
+                    }
                 />
 
                 <Route
                     path={paths.LOAN_APPLICATION}
-                    element={<LoanApplication />}
+                    element={
+                        <React.Suspense>
+                            <LoanApplication />
+                        </React.Suspense>
+                    }
                 />
                 <Route path={paths.LOGIN} element={<Login />} />
                 <Route
                     path={paths.PHONE_VERIFICATION}
-                    element={<PhoneVerification />}
+                    element={
+                        <React.Suspense>
+                            <PhoneVerification />
+                        </React.Suspense>
+                    }
                 />
                 <Route
                     path={paths.LOAN_PAYMENT_OPTIONS}
-                    element={<LoanPaymentOptions />}
+                    element={
+                        <React.Suspense>
+                            <LoanPaymentOptions />
+                        </React.Suspense>
+                    }
                 />
                 <Route
                     path={paths.LOAN_INFORMATION}
-                    element={<LoanInformation />}
+                    element={
+                        <React.Suspense>
+                            <LoanInformation />
+                        </React.Suspense>
+                    }
                 />
 
                 <Route
                     path={paths.TOTAL_LOAN_INFORMATION}
-                    element={<TotalLoanInformation />}
+                    element={
+                        <React.Suspense>
+                            <TotalLoanInformation />
+                        </React.Suspense>
+                    }
                 />
 
-                <Route path={paths.LOAN_CONTRACT} element={<LoanContract />} />
+                <Route
+                    path={paths.LOAN_CONTRACT}
+                    element={
+                        <React.Suspense>
+                            <LoanContract />
+                        </React.Suspense>
+                    }
+                />
 
                 <Route
                     path={paths.TOTAL_ADMIN_DASHBOARD}
-                    element={<TotalAdminDashboard />}
+                    element={
+                        <React.Suspense>
+                            <TotalAdminDashboard />
+                        </React.Suspense>
+                    }
                 />
 
                 <Route
                     path={paths.USER_DASHBOARD}
                     element={
-                       // <ProtectedRoute>
+                        // <ProtectedRoute>
+                        <React.Suspense>
                             <Dashboard />
-                       // </ProtectedRoute>
+                        </React.Suspense>
+                        // {/* </ProtectedRoute> */}
                     }
                 />
 

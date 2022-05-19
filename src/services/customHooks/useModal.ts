@@ -15,7 +15,7 @@ export const useModal = (modalName:string, isCancellable:boolean = true, callBac
 
     dispatch(setModalName(modalName))
     dispatch(makeUnCancellable(isCancellable))
-    dispatch(setCallBack(async()=>{
+    dispatch(setCallBack(()=>{
         callBack()
     }))
 
