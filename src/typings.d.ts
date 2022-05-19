@@ -14,6 +14,11 @@ type LoanApplicationFormInfo = {
     salarySlips: FileList;
 };
 
+type LoginInfo = {
+    usernameOrEmail:string;
+    password:string;
+}
+
 /* Props */
 // TextFields
 // Single TexField
@@ -37,6 +42,7 @@ type LoanApplicationValidationErrors = {
     narration?: string;
 };
 
+
 // state
 // modal state
 interface ModalState {
@@ -44,4 +50,10 @@ interface ModalState {
     isCancellable: boolean;
     callBack: () => void | undefined;
     modalName: string;
+}
+
+// auth state
+interface AuthState {
+    token:string |null
+    refreshToken: string | null
 }
