@@ -28,8 +28,8 @@ function Progress({ progress }: { progress?: number }) {
             <>
                 {location.pathname.includes("employment-details") ||
                 location.pathname.includes("account-details") ? (
-                    <div>
-                        {location.pathname.includes("employment-details") ? (
+                    <div className="relative">
+                        {location.pathname.includes("account-details") ? (
                             <BsCheck2 className="absolute -top-4" />
                         ) : (
                             ""
@@ -44,7 +44,6 @@ function Progress({ progress }: { progress?: number }) {
             <>
                 {location.pathname.includes("account-details") ? (
                     <div>
-                        <img src="" alt="" />
                         <div className="w-5 h-5 rounded-full bg-primaryColor"></div>
                     </div>
                 ) : (

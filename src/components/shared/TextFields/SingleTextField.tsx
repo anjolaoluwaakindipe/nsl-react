@@ -1,6 +1,8 @@
 import React from "react";
 import { SingleTextFieldProps } from "../../../typings";
 
+
+
 export default function SingleTextField(props: SingleTextFieldProps) {
     return (
         <div className="border-0 border-b-2  w-full">

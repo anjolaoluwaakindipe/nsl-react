@@ -217,7 +217,7 @@ function Fields() {
                     Accept
                 </button>
                 <button
-                    className="border px-5 py-4 bg-white border-black text-darkTextColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
+                    className="border px-5 py-4 bg-white border-black text-darkTextColor rounded-lg cursor-pointer hover:shadow-sm  duration-100 ease-in-out transition-all"
                     type="submit"
                 >
                     Decline

@@ -27,6 +27,7 @@ function LoanApplicationGraph() {
         <div>
             <Doughnut
                 data={data}
+            
                 options={{
                     plugins: {
                         title: {

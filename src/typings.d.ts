@@ -32,7 +32,7 @@ type SingleTextFieldProps = {
 // Loan Application
 type LoanApplicationValidationErrors = {
     amount?: string;
-    tenor?: string;
+    tenor?: Record<string, any> | undefined;
     intrest?: string;
     narration?: string;
 };
@@ -41,7 +41,7 @@ type LoanApplicationValidationErrors = {
 // modal state
 interface ModalState {
     isOpen: boolean;
-    isCancellable: boolean
+    isCancellable: boolean;
     callBack: () => void | undefined;
-    modalName:string
+    modalName: string;
 }

@@ -41,7 +41,6 @@ function Form() {
         console.log(data);
     });
 
-    console.log(errors.cscsAccountNumber);
     return (
         <form
             className=" grid grid-cols-12 py-20 gap-x-0 md:gap-x-10 gap-y-14 md:gap-y-28 text-darkTextColor"
@@ -86,7 +85,6 @@ function Form() {
                 <div className="border-0 border-b-2   border-underlineColor">
                     <label htmlFor="email"></label>
                     <input
-
                         {...register("emailAddress")}
                         id="CreateAccount__email"
                         className="outline-none pb-4  w-full"
