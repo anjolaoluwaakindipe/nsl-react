@@ -13,6 +13,7 @@ type LoanBalanceCardProp = {
 
 function LoanBalanceCard(prop: LoanBalanceCardProp) {
     return (
+
         <div className="flex flex-col justify-between space-y-3  bg-white p-5 rounded-sm h-62 min-w-[300px] ">
             <div>
                 <div className="flex items-center justify-between">
@@ -34,6 +35,7 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                     {" "}
                     {prop.days}{" "}
                 </div>
+
             </h6>
         </div>
     );
