@@ -12,19 +12,19 @@ const modalSlice = createSlice({
     name: "modal",
     initialState,
     reducers: {
-        closeModal(state) {
+        closeModal(state:ModalState) {
             state.isOpen = false;
         },
-        openModal(state) {
+        openModal(state:ModalState) {
             state.isOpen = true;
         },
-        setCallBack(state, action: PayloadAction<() => void>) {
+        setCallBack(state:ModalState, action: PayloadAction<() => void>) {
             state.callBack = action.payload;
         },
-        makeUnCancellable(state, action: PayloadAction<boolean>) {
+        makeUnCancellable(state:ModalState, action: PayloadAction<boolean>) {
             state.isCancellable = action.payload;
         },
-        setModalName(state, action: PayloadAction<string>) {
+        setModalName(state:ModalState, action: PayloadAction<string>) {
             state.modalName = action.payload;
         },
     },

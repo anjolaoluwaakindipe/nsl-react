@@ -1,14 +1,24 @@
 import React from "react";
 import AppRouter from "./AppRouter";
-const ModalProvider = React.lazy(()=>import("./components/shared/Modals/ModalProvider"))
+import { ReactKeycloakProvider } from "@react-keycloak/web";
+import keycloak from "./services/keycloak/keycloak";
+
+const ModalProvider = React.lazy(
+    () => import("./components/shared/Modals/ModalProvider")
+);
 
 function App() {
     return (
         <div className="App">
-            <React.Suspense>
-                <ModalProvider />
-            </React.Suspense>
-            <AppRouter />
+            <ReactKeycloakProvider
+                authClient={keycloak}
+                
+            >
+                <React.Suspense>
+                    <ModalProvider />
+                </React.Suspense>
+                <AppRouter />
+            </ReactKeycloakProvider>
         </div>
     );
 }

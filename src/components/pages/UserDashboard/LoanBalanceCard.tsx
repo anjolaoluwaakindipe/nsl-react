@@ -1,23 +1,40 @@
 import React from "react";
 
-type LoanBalanceCardProp = {
-    title:string
-    amount:number
-    tenor: string
-    days: string
-    status: string
-}
+// icons
+import { BsThreeDotsVertical } from "react-icons/bs";
 
-function LoanBalanceCard(prop:LoanBalanceCardProp) {
+type LoanBalanceCardProp = {
+    title: string;
+    amount: number;
+    tenor: string;
+    days: string;
+    status: string;
+};
+
+function LoanBalanceCard(prop: LoanBalanceCardProp) {
     return (
-        <div className="flex flex-col space-y-3  bg-white px-7 py-5 p-10 rounded-sm md:overflow-scroll">
-            <h6 className="italic text-xs font-light">{prop.status}</h6>
-            <h2 className="  text-primaryColor text-lg">{prop.title}</h2>
-            <h4 className=" font-bold text-primaryColor text-2xl ">{prop.amount}</h4>
-            <h6 className=" text-primaryColor font-light italic text-xs float-left">{prop.tenor} 
-            <span className=" text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline bg-gray-200 text-gray-700 rounded-full float-right"> {prop.days} </span>
+        <div className="flex flex-col justify-between space-y-3  bg-white p-5 rounded-sm h-62 min-w-[300px] ">
+            <div>
+                <div className="flex items-center justify-between">
+                    <h6 className="italic text-xs font-light">{prop.status}</h6>
+                    <BsThreeDotsVertical className="cursor-pointer" />
+                </div>
+                <h2 className="  text-primaryColor text-md pt-8">
+                    {prop.title}
+                </h2>
+                <h4 className=" text-primaryColor text-2xl ">
+                    N {prop.amount.toFixed(2).toString()}
+                </h4>
+            </div>
+
+            <h6 className=" text-primaryColor font-light italic text-[10px] flex justify-between">
+                <div>{prop.tenor}</div>
+
+                <div className=" text-xs inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline bg-gray-200 text-gray-700 rounded-full float-right">
+                    {" "}
+                    {prop.days}{" "}
+                </div>
             </h6>
-            
         </div>
     );
 }
