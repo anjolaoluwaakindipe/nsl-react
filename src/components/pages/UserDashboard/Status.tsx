@@ -30,7 +30,7 @@ function Status(prop: StatusProp) {
                 <StatusType status={prop.statustype} />
             </div>
 
-            <div> 
+            <div className="flex justify-center items-center"> 
                <StatusView status={prop.statusview} /> 
             </div>
 
@@ -42,47 +42,6 @@ function Status(prop: StatusProp) {
 
 export default Status;
 
-//status view 
-function StatusView ( { status }: { status: Number }){
-    const ViewPendingApproval = (
-        <div>
-            <Link to="/loan-information">
-                <button className=" text-accentColor cursor-pointer flex justify-center items-center">
-                    view
-                </button>
-    
-            </Link>
-    
-        </div>
-    
-    );
-
-     
-    const ViewPendingContractApproval = (
-        <div>
-            <Link to="/loan-contract">
-                <button className=" text-accentColor cursor-pointer flex justify-center items-center">
-                    view
-                </button>
-            </Link>
-        </div>
-    
-    );
-
-    switch (status) {
-        case 1:{
-            return (ViewPendingApproval);
-        }
-        case 2: {
-            return (ViewPendingContractApproval);
-        }
-    
-        default:
-            return(ViewPendingApproval);
-    }
-
-
-}
 
 
 //status type
@@ -134,3 +93,44 @@ function StatusType({ status }: { status: Number }) {
 }
 
 
+//status view 
+function StatusView ( { status }: { status: Number }){
+    const ViewPendingApproval = (
+        <div>
+            <Link to="/loan-information">
+                <button className=" text-accentColor cursor-pointer flex justify-center items-center">
+                    view
+                </button>
+    
+            </Link>
+    
+        </div>
+    
+    );
+
+     
+    const ViewPendingContractApproval = (
+        <div>
+            <Link to="/loan-contract">
+                <button className=" text-accentColor cursor-pointer flex justify-center items-center">
+                    view
+                </button>
+            </Link>
+        </div>
+    
+    );
+
+    switch (status) {
+        case 1:{
+            return (ViewPendingApproval);
+        }
+        case 2: {
+            return (ViewPendingContractApproval);
+        }
+    
+        default:
+            return(ViewPendingApproval);
+    }
+
+
+}
