@@ -12,6 +12,7 @@ function Dashboard() {
                 <Header />
                 <LoanBalanceDet />
                 <LoanActivity />
+                
             </div>
         </div>
     );

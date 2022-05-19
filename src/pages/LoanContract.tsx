@@ -14,20 +14,20 @@ function LoanContract() {
                 <Header />
                 <Information />
 
-                <div className=" pt-5">
-                    <button
-                        className="border text-right  px-20 py-4 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
-                        type="submit"
-                    >
-                        Accept
-                    </button>
-                    <button
-                        className="border border-gray-400 px-10 py-4 bg-white border-black text-darkTextColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
-                        type="submit"
-                    >
-                        Do Not Accept
-                    </button>
-                </div>
+                <div className=" pt-5 space-x-6">
+                <button
+                    className="border text-right px-5 py-4 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
+                    type="submit"
+                >
+                    Accept
+                </button>
+                <button
+                    className="border px-5 py-4 bg-white border-black text-darkTextColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
+                    type="submit"
+                >
+                    Decline
+                </button>
+            </div>
             </>
         </DefaultLayout>
     );
