@@ -65,9 +65,9 @@ function AppRouter() {
                 <Route
                     path={paths.USER_DASHBOARD}
                     element={
-                        <ProtectedRoute>
+                       // <ProtectedRoute>
                             <Dashboard />
-                        </ProtectedRoute>
+                       // </ProtectedRoute>
                     }
                 />
 
