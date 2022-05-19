@@ -13,7 +13,7 @@ type  StatusProp={
 
 
 function Status(prop:StatusProp){
-    console.log(prop.status)
+    
     return( 
     <div className="md:p-10 p-5 w-full grid grid-cols-4 gap-20 bg-gray-300 " >
         <h3>{prop.loantype}</h3>
