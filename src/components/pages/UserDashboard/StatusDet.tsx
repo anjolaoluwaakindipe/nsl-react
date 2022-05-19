@@ -8,9 +8,9 @@ function StatusDet() {
         
         <div className="overflow-x-scroll md:overflow-auto w-full">
             <div className="space-y-5  p-0 w-96 md:w-full text-sm md:text-md">
-                <Status loantype="Land Loan" amount="900,000" status={true} view="view" />
+                <Status loantype="Land Loan" amount="900,000" status={1} view="view" />
 
-                <Status loantype="School Loan" amount="900,000" status={false} view="view" />
+                <Status loantype="School Loan" amount="900,000" status={2} view="view" />
 
 
             </div>

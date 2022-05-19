@@ -5,7 +5,7 @@ import StatusType from "./StatusType";
 type  StatusProp={
     loantype: string
     amount: string
-    status: boolean
+    status: number
     view : string 
 }
 

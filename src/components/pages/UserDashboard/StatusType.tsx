@@ -2,7 +2,7 @@ import React from "react";
 import Status from "./Status";
 
 
-function StatusType({ status }: { status: boolean }) {
+function StatusType({ status }: { status: Number }) {
     const PendingApproval = (
         <div>
             <h3 className="flex justify">
@@ -26,8 +26,24 @@ function StatusType({ status }: { status: boolean }) {
         </div>
     )
 
+    switch (status) {
+        case 1:{
+            return PendingApproval;
+        }
+            
+        case 2: {
+            return PendingContractApproval;
+        }
 
-    return status ? PendingContractApproval : PendingApproval;
+        default:{
+            return PendingApproval;
+        }
+    
+      
+    }
+
+
+    
 }
 
 
@@ -35,4 +51,4 @@ function StatusType({ status }: { status: boolean }) {
 export default StatusType;
 
 
-
+//return status ? PendingContractApproval : PendingApproval;
