@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 import DefaultLayout from "../components/layout/DefaultLayout";
 import SingleTextField from "../components/shared/TextFields/SingleTextField";
 import { Header } from "../components/pages/EmailVerification";
@@ -8,11 +8,16 @@ import Joi from "joi";
 import { joiResolver } from "@hookform/resolvers/joi";
 
 function EmailVerification() {
+    const navigate = useNavigate()
+
     const {
         handleSubmit,
         control,
         formState: { errors },
     } = useForm({
+        defaultValues: {
+            emailCode:"",
+        },
         resolver: joiResolver(
             Joi.object({
                 emailCode: Joi.string().required().label("The code"),
@@ -20,7 +25,10 @@ function EmailVerification() {
         ),
     });
 
-    const onSubmit = handleSubmit((data) => {});
+    const onSubmit = handleSubmit((data) => {
+        
+        navigate("/phone-verification", {replace:true})
+    });
 
     return (
         <DefaultLayout>
@@ -35,14 +43,16 @@ function EmailVerification() {
                             <Controller
                                 name="emailCode"
                                 control={control}
-                                render={({ field: { onChange, value } }) => (
-                                    <SingleTextField
-                                        placeholder="Verification Code"
-                                        onChange={onChange}
-                                        value={value}
-                                        maxLength={6}
-                                    />
-                                )}
+                                render={({ field: { onChange, value } }) => {
+                                    return (
+                                        <SingleTextField
+                                            placeholder="Verification Code"
+                                            onChange={onChange}
+                                            value={value}
+                                            maxLength={6}
+                                        />
+                                    );
+                                }}
                             />
 
                             <p className="error1">

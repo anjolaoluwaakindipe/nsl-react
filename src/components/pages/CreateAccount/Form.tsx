@@ -1,6 +1,6 @@
 // react
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
 // react-hook-form
 import { useForm, Controller } from "react-hook-form";
@@ -20,6 +20,8 @@ type CreateAccountFormData = {
 };
 
 function Form() {
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
@@ -38,7 +40,7 @@ function Form() {
     });
 
     const onSubmit = handleSubmit((data) => {
-        console.log(data);
+        navigate("/email-verification");
     });
 
     return (
