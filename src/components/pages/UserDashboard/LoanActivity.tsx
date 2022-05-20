@@ -1,5 +1,6 @@
 import React from "react";
 import StatusDet from "./StatusDet";
+import { Link } from 'react-router-dom';
 
 function LoanActivity() {
     return (
@@ -7,6 +8,8 @@ function LoanActivity() {
             <div className="lg:px-10 pb-3 w-full">
                 <h3 className="md:text-justify font-bold">
                     Loan Requests
+
+                    <Link to = "/loan-application">
                     <button
                         className="border flex  float-right text-right px-2   md:px-2 md:py-2 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-darkTextColor duration-100 ease-in-out transition-all"
                         type="submit"
@@ -14,6 +17,8 @@ function LoanActivity() {
                         <div>+</div>
                         <div className="hidden md:block pl-2"> New Loan</div>
                     </button>
+                    </Link>
+                    
                 </h3>
             </div>
 
