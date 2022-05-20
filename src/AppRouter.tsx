@@ -48,7 +48,14 @@ function AppRouter() {
                         </React.Suspense>
                     }
                 />
-                <Route path={paths.LOGIN} element={<Login />} />
+                <Route
+                    path={paths.LOGIN}
+                    element={
+                        <React.Suspense>
+                            <Login />
+                        </React.Suspense>
+                    }
+                />
                 <Route
                     path={paths.PHONE_VERIFICATION}
                     element={

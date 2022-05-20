@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 import { joiResolver } from "@hookform/resolvers/joi";
 import { loginSchema } from "../../../utils/validation/login";
 import { LoginInfo } from "../../../typings";
@@ -8,7 +8,7 @@ import { LoginInfo } from "../../../typings";
 
 function Form() {
    
-    
+    const navigate=  useNavigate()
  
     const {
         register,
@@ -23,7 +23,7 @@ function Form() {
     });
 
     const onSubmit = handleSubmit(async (data) => {
-        
+        navigate('/dashboard')
     });
 
     
@@ -60,7 +60,7 @@ function Form() {
                             type="password"
                             {...register("password")}
                             id="Login__password"
-                            className="outline-none pb-4  border-0 "
+                            className="outline-none pb-4 w-full border-0 "
                             placeholder="Password"
                         />
                     </div>

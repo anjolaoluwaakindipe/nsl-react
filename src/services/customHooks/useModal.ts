@@ -6,11 +6,11 @@ export const useModal = (modalName:string, isCancellable:boolean = true, callBac
     const dispatch = useDispatch<AppDispatch>();
 
     const openModalFunc = () =>{
-        dispatch(openModal)
+        dispatch(openModal())
     }
 
     const closeModalFunc = () =>{
-        dispatch(closeModal)
+        dispatch(closeModal())
     }
 
     dispatch(setModalName(modalName))

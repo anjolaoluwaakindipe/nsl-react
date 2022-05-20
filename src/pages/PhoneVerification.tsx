@@ -27,11 +27,11 @@ function PhoneVerification() {
         ),
     });
     const onProceed = () => {
-        navigate("/phone-verification", { replace: true });
+        navigate("/login", { replace: true });
     };
 
     const { openModalFunc } = useModal(
-        "SuccessPhoneAndEmailVerificationModal",
+        "PhoneEmailVerificationSuccessModal",
         false,
         () => {
             onProceed();

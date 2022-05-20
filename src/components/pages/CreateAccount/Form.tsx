@@ -1,6 +1,6 @@
 // react
 import React from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 // react-hook-form
 import { useForm, Controller } from "react-hook-form";
@@ -50,25 +50,7 @@ function Form() {
             autoSave={"off"}
             autoComplete={"off"}
         >
-            <div className="w-full md:col-span-6 col-span-12 ">
-                <div className="border-0 border-b-2  border-underlineColor">
-                    <label htmlFor="CreateAccount__cscsAccountNumber"></label>
-                    <input
-                        type="text"
-                        {...register("cscsAccountNumber", {
-                            required: "this is required",
-                            minLength: 2,
-                        })}
-                        id="CreateAccount__cscsAccountNumber"
-                        className="outline-none pb-4  w-full"
-                        placeholder="CSCS Account Number"
-                    />
-                </div>
-                <p className="text-xs text-red-900 ">
-                    {errors.cscsAccountNumber?.message}
-                </p>
-            </div>
-            <div className="md:col-span-6 col-span-12  ">
+            <div className="col-span-12  ">
                 <div className="border-0 border-b-2  border-underlineColor">
                     <label htmlFor="fullName"></label>
                     <input
@@ -83,7 +65,7 @@ function Form() {
                     {errors.fullName?.message}
                 </p>
             </div>
-            <div className="md:col-span-6 col-span-12 ">
+            <div className="col-span-12 ">
                 <div className="border-0 border-b-2   border-underlineColor">
                     <label htmlFor="email"></label>
                     <input
@@ -97,7 +79,7 @@ function Form() {
                     {errors.emailAddress?.message}
                 </p>
             </div>
-            <div className="md:col-span-6 col-span-12 ">
+            <div className="col-span-12 ">
                 <div className="border-0 border-b-2  border-underlineColor">
                     <Controller
                         name="phoneNumber"
@@ -121,25 +103,7 @@ function Form() {
                     {errors.phoneNumber?.message}
                 </p>
             </div>
-            <div className="md:col-span-6 col-span-12  ">
-                <div className="border-0 border-b-2  border-underlineColor">
-                    <label htmlFor="bvn"></label>
-                    <input
-                        {...register("bvn")}
-                        maxLength={11}
-                        onKeyDown={(e) => {
-                            if (!RegExp(numbersNoDecimal).test(e.key)) {
-                                e.preventDefault();
-                            }
-                        }}
-                        id="CreateAccount__bvn"
-                        className="outline-none pb-4  w-full"
-                        placeholder="BVN"
-                    />
-                </div>
-                <p className="text-xs text-red-900 ">{errors.bvn?.message}</p>
-            </div>
-            <div className="md:col-span-6 col-span-12 ">
+            <div className="col-span-12 ">
                 <div className="border-0 border-b-2  border-underlineColor">
                     <label htmlFor="password"></label>
                     <input
@@ -171,5 +135,47 @@ function Form() {
         </form>
     );
 }
+
+// cscsNumber Field
+
+//  <div className="w-full md:col-span-6 col-span-12 ">
+//      <div className="border-0 border-b-2  border-underlineColor">
+//          <label htmlFor="CreateAccount__cscsAccountNumber"></label>
+//          <input
+//              type="text"
+//              {...register("cscsAccountNumber", {
+//                  required: "this is required",
+//                  minLength: 2,
+//              })}
+//              id="CreateAccount__cscsAccountNumber"
+//              className="outline-none pb-4  w-full"
+//              placeholder="CSCS Account Number"
+//          />
+//      </div>
+//      <p className="text-xs text-red-900 ">
+//          {errors.cscsAccountNumber?.message}
+//      </p>
+//  </div>;
+
+// bvn field
+
+// <div className="md:col-span-6 col-span-12  ">
+//     <div className="border-0 border-b-2  border-underlineColor">
+//         <label htmlFor="bvn"></label>
+//         <input
+//             {...register("bvn")}
+//             maxLength={11}
+//             onKeyDown={(e) => {
+//                 if (!RegExp(numbersNoDecimal).test(e.key)) {
+//                     e.preventDefault();
+//                 }
+//             }}
+//             id="CreateAccount__bvn"
+//             className="outline-none pb-4  w-full"
+//             placeholder="BVN"
+//         />
+//     </div>
+//     <p className="text-xs text-red-900 ">{errors.bvn?.message}</p>
+// </div>;
 
 export default Form;

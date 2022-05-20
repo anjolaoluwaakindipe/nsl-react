@@ -7,11 +7,12 @@ import { AiOutlineClose } from "react-icons/ai";
 import { closeModal } from "../../../state/modalSlice";
 
 import { ModalState } from "../../../typings";
+import PhoneEmailVerificationSuccessModal from "./Content/PhoneEmailVerificationSuccessModal";
 
-function ModalContent(modalName: string): ReactElement {
+function ModalContent(modalName: string, callback:()=>void): ReactElement {
     switch (modalName.trim()) {
-        case "successModal":
-            return <div></div>;
+        case "PhoneEmailVerificationSuccessModal":
+            return <PhoneEmailVerificationSuccessModal callback={callback}/>;
         default:
             return <div></div>;
     }
@@ -55,16 +56,16 @@ function ModalProvider() {
                 }}
             >
                 <div className="w-full flex justify-end py-1">
-                    <AiOutlineClose
-                        strokeWidth={50}
-                        className="cursor-pointer hover:text-red-600"
-                        onClick={
-                            modalState.isCancellable ? cancelModal : undefined
-                        }
-                    />
+                    {modalState.isCancellable && (
+                        <AiOutlineClose
+                            strokeWidth={50}
+                            className="cursor-pointer hover:text-red-600"
+                            onClick={cancelModal}
+                        />
+                    )}
                 </div>
 
-                {ModalContent(modalState.modalName)}
+                {ModalContent(modalState.modalName, modalState.callBack)}
             </div>
         </div>
     );

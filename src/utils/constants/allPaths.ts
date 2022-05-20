@@ -6,7 +6,7 @@ export const paths = {
     LOGIN: "/login",
     LOAN_PAYMENT_OPTIONS: "/loan-payment-options",
     LOAN_INFORMATION: "/loan-information",
-    TOTAL_LOAN_INFORMATION: "total-loan",
+    TOTAL_LOAN_INFORMATION: "/total-loan-information",
     LOAN_CONTRACT: "/loan-contract",
     UPDATE_PROFILE: {
         base: "/update-profile",
