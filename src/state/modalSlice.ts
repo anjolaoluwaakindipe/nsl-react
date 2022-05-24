@@ -3,7 +3,7 @@ import { ModalState } from "../typings";
 
 const initialState: ModalState = {
     isOpen: false,
-    callBack: () => {},
+    // callBack: function(){},
     isCancellable: true,
     modalName: "",
 };
@@ -12,19 +12,25 @@ const modalSlice = createSlice({
     name: "modal",
     initialState,
     reducers: {
-        closeModal(state:ModalState) {
+        closeModal(state: ModalState) {
             state.isOpen = false;
         },
-        openModal(state:ModalState) {
+        openModal(state: ModalState) {
             state.isOpen = true;
         },
-        setCallBack(state:ModalState, action: PayloadAction<() => void>) {
-            state.callBack = action.payload;
+        // setCallBack(
+        //     state: ModalState,
+        //     action: PayloadAction<{ callback: () => void }>
+        // ) {
+        //     state.callBack = action.payload.callback;
+        // },
+        makeUnCancellable(
+            state: ModalState,
+            action: PayloadAction<{ cancellable: boolean }>
+        ) {
+            state.isCancellable = action.payload.cancellable;
         },
-        makeUnCancellable(state:ModalState, action: PayloadAction<boolean>) {
-            state.isCancellable = action.payload;
-        },
-        setModalName(state:ModalState, action: PayloadAction<string>) {
+        setModalName(state: ModalState, action: PayloadAction<string>) {
             state.modalName = action.payload;
         },
     },
@@ -33,7 +39,7 @@ const modalSlice = createSlice({
 export const {
     closeModal,
     openModal,
-    setCallBack,
+    // setCallBack,
     makeUnCancellable,
     setModalName,
 } = modalSlice.actions;

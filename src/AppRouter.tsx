@@ -3,7 +3,11 @@ import { Routes, Route } from "react-router-dom";
 
 // paths
 import { paths } from "./utils/constants/allPaths";
-import ProtectedRoute from "./components/shared/ProtectedRoutes/ProtectedRoute";
+
+// components
+const ProtectedRoute = lazy(
+    () => import("./components/shared/ProtectedRoutes/ProtectedRoute")
+);
 
 // pages
 const CreateAccount = lazy(() => import("./pages/CreateAccount"));
@@ -111,11 +115,11 @@ function AppRouter() {
                 <Route
                     path={paths.USER_DASHBOARD}
                     element={
-                        // <ProtectedRoute>
                         <React.Suspense>
+                            {/* <ProtectedRoute> */}
                             <Dashboard />
+                            {/* </ProtectedRoute> */}
                         </React.Suspense>
-                        // {/* </ProtectedRoute> */}
                     }
                 />
 

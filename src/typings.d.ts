@@ -4,11 +4,26 @@ import { HTMLInputTypeAttribute } from "react";
 // Loan Application Form
 type LoanApplicationFormInfo = {
     amount: string;
-    tenor: string;
+    tenor: {value:string, label:string};
     interest: string;
-    narration: string;
+    purpose: string;
     termsAndCondition: boolean;
     passport: FileList;
+    proofOfIdentification: FileList;
+    proofOfResidence: FileList;
+    salarySlips: FileList;
+};
+
+type PersonalDetailsFormInfo = {
+    fullname: string;
+    emailAddress: string;
+    phoneNumber: string;
+    gender: { value: string; label: string };
+    dateOfBirth: string;
+    maritalStatus: { value: string; label: string };
+    cscsNumber: string;
+    residentialAddress: string;
+    picture: FileList;
     proofOfIdentification: FileList;
     proofOfResidence: FileList;
     salarySlips: FileList;
@@ -48,7 +63,7 @@ type LoanApplicationValidationErrors = {
 interface ModalState {
     isOpen: boolean;
     isCancellable: boolean;
-    callBack: () => void | undefined;
+    // callBack: () => void | undefined;
     modalName: string;
 }
 

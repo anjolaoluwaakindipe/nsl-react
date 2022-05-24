@@ -151,14 +151,14 @@ function EmploymentDetailsForm() {
 
                 <div className="col-span-12 flex justify-between">
                     <button
-                        className={`btn1 bg-transparent border-2 hover:bg-transparent border-darkTextColor text-darkTextColor  w-full md:w-48`}
+                        className={`btn1 bg-transparent border-2 hover:bg-transparent border-primaryColor text-primaryColor  w-full md:w-48`}
                         
                     >
                         Previous
                     </button>
 
                     <button
-                        className={`btn1 bg-darkTextColor  w-full md:w-48`}
+                        className={`btn1   w-full md:w-48`}
                         type="submit"
                     >
                         Next

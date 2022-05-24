@@ -9,6 +9,7 @@ const initialState: AuthState = {
 
 export const loginUser = createAsyncThunk("auth/loginUserStatus", async ([username,password]:string[], thunkApi)=>{
     const response = await authRequest.loginUser(username, password);
+    console.log(response)
     if (response.status === "200"){
         localStorage.setItem("token", response.data["access_token"])
         localStorage.setItem("refreshToken", response.data["refresh_token"])

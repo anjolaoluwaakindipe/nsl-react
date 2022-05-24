@@ -12,16 +12,17 @@ import {
     UseFormRegister,
     UseFormWatch,
 } from "react-hook-form";
-import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import { BsCheck2 } from "react-icons/bs";
 
 // types
 import { LoanApplicationFormInfo } from "../../../typings";
+import CardInput from "./CardInput";
 
 type LoanApplicationForm1Props = {
     register: UseFormRegister<LoanApplicationFormInfo>;
     errors?: FieldErrors<LoanApplicationFormInfo>;
     handleSubmit: UseFormHandleSubmit<LoanApplicationFormInfo>;
-    setNextPage: React.Dispatch<React.SetStateAction<boolean>>;
+    setNextPage?: React.Dispatch<React.SetStateAction<boolean>>;
     control: Control<LoanApplicationFormInfo, any>;
     watch: UseFormWatch<LoanApplicationFormInfo>;
 
@@ -45,20 +46,16 @@ function Form1({
     watch,
     control,
 }: LoanApplicationForm1Props) {
-    const onSubmit = () => {
-        setNextPage(true);
-    };
+    const onSubmit = handleSubmit((data) => {});
 
-    const watchTenor = watch("tenor");
+    const watchTermsAndCond = watch("termsAndCondition");
 
     const tenorDropdownOptions = [
-        { value: "20 days", label: "20 days" },
+        { value: "14 days", label: "20 days" },
         { value: "30 days", label: "30 days" },
-        { value: "Two Months", label: "Two Months" },
-        { value: "Three Months", label: "Three Months" },
-        { value: "Four Months", label: "Four Months" },
-        { value: "Five Months", label: "Five Months" },
-        { value: "Six Months", label: "Six Months" },
+        { value: "60 days", label: "60 days" },
+        { value: "90 days", label: "90 days" },
+        { value: "180 days", label: "180 days" },
     ];
 
     return (
@@ -103,26 +100,16 @@ function Form1({
                 </div>
 
                 <div>
-                    <div className=" border-0 border-b-2  border-underlineColor   ">
+                    <div className="  ">
                         <Controller
                             name="tenor"
                             control={control}
                             render={({ field: { onChange, value } }) => (
-                                <Dropdown
-                                    options={tenorDropdownOptions}
+                                <CardInput
                                     onChange={onChange}
-                                    arrowClosed={<IoMdArrowDropdown />}
-                                    arrowOpen={<IoMdArrowDropup />}
                                     value={value}
-                                    placeholder="Tenor"
-                                    className="relative"
-                                    placeholderClassName={
-                                        watchTenor
-                                            ? "text-black"
-                                            : "text-gray-400"
-                                    }
-                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
-                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
+                                    options={tenorDropdownOptions}
+                                    label="Tenor"
                                 />
                             )}
                         />
@@ -131,8 +118,8 @@ function Form1({
                     </div>
 
                     {
-                        <p className="text-xs text-red-900 ">
-                            {errors?.tenor?.message}
+                        <p className="text-xs text-red-900 mt-1">
+                            {errors?.tenor?.value?.message}
                         </p>
                     }
                 </div>
@@ -157,25 +144,43 @@ function Form1({
 
                 <div>
                     <div className=" border-0 border-b-2  border-underlineColor ">
-                        <label htmlFor="narration"></label>
+                        <label htmlFor="purpose"></label>
                         <textarea
-                            {...register("narration")}
+                            {...register("purpose")}
                             id="LoanApplcation_narration"
                             className="outline-none bg-bgColor pb-4  resize-none h-32 p-3 w-full border-0 "
-                            placeholder="Narration"
+                            placeholder="Purpose"
                         ></textarea>
                     </div>
                     {
                         <p className="text-xs text-red-900 ">
-                            {errors?.narration?.message}
+                            {errors?.purpose?.message}
                         </p>
                     }
                 </div>
 
-                <button
-                    className={`w-full md:w-1/2 btn1 bg-darkTextColor `}
-                    type="submit"
-                >
+                <div className="flex items-center space-x-3">
+                    <label htmlFor="LoanApplication__termsAndCondition">
+                        <div
+                            className={` border-2 rounded-sm border-primaryColor w-5 h-5 items-center justify-center`}
+                        >
+                            {watchTermsAndCond ? (
+                                <BsCheck2 strokeWidth={0.7} />
+                            ) : (
+                                ""
+                            )}
+                        </div>
+                    </label>
+                    <span>I agree to the Terms and Conditions</span>
+                    <input
+                        type="checkbox"
+                        id="LoanApplication__termsAndCondition"
+                        className="hidden"
+                        {...register("termsAndCondition")}
+                    />
+                </div>
+
+                <button className={`w-full md:w-1/2 btn1 `} type="submit">
                     Proceed
                 </button>
             </form>

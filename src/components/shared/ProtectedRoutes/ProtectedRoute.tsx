@@ -1,9 +1,10 @@
 import { useKeycloak } from '@react-keycloak/web'
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function ProtectedRoute({children}:{children:React.ReactElement}) {
     const {initialized, keycloak} = useKeycloak()
-
+    const navigate= useNavigate();
 
     // if (!keycloak.authenticated && !initialized) {
     //     return <div></div>;
@@ -12,9 +13,8 @@ function ProtectedRoute({children}:{children:React.ReactElement}) {
     
 
     if (!keycloak.authenticated && initialized) {
-          keycloak.login();
+       
     }
-    console.log(keycloak.authenticated);
   return (
     <>{initialized && keycloak.authenticated? children: null}</>
   )

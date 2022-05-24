@@ -9,6 +9,7 @@ import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatterns";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
+import PhoneField from "../../shared/TextFields/PhoneField";
 
 type CreateAccountFormData = {
     cscsAccountNumber: string;
@@ -90,12 +91,15 @@ function Form() {
                                 "Not a valid International Number",
                         }}
                         render={({ field: { onChange, value } }) => (
-                            <PhoneInput
-                                className="pb-4 space-x-4 max-h-10"
-                                onChange={onChange}
-                                value={value}
-                                style={{ borderRadius: "0px" }}
-                            />
+                            <div>
+                                <PhoneField
+                                    placeholder="Phone Number"
+                                    phoneElementClassName="pb-4 space-x-4 max-h-10"
+                                    onChange={onChange}
+                                    value={value}
+                                    style={{ borderRadius: "0px" }}
+                                />
+                            </div>
                         )}
                     />
                 </div>

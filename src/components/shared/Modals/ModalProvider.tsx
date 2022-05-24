@@ -9,10 +9,10 @@ import { closeModal } from "../../../state/modalSlice";
 import { ModalState } from "../../../typings";
 import PhoneEmailVerificationSuccessModal from "./Content/PhoneEmailVerificationSuccessModal";
 
-function ModalContent(modalName: string, callback:()=>void): ReactElement {
+function ModalContent(modalName: string, cancelModal:()=>void): ReactElement {
     switch (modalName.trim()) {
         case "PhoneEmailVerificationSuccessModal":
-            return <PhoneEmailVerificationSuccessModal callback={callback}/>;
+            return <PhoneEmailVerificationSuccessModal cancelModal={cancelModal}/>;
         default:
             return <div></div>;
     }
@@ -65,7 +65,7 @@ function ModalProvider() {
                     )}
                 </div>
 
-                {ModalContent(modalState.modalName, modalState.callBack)}
+                {ModalContent(modalState.modalName, cancelModal)}
             </div>
         </div>
     );

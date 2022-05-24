@@ -1,3 +1,4 @@
 import Header from "./Header";
+import EmailVerificationPinCode from "./EmailVerificationPinCode";
 
-export {Header}
+export {Header, EmailVerificationPinCode}

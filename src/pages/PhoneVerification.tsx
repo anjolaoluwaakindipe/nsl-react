@@ -4,7 +4,10 @@ import SingleTextField from "../components/shared/TextFields/SingleTextField";
 import DefaultLayout from "../components/layout/DefaultLayout";
 
 // components
-import { Header } from "../components/pages/PhoneVerification";
+import {
+    Header,
+    PhoneVerificationPinCode,
+} from "../components/pages/PhoneVerification";
 
 // form
 import { useForm, Controller } from "react-hook-form";
@@ -23,7 +26,13 @@ function PhoneVerification() {
     } = useForm({
         defaultValues: { phoneCode: "" },
         resolver: joiResolver(
-            Joi.object({ phoneCode: Joi.string().required() })
+            Joi.object({
+                phoneCode: Joi.string()
+                    .required()
+                    .label("Phone Code")
+                    .min(4)
+                    .max(4),
+            })
         ),
     });
     const onProceed = () => {
@@ -46,22 +55,25 @@ function PhoneVerification() {
         <DefaultLayout>
             <>
                 <Header />
-                <form onSubmit={onSubmit} autoComplete="off" autoSave="off">
+                <form
+                    onSubmit={onSubmit}
+                    autoComplete="off"
+                    autoSave="off"
+                    autoCorrect="off"
+                >
                     <div className="pt-20 w-full md:w-1/2 space-y-6">
                         <div>
                             <Controller
                                 name="phoneCode"
                                 control={control}
                                 render={({ field: { onChange, value } }) => (
-                                    <SingleTextField
-                                        placeholder="Verification Code"
+                                    <PhoneVerificationPinCode
                                         onChange={onChange}
                                         value={value}
-                                        maxLength={6}
                                     />
                                 )}
                             />
-                            <p className="error1">
+                            <p className="error1 mt-1">
                                 {errors.phoneCode?.message}
                             </p>
                         </div>

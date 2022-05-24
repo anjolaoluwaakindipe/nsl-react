@@ -1,3 +1,4 @@
 import Header from "./Header";
+import PhoneVerificationPinCode from "./PhoneVerificationPinCode";
 
-export {Header}
+export {Header, PhoneVerificationPinCode}

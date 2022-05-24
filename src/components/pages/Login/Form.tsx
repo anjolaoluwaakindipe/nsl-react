@@ -7,9 +7,8 @@ import { LoginInfo } from "../../../typings";
 
 
 function Form() {
-   
+    
     const navigate=  useNavigate()
- 
     const {
         register,
         handleSubmit,
@@ -23,6 +22,8 @@ function Form() {
     });
 
     const onSubmit = handleSubmit(async (data) => {
+        // dispatch(loginUser([data.usernameOrEmail, data.password]))
+
         navigate('/dashboard')
     });
 

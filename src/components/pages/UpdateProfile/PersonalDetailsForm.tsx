@@ -13,23 +13,47 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 
 // react-router
 import { useNavigate } from "react-router-dom";
+import Dropdown from "react-dropdown";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import { PersonalDetailsFormInfo } from "../../../typings";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { personalDetailsFormSchema } from "../../../utils/validation/personalDetailForm";
 
 function PersonalDetailsForm() {
-    const navigate = useNavigate();
+    const genderDropdownOptions = [
+        { value: "Male", label: "Male" },
+        { value: "Female", label: "Female" },
+    ];
+    const maritalStatusDropdownOptions = [
+        { value: "Single", label: "Single" },
+        { value: "Married", label: "Married" },
+        { value: "Divorce", label: "Divorce" },
+        { value: "Widow", label: "Widow" },
+        { value: "Remarried", label: "Remarried" },
+    ];
 
-    const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        navigate("/update-profile/employment-details");
-    };
+    const navigate = useNavigate();
 
     const {
         register,
         control,
         watch,
+        handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm<PersonalDetailsFormInfo>({
+        resolver: joiResolver(personalDetailsFormSchema),
+    });
 
-    const watchPictureUpload = watch("pictureUpload");
+    const onSubmitForm = handleSubmit((data) => {
+        navigate("/update-profile/employment-details");
+    });
+
+    const watchPictureUpload = watch("picture");
+    const watchGender = watch("gender");
+    const watchMaritalStatus = watch("maritalStatus");
+    const watchproofOfIdentification = watch("proofOfIdentification");
+    const watchproofOfResidence = watch("proofOfResidence");
+    const watchSalarySlips = watch("salarySlips");
 
     return (
         <div>
@@ -48,6 +72,7 @@ function PersonalDetailsForm() {
                     <div className="border-0 border-b-2 border-underlineColor">
                         <label htmlFor="UpdateProfile__fullName"></label>
                         <input
+                            {...register("fullname")}
                             type="text"
                             pattern={"[0-9]*"}
                             formNoValidate={true}
@@ -56,28 +81,29 @@ function PersonalDetailsForm() {
                             placeholder="Full Name"
                         />
                     </div>
-                    {/* {validationErrors.accountNumber && (
+                    {errors.fullname && (
                         <p className="text-xs text-red-900 ">
-                            {validationErrors.accountNumber}
+                            {errors.fullname?.message}
                         </p>
-                    )} */}
+                    )}
                 </div>
                 <div className=" col-span-12 md:col-span-6">
                     <div className="border-0 border-b-2 border-underlineColor">
                         <label htmlFor="UpdateProfile__emailAddress"></label>
                         <input
                             type="text"
+                            {...register("emailAddress")}
                             max={10}
                             id="UpdateProfile__emailAddress"
                             className="outline-none pb-4  w-full"
                             placeholder="Email Address"
                         />
                     </div>
-                    {/* {validationErrors.accountBank && (
+                    {errors.emailAddress && (
                         <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
+                            {errors.emailAddress?.message}
                         </p>
-                    )} */}
+                    )}
                 </div>
                 <div className="md:col-span-6 col-span-12 ">
                     <div className="border-0 border-b-2  border-underlineColor">
@@ -103,54 +129,115 @@ function PersonalDetailsForm() {
                         {errors.phoneNumber?.message}
                     </p>
                 </div>
-                <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__gender"></label>
-                        <input
-                            type="text"
-                            id="UpdateProfile__gender"
-                            className="outline-none pb-4  w-full"
-                            placeholder="Gender"
+                <div className="col-span-12 md:col-span-6">
+                    <div className=" border-0 border-b-2  border-underlineColor   ">
+                        <Controller
+                            name="gender"
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                                <Dropdown
+                                    options={genderDropdownOptions}
+                                    onChange={onChange}
+                                    arrowClosed={<IoMdArrowDropdown />}
+                                    arrowOpen={<IoMdArrowDropup />}
+                                    value={value}
+                                    placeholder="Gender"
+                                    className="relative"
+                                    placeholderClassName={
+                                        watchGender
+                                            ? "text-black"
+                                            : "text-gray-400"
+                                    }
+                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
+                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
+                                />
+                            )}
                         />
+
+                        <label htmlFor="gender"></label>
                     </div>
-                    {/* {validationErrors.accountBank && (
+
+                    {
                         <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
+                            {errors?.gender?.value?.message}
                         </p>
-                    )} */}
+                    }
                 </div>
                 <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile_dateOfBirth"></label>
+                    <div className="border-0 border-b-2 border-underlineColor ">
+                        <label htmlFor="UpdateProfile_dateOfBirth"> </label>
                         <input
                             type="text"
-                            max={10}
+                            {...register("dateOfBirth")}
                             id="UpdateProfile__dateOfBirth"
-                            className="outline-none pb-4  w-full"
+                            className="outline-none pb-4  w-full cursor-pointer"
                             placeholder="Date of Birth"
+                            onFocus={(e) => {
+                                e.target.type = "date";
+                            }}
+                            onBlur={(e) => {
+                                e.target.type = "";
+                            }}
                         />
                     </div>
-                    {/* {validationErrors.accountBank && (
+                    {errors.dateOfBirth && (
                         <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
+                            {errors.dateOfBirth?.message}
                         </p>
-                    )} */}
+                    )}
                 </div>
-                <div className=" col-span-12 md:col-span-6">
+                <div className="col-span-12 md:col-span-6">
+                    <div className=" border-0 border-b-2  border-underlineColor   ">
+                        <Controller
+                            name="maritalStatus"
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                                <Dropdown
+                                    options={maritalStatusDropdownOptions}
+                                    onChange={onChange}
+                                    arrowClosed={<IoMdArrowDropdown />}
+                                    arrowOpen={<IoMdArrowDropup />}
+                                    value={value}
+                                    placeholder="Marital Status"
+                                    className="relative"
+                                    placeholderClassName={
+                                        watchMaritalStatus
+                                            ? "text-black"
+                                            : "text-gray-400"
+                                    }
+                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
+                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
+                                />
+                            )}
+                        />
+
+                        <label htmlFor="tenor"></label>
+                    </div>
+
+                    {
+                        <p className="text-xs text-red-900 ">
+                            {errors?.gender?.value?.message}
+                        </p>
+                    }
+                </div>
+
+                <div className=" col-span-12 ">
                     <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__dateOfBirth"></label>
+                        <label htmlFor="UpdateProfile__cscsNumber"></label>
                         <input
+                            {...register("cscsNumber")}
                             type="text"
-                            id="UpdateProfile__dateOfBirth"
+                            formNoValidate={true}
+                            id="UpdateProfile__cscsNumber"
                             className="outline-none pb-4  w-full"
-                            placeholder="Date of Birth"
+                            placeholder="CSCS Number"
                         />
                     </div>
-                    {/* {validationErrors.accountBank && (
+                    {errors.cscsNumber && (
                         <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
+                            {errors.cscsNumber?.message}
                         </p>
-                    )} */}
+                    )}
                 </div>
 
                 <div className="col-span-12">
@@ -165,7 +252,7 @@ function PersonalDetailsForm() {
                     </div>
                     {
                         <p className="text-xs text-red-900 ">
-                            {errors?.narration?.message}
+                            {errors?.residentialAddress?.message}
                         </p>
                     }
                 </div>
@@ -189,7 +276,7 @@ function PersonalDetailsForm() {
                         </label>
                         <input
                             type="file"
-                            {...register("passport")}
+                            {...register("picture")}
                             id="UpdateProfile__picture"
                             className="outline-none pb-4 hidden"
                             accept=".pdf"
@@ -199,7 +286,94 @@ function PersonalDetailsForm() {
                 </div>
 
                 <div className="col-span-12">
-                    <button className={`btn1 bg-darkTextColor float-right w-full md:w-48`} type="submit">
+                    <div className=" border-0 border-b-2 border-underlineColor">
+                        <label
+                            htmlFor="LoanApplication__proofOfIdentification"
+                            className={
+                                "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
+                            }
+                        >
+                            {watchproofOfIdentification &&
+                            watchproofOfIdentification?.length > 0
+                                ? watchproofOfIdentification.item(0)?.name
+                                : "Proof of Identification"}
+
+                            <AiOutlineCloudUpload
+                                className="text-2xl"
+                                strokeWidth={50}
+                            />
+                        </label>
+                        <input
+                            type="file"
+                            {...register("proofOfIdentification")}
+                            id="LoanApplication__proofOfIdentification"
+                            className="outline-none pb-4 hidden"
+                            accept=".pdf"
+                        />
+                    </div>
+                    {<p className="text-xs text-red-900 ">{""}</p>}
+                </div>
+                <div className="col-span-12">
+                    <div className=" border-0 border-b-2 border-underlineColor">
+                        <label
+                            htmlFor="LoanApplication__proofOfResidence"
+                            className={
+                                "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
+                            }
+                        >
+                            {watchproofOfResidence &&
+                            watchproofOfResidence?.length > 0
+                                ? watchproofOfResidence.item(0)?.name
+                                : "Proof of Residence"}
+
+                            <AiOutlineCloudUpload
+                                className="text-2xl"
+                                strokeWidth={50}
+                            />
+                        </label>
+                        <input
+                            type="file"
+                            {...register("proofOfResidence")}
+                            id="LoanApplication__proofOfResidence"
+                            className="outline-none pb-4 hidden"
+                            accept=".pdf"
+                        />
+                    </div>
+                    {<p className="text-xs text-red-900 ">{""}</p>}
+                </div>
+                <div className="col-span-12">
+                    <div className=" border-0 border-b-2 border-underlineColor">
+                        <label
+                            htmlFor="LoanApplication__salarySlips"
+                            className={
+                                "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
+                            }
+                        >
+                            {watchSalarySlips && watchSalarySlips?.length > 0
+                                ? watchSalarySlips.item(0)?.name
+                                : "Original/certified copy of the latest salary slips for the past 3 months"}
+
+                            <AiOutlineCloudUpload
+                                className="text-2xl"
+                                strokeWidth={50}
+                            />
+                        </label>
+                        <input
+                            type="file"
+                            {...register("salarySlips")}
+                            id="LoanApplication__salarySlips"
+                            className="outline-none pb-4 hidden"
+                            accept=".pdf"
+                        />
+                    </div>
+                    {<p className="text-xs text-red-900 ">{""}</p>}
+                </div>
+
+                <div className="col-span-12">
+                    <button
+                        className={`btn1  float-right w-full md:w-48`}
+                        type="submit"
+                    >
                         Next
                     </button>
                 </div>
