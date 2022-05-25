@@ -1,6 +1,7 @@
 import React from "react";
 //import StatusView from "./StatusView";
 import { Link } from 'react-router-dom';
+import EmptyStatus from "./EmptyStatus"; 
 
 type StatusProp = {
     loantype: string;
@@ -17,7 +18,8 @@ type StatusProp = {
 
 function Status(prop: StatusProp) {
     return (
-        <div className="md:p-10 p-5 w-full grid grid-cols-4 gap-20 bg-gray-200 ">
+      <form>
+            <div className="md:p-10 p-5 w-full grid grid-cols-4 gap-20 bg-gray-200 ">
             <h3 className="flex justify-center items-center">
                 {prop.loantype}
             </h3>
@@ -33,10 +35,13 @@ function Status(prop: StatusProp) {
             <div className="flex justify-center items-center"> 
                <StatusView status={prop.statusview} /> 
             </div>
-
-
-
         </div>
+
+        <EmptyStatus/>
+        
+      </form>
+       
+       
     );
 }
 
