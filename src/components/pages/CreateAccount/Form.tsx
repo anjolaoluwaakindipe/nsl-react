@@ -10,6 +10,8 @@ import "react-phone-number-input/style.css";
 import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatterns";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
 import PhoneField from "../../shared/TextFields/PhoneField";
+import { useEffect } from 'react';
+import { FaWindowRestore } from "react-icons/fa";
 
 type CreateAccountFormData = {
     cscsAccountNumber: string;
@@ -43,6 +45,7 @@ function Form() {
     const onSubmit = handleSubmit((data) => {
         navigate("/email-verification");
     });
+
 
     return (
         <form
