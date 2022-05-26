@@ -22,6 +22,7 @@ const TotalLoanInformation = lazy(() => import("./pages/TotalLoanInformation"));
 const LoanContract = lazy(() => import("./pages/LoanContract"));
 const TotalAdminDashboard = lazy(() => import("./pages/TotalAdminDashboard"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const TermLoan = lazy(() => import("./pages/TermLoan"));
 
 function AppRouter() {
     return (
@@ -126,6 +127,15 @@ function AppRouter() {
                 <Route
                     path={paths.UPDATE_PROFILE.base + "/*"}
                     element={<UpdateProfile />}
+                />
+
+                <Route
+                    path={paths.TERM_LOAN}
+                    element={
+                        <React.Suspense>
+                            <TermLoan />
+                        </React.Suspense>
+                    }
                 />
             </Routes>
         </>

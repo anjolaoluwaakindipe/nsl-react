@@ -18,5 +18,6 @@ export const paths = {
         PERSONAL_DETAILS: "/personal-details",
     },
     TOTAL_ADMIN_DASHBOARD: "/total-admin-dashboard",
-    USER_DASHBOARD: "/dashboard"
+    USER_DASHBOARD: "/dashboard",
+    TERM_LOAN : "/term-loan"
 };
