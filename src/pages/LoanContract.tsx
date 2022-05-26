@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import DefaultLayout from "../components/layout/DefaultLayout";
 
 //components
-import { Header } from "../components/pages/LoanContract";
+import { Header, TopBar, Information } from "../components/pages/LoanContract";
 import PinCode from "../components/pages/LoanContract/PinCode";
 import TermsAndAgreement from "../components/pages/LoanContract/TermsAndAgreement";
-import { Information, TopBar } from "../components/pages/LoanInformation";
+//import { Information} from "../components/pages/LoanInformation";
 function LoanContract() {
     const {
         control,
