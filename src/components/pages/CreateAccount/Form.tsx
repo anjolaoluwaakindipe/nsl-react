@@ -5,14 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 // react-hook-form
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import  { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatterns";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
 import PhoneField from "../../shared/TextFields/PhoneField";
-import { useEffect } from 'react';
-import { FaWindowRestore } from "react-icons/fa";
-
 type CreateAccountFormData = {
     cscsAccountNumber: string;
     fullName: string;

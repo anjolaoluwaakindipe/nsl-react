@@ -1,4 +1,4 @@
-import Joi, { string } from "joi";
+import Joi from "joi";
 
 export const loanApplicationFormSchema = Joi.object({
     amount: Joi.string().required().max(7).min(4).label("Amount").messages({

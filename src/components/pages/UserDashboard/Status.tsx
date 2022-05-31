@@ -69,18 +69,18 @@ function StatusType({ status }: { status: Number }) {
         </div>
     );
 
-    const ViewPendingApproval = (
-        <div>
-            <Link to="/loan-information">
-                <button className=" text-accentColor cursor-pointer flex justify-center items-center">
-                    view
-                </button>
+    // const ViewPendingApproval = (
+    //     <div>
+    //         <Link to="/loan-information">
+    //             <button className=" text-accentColor cursor-pointer flex justify-center items-center">
+    //                 view
+    //             </button>
     
-            </Link>
+    //         </Link>
     
-        </div>
+    //     </div>
     
-    );
+    // );
 
     switch (status) {
         case 1: {

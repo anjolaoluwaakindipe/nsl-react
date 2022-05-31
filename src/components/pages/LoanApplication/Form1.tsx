@@ -1,6 +1,5 @@
 import React from "react";
 import CurrencyInput from "react-currency-input-field";
-import Dropdown from "react-dropdown";
 
 // Used to Accept react-hook-form values
 import {

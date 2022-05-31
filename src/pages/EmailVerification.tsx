@@ -1,7 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import DefaultLayout from "../components/layout/DefaultLayout";
-import SingleTextField from "../components/shared/TextFields/SingleTextField";
 import { Header, } from "../components/pages/EmailVerification";
 import { useForm, Controller } from "react-hook-form";
 import Joi from "joi";

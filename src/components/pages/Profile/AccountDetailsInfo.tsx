@@ -1,0 +1,42 @@
+import React from "react";
+import { AiFillEdit } from "react-icons/ai";
+
+function AccountDetailsInfo() {
+    return (
+        <div className="col-span-1 space-y-6">
+            <div className="w-full flex justify-between items-end">
+                <div className="flex space-x-2">
+                    <h1 className="font-semibold">Account Details</h1>
+                    <div className="w-6 h-6 rounded-full bg-primaryColor text-white flex justify-center items-center">
+                        1
+                    </div>
+                </div>
+
+                <AiFillEdit className="cursor-pointer text-primaryColor brightness-125" />
+            </div>
+
+            <div className="grid grid-cols-2 p-6 bg-white text-sm rounded-md gap-y-8 max-w-full">
+                <div className="col-span-2 space-y-1">
+                    <h1 className="text-primaryColor font-semibold ">
+                        Account Name
+                    </h1>
+                    <p className="break-words">Oluwatosin Ajayi</p>
+                </div>
+                <div className="col-span-2 space-y-1">
+                    <h1 className="text-primaryColor font-semibold">
+                        Account Number
+                    </h1>
+                    <p className="break-words">09349409349</p>
+                </div>
+                <div className="col-span-2 space-y-1">
+                    <h1 className="text-primaryColor font-semibold">
+                        Bank Name
+                    </h1>
+                    <p className="break-words">First Bank</p>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default AccountDetailsInfo;

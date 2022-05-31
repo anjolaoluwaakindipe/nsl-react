@@ -5,9 +5,9 @@ import { Routes, Route } from "react-router-dom";
 import { paths } from "./utils/constants/allPaths";
 
 // components
-const ProtectedRoute = lazy(
-    () => import("./components/shared/ProtectedRoutes/ProtectedRoute")
-);
+// const ProtectedRoute = lazy(
+//     () => import("./components/shared/ProtectedRoutes/ProtectedRoute")
+// );
 
 // pages
 const CreateAccount = lazy(() => import("./pages/CreateAccount"));
@@ -23,6 +23,8 @@ const LoanContract = lazy(() => import("./pages/LoanContract"));
 const TotalAdminDashboard = lazy(() => import("./pages/TotalAdminDashboard"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const TermLoan = lazy(() => import("./pages/TermLoan"));
+const Profile = lazy(() => import("./pages/Profile"));
+const EditUploads = lazy(() => import("./pages/EditUploads"));
 
 function AppRouter() {
     return (
@@ -134,6 +136,23 @@ function AppRouter() {
                     element={
                         <React.Suspense>
                             <TermLoan />
+                        </React.Suspense>
+                    }
+                />
+
+                <Route
+                    path={paths.PROFILE}
+                    element={
+                        <React.Suspense>
+                            <Profile />
+                        </React.Suspense>
+                    }
+                />
+                <Route
+                    path={paths.EDIT_UPLOADS}
+                    element={
+                        <React.Suspense>
+                            <EditUploads />
                         </React.Suspense>
                     }
                 />

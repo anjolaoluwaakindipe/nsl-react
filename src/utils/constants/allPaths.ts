@@ -9,7 +9,6 @@ export const paths = {
 
     TOTAL_LOAN_INFORMATION: "/total-loan-information",
 
-
     LOAN_CONTRACT: "/loan-contract",
     UPDATE_PROFILE: {
         base: "/update-profile",
@@ -19,5 +18,7 @@ export const paths = {
     },
     TOTAL_ADMIN_DASHBOARD: "/total-admin-dashboard",
     USER_DASHBOARD: "/dashboard",
-    TERM_LOAN : "/term-loan"
+    TERM_LOAN: "/term-loan",
+    PROFILE: "/profile",
+    EDIT_UPLOADS : "/edit-uploads"
 };
