@@ -23,8 +23,11 @@ const LoanContract = lazy(() => import("./pages/LoanContract"));
 const TotalAdminDashboard = lazy(() => import("./pages/TotalAdminDashboard"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const TermLoan = lazy(() => import("./pages/TermLoan"));
+
 const Profile = lazy(() => import("./pages/Profile"));
 const EditUploads = lazy(() => import("./pages/EditUploads"));
+const EditEmploymentDetails= lazy(()=> import ("./pages/EditEmploymentDetails"));
+const EditPersonalDetails = lazy (()=> import ("./pages/EditPersonalDetails"))
 
 function AppRouter() {
     return (
@@ -140,6 +143,7 @@ function AppRouter() {
                     }
                 />
 
+
                 <Route
                     path={paths.PROFILE}
                     element={
@@ -155,6 +159,18 @@ function AppRouter() {
                             <EditUploads />
                         </React.Suspense>
                     }
+
+                <Route path ={paths.EDIT_PERSONAL_DETAILS} element ={
+                    <React.Suspense>
+                <EditPersonalDetails/>
+                </React.Suspense>
+                }/>
+
+
+                <Route
+                path ={paths.EDIT_EMPLOYMENT_DETAILS}
+                element = {<React.Suspense><EditEmploymentDetails/></React.Suspense>}
+
                 />
             </Routes>
         </>
