@@ -23,6 +23,8 @@ const LoanContract = lazy(() => import("./pages/LoanContract"));
 const TotalAdminDashboard = lazy(() => import("./pages/TotalAdminDashboard"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const TermLoan = lazy(() => import("./pages/TermLoan"));
+const EditEmploymentDetails= lazy(()=> import ("./pages/EditEmploymentDetails"));
+const EditPersonalDetails = lazy (()=> import ("./pages/EditPersonalDetails"))
 
 function AppRouter() {
     return (
@@ -136,6 +138,17 @@ function AppRouter() {
                             <TermLoan />
                         </React.Suspense>
                     }
+                />
+
+                <Route 
+                path ={paths.EDIT_PERSONAL_DETAILS}
+                element ={<EditPersonalDetails/>}
+                />
+
+
+                <Route
+                path ={paths.EDIT_EMPLOYMENT_DETAILS}
+                element = {<EditEmploymentDetails/>}
                 />
             </Routes>
         </>

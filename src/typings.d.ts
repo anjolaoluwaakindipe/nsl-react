@@ -29,6 +29,21 @@ type PersonalDetailsFormInfo = {
     salarySlips: FileList;
 };
 
+type EditPersonalDetailsInfo= {
+    fullname: string;
+    emailAddress: string;
+    phoneNumber: string;
+    gender: { value: string; label: string };
+    dateOfBirth: string;
+    maritalStatus: { value: string; label: string };
+    cscsNumber: string;
+    residentialAddress: string;
+    picture: FileList;
+    proofOfIdentification: FileList;
+    proofOfResidence: FileList;
+    salarySlips: FileList;
+};
+
 type LoginInfo = {
     usernameOrEmail:string;
     password:string;
