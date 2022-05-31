@@ -1,12 +1,18 @@
 import React from "react";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../../utils/constants/allPaths";
 
 function ProfileHeader() {
+    const navigate = useNavigate();
     return (
         <div className="relative ">
             {/* Back Button */}
-            <IoIosArrowDropleftCircle className="absolute  md:right-10 md:left-auto left-4 top-4 md:top-10  text-2xl text-primaryColor cursor-pointer" />
+            <IoIosArrowDropleftCircle
+                className="absolute  md:right-10 md:left-auto left-4 top-4 md:top-10  text-2xl text-primaryColor cursor-pointer"
+                onClick={() => navigate(paths.USER_DASHBOARD)}
+            />
 
             {/* Yellow Banner */}
             <img

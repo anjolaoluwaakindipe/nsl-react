@@ -3,11 +3,11 @@ import React from 'react'
 function TermsAndAgreement() {
   return (
       <div className="my-14">
-          <h1 className=" text-md md:text-xl font-semibold ">
+          <h1 className=" text-md md:text-2xl font-semibold  text-primaryColor">
               GENERAL TERMS AND CONDITIONS
           </h1>
           <br />
-          <h1 className=" text-md md:text-xl font-semibold ">
+          <h1 className=" text-md md:text-xl font-semibold text-primaryColor">
               CONDITIONS PRECEDENT TO DRAWDOWN
           </h1>
           <br />
@@ -25,7 +25,7 @@ function TermsAndAgreement() {
           </p>
           <br />
           <br />
-          <h1 className=" text-md md:text-xl font-semibold ">
+          <h1 className=" text-md md:text-xl font-semibold text-primaryColor ">
               OTHER CONDITIONS{" "}
           </h1>
           <br />

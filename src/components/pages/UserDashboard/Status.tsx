@@ -18,30 +18,25 @@ type StatusProp = {
 
 function Status(prop: StatusProp) {
     return (
-      <form>
-            <div className="md:p-10 p-5 w-full grid grid-cols-4 gap-20 bg-gray-200 ">
-            <h3 className="flex justify-center items-center">
-                {prop.loantype}
-            </h3>
+        <form>
+            <div className="md:p-10 p-5 w-full grid grid-cols-4 gap-20 bg-gradient-to-b from-white   to-yellow-100  ">
+                <h3 className="flex justify-center items-center">
+                    {prop.loantype}
+                </h3>
 
-            <h3 className=" flex justify-center  items-center">
-                {prop.amount}
-            </h3>
+                <h3 className=" flex justify-center  items-center">
+                    {prop.amount}
+                </h3>
 
-            <div className="">
-                <StatusType status={prop.statustype} />
+                <div className="">
+                    <StatusType status={prop.statustype} />
+                </div>
+
+                <div className="flex justify-center items-center">
+                    <StatusView status={prop.statusview} />
+                </div>
             </div>
-
-            <div className="flex justify-center items-center"> 
-               <StatusView status={prop.statusview} /> 
-            </div>
-        </div>
-
-        <EmptyStatus/>
-        
-      </form>
-       
-       
+        </form>
     );
 }
 

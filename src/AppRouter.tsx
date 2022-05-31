@@ -23,11 +23,14 @@ const LoanContract = lazy(() => import("./pages/LoanContract"));
 const TotalAdminDashboard = lazy(() => import("./pages/TotalAdminDashboard"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const TermLoan = lazy(() => import("./pages/TermLoan"));
-
 const Profile = lazy(() => import("./pages/Profile"));
 const EditUploads = lazy(() => import("./pages/EditUploads"));
-const EditEmploymentDetails= lazy(()=> import ("./pages/EditEmploymentDetails"));
-const EditPersonalDetails = lazy (()=> import ("./pages/EditPersonalDetails"))
+const EditEmploymentDetails = lazy(
+    () => import("./pages/EditEmploymentDetails")
+);
+const EditPersonalDetails = lazy(() => import("./pages/EditPersonalDetails"));
+const EditAccountDetails = lazy(() => import("./pages/EditAccountDetails"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 
 function AppRouter() {
     return (
@@ -143,7 +146,6 @@ function AppRouter() {
                     }
                 />
 
-
                 <Route
                     path={paths.PROFILE}
                     element={
@@ -159,18 +161,42 @@ function AppRouter() {
                             <EditUploads />
                         </React.Suspense>
                     }
-
-                <Route path ={paths.EDIT_PERSONAL_DETAILS} element ={
-                    <React.Suspense>
-                <EditPersonalDetails/>
-                </React.Suspense>
-                }/>
-
+                />
 
                 <Route
-                path ={paths.EDIT_EMPLOYMENT_DETAILS}
-                element = {<React.Suspense><EditEmploymentDetails/></React.Suspense>}
+                    path={paths.EDIT_PERSONAL_DETAILS}
+                    element={
+                        <React.Suspense>
+                            <EditPersonalDetails />
+                        </React.Suspense>
+                    }
+                />
 
+                <Route
+                    path={paths.EDIT_EMPLOYMENT_DETAILS}
+                    element={
+                        <React.Suspense>
+                            <EditEmploymentDetails />
+                        </React.Suspense>
+                    }
+                />
+
+                <Route
+                    path={paths.EDIT_ACCOUNT_DETAILS}
+                    element={
+                        <React.Suspense>
+                            <EditAccountDetails />
+                        </React.Suspense>
+                    }
+                />
+
+                <Route
+                    path={paths.FORGOT_PASSWORD}
+                    element={
+                        <React.Suspense>
+                            <ForgotPassword />
+                        </React.Suspense>
+                    }
                 />
             </Routes>
         </>

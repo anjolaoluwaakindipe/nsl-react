@@ -18,7 +18,9 @@ export const paths = {
     USER_DASHBOARD: "/dashboard",
     TERM_LOAN: "/term-loan",
     PROFILE: "/profile",
-    EDIT_UPLOADS : "/edit-uploads",
-    EDIT_PERSONAL_DETAILS:"/edit-personal-details",
-    EDIT_EMPLOYMENT_DETAILS:"/edit-employment-details"
+    EDIT_UPLOADS: "/edit-uploads",
+    EDIT_PERSONAL_DETAILS: "/edit-personal-details",
+    EDIT_EMPLOYMENT_DETAILS: "/edit-employment-details",
+    EDIT_ACCOUNT_DETAILS: "/edit-account-details",
+    FORGOT_PASSWORD: "/forgot-password",
 };

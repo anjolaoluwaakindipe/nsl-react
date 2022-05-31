@@ -1,5 +1,6 @@
 import React from "react";
 import Status from "./Status";
+import EmptyStatus from './EmptyStatus';
 
 function StatusDet() {
     return (
@@ -11,12 +12,13 @@ function StatusDet() {
                     statustype={1}
                     statusview={1}
                 />
-                <Status
+                {/* <Status
                     loantype="School Loan"
                     amount="900,000"
                     statustype={2}
                     statusview={2}
-                />
+                /> */}
+                {/* <EmptyStatus /> */}
             </div>
         </div>
     );

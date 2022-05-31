@@ -6,14 +6,14 @@ import ActiveLoanDetails from "../components/pages/TermLoan/ActiveLoanDetails";
 function TermLoan() {
     return (
         <NavBarLayout>
-            <div className="w-full bg-bgColor2 min-h-screen ">
-                <div className="md:max-w-6xl md:mx-auto w-full px-5">
+            <div className="w-full bg-bgColor2 min-h-screen relative pb-32">
+                <div className="md:max-w-5xl md:mx-auto w-full px-5">
                     <h1 className="heading1 pt-10">Term Loan</h1>
                     <Description />
 
                     <ActiveLoanDetails />
 
-                    <button className="btn1">Repay Loan</button>
+                    <button className="btn1 float-right">Repay Loan</button>
                 </div>
             </div>
         </NavBarLayout>

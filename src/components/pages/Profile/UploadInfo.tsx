@@ -3,12 +3,13 @@ import { AiFillEdit, AiOutlineCloudUpload } from "react-icons/ai";
 import { GrDocumentText } from "react-icons/gr";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { paths } from '../../../utils/constants/allPaths';
 
 function UploadInfo() {
     const navigate  = useNavigate();
 
     const editUploads = () =>{
-        navigate("/edit-uploads")
+        navigate(paths.EDIT_UPLOADS)
     }
 
     return (

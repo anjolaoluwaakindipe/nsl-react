@@ -30,8 +30,6 @@ function PhoneField({
         >
     > = useRef(null);
 
-    console.log(value);
-
     return (
         <div className="relative">
             <div className="absolute bottom-[15px] left-14 text-gray-400 pointer-events-none ">

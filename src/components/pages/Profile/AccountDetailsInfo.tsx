@@ -1,7 +1,10 @@
 import React from "react";
 import { AiFillEdit } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../../utils/constants/allPaths";
 
 function AccountDetailsInfo() {
+    const navigate = useNavigate();
     return (
         <div className="col-span-1 space-y-6">
             <div className="w-full flex justify-between items-end">
@@ -12,7 +15,10 @@ function AccountDetailsInfo() {
                     </div>
                 </div>
 
-                <AiFillEdit className="cursor-pointer text-primaryColor brightness-125" />
+                <AiFillEdit
+                    className="cursor-pointer text-primaryColor brightness-125"
+                    onClick={() => navigate(paths.EDIT_ACCOUNT_DETAILS)}
+                />
             </div>
 
             <div className="grid grid-cols-2 p-6 bg-white text-sm rounded-md gap-y-8 max-w-full">

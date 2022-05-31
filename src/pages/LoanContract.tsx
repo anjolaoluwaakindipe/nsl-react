@@ -18,7 +18,6 @@ function LoanContract() {
         defaultValues: {
             pin: "",
         },
-        
     });
 
     const onSubmit = handleSubmit((data) => {
@@ -63,17 +62,23 @@ function LoanContract() {
                         <p className="error1"> {errors.pin?.message}</p>
                     </div>
 
-                    <div className=" pt-5 space-x-6">
-                        <button
-                            className="border text-right px-5 py-4 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
-                            type="submit"
-                        >
+                    <div>
+                        <h2 className="text-primaryColor font-semibold hover:underline cursor-pointer text-sm">
+                            Generate Code
+                        </h2>
+                        {/* <h2 className="text-primaryColor font-semibold hover:underline cursor-pointer text-sm">
+                            Resend Code
+                        </h2> */}
+                    </div>
+
+                    <div className=" pt-10 space-x-6 w-full ">
+                        <button className="btn1 md:w-52 w-1/2" type="submit">
                             Accept
                         </button>
 
                         <Link to="/dashboard">
-                            <button className="border px-5 py-4 bg-white border-black text-darkTextColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all">
-                                Decline
+                            <button className="btn1 bg-transparent border-primaryColor border-2 w-1/2 md:w-52">
+                                Do Not Accept
                             </button>
                         </Link>
                     </div>

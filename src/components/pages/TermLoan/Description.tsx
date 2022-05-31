@@ -5,7 +5,7 @@ type TermLoanDescriptionProp = {
 }
 function Description({content}:TermLoanDescriptionProp) {
   return (
-      <p className='text-darkTextColor dark:text-white leading-tight text-sm py-10'>
+      <p className='text-darkTextColor dark:text-white leading-tight text-sm pt-10 text-justify'>
           Lörem ipsum tillväxtföretag kasat till intragen, i parasa respektive
           näpaktig. Dosamma Anna Hermansson, anat, gir. Fösivagt lyr
           trängselskatt ortad, och nagelprotest, rekät. Best grafen vid piligt.

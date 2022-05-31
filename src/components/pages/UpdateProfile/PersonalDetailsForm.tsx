@@ -68,6 +68,7 @@ function PersonalDetailsForm() {
                 autoComplete="off"
                 autoSave="off"
             >
+                {/* Full Name */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <div className="border-0 border-b-2 border-underlineColor">
                         <label htmlFor="UpdateProfile__fullName"></label>
@@ -87,6 +88,8 @@ function PersonalDetailsForm() {
                         </p>
                     )}
                 </div>
+
+                {/* Email Address */}
                 <div className=" col-span-12 md:col-span-6">
                     <div className="border-0 border-b-2 border-underlineColor">
                         <label htmlFor="UpdateProfile__emailAddress"></label>
@@ -105,6 +108,8 @@ function PersonalDetailsForm() {
                         </p>
                     )}
                 </div>
+
+                {/* Phone Number */}
                 <div className="md:col-span-6 col-span-12 ">
                     <div className="border-0 border-b-2  border-underlineColor">
                         <Controller
@@ -129,6 +134,8 @@ function PersonalDetailsForm() {
                         {errors.phoneNumber?.message}
                     </p>
                 </div>
+
+                {/* Gender */}
                 <div className="col-span-12 md:col-span-6">
                     <div className=" border-0 border-b-2  border-underlineColor   ">
                         <Controller
@@ -163,6 +170,8 @@ function PersonalDetailsForm() {
                         </p>
                     }
                 </div>
+
+                {/* Date of Birth */}
                 <div className=" col-span-12 md:col-span-6">
                     <div className="border-0 border-b-2 border-underlineColor ">
                         <label htmlFor="UpdateProfile_dateOfBirth"> </label>
@@ -186,6 +195,8 @@ function PersonalDetailsForm() {
                         </p>
                     )}
                 </div>
+
+                {/* Marital Status */}
                 <div className="col-span-12 md:col-span-6">
                     <div className=" border-0 border-b-2  border-underlineColor   ">
                         <Controller
@@ -221,6 +232,7 @@ function PersonalDetailsForm() {
                     }
                 </div>
 
+                {/* CSCS Number */}
                 <div className=" col-span-12 ">
                     <div className="border-0 border-b-2 border-underlineColor">
                         <label htmlFor="UpdateProfile__cscsNumber"></label>
@@ -240,6 +252,7 @@ function PersonalDetailsForm() {
                     )}
                 </div>
 
+                {/* Residential Area */}
                 <div className="col-span-12">
                     <div className=" border-0 border-b-2  border-underlineColor ">
                         <label htmlFor="UpdateProfile_residentialAddress"></label>

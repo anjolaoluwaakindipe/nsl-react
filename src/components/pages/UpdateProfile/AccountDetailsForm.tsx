@@ -103,7 +103,7 @@ function AccountDetailsForm() {
                     </button>
 
                     <button
-                        className={`btn1 bg-primaryColor w-full md:w-48`}
+                        className={`btn1  w-full md:w-48`}
                         type="submit"
                     >
                         Update

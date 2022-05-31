@@ -26,9 +26,9 @@ function CardInput({ options, onChange, value, label }: CardInputProps) {
 
     const selectedOptionColor = (option: Option) => {
         if (selectedValue === option) {
-            return "ring-primaryColor ring-1 ";
+            return "ring-primaryColor ring-1  bg-yellow-300";
         }
-        return "hover:bg-gray-300";
+        return "hover:bg-yellow-300";
     };
 
     return (
@@ -46,9 +46,9 @@ function CardInput({ options, onChange, value, label }: CardInputProps) {
                     return (
                         <div className=" col-span-2">
                             <div
-                                className={`${selectedOptionColor(
+                                className={` bg-yellow-200 ${selectedOptionColor(
                                     option
-                                )} bg-gray-200 px-4 py-2 rounded-md cursor-pointer max-w-max`}
+                                )} px-4 py-2 rounded-md cursor-pointer max-w-max`}
                                 key={index}
                                 onClick={() => onOptionClick(option)}
                             >
