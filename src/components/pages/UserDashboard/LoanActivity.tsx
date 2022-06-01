@@ -1,23 +1,27 @@
 import React from "react";
 import StatusDet from "./StatusDet";
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../../utils/constants/allPaths";
 
 function LoanActivity() {
+    const navigate = useNavigate();
     return (
         <form className="mt-10 md:p-10 p-5">
             <div className="lg:px-10 pb-3 w-full">
                 <h3 className="md:text-justify font-bold">
                     Loan Requests
 
-                    <Link to = "/loan-application">
+                    
                     <button
                         className="border flex  float-right text-right px-2   md:px-2 md:py-2 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-darkTextColor duration-100 ease-in-out transition-all"
+                        onClick={()=>{navigate(paths.LOAN_APPLICATION)}}
                         type="submit"
                     >
                         <div>+</div>
                         <div className="hidden md:block pl-2"> New Loan</div>
                     </button>
-                    </Link>
+                    
                     
                 </h3>
             </div>
@@ -39,6 +43,13 @@ function LoanActivity() {
                 <button className=" text-accentColor cursor-pointer float-right">
                     View All
                 </button>
+
+               
+                
+
+                
+
+               
             </div>
         </form>
     );

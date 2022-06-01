@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {paths} from "../../../utils/constants/allPaths";
+import {useNavigate} from "react-router-dom";
 
 function ActiveLoanDetails() {
     const [progress, setProgress] = useState("0%");
@@ -7,7 +9,8 @@ function ActiveLoanDetails() {
     const onClickFunc:React.FormEventHandler = (e)=>{
         e.preventDefault();
         setProgress("90%")
-    }
+    };
+     const navigate= useNavigate();
 
     return (
         <form
@@ -95,6 +98,10 @@ function ActiveLoanDetails() {
                     ></div>
                 </div>
             </div>
+
+            <button className="btn1 float-right" onClick={()=>{navigate(paths.LOAN_PAYMENT_OPTIONS)}}>
+                Repay Loan
+            </button>
         </form>
     );
 }

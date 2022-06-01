@@ -9,8 +9,8 @@ function StatusDet() {
                 <Status
                     loantype="Land Loan"
                     amount="900,000"
-                    statustype={1}
-                    statusview={1}
+                    statustype={3}
+                    statusview={3}
                 />
                 {/* <Status
                     loantype="School Loan"
