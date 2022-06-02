@@ -5,7 +5,16 @@ import { AiFillPlusCircle } from "react-icons/ai";
 
 function Form() {
     const [numberOfAccounts, setNumberOfAccounts] = useState(1);
-    const { register, handleSubmit, formState } = useForm();
+    const { register, handleSubmit, formState } = useForm({
+        defaultValues: {
+            accountNumber1: "",
+            accountNumber2: "",
+            accountName1:"",
+            accountName2:"",
+            accountBank1: "",
+            accountBank2: ""
+        },
+    });
 
     const onSubmit = handleSubmit((data) => {
         console.log(data);

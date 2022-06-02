@@ -1,6 +1,7 @@
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
+import { paths } from "../utils/constants/allPaths";
 // layout
 import DefaultLayout from "../components/layout/DefaultLayout";
 
@@ -23,7 +24,7 @@ function LoanContract() {
     const onSubmit = handleSubmit((data) => {
         console.log(data);
     });
-
+const navigate = useNavigate();
     return (
         <DefaultLayout>
             <>
@@ -76,11 +77,12 @@ function LoanContract() {
                             Accept
                         </button>
 
-                        <Link to="/dashboard">
-                            <button className="btn1 bg-transparent border-primaryColor border-2 w-1/2 md:w-52">
+                        
+                            <button className="btn1 bg-transparent border-primaryColor border-2 w-1/2 md:w-52"
+                              onClick={()=>{navigate(paths.USER_DASHBOARD)}}>
                                 Do Not Accept
                             </button>
-                        </Link>
+                      
                     </div>
                 </form>
             </>

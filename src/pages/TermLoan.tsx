@@ -13,7 +13,7 @@ function TermLoan() {
 
                     <ActiveLoanDetails />
 
-                    <button className="btn1 float-right">Repay Loan</button>
+                    
                 </div>
             </div>
         </NavBarLayout>

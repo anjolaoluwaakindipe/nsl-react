@@ -4,7 +4,7 @@ import { HTMLInputTypeAttribute } from "react";
 // Loan Application Form
 type LoanApplicationFormInfo = {
     amount: string;
-    tenor: {value:string, label:string};
+    tenor: { value: string; label: string };
     interest: string;
     purpose: string;
     termsAndCondition: boolean;
@@ -18,9 +18,9 @@ type PersonalDetailsFormInfo = {
     fullname: string;
     emailAddress: string;
     phoneNumber: string;
-    gender: { value: string; label: string };
+    gender: { value: string; label: string } | Record;
     dateOfBirth: string;
-    maritalStatus: { value: string; label: string };
+    maritalStatus: { value: string; label: string } | Record;
     cscsNumber: string;
     residentialAddress: string;
     picture: FileList;
@@ -29,13 +29,13 @@ type PersonalDetailsFormInfo = {
     salarySlips: FileList;
 };
 
-type EditPersonalDetailsInfo= {
+type EditPersonalDetailsInfo = {
     fullname: string;
     emailAddress: string;
     phoneNumber: string;
-    gender: { value: string; label: string };
+    gender: { value: string; label: string } | Record;
     dateOfBirth: string;
-    maritalStatus: { value: string; label: string };
+    maritalStatus: { value: string; label: string } | Record;
     cscsNumber: string;
     residentialAddress: string;
     picture: FileList;
@@ -45,9 +45,9 @@ type EditPersonalDetailsInfo= {
 };
 
 type LoginInfo = {
-    usernameOrEmail:string;
-    password:string;
-}
+    usernameOrEmail: string;
+    password: string;
+};
 
 /* Props */
 // TextFields
@@ -72,7 +72,6 @@ type LoanApplicationValidationErrors = {
     narration?: string;
 };
 
-
 // state
 // modal state
 interface ModalState {
@@ -84,6 +83,6 @@ interface ModalState {
 
 // auth state
 interface AuthState {
-    token:string |null
-    refreshToken: string | null
+    token: string | null;
+    refreshToken: string | null;
 }

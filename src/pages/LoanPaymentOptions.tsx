@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // layout
 import DefaultLayout from "../components/layout/DefaultLayout";
@@ -13,7 +14,6 @@ import {
     TransferForm,
 } from "../components/pages/LoanPaymentOptions";
 import BankCardForm from "../components/pages/LoanPaymentOptions/BankCardForm";
-import { useNavigate } from 'react-router-dom';
 
 function LoanPaymentOptions() {
     const [selectedOption, setSelectedOption] = useState("");
@@ -31,8 +31,18 @@ function LoanPaymentOptions() {
         <DefaultLayout>
             <>
                 <div className="w-full flex justify-between ">
-                    <FaAngleLeft className="text-2xl cursor-pointer" onClick={()=>navigate(-1)} />
-                    <IoMdClose className="text-2xl cursor-pointer" />
+                    <FaAngleLeft
+                        className="text-2xl cursor-pointer"
+                        onClick={() => {
+                            navigate(-1);
+                        }}
+                    />
+                    <IoMdClose
+                        className="text-2xl cursor-pointer"
+                        onClick={() => {
+                            navigate(-1);
+                        }}
+                    />
                 </div>
 
                 <div className="pt-10">

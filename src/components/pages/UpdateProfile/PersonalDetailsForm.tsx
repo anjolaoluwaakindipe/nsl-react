@@ -18,6 +18,7 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { PersonalDetailsFormInfo } from "../../../typings";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { personalDetailsFormSchema } from "../../../utils/validation/personalDetailForm";
+import PhoneField from "../../shared/TextFields/PhoneField";
 
 function PersonalDetailsForm() {
     const genderDropdownOptions = [
@@ -39,6 +40,7 @@ function PersonalDetailsForm() {
         control,
         watch,
         handleSubmit,
+        getValues,
         formState: { errors },
     } = useForm<PersonalDetailsFormInfo>({
         resolver: joiResolver(personalDetailsFormSchema),
@@ -54,6 +56,9 @@ function PersonalDetailsForm() {
     const watchproofOfIdentification = watch("proofOfIdentification");
     const watchproofOfResidence = watch("proofOfResidence");
     const watchSalarySlips = watch("salarySlips");
+
+    console.log(errors);
+    console.log(getValues());
 
     return (
         <div>
@@ -75,7 +80,7 @@ function PersonalDetailsForm() {
                         <input
                             {...register("fullname")}
                             type="text"
-                            pattern={"[0-9]*"}
+            
                             formNoValidate={true}
                             id="UpdateProfile__fullname"
                             className="outline-none pb-4  w-full"
@@ -121,12 +126,15 @@ function PersonalDetailsForm() {
                                     "Not a valid International Number",
                             }}
                             render={({ field: { onChange, value } }) => (
-                                <PhoneInput
-                                    className="pb-4 space-x-4 max-h-10"
-                                    onChange={onChange}
-                                    value={value}
-                                    style={{ borderRadius: "0px" }}
-                                />
+                                <div>
+                                    <PhoneField
+                                        placeholder="Phone Number"
+                                        phoneElementClassName="pb-4 space-x-4 max-h-10"
+                                        onChange={onChange}
+                                        value={value}
+                                        style={{ borderRadius: "0px" }}
+                                    />
+                                </div>
                             )}
                         />
                     </div>
@@ -166,7 +174,7 @@ function PersonalDetailsForm() {
 
                     {
                         <p className="text-xs text-red-900 ">
-                            {errors?.gender?.value?.message}
+                            {errors?.gender?.message}
                         </p>
                     }
                 </div>
@@ -227,7 +235,7 @@ function PersonalDetailsForm() {
 
                     {
                         <p className="text-xs text-red-900 ">
-                            {errors?.gender?.value?.message}
+                            {errors?.maritalStatus?.message}
                         </p>
                     }
                 </div>
@@ -280,7 +288,9 @@ function PersonalDetailsForm() {
                         >
                             {watchPictureUpload &&
                             watchPictureUpload?.length > 0
-                                ? watchPictureUpload.item(0)?.name
+                                ? "Upload Picture (" +
+                                  watchPictureUpload.item(0)?.name +
+                                  ")"
                                 : "Upload Picture"}
                             <AiOutlineCloudUpload
                                 className="text-2xl"
@@ -289,13 +299,21 @@ function PersonalDetailsForm() {
                         </label>
                         <input
                             type="file"
-                            {...register("picture")}
+                            {...register("picture", {
+                                validate: {
+                                    noFile: (value) => value.length > 0 || value.item === null,
+                                },
+                            })}
                             id="UpdateProfile__picture"
                             className="outline-none pb-4 hidden"
-                            accept=".pdf"
+                            accept=".jpg,.png"
                         />
                     </div>
-                    {<p className="text-xs text-red-900 ">{""}</p>}
+                    {
+                        <p className="text-xs text-red-900 ">
+                            {errors.picture?.message}
+                        </p>
+                    }
                 </div>
 
                 <div className="col-span-12">
@@ -308,7 +326,9 @@ function PersonalDetailsForm() {
                         >
                             {watchproofOfIdentification &&
                             watchproofOfIdentification?.length > 0
-                                ? watchproofOfIdentification.item(0)?.name
+                                ? "Proof of Identification (" +
+                                  watchproofOfIdentification.item(0)?.name +
+                                  ")"
                                 : "Proof of Identification"}
 
                             <AiOutlineCloudUpload
@@ -336,7 +356,9 @@ function PersonalDetailsForm() {
                         >
                             {watchproofOfResidence &&
                             watchproofOfResidence?.length > 0
-                                ? watchproofOfResidence.item(0)?.name
+                                ? "Proof of Residence (" +
+                                  watchproofOfResidence.item(0)?.name +
+                                  ")"
                                 : "Proof of Residence"}
 
                             <AiOutlineCloudUpload
@@ -363,7 +385,9 @@ function PersonalDetailsForm() {
                             }
                         >
                             {watchSalarySlips && watchSalarySlips?.length > 0
-                                ? watchSalarySlips.item(0)?.name
+                                ? "Original/certified copy of the latest salary slips for the past 3 months (" +
+                                  watchSalarySlips.item(0)?.name +
+                                  ")"
                                 : "Original/certified copy of the latest salary slips for the past 3 months"}
 
                             <AiOutlineCloudUpload

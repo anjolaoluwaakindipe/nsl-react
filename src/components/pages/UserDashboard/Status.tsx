@@ -1,7 +1,9 @@
 import React from "react";
 //import StatusView from "./StatusView";
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import EmptyStatus from "./EmptyStatus"; 
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../../utils/constants/allPaths";
 
 type StatusProp = {
     loantype: string;
@@ -18,7 +20,7 @@ type StatusProp = {
 
 function Status(prop: StatusProp) {
     return (
-        <form>
+        <div>
             <div className="md:p-10 p-5 w-full grid grid-cols-4 gap-20 bg-gradient-to-b from-white   to-yellow-100  ">
                 <h3 className="flex justify-center items-center">
                     {prop.loantype}
@@ -36,7 +38,7 @@ function Status(prop: StatusProp) {
                     <StatusView status={prop.statusview} />
                 </div>
             </div>
-        </form>
+        </div>
     );
 }
 
@@ -64,18 +66,15 @@ function StatusType({ status }: { status: Number }) {
         </div>
     );
 
-    // const ViewPendingApproval = (
-    //     <div>
-    //         <Link to="/loan-information">
-    //             <button className=" text-accentColor cursor-pointer flex justify-center items-center">
-    //                 view
-    //             </button>
-    
-    //         </Link>
-    
-    //     </div>
-    
-    // );
+    const Approved =(
+        <div className="flex items-center space-x-2">
+        <div className="min-w-[10px] min-h-[10px] bg-green-600 border-2 border-gray-10 rounded-full " />
+        <h3 >Approved</h3>
+
+
+    </div>
+
+    );
 
     switch (status) {
         case 1: {
@@ -84,6 +83,10 @@ function StatusType({ status }: { status: Number }) {
 
         case 2: {
             return PendingContractApproval;
+        }
+
+        case 3:{
+            return Approved;
         }
 
         default: {
@@ -95,14 +98,18 @@ function StatusType({ status }: { status: Number }) {
 
 //status view 
 function StatusView ( { status }: { status: Number }){
+    const navigate = useNavigate();
     const ViewPendingApproval = (
         <div>
-            <Link to="/loan-information">
-                <button className=" text-accentColor cursor-pointer flex justify-center items-center">
+            
+                <button className=" text-accentColor cursor-pointer flex justify-center items-center"
+                
+                onClick={()=>{navigate(paths.LOAN_INFORMATION)}}
+                >
                     view
                 </button>
     
-            </Link>
+            
     
         </div>
     
@@ -111,13 +118,25 @@ function StatusView ( { status }: { status: Number }){
      
     const ViewPendingContractApproval = (
         <div>
-            <Link to="/loan-contract">
-                <button className=" text-accentColor cursor-pointer flex justify-center items-center">
+            
+                <button className=" text-accentColor cursor-pointer flex justify-center items-center"
+                onClick={()=>{navigate(paths.LOAN_CONTRACT)}}
+                >
                     view
                 </button>
-            </Link>
+            
         </div>
     
+    );
+
+
+    const ViewApproved = (
+        <div>
+            <button className="text-accentColor cursor-pointer flex justify-center items-center"
+            onClick={()=>{navigate(paths.TERM_LOAN)}}>
+                View
+            </button>
+        </div>
     );
 
     switch (status) {
@@ -126,6 +145,9 @@ function StatusView ( { status }: { status: Number }){
         }
         case 2: {
             return (ViewPendingContractApproval);
+        }
+        case 3: {
+            return ViewApproved;
         }
     
         default:

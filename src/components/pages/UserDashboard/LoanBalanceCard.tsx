@@ -3,8 +3,9 @@ import Popup from "reactjs-popup";
 
 // icons
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useNavigate } from 'react-router-dom';
-import { paths } from '../../../utils/constants/allPaths';
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../../utils/constants/allPaths";
+import formatMoney from "../../../utils/moneyFormatter";
 
 type LoanBalanceCardProp = {
     title: string;
@@ -36,7 +37,12 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                         arrow={false}
                     >
                         <div className=" space-y-2">
-                            <div className="px-5 py-3 bg-white text-primaryColor cursor-pointer" onClick={()=>navigate(paths.LOAN_PAYMENT_OPTIONS)}>
+                            <div
+                                className="px-5 py-3 bg-white text-primaryColor cursor-pointer"
+                                onClick={() =>
+                                    navigate(paths.LOAN_PAYMENT_OPTIONS)
+                                }
+                            >
                                 {" "}
                                 Repay
                             </div>
@@ -49,7 +55,7 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                 </div>
                 <h2 className="  text-black text-md pt-8">{prop.title}</h2>
                 <h4 className=" text-primaryColor text-2xl font-extrabold ">
-                    N {prop.amount.toFixed(2).toString()}
+                    N {formatMoney(prop.amount)}
                 </h4>
             </div>
 
