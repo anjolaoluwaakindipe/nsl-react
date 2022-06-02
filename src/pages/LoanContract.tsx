@@ -71,7 +71,7 @@ function LoanContract() {
                         </h2> */}
                     </div>
 
-                    <div className=" pt-10 space-x-6 w-full ">
+                <div className=" pt-10 space-x-6 w-full ">
                         <button className="btn1 md:w-52 w-1/2" type="submit">
                             Accept
                         </button>

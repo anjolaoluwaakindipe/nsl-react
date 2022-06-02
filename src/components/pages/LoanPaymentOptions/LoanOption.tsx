@@ -30,7 +30,7 @@ function LoanOption({ value, label, onClick, isSelected, children }: LoanOptionP
                     )}
                 </div>
                 <h5
-                className="cursor-pointer"
+                className="cursor-pointer font-semibold text-primaryColor"
                 >
                     {label}
                 </h5>

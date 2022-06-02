@@ -128,7 +128,7 @@ function BankCardForm() {
                 )}
             </div>
             <button
-                className={`col-span-12 md:col-span-6 btn1 bg-darkTextColor `}
+                className={`col-span-12 md:col-span-6 btn1  `}
                 type="submit"
                 disabled={isSubmitButtonDisabled}
             >

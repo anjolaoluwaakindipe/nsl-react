@@ -13,9 +13,11 @@ import {
     TransferForm,
 } from "../components/pages/LoanPaymentOptions";
 import BankCardForm from "../components/pages/LoanPaymentOptions/BankCardForm";
+import { useNavigate } from 'react-router-dom';
 
 function LoanPaymentOptions() {
     const [selectedOption, setSelectedOption] = useState("");
+    const navigate = useNavigate();
 
     const handleChange = (value: string) => {
         if (value === selectedOption) {
@@ -29,7 +31,7 @@ function LoanPaymentOptions() {
         <DefaultLayout>
             <>
                 <div className="w-full flex justify-between ">
-                    <FaAngleLeft className="text-2xl cursor-pointer" />
+                    <FaAngleLeft className="text-2xl cursor-pointer" onClick={()=>navigate(-1)} />
                     <IoMdClose className="text-2xl cursor-pointer" />
                 </div>
 

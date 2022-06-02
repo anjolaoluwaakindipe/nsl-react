@@ -15,7 +15,8 @@ function NavBarLayout({ children }: { children: React.ReactElement }) {
                         <img
                             src="assets/companylogo1.svg"
                             alt="logo"
-                            className="object-contain "
+                            className="object-contain cursor-pointer hover:scale-105 "
+                            onClick={()=>navigate(paths.USER_DASHBOARD)}
                         />
                     </div>
                     <div className="flex  space-x-10 justify-end">
