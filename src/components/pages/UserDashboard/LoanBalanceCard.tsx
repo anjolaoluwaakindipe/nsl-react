@@ -18,7 +18,8 @@ type LoanBalanceCardProp = {
 function LoanBalanceCard(prop: LoanBalanceCardProp) {
     const navigate = useNavigate();
     return (
-        <div className="flex flex-col justify-between space-y-3  bg-gradient-to-br from-white via-yellow-100 to-yellow-200 p-5 rounded-md shadow-lg h-62 min-w-[300px] ">
+        <div className="flex flex-col justify-between space-y-3  bg-gradient-to-br from-white via-yellow-100 to-yellow-200 p-5 rounded-md shadow-lg h-62 min-w-[300px] cursor-pointer "
+        onClick={()=>navigate(paths.TERM_LOAN)} >
             <div>
                 <div className="flex items-center justify-between">
                     <h6 className="italic text-xs font-light">{prop.status}</h6>
