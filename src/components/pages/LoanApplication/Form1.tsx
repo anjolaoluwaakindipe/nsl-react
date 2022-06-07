@@ -17,6 +17,12 @@ import { BsCheck2 } from "react-icons/bs";
 import { LoanApplicationFormInfo } from "../../../typings";
 import CardInput from "./CardInput";
 
+import{ useModal }from "../../../services/customHooks/useModal";
+import { paths } from "../../../utils/constants/allPaths";
+import { useNavigate } from "react-router-dom";
+
+
+
 type LoanApplicationForm1Props = {
     register: UseFormRegister<LoanApplicationFormInfo>;
     errors?: FieldErrors<LoanApplicationFormInfo>;
@@ -44,8 +50,9 @@ function Form1({
     Controller,
     watch,
     control,
-}: LoanApplicationForm1Props) {
-    const onSubmit = handleSubmit((data) => { });
+}: LoanApplicationForm1Props) 
+{
+    
 
     const watchTermsAndCond = watch("termsAndCondition");
 
@@ -56,6 +63,26 @@ function Form1({
         { value: "90 days", label: "90 days" },
         { value: "180 days", label: "180 days" },
     ];
+
+    const onProceed = ()=> {
+      
+        navigate(paths.LOGIN,{replace:true});
+    };
+
+    const {openModalFunc} = useModal(
+        "LoanApplicationSucessModal",
+        false,
+    );
+
+    const onSubmit = handleSubmit((data) => {
+        console.log(data)
+        openModalFunc();
+     });
+     console.log(errors)
+
+
+     const navigate=  useNavigate()
+  
 
     return (
         <>
@@ -180,7 +207,11 @@ function Form1({
                     />
                 </div>
 
-                <button className={`w-full md:w-1/2 btn1 `} type="submit">
+                <button className={`w-full md:w-1/2 btn1 `}
+                 type="submit"
+                 
+                
+                 >
                     Proceed
                 </button>
             </form>
