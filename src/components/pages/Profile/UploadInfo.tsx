@@ -21,7 +21,7 @@ function UploadInfo() {
             </div>
 
             <div className="grid grid-cols-2   text-sm  gap-y-4 text-primaryColor">
-                <div className="col-span-2 bg-white px-18 py-8 flex items-center justify-between rounded-md">
+                <div className="col-span-2 bg-bgColor px-10 py-8 flex items-center justify-between rounded-md">
                     <div className="flex items-center space-x-4">
                         <GrDocumentText className="text-2xl text-primaryColor" strokeWidth={50} />
                         <h1 className="font-semibold">
@@ -34,7 +34,7 @@ function UploadInfo() {
                         strokeWidth={50}
                     />
                 </div>
-                <div className="col-span-2 bg-white px-18 py-8 flex items-center justify-between rounded-md">
+                <div className="col-span-2 bg-bgColor px-10 py-8 flex items-center justify-between rounded-md">
                     <div className="flex items-center space-x-4">
                         <GrDocumentText className="text-2xl" strokeWidth={50} />
                         <h1 className="font-semibold">Proof of residence</h1>
@@ -45,7 +45,7 @@ function UploadInfo() {
                         strokeWidth={50}
                     />
                 </div>
-                <div className="col-span-2 bg-white px-18 py-8 flex items-center justify-between rounded-md">
+                <div className="col-span-2 bg-bgColor px-10 py-8 flex items-center justify-between rounded-md">
                     <div className="flex items-center space-x-4">
                         <GrDocumentText className="text-2xl" strokeWidth={50} />
                         <h1 className="font-semibold">Salary Slip</h1>

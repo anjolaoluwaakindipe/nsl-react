@@ -13,22 +13,16 @@ function Profile() {
     return (
         <NavBarLayout>
             <div className="bg-bgColor2 w-full min-h-screen py-10">
-                <div className="md:max-w-6xl md:mx-auto w-full px-5 max-w-none flex flex-col">
+                <div className="md:max-w-6xl bg-white rounded-tl-3xl pb-10 mx-5  lg:mx-auto   max-w-none flex flex-col">
                     {/* Header */}
                     <ProfileHeader />
 
                     {/* Body */}
-                    <div className="w-full mt-48 grid grid-cols-1 grid-flow-row-dense md:grid-cols-2 md:px-10 gap-10">
-                        <div className="col-span-1 space-y-10">
-                            <PersonalDetailsInfo />
-                            <UploadInfo />
-                        </div>
-
-                        <div className="col-span-1 space-y-10">
-                            <EmploymentDetailsInfo />
-
-                            <AccountDetailsInfo />
-                        </div>
+                    <div className="w-full mt-48 grid grid-cols-1 grid-flow-row-dense px-5  md:px-16 gap-10">
+                        <PersonalDetailsInfo />
+                        <EmploymentDetailsInfo />
+                        <AccountDetailsInfo />
+                        <UploadInfo />
                     </div>
                 </div>
             </div>

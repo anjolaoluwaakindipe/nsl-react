@@ -7,20 +7,22 @@ import { paths } from "../../../utils/constants/allPaths";
 function ProfileHeader() {
     const navigate = useNavigate();
     return (
-        <div className="relative ">
+        <div className="relative w-full ">
             {/* Back Button */}
             <IoIosArrowDropleftCircle
-            size={32}
+                size={32}
                 className="absolute  md:right-10 md:left-auto left-4 top-4 md:top-20  text-2xl text-primaryColor cursor-pointer"
                 onClick={() => navigate(paths.USER_DASHBOARD)}
             />
 
             {/* Yellow Banner */}
-            <img
-                src="assets/profilebanner.svg"
-                alt="banner"
-                className=" object-cover  w-full md:h-48 h-32 rounded-tl-3xl"
-            />
+            <div className="w-full ">
+                <img
+                    src="assets/profilebanner.svg"
+                    alt="banner"
+                    className=" object-cover  w-full md:h-48 h-32 rounded-tl-3xl"
+                />
+            </div>
 
             {/* Profile name, and status */}
             <div className="flex flex-col md:flex-row absolute md:left-10 w-full md:w-max items-center md:items-end -bottom-36 md:-bottom-24 text-center md:text-left">
