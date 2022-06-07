@@ -1,15 +1,15 @@
 import React from "react";
 import { Header, Form } from "../components/pages/CreateAccount";
-import DefaultLayout from "../components/layout/DefaultLayout";
+import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 
 function CreateAccount() {
     return (
-        <DefaultLayout>
+        <HalfNavBarLayout>
             <>
                 <Header />
                 <Form />
             </>
-        </DefaultLayout>
+        </HalfNavBarLayout>
     );
 }    
 

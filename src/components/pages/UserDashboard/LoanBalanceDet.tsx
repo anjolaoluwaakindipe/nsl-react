@@ -9,7 +9,7 @@ function LoanBalanceDet() {
                     status="#active"
                     title="Term Loan"
                     amount={500000}
-                    tenor=" tenor:3months"
+                    tenor=" 3months"
                     days=" 32 days left"
                 />
             </div>

@@ -7,7 +7,7 @@ function Header() {
             <div className="heading-info1">
                 <h2 className="text-xl font-semibold">Welcome to NSL 24</h2>
                 <div>
-                    Please provide your CSCS Account number to create an account
+                    Please provide the following details for account creation
                 </div>
             </div>
         </div>

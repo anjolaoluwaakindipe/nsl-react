@@ -45,7 +45,7 @@ function Form1({
     watch,
     control,
 }: LoanApplicationForm1Props) {
-    const onSubmit = handleSubmit((data) => {});
+    const onSubmit = handleSubmit((data) => { });
 
     const watchTermsAndCond = watch("termsAndCondition");
 
@@ -81,6 +81,7 @@ function Form1({
                 autoCorrect="off"
             >
                 <div>
+                    {/*amount*/}
                     <div className=" border-0 border-b-2 border-underlineColor flex  space-x-3 items-end">
                         <h1 className="pb-4 ">N</h1>
                         <label htmlFor="amount"></label>
@@ -97,7 +98,7 @@ function Form1({
                         </p>
                     }
                 </div>
-
+                {/*tenor*/}
                 <div>
                     <div className="  ">
                         <Controller
@@ -122,7 +123,7 @@ function Form1({
                         </p>
                     }
                 </div>
-
+                {/*interest (should be fixed )*/}
                 <div>
                     <div className=" border-0 border-b-2  border-underlineColor ">
                         <label htmlFor="interest"></label>
@@ -140,7 +141,7 @@ function Form1({
                         </p>
                     }
                 </div>
-
+                {/*purpose*/}
                 <div>
                     <div className=" border-0 border-b-2  border-underlineColor ">
                         <label htmlFor="purpose"></label>
@@ -157,7 +158,7 @@ function Form1({
                         </p>
                     }
                 </div>
-
+                {/*terms tick box*/}
                 <div className="flex items-center space-x-3">
                     <label htmlFor="LoanApplication__termsAndCondition">
                         <div

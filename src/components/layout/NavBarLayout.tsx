@@ -13,7 +13,7 @@ function NavBarLayout({ children }: { children: React.ReactElement }) {
                 <div className="md:max-w-5xl m-auto w-full px-5 md:px-5 flex items-center justify-between">
                     <div>
                         <img
-                            src="assets/companylogo1.svg"
+                            src="assets/companylogo2.svg"
                             alt="logo"
                             className="object-contain cursor-pointer hover:scale-105 "
                             onClick={()=>navigate(paths.USER_DASHBOARD)}
