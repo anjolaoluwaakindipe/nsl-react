@@ -23,4 +23,4 @@ function BeginVerificationModal(prop: { cancelModal: () => void }) {
     );
 }
 
-export default BeginVerificationModal
+export default BeginVerificationModal;

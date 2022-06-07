@@ -15,7 +15,7 @@ function LoanActivity() {
         openModalFunc();
     });
     return (
-        <form className="mt-10 md:p-10 p-5"
+        <div className="mt-10 md:p-10 p-5"
         onSubmit={onSubmit}>
             <div className="lg:px-10 pb-3 w-full">
                 <h3 className="md:text-justify font-bold">
@@ -25,8 +25,8 @@ function LoanActivity() {
                     <button
                         className="border flex  float-right text-right px-2   md:px-2 md:py-2 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-darkTextColor duration-100 ease-in-out transition-all"
                         //onClick={()=>{navigate(paths.LOAN_APPLICATION)}}
-                        onClick={() => { }}
-                        type="submit"
+                        onClick={() => { openModalFunc()}}
+                        
                     >
                         <div>+</div>
                         <div className="hidden md:block pl-2"> New Loan</div>
@@ -62,7 +62,7 @@ function LoanActivity() {
 
 
             </div>
-        </form>
+        </div>
     );
 }
 

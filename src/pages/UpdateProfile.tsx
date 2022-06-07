@@ -6,6 +6,7 @@ import DefaultLayout from "../components/layout/DefaultLayout";
 import { paths } from "../utils/constants/allPaths";
 
 // form components
+const NavBarLayout = lazy(()=> import("../components/layout/NavBarLayout"))
 const EmploymentDetailsForm = lazy(
     () => import("../components/pages/UpdateProfile/EmploymentDetailsForm")
 );
@@ -27,6 +28,7 @@ function Header() {
 
 function UpdateProfile() {
     return (
+        <React.Suspense><NavBarLayout>
         <Routes>
             <Route element={<DefaultLayout />}>
                 <Route element={<Header />}>
@@ -58,6 +60,7 @@ function UpdateProfile() {
                 </Route>
             </Route>
         </Routes>
+        </NavBarLayout></React.Suspense>
     );
 }
 
