@@ -13,6 +13,7 @@ import AccountCreatedSuccessModal from "./Content/AccountCreatedSucessModal";
 import LoginSucessModal from "./Content/LoginSucessModal";
 import LoginUnsuccessfulModal from "./Content/LoginUnsucessfulModal";
 import ProfileUpdateModal from "./Content/ProfileUpdateModal";
+import BeginVerificationModal from "./Content/BeginVerificationModal";
 
 function ModalContent(modalName: string, cancelModal: () => void): ReactElement {
     switch (modalName.trim()) {
@@ -25,9 +26,11 @@ function ModalContent(modalName: string, cancelModal: () => void): ReactElement 
         case "LoginSucessModal":
             return <LoginSucessModal cancelModal={cancelModal} />;
         case "LoginUnsucessfulModal":
-                return <LoginUnsuccessfulModal cancelModal={cancelModal}/>;
+            return <LoginUnsuccessfulModal cancelModal={cancelModal} />;
         case "ProfileUpdateModal":
-                    return <ProfileUpdateModal cancelModal={cancelModal}/>
+            return <ProfileUpdateModal cancelModal={cancelModal} />;
+        case "BeginVerificationModal":
+            return <BeginVerificationModal cancelModal={cancelModal} />
 
 
         default:
@@ -72,7 +75,7 @@ function ModalProvider() {
                     e.stopPropagation();
                 }}
             >
-        
+
 
                 {ModalContent(modalState.modalName, cancelModal)}
             </div>

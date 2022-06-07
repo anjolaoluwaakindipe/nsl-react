@@ -45,7 +45,7 @@ function Form() {
     };
 
     const { openModalFunc } = useModal(
-        "AccountCreatedSucessModal",
+        "BeginVerificationModal",
         false,
        
     );

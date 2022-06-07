@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
+import { paths } from "../../../../utils/constants/allPaths";
 
 function EmailVerificationSuccessModal(prop: { cancelModal: () => void }) {
     const navigate = useNavigate();
     const onProceed = () =>{  
         prop.cancelModal()
-        navigate("/phone-verification", {replace:true})
+        navigate(paths.PHONE_VERIFICATION, {replace:true})
     }
     return (
         <div className="w-full h-full flex flex-col items-center sm:py-10 md:pt-20 justify-center">

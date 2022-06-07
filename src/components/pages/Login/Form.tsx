@@ -25,7 +25,7 @@ function Form() {
     });
 
     const onProceed = ()=> {
-        navigate("/login",{replace:true});
+        navigate(paths.LOGIN,{replace:true});
     };
 
     const {openModalFunc}= useModal (

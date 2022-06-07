@@ -1,12 +1,13 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
+import { paths } from "../../../../utils/constants/allPaths";
 
 function LoginSuccessModal(prop: { cancelModal: () => void }) {
     const navigate = useNavigate();
     const onProceed = () =>{
         
         prop.cancelModal()
-        navigate("/dashboard", {replace:true})
+        navigate(paths.USER_DASHBOARD, {replace:true})
     }
     return (
         <div className="w-full h-full flex flex-col items-center sm:py-10 md:pt-20 justify-center">
