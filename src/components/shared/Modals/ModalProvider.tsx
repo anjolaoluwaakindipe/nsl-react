@@ -34,7 +34,9 @@ function ModalContent(
         case "ProfileUpdateModal":
             return <ProfileUpdateModal cancelModal={cancelModal} />;
         case "BeginVerificationModal":
-            return <BeginVerificationModal cancelModal={cancelModal} />;
+
+            return <BeginVerificationModal cancelModal={cancelModal} />
+
 
         default:
             return <div></div>;
@@ -78,6 +80,7 @@ function ModalProvider() {
                     e.stopPropagation();
                 }}
             >
+
                 {ModalContent(modalState.modalName, cancelModal)}
             </div>
         </div>

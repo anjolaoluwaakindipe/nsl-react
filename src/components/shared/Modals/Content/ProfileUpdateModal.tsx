@@ -1,12 +1,13 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
+import { paths } from "../../../../utils/constants/allPaths";
 
 function ProfileUpdateModal(prop: { cancelModal: () => void }) {
     const navigate = useNavigate();
     const onProceed = () =>{
         
         prop.cancelModal()
-        navigate("/update-profile/personal-details", {replace:true})
+        navigate(paths.UPDATE_PROFILE.base + paths.UPDATE_PROFILE.PERSONAL_DETAILS, {replace:true})
     }
     return (
         <div className="w-full h-full flex flex-col items-center sm:py-10 md:pt-20 justify-center">
