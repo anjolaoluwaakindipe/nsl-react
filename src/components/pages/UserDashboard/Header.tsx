@@ -12,12 +12,13 @@ function Header() {
     }, [keycloak]);
 
     return (
-        <form className=" py-10 px-5  md:px-10">
+        <form className=" pb-10 px-5  md:px-10">
             <div>
-                <h1 className=" heading1 text-primaryColor">Dashboard</h1>
                 <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0 md:items-center heading-info-1 pt-4 text-accentColor ">
                     <div className="flex w-full justify-between  font-semibold text-xl pt-5">
-                        <div>Welcome {name}</div>
+                        <div className="text-primaryColor text-xl md:text-2xl">
+                            Welcome {name}
+                        </div>
                     </div>
 
                     {/* <div className="flex items-center bg-white text-gray-600 focus-within:text-gray-400 rounded-md overflow-hidden ">

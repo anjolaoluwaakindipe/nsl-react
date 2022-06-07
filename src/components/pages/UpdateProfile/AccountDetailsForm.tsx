@@ -6,6 +6,7 @@ import { useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { paths } from "../../../utils/constants/allPaths";
 import { BASE_URL } from "../../../services/requests/authSettings";
+import { useModal } from '../../../services/customHooks/useModal';
 
 function AccountDetailsForm() {
     const navigate = useNavigate();
@@ -17,8 +18,10 @@ function AccountDetailsForm() {
         formState: { errors },
     } = useForm({});
 
+    const {openModalFunc} = useModal("ProfileUpdateSuccessfulModal", false)
+
     const onSubmitForm = handleSubmit((data) => {
-        navigate(paths.USER_DASHBOARD, { replace: true });
+        openModalFunc();
     });
 
     const addAccountInfo = () => {

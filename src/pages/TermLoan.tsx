@@ -9,23 +9,21 @@ function TermLoan() {
     const navigate = useNavigate();
     return (
         <NavBarLayout>
-            
             <div className="w-full bg-bgColor2 min-h-screen relative pb-32">
-            <div>
-                  {/* Back Button */}
-            <IoIosArrowDropleftCircle
-                className="absolute  md:right-10 md:left-auto left-4 top-4 md:top-10  text-2xl text-primaryColor cursor-pointer"
-                onClick={() => navigate(-1)}
-            />
-                <div className="md:max-w-5xl md:mx-auto w-full px-5">
-                    <h1 className="heading1 pt-10">Term Loan</h1>
-                    <Description />
+                <div>
+                    <div className="md:max-w-5xl md:mx-auto w-full px-5 flex flex-col">
+                        {/* Back Button */}
+                        <IoIosArrowDropleftCircle
+                            className="  text-2xl text-primaryColor cursor-pointer hover:brightness-75 self-end my-5 "
+                            onClick={() => navigate(-1)}
+                        />
+                        <h1 className="heading1 pt-10">Term Loan</h1>
+                        <Description />
 
-                    <ActiveLoanDetails />
+                        <ActiveLoanDetails />
+                    </div>
                 </div>
             </div>
-            </div>
-            
         </NavBarLayout>
     );
 }

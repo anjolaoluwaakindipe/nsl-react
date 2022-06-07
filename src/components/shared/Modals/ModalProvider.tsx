@@ -13,6 +13,7 @@ import LoginSucessModal from "./Content/LoginSucessModal";
 import LoginUnsuccessfulModal from "./Content/LoginUnsucessfulModal";
 import ProfileUpdateModal from "./Content/ProfileUpdateModal";
 import BeginVerificationModal from "./Content/BeginVerificationModal";
+import ProfileUpdateSuccessfulModal from "./Content/ProfileUpdateSuccessfulModal";
 
 function ModalContent(
     modalName: string,
@@ -34,9 +35,9 @@ function ModalContent(
         case "ProfileUpdateModal":
             return <ProfileUpdateModal cancelModal={cancelModal} />;
         case "BeginVerificationModal":
-
-            return <BeginVerificationModal cancelModal={cancelModal} />
-
+            return <BeginVerificationModal cancelModal={cancelModal} />;
+        case "ProfileUpdateSuccessfulModal":
+            return <ProfileUpdateSuccessfulModal cancelModal={cancelModal} />;
 
         default:
             return <div></div>;
@@ -80,7 +81,6 @@ function ModalProvider() {
                     e.stopPropagation();
                 }}
             >
-
                 {ModalContent(modalState.modalName, cancelModal)}
             </div>
         </div>
