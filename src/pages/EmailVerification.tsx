@@ -6,6 +6,7 @@ import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 import { Header } from "../components/pages/EmailVerification";
 import EmailVerificationPinCode from '../components/pages/EmailVerification/EmailVerificationPinCode';
 import { useModal } from "../services/customHooks/useModal";
+import { paths } from '../utils/constants/allPaths';
 
 function EmailVerification() {
     
@@ -45,19 +46,22 @@ function EmailVerification() {
                 {/* Text field and Resend section */}
 
                 <form onSubmit={onSubmit}>
-                    <div className="pt-10 md:pt-20 w-full md:w-1/2 space-y-6">
-                        <div>
+                    <div className="pt-10 md:pt-20 w-full flex flex-col items-center space-y-6">
+                        <div className="flex flex-col items-center">
                             <Controller
                                 name="emailCode"
                                 control={control}
                                 render={({ field: { onChange, value } }) => {
                                     return (
-                                        <EmailVerificationPinCode value={value} onChange={onChange}/>
+                                        <EmailVerificationPinCode
+                                            value={value}
+                                            onChange={onChange}
+                                        />
                                     );
                                 }}
                             />
 
-                            <p className="error1 mt-1">
+                            <p className="error1 mt-2">
                                 {errors.emailCode?.message}
                             </p>
                         </div>
@@ -71,15 +75,21 @@ function EmailVerification() {
                     </div>
 
                     {/* button */}
-                    <div className="w-full pt-20">
+                    <div className="w-full pt-20 space-y-4">
                         <button
                             type="submit"
-                            className="w-1/2 btn1"
-                            onClick={()=>{}}
-                           
+                            className="w-full btn1"
+                            onClick={() => {}}
                         >
                             Verify
                         </button>
+
+                        <h6 className="text-center md:text-xl w-full ">
+                            Already have an account?{" "}
+                            <span className="text-primaryColor hover:underline">
+                                <Link to={paths.LOGIN}>Sign in</Link>
+                            </span>
+                        </h6>
                     </div>
                 </form>
             </>

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../state/store";
 import { useEffect } from "react";
 
-
 import { closeModal } from "../../../state/modalSlice";
 
 import { ModalState } from "../../../typings";
@@ -15,10 +14,15 @@ import LoginUnsuccessfulModal from "./Content/LoginUnsucessfulModal";
 import ProfileUpdateModal from "./Content/ProfileUpdateModal";
 import BeginVerificationModal from "./Content/BeginVerificationModal";
 
-function ModalContent(modalName: string, cancelModal: () => void): ReactElement {
+function ModalContent(
+    modalName: string,
+    cancelModal: () => void
+): ReactElement {
     switch (modalName.trim()) {
         case "PhoneEmailVerificationSuccessModal":
-            return <PhoneEmailVerificationSuccessModal cancelModal={cancelModal} />;
+            return (
+                <PhoneEmailVerificationSuccessModal cancelModal={cancelModal} />
+            );
         case "EmailVerificationSuccessModal":
             return <EmailVerificationSuccessModal cancelModal={cancelModal} />;
         case "AccountCreatedSucessModal":
@@ -30,6 +34,7 @@ function ModalContent(modalName: string, cancelModal: () => void): ReactElement 
         case "ProfileUpdateModal":
             return <ProfileUpdateModal cancelModal={cancelModal} />;
         case "BeginVerificationModal":
+
             return <BeginVerificationModal cancelModal={cancelModal} />
 
 
@@ -75,7 +80,6 @@ function ModalProvider() {
                     e.stopPropagation();
                 }}
             >
-
 
                 {ModalContent(modalState.modalName, cancelModal)}
             </div>

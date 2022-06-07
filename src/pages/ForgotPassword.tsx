@@ -1,9 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import DefaultLayout from "../components/layout/DefaultLayout";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import Header from "../components/pages/ForgotPassword/Header";
+import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 
 function ForgotPassword() {
     const {
@@ -24,15 +24,14 @@ function ForgotPassword() {
 
     const onSubmit = handleSubmit((data) => {});
     return (
-        <DefaultLayout>
+        <HalfNavBarLayout>
             <>
                 <Header />
 
                 {/* Text field and Resend section */}
 
                 <form onSubmit={onSubmit} className="pt-20">
-
-                    <div className="md:w-1/2 w-full  ">
+                    <div className=" w-full text-base  md:text-xl ">
                         <div className="border-0 border-b-2  border-underlineColor">
                             <label htmlFor="ForgotPassword__email"></label>
                             <input
@@ -52,7 +51,7 @@ function ForgotPassword() {
                     <div className="w-full pt-20">
                         <button
                             type="submit"
-                            className="w-1/2 btn1"
+                            className="w-full btn1"
                             disabled={!isDirty}
                         >
                             Verify
@@ -60,7 +59,7 @@ function ForgotPassword() {
                     </div>
                 </form>
             </>
-        </DefaultLayout>
+        </HalfNavBarLayout>
     );
 }
 

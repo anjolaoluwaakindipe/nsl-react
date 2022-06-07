@@ -9,7 +9,7 @@ function AccountCreatedSuccessModal(prop: { cancelModal: () => void }) {
         navigate(paths.EMAIL_VERIFICATION, { replace: true });
     };
     return (
-        <div className="bg-white max-w-md md:max-w-xl m-5 rounded-lg p-6  flex flex-col items-center sm:py-10 md:pt-20 justify-center">
+        <div className=" m-10 md:w-96 h-auto bg-white p-10 rounded-xl">
             <img
                 src="assets/successtick.svg"
                 alt="success_img"

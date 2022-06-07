@@ -81,7 +81,7 @@ function PhoneVerificationPinCode({ value, onChange }: PhoneVerificaitonPinCodeP
         >
             <input
                 type="text"
-                className="w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
+                className="w-8 md:w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
                 placeholder="*"
                 value={firstDigit}
                 onChange={(e) => {
@@ -93,7 +93,7 @@ function PhoneVerificationPinCode({ value, onChange }: PhoneVerificaitonPinCodeP
             />
             <input
                 type="text"
-                className="w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
+                className="w-8 md:w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
                 placeholder="*"
                 value={secondDigit}
                 onChange={(e) => {
@@ -105,7 +105,7 @@ function PhoneVerificationPinCode({ value, onChange }: PhoneVerificaitonPinCodeP
             />
             <input
                 type="text"
-                className="w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
+                className="w-8 md:w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
                 placeholder="*"
                 value={thirdDigit}
                 onChange={(e) => {
@@ -117,7 +117,7 @@ function PhoneVerificationPinCode({ value, onChange }: PhoneVerificaitonPinCodeP
             />
             <input
                 type="text"
-                className="w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
+                className="w-8 md:w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
                 placeholder="*"
                 value={fourthDigit}
                 onKeyDown={preventLetters}
