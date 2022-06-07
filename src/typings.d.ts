@@ -8,10 +8,7 @@ type LoanApplicationFormInfo = {
     interest: string;
     purpose: string;
     termsAndCondition: boolean;
-    passport: FileList;
-    proofOfIdentification: FileList;
-    proofOfResidence: FileList;
-    salarySlips: FileList;
+    
 };
 
 type PersonalDetailsFormInfo = {
