@@ -30,8 +30,8 @@ function Form() {
 
     const {openModalFunc}= useModal (
         //"LoginSucessModal",
-        "LoginUnsucessfulModal",
-        false,
+        "LoginSucessModal",
+        true,
     
     );
 

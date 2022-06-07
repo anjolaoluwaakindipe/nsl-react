@@ -13,6 +13,7 @@ import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import { useModal } from "../services/customHooks/useModal";
+import { paths } from '../utils/constants/allPaths';
 
 function PhoneVerification() {
     const navigate = useNavigate();
@@ -56,8 +57,8 @@ function PhoneVerification() {
                     autoSave="off"
                     autoCorrect="off"
                 >
-                    <div className="pt-20 w-full md:w-1/2 space-y-6">
-                        <div>
+                    <div className="pt-10 md:pt-20 w-full flex flex-col items-center space-y-6">
+                        <div className="flex flex-col items-center">
                             <Controller
                                 name="phoneCode"
                                 control={control}
@@ -68,27 +69,36 @@ function PhoneVerification() {
                                     />
                                 )}
                             />
-                            <p className="error1 mt-1">
+                            <p className="error1 mt-2">
                                 {errors.phoneCode?.message}
                             </p>
                         </div>
 
                         <h6>
                             Didn't get code?{" "}
-                            <Link className="text-accentColor" to={"/"}>
+                            <Link
+                                className="text-primaryColor hover:underline"
+                                to={"/"}
+                            >
                                 Resend
                             </Link>
                         </h6>
                     </div>
 
-                    <div className="w-full pt-20">
+                    <div className="w-full pt-20 space-y-4">
                         <button
-                            className=" w-full md:w-1/2 btn1"
+                            className=" w-full  btn1"
                             onClick={() => {}}
                             type="submit"
                         >
                             Verify
                         </button>
+                        <h6 className="text-center md:text-xl w-full ">
+                            Already have an account?{" "}
+                            <span className="text-primaryColor hover:underline">
+                                <Link to={paths.LOGIN}>Sign in</Link>
+                            </span>
+                        </h6>
                     </div>
                 </form>
             </>
