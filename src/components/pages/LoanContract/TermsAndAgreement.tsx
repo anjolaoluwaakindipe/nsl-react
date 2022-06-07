@@ -105,7 +105,10 @@ function TermsAndAgreement() {
           <br />
           <p>Yours faithfully, </p>
           <br />
-          <p>For. NSL</p>
+          <p>From NSL 24</p>
+<br/>
+<br/>
+          <p> Please, sign this contract by inputing the token sent to your registered phone number</p>
       </div>
   );
 }

@@ -9,6 +9,11 @@ import  { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
 import PhoneField from "../../shared/TextFields/PhoneField";
+
+
+
+import { useModal } from "../../../services/customHooks/useModal";
+
 type CreateAccountFormData = {
     cscsAccountNumber: string;
     fullName: string;
@@ -38,8 +43,20 @@ function Form() {
         resolver: joiResolver(createAccountSchema),
     });
 
-    const onSubmit = handleSubmit((data) => {
-        navigate("/email-verification");
+    const onProceed = () => {
+        navigate("/login", { replace: true });
+    };
+
+    const { openModalFunc } = useModal(
+        "AccountCreatedSucessModal",
+        false,
+        () => {
+            onProceed();
+        }
+    );
+
+    const onSubmit = handleSubmit(() => {
+        openModalFunc();
     });
 
 
@@ -125,9 +142,12 @@ function Form() {
                 <button
                     className="w-full px-5 py-4 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
                     type="submit"
+                    onClick={() => {}}
                 >
                     Proceed
                 </button>
+
+               
                 <h6 className="text-center md:text-left">
                     Already have an account?{" "}
                     <span className="text-accentColor">

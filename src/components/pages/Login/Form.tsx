@@ -5,6 +5,8 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { loginSchema } from "../../../utils/validation/login";
 import { LoginInfo } from "../../../typings";
 
+import { useModal } from "../../../services/customHooks/useModal";
+
 
 function Form() {
     
@@ -21,10 +23,23 @@ function Form() {
         resolver: joiResolver(loginSchema),
     });
 
+    const onProceed = ()=> {
+        navigate("/login",{replace:true});
+    };
+
+    const {openModalFunc}= useModal (
+        //"LoginSucessModal",
+        "LoginUnsucessfulModal",
+        false,
+        ()=> {
+            onProceed();
+        }
+    );
+
     const onSubmit = handleSubmit(async (data) => {
         // dispatch(loginUser([data.usernameOrEmail, data.password]))
 
-        navigate('/dashboard')
+        openModalFunc();
     });
 
     
@@ -42,7 +57,7 @@ function Form() {
                         {...register("usernameOrEmail")}
                         id="Login__cscsAccountNumber"
                         className="outline-none pb-4  w-full"
-                        placeholder="Email or Password"
+                        placeholder="Email"
                     />
                 </div>
 
@@ -83,6 +98,7 @@ function Form() {
                 <button
                     className="w-full px-5 py-4 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
                     type="submit"
+                    onClick={()=>{}}
                 >
                     Proceed
                 </button>

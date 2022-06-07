@@ -1,12 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import DefaultLayout from "../components/layout/DefaultLayout";
+import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 import { Header, } from "../components/pages/EmailVerification";
 import { useForm, Controller } from "react-hook-form";
 import Joi from "joi";
 import { joiResolver } from "@hookform/resolvers/joi";
 import EmailVerificationPinCode from '../components/pages/EmailVerification/EmailVerificationPinCode';
-
+import { useModal } from "../services/customHooks/useModal";
 
 function EmailVerification() {
     const navigate = useNavigate()
@@ -26,13 +26,24 @@ function EmailVerification() {
         ),
     });
 
+    const onProceed = () => {
+        navigate("/login", { replace: true });
+    };
+    const { openModalFunc } = useModal(
+        "EmailVerificationSuccessModal",
+        false,
+        () => {
+            onProceed();
+        }
+    );
+
     const onSubmit = handleSubmit((data) => {
         
-        navigate("/phone-verification", {replace:true})
+       openModalFunc();
     });
 
     return (
-        <DefaultLayout>
+        <HalfNavBarLayout>
             <>
                 <Header />
 
@@ -69,6 +80,7 @@ function EmailVerification() {
                         <button
                             type="submit"
                             className="w-1/2 btn1"
+                            onClick={()=>{}}
                            
                         >
                             Verify
@@ -76,7 +88,7 @@ function EmailVerification() {
                     </div>
                 </form>
             </>
-        </DefaultLayout>
+        </HalfNavBarLayout>
     );
 }
 

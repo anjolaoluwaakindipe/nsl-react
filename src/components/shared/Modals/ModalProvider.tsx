@@ -8,11 +8,28 @@ import { closeModal } from "../../../state/modalSlice";
 
 import { ModalState } from "../../../typings";
 import PhoneEmailVerificationSuccessModal from "./Content/PhoneEmailVerificationSuccessModal";
+import EmailVerificationSuccessModal from "./Content/EmailVerificationSucessModal";
+import AccountCreatedSuccessModal from "./Content/AccountCreatedSucessModal";
+import LoginSucessModal from "./Content/LoginSucessModal";
+import LoginUnsuccessfulModal from "./Content/LoginUnsucessfulModal";
+import ProfileUpdateModal from "./Content/ProfileUpdateModal";
 
-function ModalContent(modalName: string, cancelModal:()=>void): ReactElement {
+function ModalContent(modalName: string, cancelModal: () => void): ReactElement {
     switch (modalName.trim()) {
         case "PhoneEmailVerificationSuccessModal":
-            return <PhoneEmailVerificationSuccessModal cancelModal={cancelModal}/>;
+            return <PhoneEmailVerificationSuccessModal cancelModal={cancelModal} />;
+        case "EmailVerificationSuccessModal":
+            return <EmailVerificationSuccessModal cancelModal={cancelModal} />;
+        case "AccountCreatedSucessModal":
+            return <AccountCreatedSuccessModal cancelModal={cancelModal} />;
+        case "LoginSucessModal":
+            return <LoginSucessModal cancelModal={cancelModal} />;
+            case "LoginUnsucessfulModal":
+                return <LoginUnsuccessfulModal cancelModal={cancelModal}/>;
+                case "ProfileUpdateModal":
+                    return <ProfileUpdateModal cancelModal={cancelModal}/>
+
+
         default:
             return <div></div>;
     }
@@ -50,7 +67,7 @@ function ModalProvider() {
             onClick={modalState.isCancellable ? onClickBackground : undefined}
         >
             <div
-                className="bg-white p-6 w-3/4 h-3/4 overflow-y-scroll scrollbar rounded-md"
+                className="bg-white p-6 w-62 h-50 md:w-50 md:h-70 overflow-y-scroll scrollbar rounded-3xl"
                 onClick={(e) => {
                     e.stopPropagation();
                 }}
