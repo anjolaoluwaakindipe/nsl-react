@@ -45,7 +45,7 @@ function EmailVerification() {
                 {/* Text field and Resend section */}
 
                 <form onSubmit={onSubmit}>
-                    <div className="pt-20 w-full md:w-1/2 space-y-6">
+                    <div className="pt-10 md:pt-20 w-full md:w-1/2 space-y-6">
                         <div>
                             <Controller
                                 name="emailCode"
