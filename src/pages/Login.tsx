@@ -9,10 +9,10 @@ import { Form, Header } from "../components/pages/Login";
 function Login() {
     return (
         <DefaultLayout>
-            <>
+            <div className="md:px-10">
                 <Header />
                 <Form />
-            </>
+            </div>
         </DefaultLayout>
     );
 }

@@ -34,16 +34,12 @@ function PhoneVerification() {
             })
         ),
     });
-    const onProceed = () => {
-        navigate("/login", { replace: true });
-    };
+  
 
     const { openModalFunc } = useModal(
         "PhoneEmailVerificationSuccessModal",
         false,
-        () => {
-            onProceed();
-        }
+    
     );
 
     const onSubmit = handleSubmit((data) => {

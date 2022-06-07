@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { joiResolver } from "@hookform/resolvers/joi";
 import { loginSchema } from "../../../utils/validation/login";
 import { LoginInfo } from "../../../typings";
+import { paths } from "../../../utils/constants/allPaths";
 
 
 function Form() {
@@ -32,17 +33,17 @@ function Form() {
     return (
         <form
             onSubmit={onSubmit}
-            className="w-full py-20 space-y-16  text-darkTextColor"
+            className="w-full py-20 space-y-16  text-darkTextColor text-base md:text-xl"
         >
             <div>
-                <div className="w-full md:w-1/2 border-0 border-b-2  border-underlineColor">
+                <div className="w-full  border-0 border-b-2  border-underlineColor">
                     <label htmlFor="cscsAccountNumber"></label>
                     <input
                         type="text"
                         {...register("usernameOrEmail")}
                         id="Login__cscsAccountNumber"
                         className="outline-none pb-4  w-full"
-                        placeholder="Email or Password"
+                        placeholder="Email Address"
                     />
                 </div>
 
@@ -53,7 +54,7 @@ function Form() {
                 )}
             </div>
 
-            <div className="w-full md:w-1/2  space-y-5">
+            <div className="w-full space-y-5">
                 <div>
                     <div className="w-full border-0 border-b-2  border-underlineColor ">
                         <label htmlFor="password"></label>
@@ -73,19 +74,26 @@ function Form() {
                 </div>
 
                 <div>
-                    <Link className="text-accentColor" to={"/"}>
+                    <Link
+                        className="text-primaryColor text-base hover:underline"
+                        to={paths.FORGOT_PASSWORD}
+                    >
                         Forgot Password?
                     </Link>
                 </div>
             </div>
 
-            <div className=" w-full md:w-1/2 space-y-6">
-                <button
-                    className="w-full px-5 py-4 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
-                    type="submit"
-                >
+            <div className=" w-full  space-y-6">
+                <button className="btn1 w-full" type="submit">
                     Proceed
                 </button>
+
+                <h6 className="text-center md:text-xl w-full">
+                    Don't have an account?{" "}
+                    <span className="text-primaryColor hover:underline">
+                        <Link to={paths.CREATE_ACCOUNT}>Create account</Link>
+                    </span>
+                </h6>
             </div>
         </form>
     );

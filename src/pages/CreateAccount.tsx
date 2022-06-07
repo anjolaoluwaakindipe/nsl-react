@@ -5,10 +5,10 @@ import DefaultLayout from "../components/layout/DefaultLayout";
 function CreateAccount() {
     return (
         <DefaultLayout>
-            <>
+            <div className="md:px-10">
                 <Header />
                 <Form />
-            </>
+            </div>
         </DefaultLayout>
     );
 }    

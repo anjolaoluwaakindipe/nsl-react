@@ -52,13 +52,13 @@ input {
 
 @layer components {
     .heading1 {
-        @apply text-primaryColor text-3xl font-bold;
+        @apply text-primaryColor text-3xl md:text-4xl font-bold;
     }
     .heading-info1 {
-        @apply text-darkTextColor text-sm;
+        @apply text-darkTextColor text-base md:text-xl;
     }
     .btn1 {
-        @apply px-7 py-4 bg-secondaryColor text-primaryColor font-semibold rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all disabled:opacity-60;
+        @apply px-7 py-4 bg-secondaryColor text-primaryColor font-semibold rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all disabled:opacity-60 md:text-xl md:py-6;
     }
     .error1 {
         @apply text-xs text-red-900;

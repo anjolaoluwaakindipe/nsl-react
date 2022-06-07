@@ -8,11 +8,20 @@ import { closeModal } from "../../../state/modalSlice";
 
 import { ModalState } from "../../../typings";
 import PhoneEmailVerificationSuccessModal from "./Content/PhoneEmailVerificationSuccessModal";
+import BeginVerificationModal from "./Content/BeginVerificationModal";
 
-function ModalContent(modalName: string, cancelModal:()=>void): ReactElement {
+function ModalContent(
+    modalName: string,
+    cancelModal: () => void,
+    
+): ReactElement {
     switch (modalName.trim()) {
         case "PhoneEmailVerificationSuccessModal":
-            return <PhoneEmailVerificationSuccessModal cancelModal={cancelModal}/>;
+            return (
+                <PhoneEmailVerificationSuccessModal cancelModal={cancelModal} />
+            );
+        case "BeginVerificationModal":
+            return <BeginVerificationModal cancelModal={cancelModal} />;
         default:
             return <div></div>;
     }
@@ -50,20 +59,12 @@ function ModalProvider() {
             onClick={modalState.isCancellable ? onClickBackground : undefined}
         >
             <div
-                className="bg-white p-6 w-3/4 h-3/4 overflow-y-scroll scrollbar rounded-md"
+                className=""
                 onClick={(e) => {
                     e.stopPropagation();
                 }}
             >
-                <div className="w-full flex justify-end py-1">
-                    {modalState.isCancellable && (
-                        <AiOutlineClose
-                            strokeWidth={50}
-                            className="cursor-pointer hover:text-red-600"
-                            onClick={cancelModal}
-                        />
-                    )}
-                </div>
+        
 
                 {ModalContent(modalState.modalName, cancelModal)}
             </div>
