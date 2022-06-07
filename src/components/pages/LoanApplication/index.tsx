@@ -4,7 +4,7 @@ import Header from "./Header";
 
 import TopBar from "./TopBar";
 
-import Form2 from './Form2'
 
 
-export {Form1, Header, TopBar, Form2}
+
+export {Form1, Header, TopBar}
