@@ -5,15 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 // react-hook-form
 import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import  { isValidPhoneNumber } from "react-phone-number-input";
+import { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
 import PhoneField from "../../shared/TextFields/PhoneField";
-
-
-
+import { paths } from "../../../utils/constants/allPaths";
 import { useModal } from "../../../services/customHooks/useModal";
-
 type CreateAccountFormData = {
     cscsAccountNumber: string;
     fullName: string;
@@ -33,11 +30,11 @@ function Form() {
         formState: { errors },
     } = useForm<CreateAccountFormData>({
         defaultValues: {
-            cscsAccountNumber: "",
+         
             fullName: "",
             emailAddress: "",
             phoneNumber: "",
-            bvn: "",
+         
             password: "",
         },
         resolver: joiResolver(createAccountSchema),
@@ -50,19 +47,16 @@ function Form() {
     const { openModalFunc } = useModal(
         "AccountCreatedSucessModal",
         false,
-        () => {
-            onProceed();
-        }
+       
     );
 
     const onSubmit = handleSubmit(() => {
         openModalFunc();
     });
 
-
     return (
         <form
-            className=" grid grid-cols-12 py-20 gap-x-0 md:gap-x-10 gap-y-14 md:gap-y-28 text-darkTextColor"
+            className=" grid grid-cols-12 py-20 gap-x-0 md:gap-x-10 gap-y-14 md:gap-y-28 text-darkTextColor text-base md:text-xl"
             onSubmit={onSubmit}
             autoSave={"off"}
             autoComplete={"off"}
@@ -138,20 +132,14 @@ function Form() {
                 </p>
             </div>
 
-            <div className="md:col-span-6 col-span-12 space-y-6">
-                <button
-                    className="w-full px-5 py-4 bg-primaryColor text-contColor rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all"
-                    type="submit"
-                    onClick={() => {}}
-                >
+            <div className="col-span-12 space-y-6">
+                <button className="btn1 w-full " type="submit">
                     Proceed
                 </button>
-
-               
-                <h6 className="text-center md:text-left">
+                <h6 className="text-center md:text-xl w-full">
                     Already have an account?{" "}
-                    <span className="text-accentColor">
-                        <Link to={"/"}>Sign in</Link>
+                    <span className="text-primaryColor hover:underline">
+                        <Link to={paths.LOGIN}>Sign in</Link>
                     </span>
                 </h6>
             </div>

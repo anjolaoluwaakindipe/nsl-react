@@ -1,23 +1,14 @@
-import React from "react";
-import StatusDet from "./StatusDet";
-import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
-import { paths } from "../../../utils/constants/allPaths";
 import { useModal } from "../../../services/customHooks/useModal";
+import StatusDet from "./StatusDet";
 
 
 function LoanActivity() {
-    const navigate = useNavigate();
 
-    const onProceed = () => {
-        navigate("/login", { replace: true });
-    };
+
     const { openModalFunc } = useModal(
         "ProfileUpdateModal",
         false,
-        () => {
-            onProceed();
-        }
+        
     );
 
     const onSubmit = (() => {

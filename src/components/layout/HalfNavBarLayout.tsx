@@ -7,7 +7,7 @@ function HalfNavBarLayout({ children }: { children?: JSX.Element }) {
                 <img
                     src="assets/companylogo2.svg"
                     alt="logo"
-                    className="object-contain md:px-10 py-5 px-5"
+                    className="object-contain w-20 md:w-40 md:px-10 pt-5 pb-10  px-5"
                    
                 />
           

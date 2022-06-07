@@ -1,15 +1,14 @@
-import React from "react";
-import { Link, useNavigate } from 'react-router-dom';
-import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
-import { Header, } from "../components/pages/EmailVerification";
-import { useForm, Controller } from "react-hook-form";
-import Joi from "joi";
 import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
+import { Controller, useForm } from "react-hook-form";
+import { Link } from 'react-router-dom';
+import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
+import { Header } from "../components/pages/EmailVerification";
 import EmailVerificationPinCode from '../components/pages/EmailVerification/EmailVerificationPinCode';
 import { useModal } from "../services/customHooks/useModal";
 
 function EmailVerification() {
-    const navigate = useNavigate()
+    
 
     const {
         handleSubmit,
@@ -26,15 +25,11 @@ function EmailVerification() {
         ),
     });
 
-    const onProceed = () => {
-        navigate("/login", { replace: true });
-    };
+   
     const { openModalFunc } = useModal(
         "EmailVerificationSuccessModal",
         false,
-        () => {
-            onProceed();
-        }
+     
     );
 
     const onSubmit = handleSubmit((data) => {
@@ -50,7 +45,7 @@ function EmailVerification() {
                 {/* Text field and Resend section */}
 
                 <form onSubmit={onSubmit}>
-                    <div className="pt-20 w-full md:w-1/2 space-y-6">
+                    <div className="pt-10 md:pt-20 w-full md:w-1/2 space-y-6">
                         <div>
                             <Controller
                                 name="emailCode"
