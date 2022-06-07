@@ -1,6 +1,7 @@
 import React, { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
+
 // paths
 import { paths } from "./utils/constants/allPaths";
 
@@ -198,7 +199,12 @@ function AppRouter() {
                         </React.Suspense>
                     }
                 />
+
+               
+
+              
             </Routes>
+
         </>
     );
 }

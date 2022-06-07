@@ -6,6 +6,8 @@ import { loginSchema } from "../../../utils/validation/login";
 import { LoginInfo } from "../../../typings";
 import { paths } from "../../../utils/constants/allPaths";
 
+import { useModal } from "../../../services/customHooks/useModal";
+
 
 function Form() {
     
@@ -22,10 +24,21 @@ function Form() {
         resolver: joiResolver(loginSchema),
     });
 
+    const onProceed = ()=> {
+        navigate("/login",{replace:true});
+    };
+
+    const {openModalFunc}= useModal (
+        //"LoginSucessModal",
+        "LoginUnsucessfulModal",
+        false,
+    
+    );
+
     const onSubmit = handleSubmit(async (data) => {
         // dispatch(loginUser([data.usernameOrEmail, data.password]))
 
-        navigate('/dashboard')
+        openModalFunc();
     });
 
     

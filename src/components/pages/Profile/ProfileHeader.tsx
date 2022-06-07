@@ -10,7 +10,8 @@ function ProfileHeader() {
         <div className="relative ">
             {/* Back Button */}
             <IoIosArrowDropleftCircle
-                className="absolute  md:right-10 md:left-auto left-4 top-4 md:top-10  text-2xl text-primaryColor cursor-pointer"
+            size={32}
+                className="absolute  md:right-10 md:left-auto left-4 top-4 md:top-20  text-2xl text-primaryColor cursor-pointer"
                 onClick={() => navigate(paths.USER_DASHBOARD)}
             />
 

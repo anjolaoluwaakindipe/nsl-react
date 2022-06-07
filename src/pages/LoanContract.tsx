@@ -64,23 +64,24 @@ const navigate = useNavigate();
                     </div>
 
                     <div>
-                        <h2 className="text-primaryColor font-semibold hover:underline cursor-pointer text-sm">
-                            Generate Code
-                        </h2>
                         {/* <h2 className="text-primaryColor font-semibold hover:underline cursor-pointer text-sm">
-                            Resend Code
+                            Generate Code
                         </h2> */}
+                        <h2 className="text-primaryColor font-semibold hover:underline cursor-pointer text-sm">
+                            Resend Code
+                        </h2>
                     </div>
 
                 <div className=" pt-10 space-x-6 w-full ">
-                        <button className="btn1 md:w-52 w-1/2" type="submit">
+                        <button className="btn1 md:w-52 w-1/2" type="submit"
+                        onClick={()=>{navigate(-1)}}>
                             Accept
                         </button>
 
                         
                             <button className="btn1 bg-transparent border-primaryColor border-2 w-1/2 md:w-52"
                               onClick={()=>{navigate(paths.USER_DASHBOARD)}}>
-                                Do Not Accept
+                                Cancel
                             </button>
                       
                     </div>

@@ -3,25 +3,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../state/store";
 import { useEffect } from "react";
 
-import { AiOutlineClose } from "react-icons/ai";
+
 import { closeModal } from "../../../state/modalSlice";
 
 import { ModalState } from "../../../typings";
 import PhoneEmailVerificationSuccessModal from "./Content/PhoneEmailVerificationSuccessModal";
-import BeginVerificationModal from "./Content/BeginVerificationModal";
+import EmailVerificationSuccessModal from "./Content/EmailVerificationSucessModal";
+import AccountCreatedSuccessModal from "./Content/AccountCreatedSucessModal";
+import LoginSucessModal from "./Content/LoginSucessModal";
+import LoginUnsuccessfulModal from "./Content/LoginUnsucessfulModal";
+import ProfileUpdateModal from "./Content/ProfileUpdateModal";
 
-function ModalContent(
-    modalName: string,
-    cancelModal: () => void,
-    
-): ReactElement {
+function ModalContent(modalName: string, cancelModal: () => void): ReactElement {
     switch (modalName.trim()) {
         case "PhoneEmailVerificationSuccessModal":
-            return (
-                <PhoneEmailVerificationSuccessModal cancelModal={cancelModal} />
-            );
-        case "BeginVerificationModal":
-            return <BeginVerificationModal cancelModal={cancelModal} />;
+            return <PhoneEmailVerificationSuccessModal cancelModal={cancelModal} />;
+        case "EmailVerificationSuccessModal":
+            return <EmailVerificationSuccessModal cancelModal={cancelModal} />;
+        case "AccountCreatedSucessModal":
+            return <AccountCreatedSuccessModal cancelModal={cancelModal} />;
+        case "LoginSucessModal":
+            return <LoginSucessModal cancelModal={cancelModal} />;
+        case "LoginUnsucessfulModal":
+                return <LoginUnsuccessfulModal cancelModal={cancelModal}/>;
+        case "ProfileUpdateModal":
+                    return <ProfileUpdateModal cancelModal={cancelModal}/>
+
+
         default:
             return <div></div>;
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import DefaultLayout from "../components/layout/DefaultLayout";
+import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 
 // components
 import {
@@ -47,7 +47,7 @@ function PhoneVerification() {
     });
 
     return (
-        <DefaultLayout>
+        <HalfNavBarLayout>
             <>
                 <Header />
                 <form
@@ -92,7 +92,7 @@ function PhoneVerification() {
                     </div>
                 </form>
             </>
-        </DefaultLayout>
+        </HalfNavBarLayout>
     );
 }
 

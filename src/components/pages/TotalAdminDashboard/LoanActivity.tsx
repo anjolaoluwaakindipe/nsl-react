@@ -114,6 +114,7 @@ function LoanActivity() {
                         View details
                     </button>
                 </div>
+
                 <div className="md:p-10 p-5 w-full grid grid-cols-2 bg-bgColor">
                     <h3 className=" grid grid-rows-2 md:text-justify">
                         Amadu Barrack applied for Loan
@@ -125,6 +126,7 @@ function LoanActivity() {
                         View details
                     </button>
                 </div>
+                
                 <div className="md:p-10 p-5 w-full grid grid-cols-2 bg-bgColor">
                     <h3 className=" grid grid-rows-2 md:text-justify">
                         Amadu Barrack applied for Loan

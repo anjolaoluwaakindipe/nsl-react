@@ -22,7 +22,6 @@ type CreateAccountFormData = {
 
 function Form() {
     const navigate = useNavigate();
-    const {openModalFunc} = useModal("BeginVerificationModal", false)
 
     const {
         register,
@@ -41,7 +40,17 @@ function Form() {
         resolver: joiResolver(createAccountSchema),
     });
 
-    const onSubmit = handleSubmit((data) => {
+    const onProceed = () => {
+        navigate("/login", { replace: true });
+    };
+
+    const { openModalFunc } = useModal(
+        "AccountCreatedSucessModal",
+        false,
+       
+    );
+
+    const onSubmit = handleSubmit(() => {
         openModalFunc();
     });
 
