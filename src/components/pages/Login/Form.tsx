@@ -1,17 +1,23 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { loginSchema } from "../../../utils/validation/login";
 import { LoginInfo } from "../../../typings";
 import { paths } from "../../../utils/constants/allPaths";
 
 import { useModal } from "../../../services/customHooks/useModal";
-
+import { useSelector, useDispatch } from "react-redux";
+import { authSelector, loginUser } from "../../../state/authSlice";
+import { AppDispatch } from "../../../state/store";
+import { useEffect, useState } from "react";
 
 function Form() {
-    
-    const navigate=  useNavigate()
+    const { isError, isLoading, errorMessage, isSuccess } =
+        useSelector(authSelector);
+    const [modalName, setModalName] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
+
     const {
         register,
         handleSubmit,
@@ -24,24 +30,31 @@ function Form() {
         resolver: joiResolver(loginSchema),
     });
 
-    const onProceed = ()=> {
-        navigate(paths.LOGIN,{replace:true});
-    };
+    useEffect(() => {}, [isLoading]);
 
-    const {openModalFunc}= useModal (
-        "LoginSucessModal",
+    useEffect(() => {
+        if (isSuccess) {
+            setModalName("LoginSucessModal");
+        }
+        if (isError) {
+            setModalName("LoginUnsucessfulModal");
+        }
+    }, [isError, isSuccess]);
+
+    const { openModalFunc } = useModal(
+        // "LoginSucessModal",
         //"LoginUnsucessfulModal",
-        true,
-    
+        modalName,
+        true
     );
 
     const onSubmit = handleSubmit(async (data) => {
-        // dispatch(loginUser([data.usernameOrEmail, data.password]))
+        await dispatch(
+            loginUser({ email: data.usernameOrEmail, password: data.password })
+        );
 
         openModalFunc();
     });
-
-    
 
     return (
         <form

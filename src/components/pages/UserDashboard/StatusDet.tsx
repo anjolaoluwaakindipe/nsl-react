@@ -6,26 +6,19 @@ function StatusDet() {
     return (
         <div className="w-full">
             <div className="space-y-5  p-0  text-sm md:text-md">
-                <Status
+                {/* <Status
                     loantype="Land Loan"
                     amount="900,000"
                     statustype={3}
                     statusview={3}
-                />
-                <Status
+                /> */}
+                {/* <Status
                     loantype="School Loan"
                     amount="900,000"
                     statustype={2}
                     statusview={2}
-                />
-                <Status
-                loantype="Car loan"
-                amount="70000"
-                statustype={1}
-                statusview={1}
-                />
-
-                {/* <EmptyStatus /> */}
+                /> */}
+                <EmptyStatus />
             </div>
         </div>
     );

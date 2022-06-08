@@ -8,7 +8,6 @@ type LoanApplicationFormInfo = {
     interest: string;
     purpose: string;
     termsAndCondition: boolean;
-    
 };
 
 type PersonalDetailsFormInfo = {
@@ -80,6 +79,43 @@ interface ModalState {
 
 // auth state
 interface AuthState {
-    token: string | null;
+    accessToken: string | null;
     refreshToken: string | null;
+    user: {
+        sub: string;
+        email_verified: boolean;
+        name: string;
+        preferred_username: string;
+        given_name: string;
+        family_name: string;
+        email: string;
+    } | null;
+
+    isSuccess: boolean;
+    isError: boolean;
+    isLoading: boolean;
+    errorMessage: string;
+    requestStatus: number;
+}
+
+// Requests
+interface TokenResponse {
+    access_token: string;
+    expires_in: number;
+    refresh_expires_in: number;
+    refresh_token: string;
+    token_type: string;
+    "not-before-policy": number;
+    session_state: string;
+    scope: string;
+}
+
+interface UserResponse {
+    sub: string;
+    email_verified: boolean;
+    name: string;
+    preferred_username: string;
+    given_name: string;
+    family_name: string;
+    email: string;
 }

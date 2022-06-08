@@ -1,15 +1,10 @@
-import { useKeycloak } from "@react-keycloak/web";
-import React from "react";
-import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
+import { authSelector } from '../../../state/authSlice';
 
 function Header() {
-    const [name, setName] = useState("");
-    const { keycloak } = useKeycloak();
-    useEffect(() => {
-        keycloak.loadUserInfo().then((data: Record<string, any>) => {
-            setName(data.given_name);
-        });
-    }, [keycloak]);
+    
+
+    const {user} = useSelector(authSelector);
 
     return (
         <form className=" pb-10 px-5  md:px-10">
@@ -17,7 +12,7 @@ function Header() {
                 <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0 md:items-center heading-info-1 pt-4 text-accentColor ">
                     <div className="flex w-full justify-between  font-semibold text-xl pt-5">
                         <div className="text-primaryColor text-xl md:text-2xl">
-                            Welcome {name}
+                            Welcome {user?.name.split(" ")[0]}
                         </div>
                     </div>
 

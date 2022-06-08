@@ -1,15 +1,32 @@
+import axios from "axios";
 import {
-    BASE_URL,
-    PASSWORD_GRANT_TYPE,
-    CUSTOM_CLIENT_ID,
-    CLIENT_SECRET,
-    CLIENT_CREDENTIAL_GRANT_TYPE,
-    ADMIN_CLIENT_ID,
-    CUSTOM_REALM,
+    ADMIN_CLIENT_ID, BASE_URL, CLIENT_CREDENTIAL_GRANT_TYPE, CLIENT_SECRET, CUSTOM_CLIENT_ID, CUSTOM_REALM, PASSWORD_GRANT_TYPE
 } from "./authSettings";
 
+export function timeoutPromise(
+    ms: number,
+    promise: Promise<Response>,
+    message: string
+) {
+    return new Promise((resolve, reject) => {
+        const timeoutId = setTimeout(() => {
+            reject(new Error(message));
+        }, ms);
+        promise.then(
+            (res: Response) => {
+                clearTimeout(timeoutId);
+                resolve(res);
+            },
+            (err: any) => {
+                clearTimeout(timeoutId);
+                reject(err);
+            }
+        );
+    });
+}
+
 // function needed to convert javascript object to x-www-form-urlencoded readable form
-const xformurlencoder = (bodyFields:Record<string,any>):string => {
+const xformurlencoder = (bodyFields: Record<string, any>): string => {
     let encodedStr = "";
 
     for (let field in bodyFields) {
@@ -22,9 +39,9 @@ const xformurlencoder = (bodyFields:Record<string,any>):string => {
     return encodedStr;
 };
 
-const authRequest= {
+const authRequest = {
     // LOGIN USER AND GET TOKENS
-    loginUser: async (username:string, password:string) => {
+    loginUser: async (username: string, password: string) => {
         // information required to login in user
         let loginInfo = {
             username: username,
@@ -36,54 +53,71 @@ const authRequest= {
         // convert login information to urlencoded form
         const body = xformurlencoder(loginInfo);
 
-        let res:{status:string, data:Record<string,any>}= {status: "", data:{}};
+        let res: { status: number; data: any } = {
+            status: 0,
+            data: {},
+        };
 
         // post request to keycloak server
-        return await fetch(
-            BASE_URL +
-                "/auth/realms/" +
-                CUSTOM_REALM +
-                "/protocol/openid-connect/token",
-            {
-                body: body,
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                method: "POST",
-            }
-        )
+        return await axios
+            .post(
+                BASE_URL +
+                    "/auth/realms/" +
+                    CUSTOM_REALM +
+                    "/protocol/openid-connect/token",
+                body,
+
+                {
+                    headers: {
+                        "content-type":
+                            "application/x-www-form-urlencoded;charset=utf-8",
+                    },
+                    timeout: 10000,
+                    timeoutErrorMessage: "Login Request Timeout",
+                }
+            )
             .then((response) => {
-                res.status = response.status.toString()
-                return response.json()})
-            .then((data) => {
-                console.log(data)
-                res.data = data
+                // console.log(response);
+                res.status = response.status;
+                res.data = response.data;
+               
                 return res;
             })
-
+            .catch((err) => {
+               
+                return err;
+            });
     },
 
     // GET USER INFORMATION
-    getUser: async (token:string) => {
+    getUser: async (
+        token: string
+    ) => {
         // get request to keycloak server for user info
-        return await fetch(
-            BASE_URL +
-                "/auth/realms/" +
-                CUSTOM_REALM +
-                "/protocol/openid-connect/userinfo",
-            {
-                headers: {
-                    Authorization: "Bearer " + token,
-                    Accept: "application/json",
-                },
-                method: "GET",
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                if (data["error"]) return { error: data };
-                return data;
+        let res: { status: number; data: any } = {
+            status: 0,
+            data: {},
+        };
+        return await axios
+            .get(
+                BASE_URL +
+                    "/auth/realms/" +
+                    CUSTOM_REALM +
+                    "/protocol/openid-connect/userinfo",
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                        Accept: "application/json",
+                    },
+                    method: "GET",
+                    timeout: 10000,
+                    timeoutErrorMessage: "User Data Request Timeout",
+                }
+            )
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                return res;
             })
             .catch((err) => {
                 console.log(err.message);
@@ -137,7 +171,9 @@ const authRequest= {
         username,
         password,
         adminToken,
-    }:{[key:string]:string}) => {
+    }: {
+        [key: string]: string;
+    }) => {
         // information needed to register a new user on a keycloak server
         const body = {
             firstName: firstName,
@@ -179,7 +215,7 @@ const authRequest= {
     },
 
     // LOGOUT A USER SESSION
-    logoutUser: async ({ refreshToken }:{[key:string]:string}) => {
+    logoutUser: async ({ refreshToken }: { [key: string]: string }) => {
         // necessary setting information in order to logout
         const logoutInfo = {
             client_id: CUSTOM_CLIENT_ID,
@@ -211,7 +247,13 @@ const authRequest= {
     },
 
     // UPDATE USER PASSWORD
-    updatePassword: async ({ newPassword, userId, adminToken }:{[key:string]:string}) => {
+    updatePassword: async ({
+        newPassword,
+        userId,
+        adminToken,
+    }: {
+        [key: string]: string;
+    }) => {
         // new password settings
         const body = {
             temporary: false,
