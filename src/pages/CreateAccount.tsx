@@ -5,7 +5,7 @@ import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 function CreateAccount() {
     return (
         <HalfNavBarLayout>
-            <div className="md:px-10">
+            <div className="md:px-20">
                 <Header />
                 <Form />
             </div>
