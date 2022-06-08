@@ -80,7 +80,6 @@ function PersonalDetailsForm() {
                         <input
                             {...register("fullname")}
                             type="text"
-            
                             formNoValidate={true}
                             id="UpdateProfile__fullname"
                             className="outline-none pb-4  w-full"
@@ -265,7 +264,7 @@ function PersonalDetailsForm() {
                     <div className=" border-0 border-b-2  border-underlineColor ">
                         <label htmlFor="UpdateProfile_residentialAddress"></label>
                         <textarea
-                            {...register("residentialAddress")}
+                            {...register("residentialAddress", {validate: (value)=> value.length>30||"Make it more"})}
                             id="UpdateProfile_narration"
                             className="outline-none bg-bgColor pb-4  resize-none h-32 p-3 w-full border-0 "
                             placeholder="Residential Address"
@@ -278,6 +277,7 @@ function PersonalDetailsForm() {
                     }
                 </div>
 
+                {/* Profile Picture */}
                 <div className="col-span-12">
                     <div className=" border-0 border-b-2 border-underlineColor">
                         <label
@@ -300,9 +300,8 @@ function PersonalDetailsForm() {
                         <input
                             type="file"
                             {...register("picture", {
-                                validate: {
-                                    noFile: (value) => value.length > 0 || value.item === null,
-                                },
+                                validate: (value) => ((5<3) || "hello"),
+                                
                             })}
                             id="UpdateProfile__picture"
                             className="outline-none pb-4 hidden"

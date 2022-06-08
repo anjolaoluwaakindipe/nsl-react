@@ -1,7 +1,7 @@
 import React from "react";
 //import StatusView from "./StatusView";
-import { Link, Navigate } from 'react-router-dom';
-import EmptyStatus from "./EmptyStatus"; 
+import { Link, Navigate } from "react-router-dom";
+import EmptyStatus from "./EmptyStatus";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../utils/constants/allPaths";
 
@@ -12,16 +12,10 @@ type StatusProp = {
     statusview: number;
 };
 
-
-
-
-
-
-
 function Status(prop: StatusProp) {
     return (
         <div>
-            <div className="md:p-10 p-5 w-full grid grid-cols-4 gap-20 bg-gradient-to-b from-white   to-yellow-100  ">
+            <div className="md:p-10 p-5 w-full grid grid-cols-4 gap-20  font-semibold ">
                 <h3 className="flex justify-center items-center">
                     {prop.loantype}
                 </h3>
@@ -30,7 +24,7 @@ function Status(prop: StatusProp) {
                     {prop.amount}
                 </h3>
 
-                <div className="">
+                <div className=" flex justify-center  items-center text-center ">
                     <StatusType status={prop.statustype} />
                 </div>
 
@@ -44,48 +38,39 @@ function Status(prop: StatusProp) {
 
 export default Status;
 
-
-
 //status type
 function StatusType({ status }: { status: Number }) {
     const PendingApproval = (
-
-        <div className="flex  items-center  space-x-2">
-            <div className="min-w-[10px] min-h-[10px]  bg-red-400 border-2 border-gray-10 rounded-full " />
+        <div className="flex items-center justify-center  space-x-2">
+            <div className="w-[10px] h-[10px]  bg-red-400 border-2 rounded-full " />
             <h3 className="max-w-[200px]">Pending Approval {"      "} </h3>
-
         </div>
     );
 
     const PendingContractApproval = (
-        <div className="flex items-center space-x-2">
-            <div className="min-w-[10px] min-h-[10px] bg-red-900 border-2 border-gray-10 rounded-full " />
-            <h3 >Pending Contract Approval</h3>
-
-
+        <div className="flex  items-center justify-center space-x-2">
+            <div className="min-w-[14px] min-h-[14px] bg-red-900 border-2 rounded-full " />
+            <h3 className="max-w-[200px]">Pending Contract Approval </h3>
         </div>
     );
 
-    const Approved =(
+    const Approved = (
         <div className="flex items-center space-x-2">
-        <div className="min-w-[10px] min-h-[10px] bg-green-600 border-2 border-gray-10 rounded-full " />
-        <h3 >Approved</h3>
-
-
-    </div>
-
+            <div className="w-[10px] h-[10px] bg-green-600  rounded-full " />
+            <h3 className="max-w-[200px]">Approved</h3>
+        </div>
     );
 
     switch (status) {
         case 1: {
-            return (PendingApproval);
+            return PendingApproval;
         }
 
         case 2: {
             return PendingContractApproval;
         }
 
-        case 3:{
+        case 3: {
             return Approved;
         }
 
@@ -95,64 +80,60 @@ function StatusType({ status }: { status: Number }) {
     }
 }
 
-
-//status view 
-function StatusView ( { status }: { status: Number }){
+//status view
+function StatusView({ status }: { status: Number }) {
     const navigate = useNavigate();
     const ViewPendingApproval = (
         <div>
-            
-                <button className=" text-accentColor cursor-pointer flex justify-center items-center"
-                
-                onClick={()=>{navigate(paths.LOAN_INFORMATION)}}
-                >
-                    view
-                </button>
-    
-            
-    
+            <button
+                className=" text-primaryColor hover:underline cursor-pointer flex justify-center items-center"
+                onClick={() => {
+                    navigate(paths.LOAN_INFORMATION);
+                }}
+            >
+                View
+            </button>
         </div>
-    
     );
 
-     
     const ViewPendingContractApproval = (
         <div>
-            
-                <button className=" text-accentColor cursor-pointer flex justify-center items-center"
-                onClick={()=>{navigate(paths.LOAN_CONTRACT)}}
-                >
-                    view
-                </button>
-            
+            <button
+                className=" text-primaryColor hover:underline cursor-pointer flex justify-center items-center"
+                onClick={() => {
+                    navigate(paths.LOAN_CONTRACT);
+                }}
+            >
+                View
+            </button>
         </div>
-    
     );
-
 
     const ViewApproved = (
         <div>
-            <button className="text-accentColor cursor-pointer flex justify-center items-center"
-            onClick={()=>{navigate(paths.TERM_LOAN)}}>
+            <button
+                className="text-primaryColor hover:underline cursor-pointer flex justify-center items-center"
+                onClick={() => {
+                    navigate(paths.TERM_LOAN);
+                }}
+            >
                 View
             </button>
         </div>
     );
 
     switch (status) {
-        case 1:{
-            return (ViewPendingApproval);
+        case 1: {
+            return ViewPendingApproval;
         }
         case 2: {
-            return (ViewPendingContractApproval);
+            return ViewPendingContractApproval;
         }
         case 3: {
             return ViewApproved;
         }
-    
+
         default:
-            return(ViewPendingApproval);
+            return ViewPendingApproval;
     }
-
-
 }

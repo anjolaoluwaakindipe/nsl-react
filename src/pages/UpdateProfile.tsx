@@ -4,9 +4,11 @@ import DefaultLayout from "../components/layout/DefaultLayout";
 
 // paths
 import { paths } from "../utils/constants/allPaths";
+import NavBarLayout from "../components/layout/NavBarLayout";
 
 // form components
-const NavBarLayout = lazy(()=> import("../components/layout/NavBarLayout"))
+// const NavBarLayout = lazy(() => import("../components/layout/NavBarLayout"));
+// const DefaultLayout = lazy(() => import("../components/layout/DefaultLayout"));
 const EmploymentDetailsForm = lazy(
     () => import("../components/pages/UpdateProfile/EmploymentDetailsForm")
 );
@@ -28,39 +30,39 @@ function Header() {
 
 function UpdateProfile() {
     return (
-        <React.Suspense><NavBarLayout>
-        <Routes>
-            <Route element={<DefaultLayout />}>
-                <Route element={<Header />}>
-                    <Route
-                        path={paths.UPDATE_PROFILE.PERSONAL_DETAILS}
-                        element={
-                            <React.Suspense>
-                                <PersonalDetailsForm />
-                            </React.Suspense>
-                        }
-                    />
-                    <Route
-                        path={paths.UPDATE_PROFILE.EMPLOYMENT_DETAILS}
-                        element={
-                            <React.Suspense>
-                                <EmploymentDetailsForm />
-                            </React.Suspense>
-                        }
-                    />
-                    <Route
-                        path={paths.UPDATE_PROFILE.ACCOUNT_DETAILS}
-                        element={
-                            <React.Suspense>
-                                <AccountDetailsForm />
-                            </React.Suspense>
-                        }
-                    />
-                    {/* j */}
+        <NavBarLayout>
+            <Routes>
+                <Route element={<DefaultLayout />}>
+                    <Route element={<Header />}>
+                        <Route
+                            path={paths.UPDATE_PROFILE.PERSONAL_DETAILS}
+                            element={
+                                <React.Suspense>
+                                    <PersonalDetailsForm />
+                                </React.Suspense>
+                            }
+                        />
+                        <Route
+                            path={paths.UPDATE_PROFILE.EMPLOYMENT_DETAILS}
+                            element={
+                                <React.Suspense>
+                                    <EmploymentDetailsForm />
+                                </React.Suspense>
+                            }
+                        />
+                        <Route
+                            path={paths.UPDATE_PROFILE.ACCOUNT_DETAILS}
+                            element={
+                                <React.Suspense>
+                                    <AccountDetailsForm />
+                                </React.Suspense>
+                            }
+                        />
+                        {/* j */}
+                    </Route>
                 </Route>
-            </Route>
-        </Routes>
-        </NavBarLayout></React.Suspense>
+            </Routes>
+        </NavBarLayout>
     );
 }
 

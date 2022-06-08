@@ -81,7 +81,6 @@ function ModalProvider() {
                     e.stopPropagation();
                 }}
             >
-
                 {ModalContent(modalState.modalName, cancelModal)}
             </div>
         </div>
