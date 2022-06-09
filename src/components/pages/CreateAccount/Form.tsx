@@ -11,6 +11,10 @@ import { createAccountSchema } from "../../../utils/validation/createAccount";
 import PhoneField from "../../shared/TextFields/PhoneField";
 import { paths } from "../../../utils/constants/allPaths";
 import { useModal } from "../../../services/customHooks/useModal";
+import { useSelector, useDispatch } from "react-redux";
+import { authSelector, createUser } from "../../../state/authSlice";
+import { useEffect, useState } from "react";
+import { AppDispatch } from "../../../state/store";
 type CreateAccountFormData = {
     cscsAccountNumber: string;
     fullName: string;
@@ -22,6 +26,10 @@ type CreateAccountFormData = {
 
 function Form() {
     const navigate = useNavigate();
+    const { isLoading, isSuccess, errorMessage, isError } =
+        useSelector(authSelector);
+    const dispatch = useDispatch<AppDispatch>();
+    const [disableButton, setDisableButton] = useState(false);
 
     const {
         register,
@@ -30,28 +38,38 @@ function Form() {
         formState: { errors },
     } = useForm<CreateAccountFormData>({
         defaultValues: {
-         
             fullName: "",
             emailAddress: "",
             phoneNumber: "",
-         
+
             password: "",
         },
         resolver: joiResolver(createAccountSchema),
     });
+      const { openModalFunc } = useModal("BeginVerificationModal", false);
 
-    const onProceed = () => {
-        navigate("/login", { replace: true });
-    };
+    useEffect(() => {
+        if (!isLoading && isSuccess) {
+            openModalFunc();
+        }
+    }, [isLoading, isSuccess, isError, openModalFunc]);
 
-    const { openModalFunc } = useModal(
-        "BeginVerificationModal",
-        false,
-       
-    );
+    
 
-    const onSubmit = handleSubmit(() => {
-        openModalFunc();
+  
+
+    const onSubmit = handleSubmit(async(data) => {
+        setDisableButton(true);
+        await dispatch(
+            createUser({
+                fullName: data.fullName.trim(),
+                email: data.emailAddress.trim(),
+                phoneNumber: data.phoneNumber.trim(),
+                password: data.password.trim(),
+            })
+        );
+
+        setDisableButton(false);
     });
 
     return (
@@ -68,7 +86,7 @@ function Form() {
                         type="text"
                         {...register("fullName")}
                         id="CreateAccount__fullName"
-                        className="outline-none pb-4  border-0 "
+                        className="outline-none pb-4  border-0  w-full"
                         placeholder="Full Name"
                     />
                 </div>
@@ -133,7 +151,11 @@ function Form() {
             </div>
 
             <div className="col-span-12 space-y-6">
-                <button className="btn1 w-full " type="submit">
+                <button
+                    className="btn1 w-full "
+                    type="submit"
+                    disabled={disableButton}
+                >
                     Proceed
                 </button>
                 <h6 className="text-center md:text-xl w-full">

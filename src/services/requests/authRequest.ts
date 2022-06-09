@@ -1,6 +1,13 @@
 import axios from "axios";
+import { appendFile } from "fs";
 import {
-    ADMIN_CLIENT_ID, BASE_URL, CLIENT_CREDENTIAL_GRANT_TYPE, CLIENT_SECRET, CUSTOM_CLIENT_ID, CUSTOM_REALM, PASSWORD_GRANT_TYPE
+    ADMIN_CLIENT_ID,
+    BASE_URL,
+    CLIENT_CREDENTIAL_GRANT_TYPE,
+    CLIENT_SECRET,
+    CUSTOM_CLIENT_ID,
+    CUSTOM_REALM,
+    PASSWORD_GRANT_TYPE,
 } from "./authSettings";
 
 export function timeoutPromise(
@@ -80,19 +87,16 @@ const authRequest = {
                 // console.log(response);
                 res.status = response.status;
                 res.data = response.data;
-               
+
                 return res;
             })
             .catch((err) => {
-               
                 return err;
             });
     },
 
     // GET USER INFORMATION
-    getUser: async (
-        token: string
-    ) => {
+    getUser: async (token: string) => {
         // get request to keycloak server for user info
         let res: { status: number; data: any } = {
             status: 0,
@@ -137,49 +141,69 @@ const authRequest = {
         // convert adminToken info to a urlencoded form
         const body = xformurlencoder(adminTokenInfo);
 
+        // response data format
+        let res: { status: number; data: any } = {
+            status: 0,
+            data: {},
+        };
+
         // request to keycloak server
-        return await fetch(
-            BASE_URL +
-                "/auth/realms/" +
-                CUSTOM_REALM +
-                "/protocol/openid-connect/token",
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: body,
-                method: "POST",
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                if (data["error"]) return { error: data };
-                return data;
+        return await axios
+            .post(
+                BASE_URL +
+                    "/auth/realms/" +
+                    CUSTOM_REALM +
+                    "/protocol/openid-connect/token",
+                body,
+                {
+                    headers: {
+                        "content-type": "application/x-www-form-urlencoded",
+                    },
+
+                    method: "POST",
+                }
+            )
+
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                console.log(res);
+
+                return res;
             })
             .catch((err) => {
-                console.log(err.message);
+                console.log(err);
                 return err;
             });
     },
 
     // REGISTER A NEW USER
     registerUser: async ({
-        firstName,
-        lastName,
+        fullName,
         email,
-        username,
         password,
+        phoneNumber,
         adminToken,
     }: {
-        [key: string]: string;
+        fullName: string;
+        email: string;
+        password: string;
+        phoneNumber: string;
+        adminToken: string;
     }) => {
+        // manipulating  the full name
+        const lastName = fullName.trim().split(" ").pop();
+        const firstName = fullName
+            .trim()
+            .split(" ")
+            .slice(0, fullName.trim().split(" ").length - 1).join(" ");
         // information needed to register a new user on a keycloak server
         const body = {
             firstName: firstName,
-            lastName: lastName,
+            lastName: lastName || "",
             email: email,
-            username: username,
+            emailVerified: true,
+            username: email,
             enabled: true,
             credentials: [
                 {
@@ -188,25 +212,36 @@ const authRequest = {
                     temporary: false,
                 },
             ],
+            attributes: {
+                phoneNumber: phoneNumber,
+            },
+        };
+
+        // ok response data format
+        let res: { status: number; data: any } = {
+            status: 0,
+            data: {},
         };
 
         // request to keycloak server
-        return await fetch(
-            BASE_URL + "/auth/admin/realms/" + CUSTOM_REALM + "/users",
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + adminToken,
-                },
-                method: "POST",
-                body: JSON.stringify(body),
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                if (data["error"]) return { error: data };
-                return data;
+        return await axios
+            .post(
+                BASE_URL + "/auth/admin/realms/" + CUSTOM_REALM + "/users",
+                body,
+                {
+                    headers: {
+                        "content-type": "application/json",
+                        Authorization: "Bearer " + adminToken,
+                    },
+                   
+                }
+            )
+
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                console.log(res)
+                return res;
             })
             .catch((err) => {
                 console.log(err.message);
@@ -215,7 +250,7 @@ const authRequest = {
     },
 
     // LOGOUT A USER SESSION
-    logoutUser: async ({ refreshToken }: { [key: string]: string }) => {
+    logoutUser: async ({ refreshToken }: { refreshToken: string }) => {
         // necessary setting information in order to logout
         const logoutInfo = {
             client_id: CUSTOM_CLIENT_ID,
@@ -224,22 +259,32 @@ const authRequest = {
 
         const body = xformurlencoder(logoutInfo);
 
+        let res: { status: number; data: any } = {
+            status: 0,
+            data: {},
+        };
+
         // request to keycloak server
-        return await fetch(
-            BASE_URL +
-                "/auth/realms/" +
-                CUSTOM_REALM +
-                "/protocol/openid-connect/logout",
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: body,
-                method: "POST",
-            }
-        )
-            .then((res) => res.json)
-            .then(() => ({ success: true }))
+        return await axios
+            .post(
+                BASE_URL +
+                    "/auth/realms/" +
+                    CUSTOM_REALM +
+                    "/protocol/openid-connect/logout",
+                body,
+                {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    method: "POST",
+                }
+            )
+
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                return res;
+            })
             .catch((err) => {
                 console.log(err.message);
                 return err;
@@ -283,3 +328,16 @@ const authRequest = {
     },
 };
 export default authRequest;
+
+function myFunc() {
+    authRequest.registerUser({
+        email: "asdfasd",
+        fullName: "asdfadsfasdfdf",
+        password: "asfdadfasdf",
+        phoneNumber: "+313241234234",
+        adminToken:
+            "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJleHpaUDV5OTFTNEpobThUeUx1cGxkdlB2U3l0ckZqVFE2UF9DcGRTdlZzIn0.eyJleHAiOjE2NTQ3NjY1MDgsImlhdCI6MTY1NDc2NjIwOCwianRpIjoiY2JhYWIzNTEtYTNiNC00NDkwLWIyNDQtYzNmZjk1MjBjMDFhIiwiaXNzIjoiaHR0cHM6Ly9zZW50cnkuaXNzbC5uZy9hdXRoL3JlYWxtcy9uc2wiLCJzdWIiOiI4YmU2OTQ1NS0wYWUxLTRkYjUtYjQ0Ni1lNmYzODliMzgwYjEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhZG1pbi1jbGkiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVzb3VyY2VfYWNjZXNzIjp7ImFkbWluLWNsaSI6eyJyb2xlcyI6WyJ1bWFfcHJvdGVjdGlvbiJdfX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SWQiOiJhZG1pbi1jbGkiLCJjbGllbnRIb3N0IjoiMTk3LjI0Mi4xMTQuMTM1IiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LWFkbWluLWNsaSIsImNsaWVudEFkZHJlc3MiOiIxOTcuMjQyLjExNC4xMzUifQ.ivtpeSCaJIYnoJ0AZv8Bi3KTw5RwsWTdnDEZeSgzEeSuxGHRjlsoHwpU3-HWvdtRnuAzI3m7cFQMw9S6T8zrPvOG8IgOoRhAJyxbZnJ0EweGNXNeTTlnZU87XflBOYr1iDeb1nbvt5X1-eaAkt9spaSYRdeguqRiPNzcqWfL7f_vRB2jkKSRiLrbwZGHzPFxfMb5Ob5V5t45mNS2GPD_D5mYRG28uuEvIWkBL3KlBWYyFp7Ueyws5-rRzr0vDbckU1tLXjkuyBs-0wqy_V-0g9Vm2iLvuFLyLr2jxYN-bCZK-PD8DO31iPhirb8Ne-zFVbHc4LpF4PLmcBCee7HITw",
+    });
+}
+
+myFunc();

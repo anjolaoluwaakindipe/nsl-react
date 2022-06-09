@@ -11,11 +11,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { authSelector, loginUser } from "../../../state/authSlice";
 import { AppDispatch } from "../../../state/store";
 import { useEffect, useState } from "react";
+import { makeUnCancellable, setModalName } from "../../../state/modalSlice";
 
 function Form() {
     const { isError, isLoading, errorMessage, isSuccess } =
         useSelector(authSelector);
-    const [modalName, setModalName] = useState("");
+    const [modalOptions, setModalOptions] = useState({
+        name: "",
+        isCancellable: true,
+    });
     const dispatch = useDispatch<AppDispatch>();
 
     const {
@@ -30,29 +34,29 @@ function Form() {
         resolver: joiResolver(loginSchema),
     });
 
+    const { openModalFunc } = useModal(
+        // "LoginSucessModal",
+        //"LoginUnsucessfulModal",
+        modalOptions.name,
+        modalOptions.isCancellable
+    );
+
     useEffect(() => {}, [isLoading]);
 
     useEffect(() => {
         if (isSuccess) {
-            setModalName("LoginSucessModal");
+            dispatch(makeUnCancellable({ cancellable: true }));
+            dispatch(setModalName("LoginSucessModal"));
         }
         if (isError) {
-            setModalName("LoginUnsucessfulModal");
+            dispatch(setModalName("LoginUnsucessfulModal"));
         }
-    }, [isError, isSuccess]);
-
-    const { openModalFunc } = useModal(
-        // "LoginSucessModal",
-        //"LoginUnsucessfulModal",
-        modalName,
-        true
-    );
+    }, [isError, isSuccess, dispatch, openModalFunc]);
 
     const onSubmit = handleSubmit(async (data) => {
         await dispatch(
             loginUser({ email: data.usernameOrEmail, password: data.password })
         );
-
         openModalFunc();
     });
 

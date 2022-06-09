@@ -9,9 +9,6 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
     const navigate = useNavigate();
     const { accessToken, refreshToken } = useSelector(authSelector);
 
-    // if (!keycloak.authenticated && !initialized) {
-    //     return <div></div>;
-    // }
 
     useEffect(()=>{
         if (!accessToken && !refreshToken) {
