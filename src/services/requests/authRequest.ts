@@ -10,27 +10,7 @@ import {
     PASSWORD_GRANT_TYPE,
 } from "./authSettings";
 
-export function timeoutPromise(
-    ms: number,
-    promise: Promise<Response>,
-    message: string
-) {
-    return new Promise((resolve, reject) => {
-        const timeoutId = setTimeout(() => {
-            reject(new Error(message));
-        }, ms);
-        promise.then(
-            (res: Response) => {
-                clearTimeout(timeoutId);
-                resolve(res);
-            },
-            (err: any) => {
-                clearTimeout(timeoutId);
-                reject(err);
-            }
-        );
-    });
-}
+
 
 // function needed to convert javascript object to x-www-form-urlencoded readable form
 const xformurlencoder = (bodyFields: Record<string, any>): string => {
@@ -192,11 +172,15 @@ const authRequest = {
         adminToken: string;
     }) => {
         // manipulating  the full name
-        const lastName = fullName.trim().split(" ").pop();
+        const lastName =
+            fullName.split(" ").length === 1
+                ? ""
+                : fullName.trim().split(" ").pop();
         const firstName = fullName
             .trim()
             .split(" ")
-            .slice(0, fullName.trim().split(" ").length - 1).join(" ");
+            .slice(0, fullName.trim().split(" ").length - 1)
+            .join(" ");
         // information needed to register a new user on a keycloak server
         const body = {
             firstName: firstName,
@@ -233,14 +217,13 @@ const authRequest = {
                         "content-type": "application/json",
                         Authorization: "Bearer " + adminToken,
                     },
-                   
                 }
             )
 
             .then((response) => {
                 res.status = response.status;
                 res.data = response.data;
-                console.log(res)
+                console.log(res);
                 return res;
             })
             .catch((err) => {

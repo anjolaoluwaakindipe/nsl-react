@@ -98,6 +98,14 @@ interface AuthState {
     requestStatus: number;
 }
 
+// signUpInfo state
+interface SignUpInfoState {
+    fullName:string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+}
+
 // Requests
 interface TokenResponse {
     access_token: string;

@@ -178,25 +178,33 @@ export const createUser = createAsyncThunk(
 );
 
 // state action for logging user out
-export const logoutUser = createAsyncThunk(
-    "auth/logoutUserStatus",
-    async (_, thunkAPI) => {
-        const userState = thunkAPI.getState() as AuthState;
-        if (userState.refreshToken !== null) {
-            const logoutResponse = await authRequest.logoutUser({
-                refreshToken: userState.refreshToken,
-            });
+export const logoutUser = createAsyncThunk<
+    any,
+    undefined,
+    { state: RootState }
+>("auth/logoutUserStatus", async (_, thunkAPI) => {
+    try {
+        // const { refreshToken } = thunkAPI.getState().auth;
+        // if (refreshToken !== null) {
+        //     const logoutResponse = await authRequest.logoutUser({
+        //         refreshToken: refreshToken,
+        //     });
 
-            if (logoutResponse.status && logoutResponse.status === 200) {
-                return;
-            } else {
-                return thunkAPI.rejectWithValue(
-                    "Couldn't communicate with server"
-                );
-            }
-        }
+        //     if (logoutResponse.status && logoutResponse.status === 200) {
+        //         return;
+        //     } else {
+        //         return thunkAPI.rejectWithValue(
+        //             "Couldn't communicate with server"
+        //         );
+        //     }
+        // }
+
+        return thunkAPI.fulfillWithValue("yes");
+    } catch (e: any) {
+        console.log(e);
+        return thunkAPI.rejectWithValue(e);
     }
-);
+});
 
 // state action for refreshing user tokens
 
@@ -212,7 +220,7 @@ const authSlice = createSlice({
             state.accessToken = action.payload.token;
         },
         clearAuthState(state: AuthState) {
-            state = initialState;
+            return initialState;
         },
     },
     extraReducers: (builder) => {
@@ -254,7 +262,7 @@ const authSlice = createSlice({
                 state.errorMessage = action.payload as string;
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
-                state = initialState;
+                state = { ...initialState };
             })
             .addCase(logoutUser.pending, (state, action) => {
                 state.isLoading = true;
@@ -269,7 +277,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { setAuthState } = authSlice.actions;
+export const { setAuthState, clearAuthState } = authSlice.actions;
 
 export const authSelector = (state: RootState) => state.auth;
 

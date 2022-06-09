@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { authSelector, createUser } from "../../../state/authSlice";
 import { useEffect, useState } from "react";
 import { AppDispatch } from "../../../state/store";
+import { setSignUpInfo } from "../../../state/signUpInfoSlice";
 type CreateAccountFormData = {
     cscsAccountNumber: string;
     fullName: string;
@@ -46,7 +47,7 @@ function Form() {
         },
         resolver: joiResolver(createAccountSchema),
     });
-      const { openModalFunc } = useModal("BeginVerificationModal", false);
+    const { openModalFunc } = useModal("BeginVerificationModal", false);
 
     useEffect(() => {
         if (!isLoading && isSuccess) {
@@ -54,20 +55,27 @@ function Form() {
         }
     }, [isLoading, isSuccess, isError, openModalFunc]);
 
-    
-
-  
-
-    const onSubmit = handleSubmit(async(data) => {
+    const onSubmit = handleSubmit(async (data) => {
         setDisableButton(true);
-        await dispatch(
-            createUser({
-                fullName: data.fullName.trim(),
-                email: data.emailAddress.trim(),
-                phoneNumber: data.phoneNumber.trim(),
-                password: data.password.trim(),
+        // await dispatch(
+        //     createUser({
+        //         fullName: data.fullName.trim(),
+        //         email: data.emailAddress.trim(),
+        //         phoneNumber: data.phoneNumber.trim(),
+        //         password: data.password.trim(),
+        //     })
+        // );
+
+        dispatch(
+            setSignUpInfo({
+                email: data.emailAddress,
+                fullName: data.fullName,
+                password: data.password,
+                phoneNumber: data.phoneNumber,
             })
         );
+
+        openModalFunc();
 
         setDisableButton(false);
     });

@@ -1,15 +1,20 @@
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 import { Header } from "../components/pages/EmailVerification";
-import EmailVerificationPinCode from '../components/pages/EmailVerification/EmailVerificationPinCode';
+import EmailVerificationPinCode from "../components/pages/EmailVerification/EmailVerificationPinCode";
 import { useModal } from "../services/customHooks/useModal";
-import { paths } from '../utils/constants/allPaths';
+import { paths } from "../utils/constants/allPaths";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { signUpInfoSelector } from "../state/signUpInfoSlice";
 
 function EmailVerification() {
-    
+    const { email, fullName, password, phoneNumber } =
+        useSelector(signUpInfoSelector);
+    const navigate = useNavigate();
 
     const {
         handleSubmit,
@@ -17,25 +22,29 @@ function EmailVerification() {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            emailCode:"",
+            emailCode: "",
         },
         resolver: joiResolver(
             Joi.object({
-                emailCode: Joi.string().required().min(4).max(4).label("Email Code"),
+                emailCode: Joi.string()
+                    .required()
+                    .min(4)
+                    .max(4)
+                    .label("Email Code"),
             })
         ),
     });
 
-   
-    const { openModalFunc } = useModal(
-        "EmailVerificationSuccessModal",
-        false,
-     
-    );
+    useEffect(() => {
+        if (!email || !fullName || !password || !phoneNumber) {
+            navigate(paths.CREATE_ACCOUNT, { replace: true });
+        }
+    }, [email,fullName, password, phoneNumber  ]); // eslint-disable-line
+
+    const { openModalFunc } = useModal("EmailVerificationSuccessModal", false);
 
     const onSubmit = handleSubmit((data) => {
-        
-       openModalFunc();
+        openModalFunc();
     });
 
     return (

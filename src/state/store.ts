@@ -3,17 +3,19 @@ import modalReducer from "./modalSlice";
 import authSlice from "./authSlice";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import signUpInfoSlice from "./signUpInfoSlice";
 
 const rootReducer = combineReducers({
     modal: modalReducer,
     auth: authSlice,
+    signUpInfo: signUpInfoSlice,
 });
 
 const persistedReducer = persistReducer(
     {
         key: "root",
         storage,
-        blacklist: ["modal"],
+        blacklist: ["modal", "signUpInfo"],
     },
     rootReducer
 );

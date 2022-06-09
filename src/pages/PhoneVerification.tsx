@@ -1,22 +1,22 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 
 // components
 import {
     Header,
-    PhoneVerificationPinCode,
+    PhoneVerificationPinCode
 } from "../components/pages/PhoneVerification";
 
 // form
-import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
+import { Controller, useForm } from "react-hook-form";
 import { useModal } from "../services/customHooks/useModal";
-import { paths } from '../utils/constants/allPaths';
+import { paths } from "../utils/constants/allPaths";
 
 function PhoneVerification() {
-    const navigate = useNavigate();
+  
+
 
     // component state
     const {
@@ -35,12 +35,12 @@ function PhoneVerification() {
             })
         ),
     });
-  
+
+
 
     const { openModalFunc } = useModal(
         "PhoneEmailVerificationSuccessModal",
-        false,
-    
+        false
     );
 
     const onSubmit = handleSubmit((data) => {
