@@ -15,6 +15,7 @@ import ProfileUpdateModal from "./Content/ProfileUpdateModal";
 import BeginVerificationModal from "./Content/BeginVerificationModal";
 import ProfileUpdateSuccessfulModal from "./Content/ProfileUpdateSuccessfulModal";
 import LoanApplicationSuccessModal from "./Content/LoanApplicationSucessModal";
+import LogOutModal from "./Content/LogOutModal";
 
 function ModalContent(
     modalName: string,
@@ -40,7 +41,9 @@ function ModalContent(
         case "ProfileUpdateSuccessfulModal":
             return <ProfileUpdateSuccessfulModal cancelModal={cancelModal} />;
         case "LoanApplicationSucessModal":
-            return <LoanApplicationSuccessModal cancelModal={cancelModal} />
+            return <LoanApplicationSuccessModal cancelModal={cancelModal} />;
+            case "LogOutModal":
+                return <LogOutModal cancelModal={cancelModal}/>
 
         default:
             return <div></div>;
