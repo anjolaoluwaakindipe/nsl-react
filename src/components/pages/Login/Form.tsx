@@ -20,7 +20,7 @@ function Form() {
         name: "",
         isCancellable: true,
     });
-    const [isButtonLoading, setButtonLoading ] = useState(false);
+    const [isButtonLoading, setButtonLoading] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
 
     const {
@@ -42,7 +42,7 @@ function Form() {
         modalOptions.isCancellable
     );
 
-    useEffect(() => {}, [isLoading]);
+    useEffect(() => { }, [isLoading]);
 
     useEffect(() => {
         if (isSuccess) {
@@ -59,7 +59,7 @@ function Form() {
         await dispatch(
             loginUser({ email: data.usernameOrEmail, password: data.password })
         );
-        
+
         openModalFunc();
         setButtonLoading(false);
     });
@@ -68,10 +68,11 @@ function Form() {
         <form
             onSubmit={onSubmit}
             className="w-full py-20 space-y-16  text-darkTextColor text-base md:text-xl"
-        >
+        >         
+            {/* username*/}
             <div>
-                <div className="w-full  border-0 border-b-2  border-underlineColor">
-                    <label htmlFor="cscsAccountNumber"></label>
+                <div className="w-full  border-0 border-b-2  border-underlineColor ">
+                    <label htmlFor="cscsAccountNumber "></label>
                     <input
                         type="text"
                         {...register("usernameOrEmail")}
@@ -87,7 +88,7 @@ function Form() {
                     </p>
                 )}
             </div>
-
+            {/* password*/}
             <div className="w-full space-y-5">
                 <div>
                     <div className="w-full border-0 border-b-2  border-underlineColor ">
@@ -107,6 +108,14 @@ function Form() {
                     )}
                 </div>
 
+
+
+
+
+
+
+
+
                 <div>
                     <Link
                         className="text-primaryColor text-base hover:underline"
@@ -117,9 +126,10 @@ function Form() {
                 </div>
             </div>
 
+
             <div className=" w-full  space-y-6">
                 <button className="btn1 w-full" type="submit" disabled={isButtonLoading}>
-                    {isButtonLoading?"Loading...":"Proceed"}
+                    {isButtonLoading ? "Loading..." : "Proceed"}
                 </button>
 
                 <h6 className="text-center md:text-xl w-full">

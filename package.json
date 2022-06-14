@@ -35,6 +35,7 @@
         "react-scripts": "^4.0.3",
         "reactjs-popup": "^2.0.5",
         "redux-persist": "^6.0.0",
+        "tailwind-float-label": "^3.0.0",
         "typescript": "^4.6.3",
         "web-vitals": "^2.1.4"
     },
