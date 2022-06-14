@@ -23,5 +23,5 @@ export const paths = {
     EDIT_EMPLOYMENT_DETAILS: "/edit-employment-details",
     EDIT_ACCOUNT_DETAILS: "/edit-account-details",
     FORGOT_PASSWORD: "/forgot-password",
- 
+    WELCOME: "/welcome"
 };

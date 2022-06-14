@@ -31,6 +31,7 @@ const EditEmploymentDetails = lazy(
 const EditPersonalDetails = lazy(() => import("./pages/EditPersonalDetails"));
 const EditAccountDetails = lazy(() => import("./pages/EditAccountDetails"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const Welcome = lazy(() => import("./pages/Welcome"));
 
 function AppRouter() {
     return (
@@ -149,7 +150,6 @@ function AppRouter() {
                             <ProtectedRoute>
                                 <UpdateProfile />
                             </ProtectedRoute>
-
                         }
                     />
 
@@ -201,7 +201,7 @@ function AppRouter() {
                         element={
                             <React.Suspense>
                                 <ProtectedRoute>
-                                <EditEmploymentDetails />
+                                    <EditEmploymentDetails />
                                 </ProtectedRoute>
                             </React.Suspense>
                         }
@@ -212,7 +212,7 @@ function AppRouter() {
                         element={
                             <React.Suspense>
                                 <ProtectedRoute>
-                                <EditAccountDetails />
+                                    <EditAccountDetails />
                                 </ProtectedRoute>
                             </React.Suspense>
                         }
@@ -223,6 +223,15 @@ function AppRouter() {
                         element={
                             <React.Suspense>
                                 <ForgotPassword />
+                            </React.Suspense>
+                        }
+                    />
+
+                    <Route
+                        path={paths.WELCOME}
+                        element={
+                            <React.Suspense>
+                                <Welcome />
                             </React.Suspense>
                         }
                     />
