@@ -138,6 +138,7 @@ function Form() {
             autoSave={"off"}
             autoComplete={"off"}
         >
+    {/*enter full name */}
             <div className="col-span-12  ">
                 <div className="border-0 border-b-2  border-underlineColor">
                     <label htmlFor="fullName"></label>
@@ -153,6 +154,8 @@ function Form() {
                     {errors.fullName?.message}
                 </p>
             </div>
+
+              {/*enter email */}
             <div className="col-span-12 ">
                 <div className="border-0 border-b-2   border-underlineColor">
                     <label htmlFor="email"></label>
@@ -167,6 +170,8 @@ function Form() {
                     {errors.emailAddress?.message}
                 </p>
             </div>
+
+              {/*enter phone number */}
             <div className="col-span-12 ">
                 <div className="border-0 border-b-2  border-underlineColor">
                     <Controller
@@ -194,6 +199,8 @@ function Form() {
                     {errors.phoneNumber?.message}
                 </p>
             </div>
+
+             {/*enter password */}
             <div className="col-span-12 ">
                 <div className="border-0 border-b-2  border-underlineColor">
                     <label htmlFor="password"></label>
@@ -202,6 +209,22 @@ function Form() {
                         {...register("password")}
                         className="outline-none pb-4   w-full"
                         placeholder="Password"
+                    />
+                </div>
+                <p className="text-xs text-red-900 ">
+                    {errors.password?.message}
+                </p>
+            </div>
+
+              {/*confirm password */}
+            <div className="col-span-12 ">
+                <div className="border-0 border-b-2  border-underlineColor">
+                    <label htmlFor="password"></label>
+                    <input
+                        type="password"
+                        {...register("password")}
+                        className="outline-none pb-4   w-full"
+                        placeholder="Confirm Password"
                     />
                 </div>
                 <p className="text-xs text-red-900 ">
