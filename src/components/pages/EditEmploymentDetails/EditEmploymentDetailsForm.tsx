@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import PhoneField from "../../shared/TextFields/PhoneField";
+import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 
 function EditEmploymentDetailsForm() {
     const { register, formState, handleSubmit, control } = useForm({
@@ -28,16 +29,13 @@ function EditEmploymentDetailsForm() {
         >
             {/*Title */}
             <div className="col-span-12 md:col-span-6">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditEmploymentDetails__title"></label>
-                    <input
-                        type="text"
-                        {...register("title", { required: false })}
-                        id="EditProfileDetails__fullName"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Title"
-                    />
-                </div>
+                <FloatingPlaceholderTextField
+                    placeholder="Title"
+                    type="text"
+                    register={register}
+                    registerName='Title'
+                    id="EditEmploymentDetails__title"
+                />
             </div>
 
             {/*Company Name */}

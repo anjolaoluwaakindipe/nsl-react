@@ -200,9 +200,9 @@ function AppRouter() {
                         path={paths.EDIT_EMPLOYMENT_DETAILS}
                         element={
                             <React.Suspense>
-                                <ProtectedRoute>
+                                {/* <ProtectedRoute> */}
                                     <EditEmploymentDetails />
-                                </ProtectedRoute>
+                                {/* </ProtectedRoute> */}
                             </React.Suspense>
                         }
                     />

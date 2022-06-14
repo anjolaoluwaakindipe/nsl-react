@@ -3,6 +3,7 @@ import Dropdown from "react-dropdown";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import PhoneField from "../../shared/TextFields/PhoneField";
 import { isValidPhoneNumber } from "react-phone-number-input";
+import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 
 function EditPersonalDetailsForm() {
     const genderDropdownOptions = [
@@ -36,42 +37,26 @@ function EditPersonalDetailsForm() {
         >
             {/*fullname */}
             <div className=" col-span-12 md:col-span-6 ">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditProfileDetails__fullname"></label>
-                    <input
-                        {...register("fullname")}
-                        type="text"
-                        pattern={"[0-9]*"}
-                        formNoValidate={true}
-                        id="EditProfileDetails__fullname"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Full Name"
-                    />
-                </div>
-                {errors.fullname && (
-                    <p className="text-xs text-red-900 ">
-                        {errors.fullname?.message}
-                    </p>
-                )}
+                <FloatingPlaceholderTextField
+                    placeholder="FullName"
+                    type="text"
+                    register={register}
+                    registerName='FullName'
+                    id="EditProfileDetails__FullName"
+                    errorMessage={errors.fullName?.message}
+                />
             </div>
 
             {/*email address */}
             <div className=" col-span-12 md:col-span-6">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditProfileDetails__emailAddress"></label>
-                    <input
-                        type="text"
-                        {...register("emailAddress")}
-                        id="EditProfileDetails__emailAddress"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Email Address"
-                    />
-                </div>
-                {errors.emailAddress && (
-                    <p className="text-xs text-red-900 ">
-                        {errors.emailAddress?.message}
-                    </p>
-                )}
+                <FloatingPlaceholderTextField
+                    placeholder="Email Address"
+                    type="text"
+                    id="EditProfile__emailAddress"
+                    register={register}
+                    registerName='Email Address'
+                    errorMessage={errors.emailAddress?.message}
+                />
             </div>
 
             {/*Phone Number*/}
@@ -198,42 +183,26 @@ function EditPersonalDetailsForm() {
 
             {/*CSCS account number*/}
             <div className=" col-span-12 ">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditProfileDetails__cscsNumber"></label>
-                    <input
-                        {...register("cscsNumber")}
-                        type="text"
-                        formNoValidate={true}
-                        id="EditProfileDetails__cscsNumber"
-                        className="outline-none pb-4  w-full"
-                        placeholder="CSCS Number"
-                    />
-                </div>
-                {errors.cscsNumber && (
-                    <p className="text-xs text-red-900 ">
-                        {errors.cscsNumber?.message}
-                    </p>
-                )}
+                <FloatingPlaceholderTextField
+                    placeholder="CSCS Number"
+                    type="text"
+                    register={register}
+                    registerName='CSCS Number'
+                    id="EditProfileDetails__cscsNumber"
+                    errorMessage={errors.cscsNumber?.message}
+                />
             </div>
 
             {/*Nin Number*/}
             <div className=" col-span-12 ">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditProfileDetails__nin"></label>
-                    <input
-                        {...register("nin")}
-                        type="text"
-                        formNoValidate={true}
-                        id="EditProfileDetails__nin"
-                        className="outline-none pb-4  w-full"
-                        placeholder="NIN"
-                    />
-                </div>
-                {errors.cscsNumber && (
-                    <p className="text-xs text-red-900 ">
-                        {errors.cscsNumber?.message}
-                    </p>
-                )}
+                <FloatingPlaceholderTextField
+                    placeholder="NIN"
+                    type="text"
+                    register={register}
+                    registerName='NIN'
+                    id="EditProfileDetails__nin"
+                    errorMessage={errors.cscsNumber?.message}
+                />
             </div>
 
             {/*residential address*/}
@@ -256,22 +225,14 @@ function EditPersonalDetailsForm() {
 
             {/*bvn*/}
             <div className=" col-span-12 ">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditProfileDetails__bvn"></label>
-                    <input
-                        {...register("bvn")}
-                        type="text"
-                        formNoValidate={true}
-                        id="EditProfileDetails__bvn"
-                        className="outline-none pb-4  w-full"
-                        placeholder="BVN"
-                    />
-                </div>
-                {errors.cscsNumber && (
-                    <p className="text-xs text-red-900 ">
-                        {errors.cscsNumber?.message}
-                    </p>
-                )}
+                <FloatingPlaceholderTextField
+                    placeholder="BVN"
+                    type="text"
+                    register={register}
+                    registerName='BVN'
+                    id="EditProfileDetails__bvn"
+                    errorMessage={errors.cscsNumber?.message}
+                />
             </div>
 
             {/*save button */}

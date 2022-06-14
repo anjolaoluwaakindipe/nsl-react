@@ -12,6 +12,7 @@ import { authSelector, loginUser } from "../../../state/authSlice";
 import { AppDispatch } from "../../../state/store";
 import { useEffect, useState } from "react";
 import { makeUnCancellable, setModalName } from "../../../state/modalSlice";
+import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 
 function Form() {
     const { isError, isLoading, errorMessage, isSuccess } =
@@ -71,41 +72,28 @@ function Form() {
         >         
             {/* username*/}
             <div>
-                <div className="w-full  border-0 border-b-2  border-underlineColor ">
-                    <label htmlFor="cscsAccountNumber "></label>
-                    <input
-                        type="text"
-                        {...register("usernameOrEmail")}
-                        id="Login__cscsAccountNumber"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Email Address"
+                <div className="" >
+                    <FloatingPlaceholderTextField
+                    placeholder="Email Address"
+                    type= "text"
+                    register={register}
+                    registerName='usernameorEmail'
+                    errorMessage={errors.usernameOrEmail?.message}
                     />
                 </div>
 
-                {errors.usernameOrEmail && (
-                    <p className="text-xs text-red-900 ">
-                        {errors.usernameOrEmail?.message}
-                    </p>
-                )}
+               
             </div>
             {/* password*/}
             <div className="w-full space-y-5">
                 <div>
-                    <div className="w-full border-0 border-b-2  border-underlineColor ">
-                        <label htmlFor="password"></label>
-                        <input
-                            type="password"
-                            {...register("password")}
-                            id="Login__password"
-                            className="outline-none pb-4 w-full border-0 "
-                            placeholder="Password"
-                        />
-                    </div>
-                    {errors.password && (
-                        <p className="text-xs text-red-900 ">
-                            {errors.password?.message}
-                        </p>
-                    )}
+                    <FloatingPlaceholderTextField
+                    placeholder="Password"
+                    type= "text"
+                    register={register}
+                    registerName='Password'
+                    errorMessage={errors.password?.message}
+                    />
                 </div>
 
 
