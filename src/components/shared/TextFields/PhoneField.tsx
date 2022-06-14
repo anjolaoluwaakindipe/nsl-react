@@ -32,7 +32,7 @@ function PhoneField({
 
     return (
         <div className="relative">
-            <div className="absolute bottom-[15px] left-14 text-gray-400 pointer-events-none ">
+            <div className="absolute bottom-[15px] left-16 text-gray-400 pointer-events-none transition-all delay-200 ease-in-out ">
                 {placeholder && isPlaceholderVisilble && placeholder}
             </div>
             <PhoneInput

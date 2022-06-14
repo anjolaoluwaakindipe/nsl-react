@@ -12,7 +12,8 @@ export const createAccountSchema = Joi.object({
     //     }),
     fullName: Joi.string().trim().min(2).max(255).label("Full Name"),
     emailAddress: Joi.string()
-        .required().trim()
+        .required()
+        .trim()
         .email({ tlds: { allow: false } })
         .label("Email Address"),
     phoneNumber: Joi.string().trim().required().label("Phone Number"),
@@ -26,4 +27,9 @@ export const createAccountSchema = Joi.object({
     //     .min(11)
     //     .label("BVN"),
     password: Joi.string().trim().min(8).required().label("Password"),
+    confirmPassword: Joi.any()
+        .valid(Joi.ref("password"))
+        .required()
+        .label("Confirm Password")
+        .messages({ "any.only": "{{#label}} does not match Password" }),
 });

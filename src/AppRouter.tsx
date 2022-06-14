@@ -231,7 +231,9 @@ function AppRouter() {
                         path={paths.WELCOME}
                         element={
                             <React.Suspense>
-                                <Welcome />
+                                <ProtectedRoute>
+                                    <Welcome />
+                                </ProtectedRoute>
                             </React.Suspense>
                         }
                     />
