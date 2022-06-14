@@ -1,23 +1,23 @@
 // react
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // react-hook-form
-import { useForm, Controller } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useModal } from "../../../services/customHooks/useModal";
+import { verificationRequests } from "../../../services/requests/verificationRequests";
+import { authSelector } from "../../../state/authSlice";
+import { setEmailCode, setSignUpInfo } from "../../../state/signUpInfoSlice";
+import { AppDispatch } from "../../../state/store";
+import { paths } from "../../../utils/constants/allPaths";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
 import PhoneField from "../../shared/TextFields/PhoneField";
-import { paths } from "../../../utils/constants/allPaths";
-import { useModal } from "../../../services/customHooks/useModal";
-import { useSelector, useDispatch } from "react-redux";
-import { authSelector, createUser } from "../../../state/authSlice";
-import { useEffect, useState } from "react";
-import { AppDispatch } from "../../../state/store";
-import { setEmailCode, setSignUpInfo } from "../../../state/signUpInfoSlice";
-import { verificationRequests } from "../../../services/requests/verificationRequests";
-import toast from "react-hot-toast";
+import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 type CreateAccountFormData = {
     cscsAccountNumber: string;
     fullName: string;
@@ -25,6 +25,7 @@ type CreateAccountFormData = {
     phoneNumber: string;
     bvn: string;
     password: string;
+    confirmPassword: string;
 };
 
 function Form() {
@@ -46,6 +47,7 @@ function Form() {
             phoneNumber: "",
 
             password: "",
+            confirmPassword: "",
         },
         resolver: joiResolver(createAccountSchema),
     });
@@ -138,40 +140,29 @@ function Form() {
             autoSave={"off"}
             autoComplete={"off"}
         >
-    {/*enter full name */}
+            {/*enter full name */}
             <div className="col-span-12  ">
-                <div className="border-0 border-b-2  border-underlineColor">
-                    <label htmlFor="fullName"></label>
-                    <input
-                        type="text"
-                        {...register("fullName")}
-                        id="CreateAccount__fullName"
-                        className="outline-none pb-4  border-0  w-full"
-                        placeholder="Full Name"
-                    />
-                </div>
-                <p className="text-xs text-red-900 ">
-                    {errors.fullName?.message}
-                </p>
+                <FloatingPlaceholderTextField
+                    errorMessage={errors.fullName?.message}
+                    placeholder="Full Name"
+                    registerName="fullName"
+                    register={register}
+                    type="text"
+                />
             </div>
 
-              {/*enter email */}
+            {/*enter email */}
             <div className="col-span-12 ">
-                <div className="border-0 border-b-2   border-underlineColor">
-                    <label htmlFor="email"></label>
-                    <input
-                        {...register("emailAddress")}
-                        id="CreateAccount__email"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Email Address"
-                    />
-                </div>
-                <p className="text-xs text-red-900 ">
-                    {errors.emailAddress?.message}
-                </p>
+                <FloatingPlaceholderTextField
+                    errorMessage={errors.emailAddress?.message}
+                    placeholder="Email Address"
+                    registerName="emailAddress"
+                    register={register}
+                    type="email"
+                />
             </div>
 
-              {/*enter phone number */}
+            {/*enter phone number */}
             <div className="col-span-12 ">
                 <div className="border-0 border-b-2  border-underlineColor">
                     <Controller
@@ -200,36 +191,26 @@ function Form() {
                 </p>
             </div>
 
-             {/*enter password */}
+            {/*enter password */}
             <div className="col-span-12 ">
-                <div className="border-0 border-b-2  border-underlineColor">
-                    <label htmlFor="password"></label>
-                    <input
-                        type="password"
-                        {...register("password")}
-                        className="outline-none pb-4   w-full"
-                        placeholder="Password"
-                    />
-                </div>
-                <p className="text-xs text-red-900 ">
-                    {errors.password?.message}
-                </p>
+                <FloatingPlaceholderTextField
+                    errorMessage={errors.password?.message}
+                    placeholder="Password"
+                    registerName="password"
+                    register={register}
+                    type="password"
+                />
             </div>
 
-              {/*confirm password */}
+            {/*confirm password */}
             <div className="col-span-12 ">
-                <div className="border-0 border-b-2  border-underlineColor">
-                    <label htmlFor="password"></label>
-                    <input
-                        type="password"
-                        {...register("password")}
-                        className="outline-none pb-4   w-full"
-                        placeholder="Confirm Password"
-                    />
-                </div>
-                <p className="text-xs text-red-900 ">
-                    {errors.password?.message}
-                </p>
+                <FloatingPlaceholderTextField
+                    errorMessage={errors.confirmPassword?.message}
+                    placeholder="Confirm Password"
+                    registerName="confirmPassword"
+                    register={register}
+                    type="password"
+                />
             </div>
 
             <div className="col-span-12 space-y-6">
@@ -238,7 +219,7 @@ function Form() {
                     type="submit"
                     disabled={disableButton}
                 >
-                    {disableButton ? "Loading...":"Proceed"}
+                    {disableButton ? "Loading..." : "Proceed"}
                 </button>
                 <h6 className="text-center md:text-xl w-full">
                     Already have an account?{" "}

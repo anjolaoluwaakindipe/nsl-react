@@ -12,6 +12,7 @@ import { authSelector } from "../state/authSlice";
 
 // app routes
 import { paths } from "../utils/constants/allPaths";
+import { capitalize } from "../utils/stringFormatting";
 
 function Welcome() {
     // redux state variables
@@ -32,7 +33,9 @@ function Welcome() {
                 <img src="/assets/welcomelogo.svg" alt="welcome_img" />
 
                 {/* Welcome page header */}
-                <h1 className="heading1">Welcome {user?.name.split(" ")[0]}</h1>
+                <h1 className="heading1">
+                    Welcome {capitalize(user?.name.split(" ")[0]!)}
+                </h1>
 
                 {/* Welcome page info */}
                 <p className="text-center max-w-2xl font-light text-xl">
