@@ -9,7 +9,7 @@ import { Form, Header } from "../components/pages/Login";
 function Login() {
     return (
         <HalfNavBarLayout>
-            <div className="md:px-20">
+            <div className="md:px-10">
                 <Header />
                 <Form />
             </div>

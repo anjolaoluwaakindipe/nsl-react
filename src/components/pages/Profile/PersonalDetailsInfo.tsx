@@ -1,9 +1,12 @@
 import React from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
+import { authSelector } from "../../../state/authSlice";
 import { paths } from '../../../utils/constants/allPaths';
+import { useSelector } from 'react-redux';
 
 function PersonalDetailsInfo() {
+    const {user} = useSelector(authSelector)
     const navigate = useNavigate();
     return (
         <div className="col-span-1 space-y-6">
@@ -23,13 +26,13 @@ function PersonalDetailsInfo() {
                     <h1 className="text-primaryColor font-semibold ">
                         Email Address
                     </h1>
-                    <p className="break-words">oluwatosinajayi1000@gmail.com</p>
+                    <p className="break-words">{user?.email}</p>
                 </div>
                 <div className="md:col-span-1 col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">
                         Phone Number
                     </h1>
-                    <p className="break-words">08023490079</p>
+                    <p className="break-words">{user?.phoneNumber}</p>
                 </div>
                 <div className="md:col-span-1 col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">

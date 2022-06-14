@@ -15,7 +15,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { authSelector, createUser } from "../../../state/authSlice";
 import { useEffect, useState } from "react";
 import { AppDispatch } from "../../../state/store";
-import { setSignUpInfo } from "../../../state/signUpInfoSlice";
+import { setEmailCode, setSignUpInfo } from "../../../state/signUpInfoSlice";
+import { verificationRequests } from "../../../services/requests/verificationRequests";
+import toast from "react-hot-toast";
 type CreateAccountFormData = {
     cscsAccountNumber: string;
     fullName: string;
@@ -66,16 +68,65 @@ function Form() {
         //     })
         // );
 
-        dispatch(
-            setSignUpInfo({
-                email: data.emailAddress,
-                fullName: data.fullName,
-                password: data.password,
-                phoneNumber: data.phoneNumber,
-            })
-        );
+        const emailCode = verificationRequests.generateVerificationCode();
+        const loading = toast.loading("Sending code to your email...", {
+            position: "top-right",
+        });
 
-        openModalFunc();
+        const verificationResponse = await verificationRequests
+            .verifyEmail({
+                fourDigitCode: emailCode,
+                toEmail: data.emailAddress,
+            })
+            .then((res) => {
+                dispatch(
+                    setSignUpInfo({
+                        email: data.emailAddress,
+                        fullName: data.fullName,
+                        password: data.password,
+                        phoneNumber: data.phoneNumber,
+                    })
+                );
+                dispatch(setEmailCode({ emailCode }));
+                toast.success("Verification code sent to your email", {
+                    id: loading,
+                });
+                openModalFunc();
+            })
+            .catch((err) => {
+                console.log("hello");
+                toast.error(
+                    "Something went wrong while sending verification code. Please try again later",
+                    { id: loading }
+                );
+            });
+
+        console.log(verificationResponse);
+
+        // if (
+        //     verificationResponse.status &&
+        //     verificationResponse.status === 200
+        // ) {
+        //     dispatch(
+        //         setSignUpInfo({
+        //             email: data.emailAddress,
+        //             fullName: data.fullName,
+        //             password: data.password,
+        //             phoneNumber: data.phoneNumber,
+        //         })
+        //     );
+        //     dispatch(setEmailCode({ emailCode }));
+        //     toast.success("Verification code sent to your email", {
+        //         id: loading,
+        //     });
+        //     openModalFunc();
+        // } else {
+        //     console.log("hello")
+        //     toast.error(
+        //         "Something went wrong while sending verification code. Please try again later",
+        //         { id: loading }
+        //     );
+        // }
 
         setDisableButton(false);
     });
@@ -164,7 +215,7 @@ function Form() {
                     type="submit"
                     disabled={disableButton}
                 >
-                    Proceed
+                    {disableButton ? "Loading...":"Proceed"}
                 </button>
                 <h6 className="text-center md:text-xl w-full">
                     Already have an account?{" "}

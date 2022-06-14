@@ -8,6 +8,8 @@ const initialState: SignUpInfoState = {
     email: "",
     phoneNumber: "",
     password: "",
+    emailCode: "",
+    smsCode: ''
 };
 
 const signUpInfoSlice = createSlice({
@@ -16,17 +18,41 @@ const signUpInfoSlice = createSlice({
     reducers: {
         setSignUpInfo(
             state: SignUpInfoState,
-            action: PayloadAction<SignUpInfoState>
+            action: PayloadAction<{
+                email: string;
+                fullName: string;
+                password: string;
+                phoneNumber: string;
+            }>
         ) {
-            return action.payload;
+            return { ...state, ...action.payload };
+        },
+        setEmailCode(
+            state: SignUpInfoState,
+            action: PayloadAction<{
+                emailCode: string;
+               
+            }>
+        ) {
+            state.emailCode = action.payload.emailCode
+        },
+        setSmsCode(state: SignUpInfoState,
+            action: PayloadAction<{
+                smsCode: string;
+               
+            }>){
+            state.smsCode = action.payload.smsCode
         },
         clearSignUpInfo(state: SignUpInfoState) {
-            state = initialState;
+            state.email = "";
+            state.fullName = "";
+            state.password = "";
+            state.phoneNumber = "";
         },
     },
 });
 
 export const signUpInfoSelector = (state: RootState) => state.signUpInfo;
 
-export const { clearSignUpInfo, setSignUpInfo } = signUpInfoSlice.actions;
+export const { clearSignUpInfo, setSignUpInfo, setEmailCode,setSmsCode } = signUpInfoSlice.actions;
 export default signUpInfoSlice.reducer;

@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import authRequest from "../services/requests/authRequest";
 import { AuthState } from "../typings";
 
-import { cleanup } from "@testing-library/react";
 import { RootState } from "./store";
 
 const initialState: AuthState = {
@@ -16,6 +15,7 @@ const initialState: AuthState = {
         name: "",
         preferred_username: "",
         sub: "",
+        phoneNumber: "",
     },
     isError: false,
     isLoading: false,
@@ -128,7 +128,6 @@ export const createUser = createAsyncThunk(
                     return {
                         message: "User Creation Successful",
                     };
-                } else if (registerUserResponse.status === 409) {
                 } else {
                     switch (registerUserResponse.response.status) {
                         case 0:
@@ -137,12 +136,12 @@ export const createUser = createAsyncThunk(
                             );
                         case 409:
                             return thunkAPI.rejectWithValue(
-                                "User already exists please try again with another email"
+                                "User already exists. Please try again with another email"
                             );
 
                         default:
                             return thunkAPI.rejectWithValue(
-                                "Something went wrong when trying to create your account please try again later "
+                                "Something went wrong when trying to create your account. Please try again later "
                             );
                     }
                 }
@@ -158,11 +157,11 @@ export const createUser = createAsyncThunk(
                         );
                     case 400:
                         return thunkAPI.rejectWithValue(
-                            "Something went wrong while creating your account please try again later"
+                            "Something went wrong while creating your account. Please try again later"
                         );
                     case 500:
                         return thunkAPI.rejectWithValue(
-                            "We are current experiencing something wrong with our servers please try again later"
+                            "We are current experiencing something wrong with our servers. Please try again later"
                         );
                     default:
                         return thunkAPI.rejectWithValue(
@@ -233,22 +232,28 @@ const authSlice = createSlice({
                 state.refreshToken = action?.payload!.refreshToken;
                 state.user!.name = action?.payload!.name;
                 state.user!.email = action?.payload!.email;
+                state.user!.phoneNumber = action?.payload!.phone_number;
+                return state
             })
             .addCase(loginUser.pending, (state) => {
                 state.isLoading = true;
                 state.isSuccess = false;
                 state.isError = false;
+                return state
             })
             .addCase(loginUser.rejected, (state, action) => {
                 console.log(action.payload);
+                state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
                 state.errorMessage = action.payload as string;
+                return state
             })
             .addCase(createUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
+                return state
             })
             .addCase(createUser.pending, (state, action) => {
                 state.isLoading = true;
@@ -258,6 +263,7 @@ const authSlice = createSlice({
             .addCase(createUser.rejected, (state, action) => {
                 console.log(action.payload);
                 state.isError = true;
+                state.isLoading = false;
                 state.isSuccess = false;
                 state.errorMessage = action.payload as string;
             })

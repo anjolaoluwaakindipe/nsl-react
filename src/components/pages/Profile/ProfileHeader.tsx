@@ -3,9 +3,12 @@ import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../utils/constants/allPaths";
+import { useSelector } from 'react-redux';
+import { authSelector } from '../../../state/authSlice';
 
 function ProfileHeader() {
     const navigate = useNavigate();
+    const {user} = useSelector(authSelector)
     return (
         <div className="relative w-full ">
             {/* Back Button */}
@@ -36,7 +39,7 @@ function ProfileHeader() {
                         Profile
                     </h1>
                     <h1 className=" text-base md:text-xl font-light">
-                        Oluwatosin Ajayi
+                        {user?.name}
                     </h1>
                     <div className="flex space-x-2 text-xs items-center justify-center md:justify-start">
                         <div className="p-1 text-white bg-successColor rounded-sm">

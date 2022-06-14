@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { paths } from '../../../../utils/constants/allPaths';
 
 function PhoneEmailVerificationSuccessModal(prop: { cancelModal: () => void }) {
     const navigate = useNavigate();
     const onProceed = () => {
         prop.cancelModal();
-        navigate("/login", { replace: true });
+        navigate(paths.LOGIN, { replace: true });
     };
     return (
         <div className=" m-10 md:w-96 h-auto bg-white p-10 rounded-xl">

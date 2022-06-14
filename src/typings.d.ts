@@ -89,6 +89,7 @@ interface AuthState {
         given_name: string;
         family_name: string;
         email: string;
+        phoneNumber:string;
     } | null;
 
     isSuccess: boolean;
@@ -104,6 +105,8 @@ interface SignUpInfoState {
     email: string;
     phoneNumber: string;
     password: string;
+    emailCode:string;
+    smsCode:string;
 }
 
 // Requests

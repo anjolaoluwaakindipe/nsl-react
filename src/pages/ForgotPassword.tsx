@@ -4,8 +4,11 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import Header from "../components/pages/ForgotPassword/Header";
 import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
+import { AiOutlineArrowLeft, AiOutlineClose } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 function ForgotPassword() {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -26,6 +29,10 @@ function ForgotPassword() {
     return (
         <HalfNavBarLayout>
             <>
+                <AiOutlineArrowLeft
+                    className="text-2xl cursor-pointer pt-2 "
+                    onClick={() => navigate(-1)}
+                />
                 <Header />
 
                 {/* Text field and Resend section */}

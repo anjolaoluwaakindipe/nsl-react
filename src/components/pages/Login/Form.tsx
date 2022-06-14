@@ -20,6 +20,7 @@ function Form() {
         name: "",
         isCancellable: true,
     });
+    const [isButtonLoading, setButtonLoading ] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
 
     const {
@@ -54,10 +55,13 @@ function Form() {
     }, [isError, isSuccess, dispatch, openModalFunc]);
 
     const onSubmit = handleSubmit(async (data) => {
+        setButtonLoading(true)
         await dispatch(
             loginUser({ email: data.usernameOrEmail, password: data.password })
         );
+        
         openModalFunc();
+        setButtonLoading(false);
     });
 
     return (
@@ -114,8 +118,8 @@ function Form() {
             </div>
 
             <div className=" w-full  space-y-6">
-                <button className="btn1 w-full" type="submit">
-                    Proceed
+                <button className="btn1 w-full" type="submit" disabled={isButtonLoading}>
+                    {isButtonLoading?"Loading...":"Proceed"}
                 </button>
 
                 <h6 className="text-center md:text-xl w-full">
