@@ -18,6 +18,10 @@ import { paths } from "../../../utils/constants/allPaths";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
 import PhoneField from "../../shared/TextFields/PhoneField";
 import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
+import Dropdown from "react-dropdown";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatterns";
+
 type CreateAccountFormData = {
     cscsAccountNumber: string;
     fullName: string;
@@ -26,9 +30,16 @@ type CreateAccountFormData = {
     bvn: string;
     password: string;
     confirmPassword: string;
+    gender: any;
+    dateOfBirth: any;
 };
 
 function Form() {
+
+    const genderDropdownOptions = [
+        { value: "Male", label: "Male" },
+        { value: "Female", label: "Female" },
+    ];
     const navigate = useNavigate();
     const { isLoading, isSuccess, errorMessage, isError } =
         useSelector(authSelector);
@@ -39,13 +50,14 @@ function Form() {
         register,
         handleSubmit,
         control,
+        watch,
         formState: { errors },
     } = useForm<CreateAccountFormData>({
         defaultValues: {
             fullName: "",
             emailAddress: "",
             phoneNumber: "",
-
+            cscsAccountNumber: "",
             password: "",
             confirmPassword: "",
         },
@@ -133,6 +145,8 @@ function Form() {
         setDisableButton(false);
     });
 
+    const watchGender = watch("gender");
+
     return (
         <form
             className=" grid grid-cols-12 py-20 gap-x-0 md:gap-x-10 gap-y-14 md:gap-y-28 text-darkTextColor text-base md:text-xl"
@@ -140,19 +154,30 @@ function Form() {
             autoSave={"off"}
             autoComplete={"off"}
         >
-            {/*enter full name */}
-            <div className="col-span-12  ">
+            {/*enter first name */}
+            <div className="col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
                     errorMessage={errors.fullName?.message}
-                    placeholder="Full Name"
-                    registerName="fullName"
+                    placeholder="First Name"
+                    registerName="firstName"
+                    register={register}
+                    type="text"
+                />
+            </div>
+
+            {/*enter last name */}
+            <div className="col-span-12 md:col-span-6 ">
+                <FloatingPlaceholderTextField
+                    errorMessage={errors.fullName?.message}
+                    placeholder="Last Name"
+                    registerName="lastName"
                     register={register}
                     type="text"
                 />
             </div>
 
             {/*enter email */}
-            <div className="col-span-12 ">
+            <div className="col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
                     errorMessage={errors.emailAddress?.message}
                     placeholder="Email Address"
@@ -162,8 +187,42 @@ function Form() {
                 />
             </div>
 
+            {/*Gender*/}
+            <div className="col-span-12 md:col-span-6">
+                <div className=" border-0 border-b-2  border-underlineColor   ">
+                    <Controller
+                        name="gender"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <Dropdown
+                                options={genderDropdownOptions}
+                                onChange={onChange}
+                                arrowClosed={<IoMdArrowDropdown />}
+                                arrowOpen={<IoMdArrowDropup />}
+                                value={value}
+                                placeholder="Gender"
+                                className="relative"
+                                placeholderClassName={
+                                    watchGender ? "text-black" : "text-gray-400"
+                                }
+                                controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
+                                menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
+                            />
+                        )}
+                    />
+
+                    <label htmlFor="gender"></label>
+                </div>
+
+                {
+                    <p className="text-xs text-red-900 ">
+                        {errors?.gender?.value?.message}
+                    </p>
+                }
+            </div>
+
             {/*enter phone number */}
-            <div className="col-span-12 ">
+            <div className="col-span-12 md:col-span-6 ">
                 <div className="border-0 border-b-2  border-underlineColor">
                     <Controller
                         name="phoneNumber"
@@ -191,8 +250,58 @@ function Form() {
                 </p>
             </div>
 
+            {/*Date Of Birth*/}
+            <div className=" col-span-12 md:col-span-6">
+                <div className="border-0 border-b-2 border-underlineColor ">
+                    <label htmlFor="EditProfileDetails_dateOfBirth"> </label>
+                    <input
+                        type="text"
+                        {...register("dateOfBirth")}
+                        id="EditProfileDetails__dateOfBirth"
+                        className="outline-none pb-4  w-full cursor-pointer"
+                        placeholder="Date of Birth"
+                        onFocus={(e) => {
+                            e.target.type = "date";
+                        }}
+                        onBlur={(e) => {
+                            e.target.type = "";
+                        }}
+                    />
+                </div>
+                {errors.dateOfBirth && (
+                    <p className="text-xs text-red-900 ">
+                        {errors.dateOfBirth?.message}
+                    </p>
+                )}
+            </div>
+
+
+           
+
+
+            {/* BVN */}
+
+            <div className="md:col-span-6 col-span-12  ">
+                <div className="border-0 border-b-2  border-underlineColor">
+                    <label htmlFor="bvn"></label>
+                    <input
+                        {...register("bvn")}
+                        maxLength={11}
+                        onKeyDown={(e) => {
+                            if (!RegExp(numbersNoDecimal).test(e.key)) {
+                                e.preventDefault();
+                            }
+                        }}
+                        id="CreateAccount__bvn"
+                        className="outline-none pb-4  w-full"
+                        placeholder="BVN"
+                    />
+                </div>
+                <p className="text-xs text-red-900 ">{errors.bvn?.message}</p>
+            </div>
+
             {/*enter password */}
-            <div className="col-span-12 ">
+            <div className="col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
                     errorMessage={errors.password?.message}
                     placeholder="Password"
@@ -203,7 +312,7 @@ function Form() {
             </div>
 
             {/*confirm password */}
-            <div className="col-span-12 ">
+            <div className="col-span-12 md:col-span-6">
                 <FloatingPlaceholderTextField
                     errorMessage={errors.confirmPassword?.message}
                     placeholder="Confirm Password"

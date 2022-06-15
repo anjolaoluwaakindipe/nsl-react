@@ -6,6 +6,7 @@ import Header from "../components/pages/ForgotPassword/Header";
 import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 import { AiOutlineArrowLeft, AiOutlineClose } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import FloatingPlaceholderTextField from "../components/shared/TextFields/FloatingPlaceholderTextField";
 
 function ForgotPassword() {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ function ForgotPassword() {
         ),
     });
 
-    const onSubmit = handleSubmit((data) => {});
+    const onSubmit = handleSubmit((data) => { });
     return (
         <HalfNavBarLayout>
             <>
@@ -39,19 +40,15 @@ function ForgotPassword() {
 
                 <form onSubmit={onSubmit} className="pt-20">
                     <div className=" w-full text-base  md:text-xl ">
-                        <div className="border-0 border-b-2  border-underlineColor">
-                            <label htmlFor="ForgotPassword__email"></label>
-                            <input
-                                type="text"
-                                {...register("email")}
-                                id="ForgotPassword__email"
-                                className="outline-none pb-4  border-0 "
-                                placeholder="Email Address"
-                            />
-                        </div>
-                        <p className="text-xs text-red-900 ">
-                            {errors.email?.message}
-                        </p>
+                        <FloatingPlaceholderTextField
+                            placeholder="Email Address"
+                            type="text"
+                            register={register}
+                            registerName='Email Address'
+                            id="ForgotPassword__email"
+                            errorMessage={errors.email?.message}
+
+                        />
                     </div>
 
                     {/* button */}

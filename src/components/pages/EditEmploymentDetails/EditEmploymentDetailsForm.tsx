@@ -40,17 +40,13 @@ function EditEmploymentDetailsForm() {
 
             {/*Company Name */}
             <div className=" col-span-12 md:col-span-6">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditEmploymentDetails__companyName"></label>
-                    <input
-                        type="text"
-                        max={10}
-                        {...register("companyName", { required: false })}
-                        id="EditEmploymentDetails__companyName"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Company Name"
-                    />
-                </div>
+                <FloatingPlaceholderTextField
+                    placeholder="Company Name"
+                    type="text"
+                    register={register}
+                    registerName='Commpany Name'
+                    id="EditEmploymentDetails__companyName"
+                />
             </div>
 
             {/*Company Phone Number*/}
@@ -75,49 +71,35 @@ function EditEmploymentDetailsForm() {
 
             {/*work sector (dropdown)*/}
             <div className=" col-span-12 md:col-span-6">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditEmploymentDetails__workSector"></label>
-                    <input
-                        type="text"
-                        max={10}
-                        {...register("workSector", { required: false })}
-                        id="EditEmploymentDetails__workSector"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Work Sector"
-                    />
-                </div>
+                <FloatingPlaceholderTextField
+                    placeholder="Work Sector"
+                    type="text"
+                    register={register}
+                    registerName='Work Sector'
+                    id="EditEmploymentDetails__workSector"
+                />
             </div>
 
             {/*company email address*/}
             <div className=" col-span-12 md:col-span-6">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditEmploymentDetails__CompanyEmailAddress"></label>
-                    <input
-                        type="text"
-                        max={10}
-                        {...register("companyEmailAddress", {
-                            required: false,
-                        })}
-                        id="EditEmploymentDetails__ComapnyEmailAddress"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Company's Email Address"
-                    />
-                </div>
+                <FloatingPlaceholderTextField
+                    placeholder="Company Email Address"
+                    type="text"
+                    register={register}
+                    registerName='Company Email Address'
+                    id="EditEmploymentDetails__CompanyEmailAddress"
+                />
             </div>
 
             {/*salary range*/}
             <div className=" col-span-12 md:col-span-6">
-                <div className="border-0 border-b-2 border-underlineColor">
-                    <label htmlFor="EditEmploymentDetails__SalaryRange"></label>
-                    <input
-                        type="text"
-                        max={10}
-                        {...register("salaryRange", { required: false })}
-                        id="EditEmploymentDetails__SalaryRange"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Salary Range"
-                    />
-                </div>
+               <FloatingPlaceholderTextField
+                    placeholder="Salary Range"
+                    type="text"
+                    register={register}
+                    registerName='Salary Range'
+                    id="EditEmploymentDetails__SalaryRange"
+                />
             </div>
 
             {/*save button */}
