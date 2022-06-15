@@ -50,72 +50,92 @@ export const createUserFull = createAsyncThunk(
         thunkApi
     ) => {
         try {
-            // get admin token response from keycloak
-            const adminTokenResponse = await authRequest.getAdminToken();
-            console.log(adminTokenResponse);
+            // response from creating user on main application
+            const createUserOnAppResponse = await authRequest.registerUserApp({
+                firstName,
+                lastName,
+                dateOfBirth,
+                gender,
+                email,
+                bvn,
+                phoneNumber,
+            });
 
-            // check if admin token response was successful or not
-            if (
-                adminTokenResponse.status &&
-                adminTokenResponse.status === 200
-            ) {
+            if (createUserOnAppResponse.status === 200) {
+                // get admin token response from keycloak
+                const adminTokenResponse = await authRequest.getAdminToken();
                 console.log(adminTokenResponse);
 
-                // use the access token of the admin token and user inputed fields to register user on keycloak
-                const registerUserResponse =
-                    await authRequest.registerUserKeycloak({
-                        fullName: firstName + " " + lastName,
-                        email,
-                        password,
-                        phoneNumber,
-                        adminToken: adminTokenResponse.data["access_token"],
-                    });
+                // check if admin token response was successful or not
+                if (
+                    adminTokenResponse.status &&
+                    adminTokenResponse.status === 200
+                ) {
+                    console.log(adminTokenResponse);
 
-                console.log(registerUserResponse);
+                    // use the access token of the admin token and user inputed fields to register user on keycloak
+                    const registerUserResponse =
+                        await authRequest.registerUserKeycloak({
+                            fullName: firstName + " " + lastName,
+                            email,
+                            password,
+                            phoneNumber,
+                            adminToken: adminTokenResponse.data["access_token"],
+                        });
 
-                // check if user registration response was successful or not
-                if (registerUserResponse.status === 201) {
-                    return {
-                        message: "User Creation Successful",
-                    };
+                    console.log(registerUserResponse);
+
+                    // check if user registration response was successful or not
+                    if (registerUserResponse.status === 201) {
+                        return {
+                            message: "User Creation Successful",
+                        };
+                    } else {
+                        switch (registerUserResponse.response.status) {
+                            case 0:
+                                return thunkApi.rejectWithValue(
+                                    "A network error occur. Please check your connection"
+                                );
+                            case 409:
+                                return thunkApi.rejectWithValue(
+                                    "User already exists. Please try again with another email"
+                                );
+
+                            default:
+                                return thunkApi.rejectWithValue(
+                                    "Something went wrong when trying to create your account. Please try again later "
+                                );
+                        }
+                    }
                 } else {
-                    switch (registerUserResponse.response.status) {
+                    switch (adminTokenResponse.response.status) {
                         case 0:
                             return thunkApi.rejectWithValue(
-                                "A network error occur. Please check your connection"
+                                "A network error occured. Please check your connection"
                             );
-                        case 409:
+                        case 401:
                             return thunkApi.rejectWithValue(
-                                "User already exists. Please try again with another email"
+                                "We are currently working on our servers please check back later."
                             );
-
+                        case 400:
+                            return thunkApi.rejectWithValue(
+                                "Something went wrong while creating your account. Please try again later"
+                            );
+                        case 500:
+                            return thunkApi.rejectWithValue(
+                                "We are current experiencing something wrong with our servers. Please try again later"
+                            );
                         default:
                             return thunkApi.rejectWithValue(
-                                "Something went wrong when trying to create your account. Please try again later "
+                                "An error occured. Please try again later"
                             );
                     }
                 }
             } else {
-                switch (adminTokenResponse.response.status) {
-                    case 0:
-                        return thunkApi.rejectWithValue(
-                            "A network error occured. Please check your connection"
-                        );
-                    case 401:
-                        return thunkApi.rejectWithValue(
-                            "We are currently working on our servers please check back later."
-                        );
-                    case 400:
-                        return thunkApi.rejectWithValue(
-                            "Something went wrong while creating your account. Please try again later"
-                        );
-                    case 500:
-                        return thunkApi.rejectWithValue(
-                            "We are current experiencing something wrong with our servers. Please try again later"
-                        );
+                switch (createUserOnAppResponse.status) {
                     default:
                         return thunkApi.rejectWithValue(
-                            "An error occured. Please try again later"
+                            "Something went wrong when trying to create your account. Please try again later "
                         );
                 }
             }

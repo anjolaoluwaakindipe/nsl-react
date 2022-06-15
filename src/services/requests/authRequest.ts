@@ -163,7 +163,7 @@ const authRequest = {
         email,
         bvn,
         phoneNumber,
-        password,
+
     }: {
         firstName: string;
         lastName: string;
@@ -172,8 +172,8 @@ const authRequest = {
         email: string;
         bvn: string;
         phoneNumber: string;
-        password: string;
     }) => {
+        const res:{status:null|number, data:object} = {status: null, data: {}}
         return await axios.get("/isslapi/onboarding-api/1.0/createBasicAccount", {params: {
             "FistName": firstName,
             "LastName": lastName,
@@ -181,8 +181,15 @@ const authRequest = {
             "DateofBirth": dateOfBirth,
             "Gender": gender,
             "EMailAddress": email,
-
-        }});
+            "MobilePhoneNo" : phoneNumber
+        }}).then((response)=>{
+            res.status = response.status
+            res.data = response.data
+            return res
+        }).catch((error)=>{
+            res.status = error.status
+            return res
+        });
     },
 
     // REGISTER A NEW USER
