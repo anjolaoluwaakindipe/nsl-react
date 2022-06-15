@@ -5,7 +5,7 @@ import PhoneInput, {
     Props,
     State,
 } from "react-phone-number-input";
-import { useState,  useRef } from "react";
+import { useState, useRef, useEffect } from 'react';
 
 type PhoneFieldProps = {
     onChange?: (...event: [any]) => void;
@@ -29,6 +29,14 @@ function PhoneField({
             any
         >
     > = useRef(null);
+
+    useEffect(() => {
+        if (value) {
+            setPlaceholderVisibiltiy(false);
+        } else {
+            setPlaceholderVisibiltiy(true);
+        }
+    }, [value]);
 
     return (
         <div className="relative">

@@ -264,7 +264,10 @@ function PersonalDetailsForm() {
                     <div className=" border-0 border-b-2  border-underlineColor ">
                         <label htmlFor="UpdateProfile_residentialAddress"></label>
                         <textarea
-                            {...register("residentialAddress", {validate: (value)=> value.length>30||"Make it more"})}
+                            {...register("residentialAddress", {
+                                validate: (value) =>
+                                    value.length > 30 || "Make it more",
+                            })}
                             id="UpdateProfile_narration"
                             className="outline-none bg-bgColor pb-4  resize-none h-32 p-3 w-full border-0 "
                             placeholder="Residential Address"
@@ -300,8 +303,7 @@ function PersonalDetailsForm() {
                         <input
                             type="file"
                             {...register("picture", {
-                                validate: (value) => ((5<3) || "hello"),
-                                
+                                validate: (value) => 5 < 3 || "hello",
                             })}
                             id="UpdateProfile__picture"
                             className="outline-none pb-4 hidden"

@@ -5,13 +5,11 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { setTokenSourceMapRange } from "typescript";
 import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 import { Header } from "../components/pages/EmailVerification";
 import EmailVerificationPinCode from "../components/pages/EmailVerification/EmailVerificationPinCode";
 import { useModal } from "../services/customHooks/useModal";
 import {
-    clearSignUpInfo,
     setEmailCode,
     setSmsCode,
     signUpInfoSelector,
@@ -19,10 +17,10 @@ import {
 import { paths } from "../utils/constants/allPaths";
 import { verificationRequests } from "../services/requests/verificationRequests";
 import { AppDispatch } from "../state/store";
-import { authSelector, createUser } from "../state/authSlice";
+import { authSelector, createUserAuth } from "../state/authSlice";
 
 function EmailVerification() {
-    const { email, fullName, password, phoneNumber, emailCode } =
+    const { email, firstName, password, phoneNumber, emailCode } =
         useSelector(signUpInfoSelector);
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
@@ -68,10 +66,10 @@ function EmailVerification() {
     // });
 
     useEffect(() => {
-        if (!email || !fullName || !password || !phoneNumber) {
+        if (!email || !firstName || !password || !phoneNumber) {
             navigate(paths.CREATE_ACCOUNT, { replace: true });
         }
-    }, [email, fullName, password, phoneNumber]); // eslint-disable-line
+    }, [email, firstName, password, phoneNumber]); // eslint-disable-line
 
     useEffect(() => {
         setIsButtonDisable(true);

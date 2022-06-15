@@ -1,11 +1,11 @@
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import {  UseFormRegisterReturn } from "react-hook-form";
 
 type FloatinPlaceholderTextFieldProps = {
     errorMessage?: string;
     placeholder?: string;
     id?: string;
     registerName?: string;
-    register?: UseFormRegister<any>;
+    register?: UseFormRegisterReturn;
     type: React.HTMLInputTypeAttribute;
 };
 
@@ -15,7 +15,7 @@ function FloatingPlaceholderTextField(props: FloatinPlaceholderTextFieldProps) {
             <div className="border-0 border-b-2  border-underlineColor relative floating-placeholder">
                 <input
                     type={props.type}
-                    {...props.register!(props.registerName!)!}
+                    {...props.register}
                     className="outline-none pb-4   w-full "
                     id={props.id}
                     placeholder=" "

@@ -1,5 +1,5 @@
 // react
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // react-hook-form
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -12,7 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../services/customHooks/useModal";
 import { verificationRequests } from "../../../services/requests/verificationRequests";
 import { authSelector } from "../../../state/authSlice";
-import { setEmailCode, setSignUpInfo } from "../../../state/signUpInfoSlice";
+import {
+    setEmailCode,
+    setSignUpInfo,
+    signUpInfoSelector,
+} from "../../../state/signUpInfoSlice";
 import { AppDispatch } from "../../../state/store";
 import { paths } from "../../../utils/constants/allPaths";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
@@ -20,18 +24,28 @@ import PhoneField from "../../shared/TextFields/PhoneField";
 import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 type CreateAccountFormData = {
     cscsAccountNumber: string;
-    fullName: string;
+    firstName: string;
+    lastName: string;
     emailAddress: string;
     phoneNumber: string;
     bvn: string;
     password: string;
+    dateOfBirth: string;
+    gender: { value: string; label: string } | Record<string, any>;
     confirmPassword: string;
 };
 
 function Form() {
-    const navigate = useNavigate();
-    const { isLoading, isSuccess, errorMessage, isError } =
-        useSelector(authSelector);
+    const { isLoading, isSuccess, isError } = useSelector(authSelector);
+    const {
+        email,
+        firstName,
+        bvn,
+        dateOfBirth,
+        gender,
+        lastName,
+        phoneNumber,
+    } = useSelector(signUpInfoSelector);
     const dispatch = useDispatch<AppDispatch>();
     const [disableButton, setDisableButton] = useState(false);
 
@@ -40,9 +54,11 @@ function Form() {
         handleSubmit,
         control,
         formState: { errors },
+        setValue,
     } = useForm<CreateAccountFormData>({
         defaultValues: {
-            fullName: "",
+            firstName: "",
+            lastName: "",
             emailAddress: "",
             phoneNumber: "",
 
@@ -52,6 +68,39 @@ function Form() {
         resolver: joiResolver(createAccountSchema),
     });
     const { openModalFunc } = useModal("BeginVerificationModal", false);
+
+    useEffect(() => {
+        if (email) {
+            setValue("emailAddress", email);
+        }
+        if (firstName) {
+            setValue("firstName", firstName);
+        }
+        if (phoneNumber) {
+            setValue("phoneNumber", phoneNumber);
+        }
+        if (bvn) {
+            setValue("bvn", bvn);
+        }
+        if (dateOfBirth) {
+            setValue("dateOfBirth", dateOfBirth);
+        }
+        if (gender) {
+            setValue("gender", gender);
+        }
+        if (lastName) {
+            setValue("lastName", lastName);
+        }
+    }, [
+        firstName,
+        phoneNumber,
+        email,
+        bvn,
+        dateOfBirth,
+        gender,
+        lastName,
+        setValue,
+    ]);
 
     useEffect(() => {
         if (!isLoading && isSuccess) {
@@ -84,9 +133,13 @@ function Form() {
                 dispatch(
                     setSignUpInfo({
                         email: data.emailAddress,
-                        fullName: data.fullName,
+                        firstName: data.firstName,
                         password: data.password,
                         phoneNumber: data.phoneNumber,
+                        bvn: data.bvn,
+                        gender: data.gender,
+                        dateOFBirth: data.dateOfBirth,
+                        lastName: data.lastName,
                     })
                 );
                 dispatch(setEmailCode({ emailCode }));
@@ -140,30 +193,40 @@ function Form() {
             autoSave={"off"}
             autoComplete={"off"}
         >
-            {/*enter full name */}
-            <div className="col-span-12  ">
+            {/*enter first name */}
+            <div className="col-span-12  md:col-span-6 ">
                 <FloatingPlaceholderTextField
-                    errorMessage={errors.fullName?.message}
-                    placeholder="Full Name"
-                    registerName="fullName"
-                    register={register}
+                    errorMessage={errors.firstName?.message}
+                    placeholder="First Name"
+                    registerName="fistName"
+                    register={register("firstName")}
+                    type="text"
+                />
+            </div>
+            {/*enter last name */}
+            <div className="col-span-12  md:col-span-6 ">
+                <FloatingPlaceholderTextField
+                    errorMessage={errors.lastName?.message}
+                    placeholder="Last Name"
+                    registerName="lastName"
+                    register={register("lastName")}
                     type="text"
                 />
             </div>
 
             {/*enter email */}
-            <div className="col-span-12 ">
+            <div className="col-span-12 md:col-span-6">
                 <FloatingPlaceholderTextField
                     errorMessage={errors.emailAddress?.message}
                     placeholder="Email Address"
                     registerName="emailAddress"
-                    register={register}
+                    register={register("emailAddress")}
                     type="email"
                 />
             </div>
 
             {/*enter phone number */}
-            <div className="col-span-12 ">
+            <div className="col-span-12 md:col-span-6 ">
                 <div className="border-0 border-b-2  border-underlineColor">
                     <Controller
                         name="phoneNumber"
@@ -192,23 +255,23 @@ function Form() {
             </div>
 
             {/*enter password */}
-            <div className="col-span-12 ">
+            <div className="col-span-12 md:col-span-6">
                 <FloatingPlaceholderTextField
                     errorMessage={errors.password?.message}
                     placeholder="Password"
                     registerName="password"
-                    register={register}
+                    register={register("password")}
                     type="password"
                 />
             </div>
 
             {/*confirm password */}
-            <div className="col-span-12 ">
+            <div className="col-span-12 md:col-span-6">
                 <FloatingPlaceholderTextField
                     errorMessage={errors.confirmPassword?.message}
                     placeholder="Confirm Password"
                     registerName="confirmPassword"
-                    register={register}
+                    register={register("confirmPassword")}
                     type="password"
                 />
             </div>
