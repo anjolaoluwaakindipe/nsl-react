@@ -7,6 +7,11 @@ type FloatinPlaceholderTextFieldProps = {
     registerName?: string;
     register?: UseFormRegisterReturn;
     type: React.HTMLInputTypeAttribute;
+    step?: string;
+    pattern?: string;
+    value?: string;
+  //  onChange?: React.HTMLInputElement;
+    formNoValidate?: boolean;
 };
 
 function FloatingPlaceholderTextField(props: FloatinPlaceholderTextFieldProps) {
@@ -19,6 +24,12 @@ function FloatingPlaceholderTextField(props: FloatinPlaceholderTextFieldProps) {
                     className="outline-none pb-4   w-full "
                     id={props.id}
                     placeholder=" "
+                    step={props.step}
+                    pattern={props.pattern}
+                    value={props.value}
+                    // onChange={props.onChange}
+                    formNoValidate={props.formNoValidate}
+                    
                 />
                 <label
                     htmlFor="CreateAccount__confirmPassword"

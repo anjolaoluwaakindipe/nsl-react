@@ -12,6 +12,7 @@ import { authSelector, loginUser } from "../../../state/authSlice";
 import { AppDispatch } from "../../../state/store";
 import { useEffect, useState } from "react";
 import { makeUnCancellable, setModalName } from "../../../state/modalSlice";
+import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 
 function Form() {
     const { isError, isLoading, errorMessage, isSuccess } =
@@ -20,7 +21,7 @@ function Form() {
         name: "",
         isCancellable: true,
     });
-    const [isButtonLoading, setButtonLoading ] = useState(false);
+    const [isButtonLoading, setButtonLoading] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
 
     const {
@@ -42,7 +43,7 @@ function Form() {
         modalOptions.isCancellable
     );
 
-    useEffect(() => {}, [isLoading]);
+    useEffect(() => { }, [isLoading]);
 
     useEffect(() => {
         if (isSuccess) {
@@ -59,7 +60,7 @@ function Form() {
         await dispatch(
             loginUser({ email: data.usernameOrEmail, password: data.password })
         );
-        
+
         openModalFunc();
         setButtonLoading(false);
     });
@@ -68,44 +69,40 @@ function Form() {
         <form
             onSubmit={onSubmit}
             className="w-full py-20 space-y-16  text-darkTextColor text-base md:text-xl"
-        >
+        >         
+            {/* username*/}
             <div>
-                <div className="w-full  border-0 border-b-2  border-underlineColor">
-                    <label htmlFor="cscsAccountNumber"></label>
-                    <input
-                        type="text"
-                        {...register("usernameOrEmail")}
-                        id="Login__cscsAccountNumber"
-                        className="outline-none pb-4  w-full"
-                        placeholder="Email Address"
+                <div className="" >
+                    <FloatingPlaceholderTextField
+                    placeholder="Email Address"
+                    type= "text"
+                    register={register("usernameOrEmail")}
+                    registerName='usernameorEmail'
+                    errorMessage={errors.usernameOrEmail?.message}
                     />
                 </div>
 
-                {errors.usernameOrEmail && (
-                    <p className="text-xs text-red-900 ">
-                        {errors.usernameOrEmail?.message}
-                    </p>
-                )}
+               
             </div>
-
+            {/* password*/}
             <div className="w-full space-y-5">
                 <div>
-                    <div className="w-full border-0 border-b-2  border-underlineColor ">
-                        <label htmlFor="password"></label>
-                        <input
-                            type="password"
-                            {...register("password")}
-                            id="Login__password"
-                            className="outline-none pb-4 w-full border-0 "
-                            placeholder="Password"
-                        />
-                    </div>
-                    {errors.password && (
-                        <p className="text-xs text-red-900 ">
-                            {errors.password?.message}
-                        </p>
-                    )}
+                    <FloatingPlaceholderTextField
+                    placeholder="Password"
+                    type= "text"
+                    register={register("password")}
+                    registerName='Password'
+                    errorMessage={errors.password?.message}
+                    />
                 </div>
+
+
+
+
+
+
+
+
 
                 <div>
                     <Link
@@ -117,9 +114,10 @@ function Form() {
                 </div>
             </div>
 
+
             <div className=" w-full  space-y-6">
                 <button className="btn1 w-full" type="submit" disabled={isButtonLoading}>
-                    {isButtonLoading?"Loading...":"Proceed"}
+                    {isButtonLoading ? "Loading..." : "Proceed"}
                 </button>
 
                 <h6 className="text-center md:text-xl w-full">
