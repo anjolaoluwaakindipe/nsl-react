@@ -10,7 +10,8 @@ export const createAccountSchema = Joi.object({
     //     .messages({
     //         "string.pattern.base": "Must contain only numbers",
     //     }),
-    fullName: Joi.string().trim().min(2).max(255).label("Full Name"),
+    firstName: Joi.string().trim().min(2).max(255).label("Full Name"),
+    lastName: Joi.string().trim().min(2).max(255).label("Full Name"),
     emailAddress: Joi.string()
         .required()
         .trim()

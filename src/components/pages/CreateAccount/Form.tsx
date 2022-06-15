@@ -1,5 +1,5 @@
 // react
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // react-hook-form
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -12,7 +12,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../services/customHooks/useModal";
 import { verificationRequests } from "../../../services/requests/verificationRequests";
 import { authSelector } from "../../../state/authSlice";
-import { setEmailCode, setSignUpInfo } from "../../../state/signUpInfoSlice";
+import {
+    setEmailCode,
+    setSignUpInfo,
+    signUpInfoSelector,
+} from "../../../state/signUpInfoSlice";
 import { AppDispatch } from "../../../state/store";
 import { paths } from "../../../utils/constants/allPaths";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
@@ -24,27 +28,37 @@ import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatter
 
 type CreateAccountFormData = {
     cscsAccountNumber: string;
-    fullName: string;
+    firstName: string;
+    lastName: string;
     emailAddress: string;
     phoneNumber: string;
     bvn: string;
     password: string;
+    dateOfBirth: string;
+    gender: { value: string; label: string } ;
     confirmPassword: string;
-    gender: any;
-    dateOfBirth: any;
+   
 };
 
 function Form() {
-
-    const genderDropdownOptions = [
-        { value: "Male", label: "Male" },
-        { value: "Female", label: "Female" },
-    ];
-    const navigate = useNavigate();
-    const { isLoading, isSuccess, errorMessage, isError } =
-        useSelector(authSelector);
+    const { isLoading, isSuccess, isError } = useSelector(authSelector);
+    const {
+        email,
+        firstName,
+        bvn,
+        dateOfBirth,
+        gender,
+        lastName,
+        phoneNumber,
+        
+    } = useSelector(signUpInfoSelector);
     const dispatch = useDispatch<AppDispatch>();
     const [disableButton, setDisableButton] = useState(false);
+
+    const genderDropdownOptions = [
+        { value: "M", label: "Male" },
+        { value: "F", label: "Female" },
+    ];
 
     const {
         register,
@@ -52,9 +66,11 @@ function Form() {
         control,
         watch,
         formState: { errors },
+        setValue,
     } = useForm<CreateAccountFormData>({
         defaultValues: {
-            fullName: "",
+            firstName: "",
+            lastName: "",
             emailAddress: "",
             phoneNumber: "",
             cscsAccountNumber: "",
@@ -64,6 +80,39 @@ function Form() {
         resolver: joiResolver(createAccountSchema),
     });
     const { openModalFunc } = useModal("BeginVerificationModal", false);
+
+    useEffect(() => {
+        if (email) {
+            setValue("emailAddress", email);
+        }
+        if (firstName) {
+            setValue("firstName", firstName);
+        }
+        if (phoneNumber) {
+            setValue("phoneNumber", phoneNumber);
+        }
+        if (bvn) {
+            setValue("bvn", bvn);
+        }
+        if (dateOfBirth) {
+            setValue("dateOfBirth", dateOfBirth);
+        }
+        if (gender) {
+            setValue("gender", gender);
+        }
+        if (lastName) {
+            setValue("lastName", lastName);
+        }
+    }, [
+        firstName,
+        phoneNumber,
+        email,
+        bvn,
+        dateOfBirth,
+        gender,
+        lastName,
+        setValue,
+    ]);
 
     useEffect(() => {
         if (!isLoading && isSuccess) {
@@ -96,9 +145,13 @@ function Form() {
                 dispatch(
                     setSignUpInfo({
                         email: data.emailAddress,
-                        fullName: data.fullName,
+                        firstName: data.firstName,
                         password: data.password,
                         phoneNumber: data.phoneNumber,
+                        bvn: data.bvn,
+                        gender: data?.gender,
+                        dateOFBirth: data.dateOfBirth,
+                        lastName: data.lastName,
                     })
                 );
                 dispatch(setEmailCode({ emailCode }));
@@ -155,34 +208,33 @@ function Form() {
             autoComplete={"off"}
         >
             {/*enter first name */}
-            <div className="col-span-12 md:col-span-6 ">
+            <div className="col-span-12  md:col-span-6 ">
                 <FloatingPlaceholderTextField
-                    errorMessage={errors.fullName?.message}
+                    errorMessage={errors.firstName?.message}
                     placeholder="First Name"
-                    registerName="firstName"
-                    register={register}
+                    registerName="fistName"
+                    register={register("firstName")}
                     type="text"
                 />
             </div>
-
             {/*enter last name */}
-            <div className="col-span-12 md:col-span-6 ">
+            <div className="col-span-12  md:col-span-6 ">
                 <FloatingPlaceholderTextField
-                    errorMessage={errors.fullName?.message}
+                    errorMessage={errors.lastName?.message}
                     placeholder="Last Name"
                     registerName="lastName"
-                    register={register}
+                    register={register("lastName")}
                     type="text"
                 />
             </div>
 
             {/*enter email */}
-            <div className="col-span-12 md:col-span-6 ">
+            <div className="col-span-12 md:col-span-6">
                 <FloatingPlaceholderTextField
                     errorMessage={errors.emailAddress?.message}
                     placeholder="Email Address"
                     registerName="emailAddress"
-                    register={register}
+                    register={register("emailAddress")}
                     type="email"
                 />
             </div>
@@ -301,12 +353,12 @@ function Form() {
             </div>
 
             {/*enter password */}
-            <div className="col-span-12 md:col-span-6 ">
+            <div className="col-span-12 md:col-span-6">
                 <FloatingPlaceholderTextField
                     errorMessage={errors.password?.message}
                     placeholder="Password"
                     registerName="password"
-                    register={register}
+                    register={register("password")}
                     type="password"
                 />
             </div>
@@ -317,7 +369,7 @@ function Form() {
                     errorMessage={errors.confirmPassword?.message}
                     placeholder="Confirm Password"
                     registerName="confirmPassword"
-                    register={register}
+                    register={register("confirmPassword")}
                     type="password"
                 />
             </div>

@@ -24,6 +24,108 @@ const initialState: AuthState = {
     requestStatus: 0,
 };
 
+// Register User on both the application and keycloak
+export const createUserFull = createAsyncThunk(
+    "auth/createUserAppStatus",
+    async (
+        {
+            firstName,
+            lastName,
+            dateOfBirth,
+            gender,
+            email,
+            bvn,
+            phoneNumber,
+            password,
+        }: {
+            firstName: string;
+            lastName: string;
+            dateOfBirth: string;
+            gender: string;
+            email: string;
+            bvn: string;
+            phoneNumber: string;
+            password: string;
+        },
+        thunkApi
+    ) => {
+        try {
+            // get admin token response from keycloak
+            const adminTokenResponse = await authRequest.getAdminToken();
+            console.log(adminTokenResponse);
+
+            // check if admin token response was successful or not
+            if (
+                adminTokenResponse.status &&
+                adminTokenResponse.status === 200
+            ) {
+                console.log(adminTokenResponse);
+
+                // use the access token of the admin token and user inputed fields to register user on keycloak
+                const registerUserResponse =
+                    await authRequest.registerUserKeycloak({
+                        fullName: firstName + " " + lastName,
+                        email,
+                        password,
+                        phoneNumber,
+                        adminToken: adminTokenResponse.data["access_token"],
+                    });
+
+                console.log(registerUserResponse);
+
+                // check if user registration response was successful or not
+                if (registerUserResponse.status === 201) {
+                    return {
+                        message: "User Creation Successful",
+                    };
+                } else {
+                    switch (registerUserResponse.response.status) {
+                        case 0:
+                            return thunkApi.rejectWithValue(
+                                "A network error occur. Please check your connection"
+                            );
+                        case 409:
+                            return thunkApi.rejectWithValue(
+                                "User already exists. Please try again with another email"
+                            );
+
+                        default:
+                            return thunkApi.rejectWithValue(
+                                "Something went wrong when trying to create your account. Please try again later "
+                            );
+                    }
+                }
+            } else {
+                switch (adminTokenResponse.response.status) {
+                    case 0:
+                        return thunkApi.rejectWithValue(
+                            "A network error occured. Please check your connection"
+                        );
+                    case 401:
+                        return thunkApi.rejectWithValue(
+                            "We are currently working on our servers please check back later."
+                        );
+                    case 400:
+                        return thunkApi.rejectWithValue(
+                            "Something went wrong while creating your account. Please try again later"
+                        );
+                    case 500:
+                        return thunkApi.rejectWithValue(
+                            "We are current experiencing something wrong with our servers. Please try again later"
+                        );
+                    default:
+                        return thunkApi.rejectWithValue(
+                            "An error occured. Please try again later"
+                        );
+                }
+            }
+        } catch (e: any) {
+            console.log(e);
+            return thunkApi.rejectWithValue(e);
+        }
+    }
+);
+
 // state management for logging in a user
 export const loginUser = createAsyncThunk(
     "auth/loginUserStatus",
@@ -84,7 +186,7 @@ export const loginUser = createAsyncThunk(
 );
 
 // state management for creating a user
-export const createUser = createAsyncThunk(
+export const createUserAuth = createAsyncThunk(
     "auth/createUserStatus",
     async (
         {
@@ -113,13 +215,14 @@ export const createUser = createAsyncThunk(
                 console.log(adminTokenResponse);
 
                 // use the access token of the admin token and user inputed fields to register user
-                const registerUserResponse = await authRequest.registerUser({
-                    fullName,
-                    email,
-                    password,
-                    phoneNumber,
-                    adminToken: adminTokenResponse.data["access_token"],
-                });
+                const registerUserResponse =
+                    await authRequest.registerUserKeycloak({
+                        fullName,
+                        email,
+                        password,
+                        phoneNumber,
+                        adminToken: adminTokenResponse.data["access_token"],
+                    });
 
                 console.log(registerUserResponse);
 
@@ -233,13 +336,13 @@ const authSlice = createSlice({
                 state.user!.name = action?.payload!.name;
                 state.user!.email = action?.payload!.email;
                 state.user!.phoneNumber = action?.payload!.phone_number;
-                return state
+                return state;
             })
             .addCase(loginUser.pending, (state) => {
                 state.isLoading = true;
                 state.isSuccess = false;
                 state.isError = false;
-                return state
+                return state;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 console.log(action.payload);
@@ -247,20 +350,20 @@ const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.errorMessage = action.payload as string;
-                return state
+                return state;
             })
-            .addCase(createUser.fulfilled, (state, action) => {
+            .addCase(createUserAuth.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
-                return state
+                return state;
             })
-            .addCase(createUser.pending, (state, action) => {
+            .addCase(createUserAuth.pending, (state, action) => {
                 state.isLoading = true;
                 state.isSuccess = false;
                 state.isError = false;
             })
-            .addCase(createUser.rejected, (state, action) => {
+            .addCase(createUserAuth.rejected, (state, action) => {
                 console.log(action.payload);
                 state.isError = true;
                 state.isLoading = false;

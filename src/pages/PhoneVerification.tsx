@@ -14,15 +14,19 @@ import { Controller, useForm } from "react-hook-form";
 import { useModal } from "../services/customHooks/useModal";
 import { paths } from "../utils/constants/allPaths";
 import { useSelector, useDispatch } from "react-redux";
-import { clearSignUpInfo, setSmsCode, signUpInfoSelector } from "../state/signUpInfoSlice";
+import {
+    clearSignUpInfo,
+    setSmsCode,
+    signUpInfoSelector,
+} from "../state/signUpInfoSlice";
 import { AppDispatch } from "../state/store";
-import { useState, useEffect } from 'react';
-import toast from 'react-hot-toast';
-import { verificationRequests } from '../services/requests/verificationRequests';
-import { authSelector, createUser } from '../state/authSlice';
+import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { verificationRequests } from "../services/requests/verificationRequests";
+import { authSelector, createUserAuth } from "../state/authSlice";
 
 function PhoneVerification() {
-    const { email, fullName, password, phoneNumber, smsCode } =
+    const { email, firstName, password, phoneNumber, smsCode } =
         useSelector(signUpInfoSelector);
     const navigate = useNavigate();
     const { isLoading, isSuccess, errorMessage, isError } =
@@ -31,7 +35,6 @@ function PhoneVerification() {
     const [isButtonDisable, setIsButtonDisable] = useState(true);
     const [toastId, setToastId] = useState("");
     const [buttonLoading, setButtonLoading] = useState(false);
-
 
     // sends a toast message to advice the user to input a 4 digits code
     useEffect(() => {
@@ -116,12 +119,14 @@ function PhoneVerification() {
             })
             .then((res) => {
                 dispatch(setSmsCode({ smsCode: newSmsCode }));
-                toast.success("New verification code sent to your phone number.", {
-                    id: loadingToastId,
-                });
+                toast.success(
+                    "New verification code sent to your phone number.",
+                    {
+                        id: loadingToastId,
+                    }
+                );
             })
             .catch((err) => {
-                
                 toast.error(
                     "Something went wrong while sending a new verification code to your phone number. Please try again later",
                     { id: loadingToastId }
@@ -131,44 +136,48 @@ function PhoneVerification() {
 
     // checks if the registration information are still in state otherwise go back to the create account page
     useEffect(() => {
-        if (!email || !fullName || !password || !phoneNumber) {
+        if (!email || !firstName || !password || !phoneNumber) {
             navigate(paths.CREATE_ACCOUNT, { replace: true });
         }
-    }, [email, fullName, password, phoneNumber]); // eslint-disable-line
+    }, [email, firstName, password, phoneNumber]); // eslint-disable-line
 
     const { openModalFunc } = useModal(
         "PhoneEmailVerificationSuccessModal",
         false
     );
-    
-    // checks if account creation was successful or not 
+
+    // checks if account creation was successful or not
     useEffect(() => {
         if (!isLoading && isSuccess) {
-            toast.success("Account creation Successful please Login in")
-            setButtonLoading(false)
+            toast.success("Account creation Successful please Login in");
+            setButtonLoading(false);
             dispatch(clearSignUpInfo);
             openModalFunc();
         }
-        if(!isLoading && isError){
+        if (!isLoading && isError) {
             toast.error(errorMessage);
             setButtonLoading(false);
         }
 
-        if(!isLoading && isError && errorMessage === "User already exists. Please try again with another email"){
+        if (
+            !isLoading &&
+            isError &&
+            errorMessage ===
+                "User already exists. Please try again with another email"
+        ) {
             toast.error(errorMessage);
             dispatch(clearSignUpInfo);
             setButtonLoading(false);
-            navigate(paths.CREATE_ACCOUNT)
+            navigate(paths.CREATE_ACCOUNT);
         }
-    }, [isLoading, openModalFunc]);// eslint-disable-line
+    }, [isLoading, openModalFunc]); // eslint-disable-line
 
-
-    // submits user sign up information 
-    const onSubmit = handleSubmit(async(data) => {
-        setButtonLoading(true)
+    // submits user sign up information
+    const onSubmit = handleSubmit(async (data) => {
+        setButtonLoading(true);
         await dispatch(
-            createUser({
-                fullName: fullName.trim(),
+            createUserAuth({
+                fullName: firstName.trim(),
                 email: email.trim(),
                 phoneNumber: phoneNumber.trim(),
                 password: password.trim(),
@@ -219,9 +228,9 @@ function PhoneVerification() {
                             className=" w-full  btn1"
                             onClick={() => {}}
                             type="submit"
-                            disabled= {isButtonDisable || buttonLoading}
+                            disabled={isButtonDisable || buttonLoading}
                         >
-                            {buttonLoading?"Loading...":"Verify"}
+                            {buttonLoading ? "Loading..." : "Verify"}
                         </button>
                         <h6 className="text-center md:text-xl w-full ">
                             Already have an account?{" "}

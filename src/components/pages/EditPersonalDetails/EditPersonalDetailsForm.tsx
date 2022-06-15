@@ -35,15 +35,27 @@ function EditPersonalDetailsForm() {
             autoSave="off"
             autoComplete="off"
         >
-            {/*fullname */}
+            {/*firstname */}
             <div className=" col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
-                    placeholder="FullName"
+                    placeholder="FirstName"
                     type="text"
-                    register={register}
-                    registerName='FullName'
-                    id="EditProfileDetails__FullName"
-                    errorMessage={errors.fullName?.message}
+                    register={register("firstname")}
+                    registerName='FirstName'
+                    id="EditProfileDetails__FirstName"
+                    errorMessage={errors.firstName?.message}
+                />
+            </div>
+
+             {/*Last Nmae */}
+             <div className=" col-span-12 md:col-span-6 ">
+                <FloatingPlaceholderTextField
+                    placeholder="LastName"
+                    type="text"
+                    register={register("Lastname")}
+                    registerName='LastName'
+                    id="EditProfileDetails__LastName"
+                    errorMessage={errors.LastName?.message}
                 />
             </div>
 
@@ -53,7 +65,7 @@ function EditPersonalDetailsForm() {
                     placeholder="Email Address"
                     type="text"
                     id="EditProfile__emailAddress"
-                    register={register}
+                    register={register("emailaddress")}
                     registerName='Email Address'
                     errorMessage={errors.emailAddress?.message}
                 />
@@ -186,7 +198,7 @@ function EditPersonalDetailsForm() {
                 <FloatingPlaceholderTextField
                     placeholder="CSCS Number"
                     type="text"
-                    register={register}
+                    register={register("cscsNumber")}
                     registerName='CSCS Number'
                     id="EditProfileDetails__cscsNumber"
                     errorMessage={errors.cscsNumber?.message}
@@ -198,7 +210,7 @@ function EditPersonalDetailsForm() {
                 <FloatingPlaceholderTextField
                     placeholder="NIN"
                     type="text"
-                    register={register}
+                    register={register("nin")}
                     registerName='NIN'
                     id="EditProfileDetails__nin"
                     errorMessage={errors.cscsNumber?.message}
@@ -228,7 +240,7 @@ function EditPersonalDetailsForm() {
                 <FloatingPlaceholderTextField
                     placeholder="BVN"
                     type="text"
-                    register={register}
+                    register={register("bvn")}
                     registerName='BVN'
                     id="EditProfileDetails__bvn"
                     errorMessage={errors.cscsNumber?.message}

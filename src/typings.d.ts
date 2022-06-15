@@ -101,12 +101,16 @@ interface AuthState {
 
 // signUpInfo state
 interface SignUpInfoState {
-    fullName:string;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+    gender: { value: string; label: string } | Record;
     email: string;
+    bvn:string
     phoneNumber: string;
     password: string;
-    emailCode:string;
-    smsCode:string;
+    emailCode: string;
+    smsCode: string;
 }
 
 // Requests

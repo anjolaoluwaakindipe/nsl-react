@@ -76,7 +76,7 @@ function Form() {
                     <FloatingPlaceholderTextField
                     placeholder="Email Address"
                     type= "text"
-                    register={register}
+                    register={register("usernameOrEmail")}
                     registerName='usernameorEmail'
                     errorMessage={errors.usernameOrEmail?.message}
                     />
@@ -90,7 +90,7 @@ function Form() {
                     <FloatingPlaceholderTextField
                     placeholder="Password"
                     type= "text"
-                    register={register}
+                    register={register("password")}
                     registerName='Password'
                     errorMessage={errors.password?.message}
                     />

@@ -10,8 +10,6 @@ import {
     PASSWORD_GRANT_TYPE,
 } from "./authSettings";
 
-
-
 // function needed to convert javascript object to x-www-form-urlencoded readable form
 const xformurlencoder = (bodyFields: Record<string, any>): string => {
     let encodedStr = "";
@@ -157,8 +155,38 @@ const authRequest = {
             });
     },
 
+    registerUserApp: async ({
+        firstName,
+        lastName,
+        dateOfBirth,
+        gender,
+        email,
+        bvn,
+        phoneNumber,
+        password,
+    }: {
+        firstName: string;
+        lastName: string;
+        dateOfBirth: string;
+        gender: string;
+        email: string;
+        bvn: string;
+        phoneNumber: string;
+        password: string;
+    }) => {
+        return await axios.get("/isslapi/onboarding-api/1.0/createBasicAccount", {params: {
+            "FistName": firstName,
+            "LastName": lastName,
+            "BVN": bvn,
+            "DateofBirth": dateOfBirth,
+            "Gender": gender,
+            "EMailAddress": email,
+
+        }});
+    },
+
     // REGISTER A NEW USER
-    registerUser: async ({
+    registerUserKeycloak: async ({
         fullName,
         email,
         password,

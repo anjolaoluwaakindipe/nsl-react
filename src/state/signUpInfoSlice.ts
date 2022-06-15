@@ -4,10 +4,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store";
 
 const initialState: SignUpInfoState = {
-    fullName: "",
+    firstName: "",
     email: "",
     phoneNumber: "",
     password: "",
+    gender: {value: "", label: ""},
+    bvn: "",
+    dateOfBirth: "",
+    lastName: "",
     emailCode: "",
     smsCode: ''
 };
@@ -19,8 +23,12 @@ const signUpInfoSlice = createSlice({
         setSignUpInfo(
             state: SignUpInfoState,
             action: PayloadAction<{
+                firstName:string;
                 email: string;
-                fullName: string;
+                gender: Record<string,any>,
+                bvn:string;
+                dateOFBirth:string;
+                lastName:string;
                 password: string;
                 phoneNumber: string;
             }>
@@ -45,7 +53,11 @@ const signUpInfoSlice = createSlice({
         },
         clearSignUpInfo(state: SignUpInfoState) {
             state.email = "";
-            state.fullName = "";
+            state.firstName = "";
+            state.lastName = "";
+            state.gender = {value: "", label: ""}
+            state.dateOfBirth = "";
+            state.bvn = "";
             state.password = "";
             state.phoneNumber = "";
         },
