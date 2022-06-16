@@ -47,9 +47,9 @@ const authRequest = {
         return await axios
             .post(
                 BASE_URL +
-                    "/auth/realms/" +
-                    CUSTOM_REALM +
-                    "/protocol/openid-connect/token",
+                "/auth/realms/" +
+                CUSTOM_REALM +
+                "/protocol/openid-connect/token",
                 body,
 
                 {
@@ -83,9 +83,9 @@ const authRequest = {
         return await axios
             .get(
                 BASE_URL +
-                    "/auth/realms/" +
-                    CUSTOM_REALM +
-                    "/protocol/openid-connect/userinfo",
+                "/auth/realms/" +
+                CUSTOM_REALM +
+                "/protocol/openid-connect/userinfo",
                 {
                     headers: {
                         Authorization: "Bearer " + token,
@@ -129,9 +129,9 @@ const authRequest = {
         return await axios
             .post(
                 BASE_URL +
-                    "/auth/realms/" +
-                    CUSTOM_REALM +
-                    "/protocol/openid-connect/token",
+                "/auth/realms/" +
+                CUSTOM_REALM +
+                "/protocol/openid-connect/token",
                 body,
                 {
                     headers: {
@@ -173,7 +173,7 @@ const authRequest = {
         bvn: string;
         phoneNumber: string;
     }) => {
-        const res:{status:null|number, data:Record<string,any>, code:string} = {status: null, data: {}, code:""}
+        const res: { status: null | number, data: Record<string, any>, code: string } = { status: null, data: {}, code: "" }
         return await axios
             .get(
                 "/isslapi/ibank/api/v1/createBasicAccount",
@@ -218,13 +218,13 @@ const authRequest = {
         adminToken,
     }: {
         firstName: string;
-        lastName:string;
+        lastName: string;
         email: string;
         password: string;
         customerNo: string;
         adminToken: string;
     }) => {
-        
+
         // information needed to register a new user on a keycloak server
         const body = {
             firstName: firstName,
@@ -295,9 +295,9 @@ const authRequest = {
         return await axios
             .post(
                 BASE_URL +
-                    "/auth/realms/" +
-                    CUSTOM_REALM +
-                    "/protocol/openid-connect/logout",
+                "/auth/realms/" +
+                CUSTOM_REALM +
+                "/protocol/openid-connect/logout",
                 body,
                 {
                     headers: {
@@ -336,7 +336,7 @@ const authRequest = {
         // request to keycloak server
         return await fetch(
             BASE_URL +
-                `/auth/admin/realms/${CUSTOM_REALM}/users/${userId}/reset-password`,
+            `/auth/admin/realms/${CUSTOM_REALM}/users/${userId}/reset-password`,
             {
                 body: JSON.stringify(body),
                 method: "PUT",
@@ -353,6 +353,104 @@ const authRequest = {
                 return err;
             });
     },
+
+    //update user details 
+    updateUserApp: async () => {
+        // required information to get
+        const Info = {
+            CustomerNo: customerno,
+            
+        };
+
+        // body
+        const body = X-TENEANTID(islandbankpoc);
+
+        // response data format
+        let res: { status: number; data: any } = {
+            status: 0,
+            data: {},
+        };
+
+        // request to api
+        return await axios
+            .post(
+                "/isslapi/ibank/api/v1/updateCustomerDetails2",
+                body,
+                {
+                    headers: {
+                        "content-type": "application/json",
+                    },
+
+                    method: "POST",
+                }
+            )
+
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                console.log(res);
+
+                return res;
+            })
+            .catch((err) => {
+                console.log(err);
+                return err;
+            });
+    },
+
+
+
+//get user details
+getUserApp: async ({
+    //information to get users
+    customerno,
+    firstName,
+    lastName,
+    dateOfBirth,
+    gender,
+    email,
+    bvn,
+    phoneNumber,
+
+}: {
+    customerno: string;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+    gender: string;
+    email: string;
+    bvn: string;
+    phoneNumber: string;
+}) => {
+    const res: { status: null | number, data: Record<string, any>, code: string } = { status: null, data: {}, code: "" }
+    return await axios
+        .get(
+            "/isslapi/ibank/api/v1/getCustomer",
+            // /isslapi
+            {
+                params: {
+                    customerno: customerno
+                },
+            }
+        )
+        .then((response) => {
+            console.log(response);
+            res.status = response.status;
+            res.data = response.data;
+            console.log("there was success");
+            console.log(res);
+            return res;
+        })
+        .catch((error) => {
+            console.log(error.response);
+            console.log("there was an error");
+            res.status = error.response.status;
+            res.code = error.code;
+            console.log(res);
+            return res;
+        });
+},
+
 };
 export default authRequest;
 
