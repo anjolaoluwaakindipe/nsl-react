@@ -43,7 +43,7 @@ function ForgotPassword() {
                         <FloatingPlaceholderTextField
                             placeholder="Email Address"
                             type="text"
-                            register={register}
+                            register={register("email")}
                             registerName='Email Address'
                             id="ForgotPassword__email"
                             errorMessage={errors.email?.message}

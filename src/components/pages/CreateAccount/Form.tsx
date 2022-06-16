@@ -25,20 +25,7 @@ import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceh
 import Dropdown from "react-dropdown";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatterns";
-
-type CreateAccountFormData = {
-    cscsAccountNumber: string;
-    firstName: string;
-    lastName: string;
-    emailAddress: string;
-    phoneNumber: string;
-    bvn: string;
-    password: string;
-    dateOfBirth: string;
-    gender: { value: string; label: string } ;
-    confirmPassword: string;
-   
-};
+import { CreateAccountFormData } from "../../../typings";
 
 function Form() {
     const { isLoading, isSuccess, isError } = useSelector(authSelector);
@@ -50,7 +37,6 @@ function Form() {
         gender,
         lastName,
         phoneNumber,
-        
     } = useSelector(signUpInfoSelector);
     const dispatch = useDispatch<AppDispatch>();
     const [disableButton, setDisableButton] = useState(false);
@@ -67,13 +53,13 @@ function Form() {
         watch,
         formState: { errors },
         setValue,
+        getValues,
     } = useForm<CreateAccountFormData>({
         defaultValues: {
             firstName: "",
             lastName: "",
             emailAddress: "",
             phoneNumber: "",
-            cscsAccountNumber: "",
             password: "",
             confirmPassword: "",
         },
@@ -120,22 +106,21 @@ function Form() {
         }
     }, [isLoading, isSuccess, isError, openModalFunc]);
 
-    const onSubmit = handleSubmit(async (data) => {
-        setDisableButton(true);
-        // await dispatch(
-        //     createUser({
-        //         fullName: data.fullName.trim(),
-        //         email: data.emailAddress.trim(),
-        //         phoneNumber: data.phoneNumber.trim(),
-        //         password: data.password.trim(),
-        //     })
-        // );
+    console.log(getValues());
 
+    const onSubmit = handleSubmit(async (data) => {
+        // disable button on click
+        setDisableButton(true);
+
+        // generate email code
         const emailCode = verificationRequests.generateVerificationCode();
+
+        // create loading toaster
         const loading = toast.loading("Sending code to your email...", {
             position: "top-right",
         });
 
+        // send email verification
         const verificationResponse = await verificationRequests
             .verifyEmail({
                 fourDigitCode: emailCode,
@@ -149,7 +134,7 @@ function Form() {
                         password: data.password,
                         phoneNumber: data.phoneNumber,
                         bvn: data.bvn,
-                        gender: data?.gender,
+                        gender: data?.gender!,
                         dateOFBirth: data.dateOfBirth,
                         lastName: data.lastName,
                     })
@@ -245,22 +230,32 @@ function Form() {
                     <Controller
                         name="gender"
                         control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <Dropdown
-                                options={genderDropdownOptions}
-                                onChange={onChange}
-                                arrowClosed={<IoMdArrowDropdown />}
-                                arrowOpen={<IoMdArrowDropup />}
-                                value={value}
-                                placeholder="Gender"
-                                className="relative"
-                                placeholderClassName={
-                                    watchGender ? "text-black" : "text-gray-400"
-                                }
-                                controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
-                                menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
-                            />
-                        )}
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <Dropdown
+                                    options={genderDropdownOptions}
+                                    onChange={onChange}
+                                    arrowClosed={<IoMdArrowDropdown />}
+                                    arrowOpen={<IoMdArrowDropup />}
+                                    value={
+                                        value &&
+                                        value.label === "" &&
+                                        value.value === ""
+                                            ? undefined
+                                            : value
+                                    }
+                                    placeholder="Gender"
+                                    className="relative"
+                                    placeholderClassName={
+                                        watchGender && watchGender.value !== ""
+                                            ? "text-black"
+                                            : "text-gray-400"
+                                    }
+                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
+                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
+                                />
+                            );
+                        }}
                     />
 
                     <label htmlFor="gender"></label>
@@ -268,7 +263,7 @@ function Form() {
 
                 {
                     <p className="text-xs text-red-900 ">
-                        {errors?.gender?.value?.message}
+                        {errors?.gender?.value.message}
                     </p>
                 }
             </div>
@@ -316,7 +311,7 @@ function Form() {
                             e.target.type = "date";
                         }}
                         onBlur={(e) => {
-                            e.target.type = "";
+                            e.target.type = "text";
                         }}
                     />
                 </div>
@@ -327,29 +322,16 @@ function Form() {
                 )}
             </div>
 
-
-           
-
-
             {/* BVN */}
 
             <div className="md:col-span-6 col-span-12  ">
-                <div className="border-0 border-b-2  border-underlineColor">
-                    <label htmlFor="bvn"></label>
-                    <input
-                        {...register("bvn")}
-                        maxLength={11}
-                        onKeyDown={(e) => {
-                            if (!RegExp(numbersNoDecimal).test(e.key)) {
-                                e.preventDefault();
-                            }
-                        }}
-                        id="CreateAccount__bvn"
-                        className="outline-none pb-4  w-full"
-                        placeholder="BVN"
-                    />
-                </div>
-                <p className="text-xs text-red-900 ">{errors.bvn?.message}</p>
+                <FloatingPlaceholderTextField
+                    errorMessage={errors.bvn?.message}
+                    placeholder="BVN"
+                    registerName="password"
+                    register={register("bvn")}
+                    type="text"
+                />
             </div>
 
             {/*enter password */}

@@ -15,7 +15,7 @@ const initialState: AuthState = {
         name: "",
         preferred_username: "",
         sub: "",
-        phoneNumber: "",
+        customerNo: "",
     },
     isError: false,
     isLoading: false,
@@ -61,6 +61,8 @@ export const createUserFull = createAsyncThunk(
                 phoneNumber,
             });
 
+            console.log(createUserOnAppResponse);
+
             if (createUserOnAppResponse.status === 200) {
                 // get admin token response from keycloak
                 const adminTokenResponse = await authRequest.getAdminToken();
@@ -76,10 +78,11 @@ export const createUserFull = createAsyncThunk(
                     // use the access token of the admin token and user inputed fields to register user on keycloak
                     const registerUserResponse =
                         await authRequest.registerUserKeycloak({
-                            fullName: firstName + " " + lastName,
+                            firstName,
+                            lastName,
                             email,
                             password,
-                            phoneNumber,
+                            customerNo: createUserOnAppResponse.data.customerNo,
                             adminToken: adminTokenResponse.data["access_token"],
                         });
 
@@ -131,8 +134,15 @@ export const createUserFull = createAsyncThunk(
                             );
                     }
                 }
+            } else if (createUserOnAppResponse.code === "ECONNABORTED") {
+                return thunkApi.rejectWithValue("Network timeout");
             } else {
+                console.log("hello");
                 switch (createUserOnAppResponse.status) {
+                    case 400:
+                        return thunkApi.rejectWithValue(
+                            "Something went wrong while creating your account. Please try again later"
+                        );
                     default:
                         return thunkApi.rejectWithValue(
                             "Something went wrong when trying to create your account. Please try again later "
@@ -210,13 +220,17 @@ export const createUserAuth = createAsyncThunk(
     "auth/createUserStatus",
     async (
         {
-            fullName,
+            firstName,
+            lastName,
             email,
-            phoneNumber,
+
+            customerNo,
             password,
         }: {
-            fullName: string;
+            firstName: string;
+            lastName: string;
             email: string;
+            customerNo: string;
             phoneNumber: string;
             password: string;
         },
@@ -237,10 +251,11 @@ export const createUserAuth = createAsyncThunk(
                 // use the access token of the admin token and user inputed fields to register user
                 const registerUserResponse =
                     await authRequest.registerUserKeycloak({
-                        fullName,
+                        firstName,
+                        lastName,
                         email,
+                        customerNo,
                         password,
-                        phoneNumber,
                         adminToken: adminTokenResponse.data["access_token"],
                     });
 
@@ -355,7 +370,7 @@ const authSlice = createSlice({
                 state.refreshToken = action?.payload!.refreshToken;
                 state.user!.name = action?.payload!.name;
                 state.user!.email = action?.payload!.email;
-                state.user!.phoneNumber = action?.payload!.phone_number;
+                state.user!.customerNo = action?.payload!.customerNo;
                 return state;
             })
             .addCase(loginUser.pending, (state) => {
@@ -376,14 +391,36 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
+                state.errorMessage = ""
                 return state;
             })
             .addCase(createUserAuth.pending, (state, action) => {
                 state.isLoading = true;
                 state.isSuccess = false;
                 state.isError = false;
+                state.errorMessage = "";
             })
             .addCase(createUserAuth.rejected, (state, action) => {
+                console.log(action.payload);
+                state.isError = true;
+                state.isLoading = false;
+                state.isSuccess = false;
+                state.errorMessage = action.payload as string;
+            })
+            .addCase(createUserFull.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.errorMessage = "";
+                return state;
+            })
+            .addCase(createUserFull.pending, (state, action) => {
+                state.isLoading = true;
+                state.isSuccess = false;
+                state.isError = false;
+                state.errorMessage = "";
+            })
+            .addCase(createUserFull.rejected, (state, action) => {
                 console.log(action.payload);
                 state.isError = true;
                 state.isLoading = false;

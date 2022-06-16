@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { onlyNumberReg } from "../constants/inputValidationPatterns";
 
 // import {  onlyNumberReg } from "../constants/inputValidationPatterns";
 
@@ -18,19 +19,27 @@ export const createAccountSchema = Joi.object({
         .email({ tlds: { allow: false } })
         .label("Email Address"),
     phoneNumber: Joi.string().trim().required().label("Phone Number"),
-    // bvn: Joi.string()
-    //     .required()
-    //     .pattern(onlyNumberReg)
-    //     .messages({
-    //         "string.pattern.base": "Must contain only numbers",
-    //     })
-    //     .max(11)
-    //     .min(11)
-    //     .label("BVN"),
+    bvn: Joi.string()
+        .required()
+        .pattern(onlyNumberReg)
+        .messages({
+            "string.pattern.base": "Must contain only numbers",
+        })
+        .max(11)
+        .min(11)
+        .label("BVN"),
+    gender: Joi.object({
+        label: Joi.string().required().label("Gender"),
+        value: Joi.string().required().label("Gender"),
+    })
+        .required()
+        .label("Gender"),
+
     password: Joi.string().trim().min(8).required().label("Password"),
     confirmPassword: Joi.any()
         .valid(Joi.ref("password"))
         .required()
         .label("Confirm Password")
         .messages({ "any.only": "{{#label}} does not match Password" }),
+    dateOfBirth: Joi.string().isoDate().required().label("Date of Birth"),
 });

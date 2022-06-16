@@ -1,14 +1,21 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import modalReducer from "./modalSlice";
-import authSlice from "./authSlice";
+import authReducer from "./authSlice";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import signUpInfoSlice from "./signUpInfoSlice";
+import signUpInfoReducer from "./signUpInfoSlice";
 
 const rootReducer = combineReducers({
     modal: modalReducer,
-    auth: authSlice,
-    signUpInfo: signUpInfoSlice,
+    auth: persistReducer(
+        {
+            key: "root",
+            storage,
+            blacklist: ["isLoading", "errorMessage", "isError", "isSuccess"],
+        },
+        authReducer
+    ),
+    signUpInfo: signUpInfoReducer,
 });
 
 const persistedReducer = persistReducer(

@@ -23,11 +23,20 @@ import { AppDispatch } from "../state/store";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { verificationRequests } from "../services/requests/verificationRequests";
-import { authSelector, createUserAuth } from "../state/authSlice";
+import { authSelector, createUserFull } from "../state/authSlice";
 
 function PhoneVerification() {
-    const { email, firstName, password, phoneNumber, smsCode } =
-        useSelector(signUpInfoSelector);
+    const {
+        email,
+        firstName,
+        lastName,
+        bvn,
+        dateOfBirth,
+        gender,
+        password,
+        phoneNumber,
+        smsCode,
+    } = useSelector(signUpInfoSelector);
     const navigate = useNavigate();
     const { isLoading, isSuccess, errorMessage, isError } =
         useSelector(authSelector);
@@ -37,13 +46,7 @@ function PhoneVerification() {
     const [buttonLoading, setButtonLoading] = useState(false);
 
     // sends a toast message to advice the user to input a 4 digits code
-    useEffect(() => {
-        setToastId(
-            toast("Please make sure code is 4 digits", {
-                position: "top-right",
-            })
-        );
-    }, []);
+    useEffect(() => {}, []);
 
     // component state
     const {
@@ -138,7 +141,13 @@ function PhoneVerification() {
     useEffect(() => {
         if (!email || !firstName || !password || !phoneNumber) {
             navigate(paths.CREATE_ACCOUNT, { replace: true });
+            return;
         }
+        setToastId(
+            toast("Please make sure code is 4 digits", {
+                position: "top-right",
+            })
+        );
     }, [email, firstName, password, phoneNumber]); // eslint-disable-line
 
     const { openModalFunc } = useModal(
@@ -154,7 +163,7 @@ function PhoneVerification() {
             dispatch(clearSignUpInfo);
             openModalFunc();
         }
-        if (!isLoading && isError) {
+        if (!isLoading && isError && errorMessage) {
             toast.error(errorMessage);
             setButtonLoading(false);
         }
@@ -170,14 +179,18 @@ function PhoneVerification() {
             setButtonLoading(false);
             navigate(paths.CREATE_ACCOUNT);
         }
-    }, [isLoading, openModalFunc]); // eslint-disable-line
+    }, [isLoading, openModalFunc]); //
 
     // submits user sign up information
     const onSubmit = handleSubmit(async (data) => {
         setButtonLoading(true);
         await dispatch(
-            createUserAuth({
-                fullName: firstName.trim(),
+            createUserFull({
+                firstName: firstName.trim(),
+                lastName: lastName.trim(),
+                bvn: bvn.trim(),
+                dateOfBirth: dateOfBirth.trim(),
+                gender: gender?.value?.trim(),
                 email: email.trim(),
                 phoneNumber: phoneNumber.trim(),
                 password: password.trim(),

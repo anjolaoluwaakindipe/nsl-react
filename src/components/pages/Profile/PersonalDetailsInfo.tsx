@@ -32,7 +32,7 @@ function PersonalDetailsInfo() {
                     <h1 className="text-primaryColor font-semibold">
                         Phone Number
                     </h1>
-                    <p className="break-words">{user?.phoneNumber}</p>
+                    <p className="break-words">+2347030444232</p>
                 </div>
                 <div className="md:col-span-1 col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">

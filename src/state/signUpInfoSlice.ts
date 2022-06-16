@@ -25,7 +25,7 @@ const signUpInfoSlice = createSlice({
             action: PayloadAction<{
                 firstName:string;
                 email: string;
-                gender: Record<string,any>,
+                gender: Record<string,any> | undefined,
                 bvn:string;
                 dateOFBirth:string;
                 lastName:string;
@@ -55,7 +55,7 @@ const signUpInfoSlice = createSlice({
             state.email = "";
             state.firstName = "";
             state.lastName = "";
-            state.gender = {value: "", label: ""}
+            state.gender = undefined;
             state.dateOfBirth = "";
             state.bvn = "";
             state.password = "";

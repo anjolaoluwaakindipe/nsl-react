@@ -25,6 +25,19 @@ type PersonalDetailsFormInfo = {
     salarySlips: FileList;
 };
 
+type CreateAccountFormData = {
+    // cscsAccountNumber: string;
+    firstName: string;
+    lastName: string;
+    emailAddress: string;
+    phoneNumber: string;
+    bvn: string;
+    password: string;
+    dateOfBirth: string;
+    gender: { value: string; label: string } | Record;
+    confirmPassword: string;
+};
+
 type EditPersonalDetailsInfo = {
     fullname: string;
     emailAddress: string;
@@ -89,7 +102,7 @@ interface AuthState {
         given_name: string;
         family_name: string;
         email: string;
-        phoneNumber:string;
+        customerNo: string;
     } | null;
 
     isSuccess: boolean;
@@ -106,7 +119,7 @@ interface SignUpInfoState {
     dateOfBirth: string;
     gender: { value: string; label: string } | Record;
     email: string;
-    bvn:string
+    bvn: string;
     phoneNumber: string;
     password: string;
     emailCode: string;
