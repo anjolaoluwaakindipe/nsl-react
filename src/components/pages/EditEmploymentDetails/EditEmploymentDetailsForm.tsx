@@ -32,7 +32,7 @@ function EditEmploymentDetailsForm() {
                 <FloatingPlaceholderTextField
                     placeholder="Title"
                     type="text"
-                    register={register}
+                    register={register("title")}
                     registerName='Title'
                     id="EditEmploymentDetails__title"
                 />
@@ -43,7 +43,7 @@ function EditEmploymentDetailsForm() {
                 <FloatingPlaceholderTextField
                     placeholder="Company Name"
                     type="text"
-                    register={register}
+                    register={register("companyName")}
                     registerName='Commpany Name'
                     id="EditEmploymentDetails__companyName"
                 />
@@ -74,7 +74,7 @@ function EditEmploymentDetailsForm() {
                 <FloatingPlaceholderTextField
                     placeholder="Work Sector"
                     type="text"
-                    register={register}
+                    register={register("workSector")}
                     registerName='Work Sector'
                     id="EditEmploymentDetails__workSector"
                 />
@@ -85,7 +85,7 @@ function EditEmploymentDetailsForm() {
                 <FloatingPlaceholderTextField
                     placeholder="Company Email Address"
                     type="text"
-                    register={register}
+                    register={register("companyEmailAddress")}
                     registerName='Company Email Address'
                     id="EditEmploymentDetails__CompanyEmailAddress"
                 />
@@ -96,7 +96,7 @@ function EditEmploymentDetailsForm() {
                <FloatingPlaceholderTextField
                     placeholder="Salary Range"
                     type="text"
-                    register={register}
+                    register={register("salaryRange")}
                     registerName='Salary Range'
                     id="EditEmploymentDetails__SalaryRange"
                 />
