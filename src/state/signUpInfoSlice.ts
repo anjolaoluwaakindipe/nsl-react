@@ -8,12 +8,12 @@ const initialState: SignUpInfoState = {
     email: "",
     phoneNumber: "",
     password: "",
-    gender: {value: "", label: ""},
+    gender: { value: "", label: "" },
     bvn: "",
     dateOfBirth: "",
     lastName: "",
     emailCode: "",
-    smsCode: ''
+    smsCode: "",
 };
 
 const signUpInfoSlice = createSlice({
@@ -23,12 +23,12 @@ const signUpInfoSlice = createSlice({
         setSignUpInfo(
             state: SignUpInfoState,
             action: PayloadAction<{
-                firstName:string;
+                firstName: string;
                 email: string;
-                gender: Record<string,any> | undefined,
-                bvn:string;
-                dateOFBirth:string;
-                lastName:string;
+                gender: Record<string, any> | undefined;
+                bvn: string;
+                dateOfBirth: string;
+                lastName: string;
                 password: string;
                 phoneNumber: string;
             }>
@@ -39,17 +39,17 @@ const signUpInfoSlice = createSlice({
             state: SignUpInfoState,
             action: PayloadAction<{
                 emailCode: string;
-               
             }>
         ) {
-            state.emailCode = action.payload.emailCode
+            state.emailCode = action.payload.emailCode;
         },
-        setSmsCode(state: SignUpInfoState,
+        setSmsCode(
+            state: SignUpInfoState,
             action: PayloadAction<{
                 smsCode: string;
-               
-            }>){
-            state.smsCode = action.payload.smsCode
+            }>
+        ) {
+            state.smsCode = action.payload.smsCode;
         },
         clearSignUpInfo(state: SignUpInfoState) {
             state.email = "";
@@ -66,5 +66,6 @@ const signUpInfoSlice = createSlice({
 
 export const signUpInfoSelector = (state: RootState) => state.signUpInfo;
 
-export const { clearSignUpInfo, setSignUpInfo, setEmailCode,setSmsCode } = signUpInfoSlice.actions;
+export const { clearSignUpInfo, setSignUpInfo, setEmailCode, setSmsCode } =
+    signUpInfoSlice.actions;
 export default signUpInfoSlice.reducer;

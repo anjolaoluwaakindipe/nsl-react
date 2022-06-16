@@ -28,7 +28,7 @@ function EmailVerificationPinCode({ value, onChange }: EmailVerificaitonPinCodeP
     const [firstDigit, setFirstDigit] = useState("");
     const [secondDigit, setSecondDigit] = useState("");
     const [thirdDigit, setThirdDigit] = useState("");
-    const [fourthDigit, setFourthDigit] = useState("");
+    const [fourthDigit, setFourthDigit ] = useState("");
 
     useEffect(()=>{
         onChange(pin)
@@ -75,9 +75,7 @@ function EmailVerificationPinCode({ value, onChange }: EmailVerificaitonPinCodeP
     return (
         <div
             className="flex space-x-5"
-            onChange={(e) => {
-                onChange(e);
-            }}
+           
         >
             <input
                 type="text"

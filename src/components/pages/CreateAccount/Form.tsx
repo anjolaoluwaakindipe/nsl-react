@@ -132,10 +132,10 @@ function Form() {
                         email: data.emailAddress,
                         firstName: data.firstName,
                         password: data.password,
-                        phoneNumber: data.phoneNumber,
+                        phoneNumber: data.phoneNumber.toString(),
                         bvn: data.bvn,
                         gender: data?.gender!,
-                        dateOFBirth: data.dateOfBirth,
+                        dateOfBirth: data.dateOfBirth,
                         lastName: data.lastName,
                     })
                 );

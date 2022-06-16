@@ -36,6 +36,7 @@ function EmailVerification() {
         control,
         formState: { errors },
         watch,
+        getValues,
     } = useForm({
         defaultValues: {
             emailCode: "",
@@ -50,6 +51,8 @@ function EmailVerification() {
             })
         ),
     });
+
+    console.log(getValues())
 
     useEffect(() => {
         setToastId(

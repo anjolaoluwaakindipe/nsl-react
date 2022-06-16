@@ -51,6 +51,16 @@ export const createUserFull = createAsyncThunk(
     ) => {
         try {
             // response from creating user on main application
+            console.log({
+                firstName,
+                lastName,
+                dateOfBirth,
+                gender,
+                email,
+                bvn,
+                phoneNumber,
+                password,
+            });
             const createUserOnAppResponse = await authRequest.registerUserApp({
                 firstName,
                 lastName,
