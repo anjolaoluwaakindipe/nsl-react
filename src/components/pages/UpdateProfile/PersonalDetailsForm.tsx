@@ -2,6 +2,7 @@ import React from "react";
 
 // custom components
 import Progress from "./Progress";
+import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 
 // form imports
 import "react-phone-number-input/style.css";
@@ -73,45 +74,44 @@ function PersonalDetailsForm() {
                 autoComplete="off"
                 autoSave="off"
             >
-                {/* Full Name */}
+        
+                {/*firstname */}
                 <div className=" col-span-12 md:col-span-6 ">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__fullName"></label>
-                        <input
-                            {...register("fullname")}
-                            type="text"
-                            formNoValidate={true}
-                            id="UpdateProfile__fullname"
-                            className="outline-none pb-4  w-full"
-                            placeholder="Full Name"
-                        />
-                    </div>
-                    {errors.fullname && (
-                        <p className="text-xs text-red-900 ">
-                            {errors.fullname?.message}
-                        </p>
-                    )}
+                    <FloatingPlaceholderTextField
+                        placeholder="FirstName"
+                        type="text"
+                        register={register("fullname")}
+                        registerName='FirstName'
+                        id="UpdateProfile__FirstName"
+                        errorMessage={errors.fullname?.message}
+                    />
                 </div>
 
-                {/* Email Address */}
-                <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__emailAddress"></label>
-                        <input
-                            type="text"
-                            {...register("emailAddress")}
-                            max={10}
-                            id="UpdateProfile__emailAddress"
-                            className="outline-none pb-4  w-full"
-                            placeholder="Email Address"
-                        />
-                    </div>
-                    {errors.emailAddress && (
-                        <p className="text-xs text-red-900 ">
-                            {errors.emailAddress?.message}
-                        </p>
-                    )}
+                 {/*Lastname */}
+                 <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="LastName"
+                        type="text"
+                        register={register("fullname")}
+                        registerName='FirstName'
+                        id="UpdateProfile__LastName"
+                        errorMessage={errors.fullname?.message}
+                    />
                 </div>
+
+               
+
+                {/*email address */}
+            <div className=" col-span-12 md:col-span-6">
+                <FloatingPlaceholderTextField
+                    placeholder="Email Address"
+                    type="text"
+                    id="UpdateProfile__emailAddress"
+                    register={register("emailAddress")}
+                    registerName='Email Address'
+                    errorMessage={errors.emailAddress?.message}
+                />
+            </div>
 
                 {/* Phone Number */}
                 <div className="md:col-span-6 col-span-12 ">
@@ -239,25 +239,17 @@ function PersonalDetailsForm() {
                     }
                 </div>
 
-                {/* CSCS Number */}
-                <div className=" col-span-12 ">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__cscsNumber"></label>
-                        <input
-                            {...register("cscsNumber")}
-                            type="text"
-                            formNoValidate={true}
-                            id="UpdateProfile__cscsNumber"
-                            className="outline-none pb-4  w-full"
-                            placeholder="CSCS Number"
-                        />
-                    </div>
-                    {errors.cscsNumber && (
-                        <p className="text-xs text-red-900 ">
-                            {errors.cscsNumber?.message}
-                        </p>
-                    )}
-                </div>
+                {/*CSCS account number*/}
+            <div className=" col-span-12 ">
+                <FloatingPlaceholderTextField
+                    placeholder="CSCS Number"
+                    type="text"
+                    register={register("cscsNumber")}
+                    registerName='CSCS Number'
+                    id="UpdateProfile__cscsNumber"
+                    errorMessage={errors.cscsNumber?.message}
+                />
+            </div>
 
                 {/* Residential Area */}
                 <div className="col-span-12">
@@ -290,10 +282,10 @@ function PersonalDetailsForm() {
                             }
                         >
                             {watchPictureUpload &&
-                            watchPictureUpload?.length > 0
+                                watchPictureUpload?.length > 0
                                 ? "Upload Picture (" +
-                                  watchPictureUpload.item(0)?.name +
-                                  ")"
+                                watchPictureUpload.item(0)?.name +
+                                ")"
                                 : "Upload Picture"}
                             <AiOutlineCloudUpload
                                 className="text-2xl"
@@ -326,10 +318,10 @@ function PersonalDetailsForm() {
                             }
                         >
                             {watchproofOfIdentification &&
-                            watchproofOfIdentification?.length > 0
+                                watchproofOfIdentification?.length > 0
                                 ? "Proof of Identification (" +
-                                  watchproofOfIdentification.item(0)?.name +
-                                  ")"
+                                watchproofOfIdentification.item(0)?.name +
+                                ")"
                                 : "Proof of Identification"}
 
                             <AiOutlineCloudUpload
@@ -356,10 +348,10 @@ function PersonalDetailsForm() {
                             }
                         >
                             {watchproofOfResidence &&
-                            watchproofOfResidence?.length > 0
+                                watchproofOfResidence?.length > 0
                                 ? "Proof of Residence (" +
-                                  watchproofOfResidence.item(0)?.name +
-                                  ")"
+                                watchproofOfResidence.item(0)?.name +
+                                ")"
                                 : "Proof of Residence"}
 
                             <AiOutlineCloudUpload
@@ -387,8 +379,8 @@ function PersonalDetailsForm() {
                         >
                             {watchSalarySlips && watchSalarySlips?.length > 0
                                 ? "Original/certified copy of the latest salary slips for the past 3 months (" +
-                                  watchSalarySlips.item(0)?.name +
-                                  ")"
+                                watchSalarySlips.item(0)?.name +
+                                ")"
                                 : "Original/certified copy of the latest salary slips for the past 3 months"}
 
                             <AiOutlineCloudUpload
