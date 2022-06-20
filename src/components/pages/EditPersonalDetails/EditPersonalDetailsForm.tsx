@@ -123,7 +123,7 @@ function EditPersonalDetailsForm() {
             </div>
 
             {/*CSCS account number*/}
-            <div className=" col-span-12 ">
+            <div className=" col-span-12  md:col-span-6">
                 <FloatingPlaceholderTextField
                     placeholder="CSCS Number"
                     type="text"
@@ -135,13 +135,25 @@ function EditPersonalDetailsForm() {
             </div>
 
             {/*Nin Number*/}
-            <div className=" col-span-12 ">
+            <div className=" col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
                     placeholder="NIN"
                     type="text"
                     register={register("nin")}
                     registerName='NIN'
                     id="EditProfileDetails__nin"
+                    errorMessage={errors.cscsNumber?.message}
+                />
+            </div>
+
+            {/*bvn*/}
+            <div className=" col-span-12 md:col-span-6 ">
+                <FloatingPlaceholderTextField
+                    placeholder="BVN"
+                    type="text"
+                    register={register("bvn")}
+                    registerName='BVN'
+                    id="EditProfileDetails__bvn"
                     errorMessage={errors.cscsNumber?.message}
                 />
             </div>
@@ -164,17 +176,7 @@ function EditPersonalDetailsForm() {
                 }
             </div>
 
-            {/*bvn*/}
-            <div className=" col-span-12 ">
-                <FloatingPlaceholderTextField
-                    placeholder="BVN"
-                    type="text"
-                    register={register("bvn")}
-                    registerName='BVN'
-                    id="EditProfileDetails__bvn"
-                    errorMessage={errors.cscsNumber?.message}
-                />
-            </div>
+            
 
             {/*save button */}
             <div className="col-span-12">
