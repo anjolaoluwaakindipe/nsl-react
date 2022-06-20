@@ -355,48 +355,48 @@ const authRequest = {
     },
 
     //update user details 
-    updateUserApp: async () => {
-        // required information to get
-        const Info = {
-            CustomerNo: customerno,
+    // updateUserApp: async () => {
+    //     // required information to get
+    //     const Info = {
+    //         CustomerNo: customerno,
             
-        };
+    //     };
 
-        // body
-        const body = X-TENEANTID(islandbankpoc);
+    //     // body
+    //     const body = X-TENEANTID(islandbankpoc);
 
-        // response data format
-        let res: { status: number; data: any } = {
-            status: 0,
-            data: {},
-        };
+    //     // response data format
+    //     let res: { status: number; data: any } = {
+    //         status: 0,
+    //         data: {},
+    //     };
 
-        // request to api
-        return await axios
-            .post(
-                "/isslapi/ibank/api/v1/updateCustomerDetails2",
-                body,
-                {
-                    headers: {
-                        "content-type": "application/json",
-                    },
+    //     // request to api
+    //     return await axios
+    //         .post(
+    //             "/isslapi/ibank/api/v1/updateCustomerDetails2",
+    //             body,
+    //             {
+    //                 headers: {
+    //                     "content-type": "application/json",
+    //                 },
 
-                    method: "POST",
-                }
-            )
+    //                 method: "POST",
+    //             }
+    //         )
 
-            .then((response) => {
-                res.status = response.status;
-                res.data = response.data;
-                console.log(res);
+    //         .then((response) => {
+    //             res.status = response.status;
+    //             res.data = response.data;
+    //             console.log(res);
 
-                return res;
-            })
-            .catch((err) => {
-                console.log(err);
-                return err;
-            });
-    },
+    //             return res;
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //             return err;
+    //         });
+    // },
 
 
 

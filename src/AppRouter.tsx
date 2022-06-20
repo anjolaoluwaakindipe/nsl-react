@@ -189,9 +189,9 @@ function AppRouter() {
                         path={paths.EDIT_PERSONAL_DETAILS}
                         element={
                             <React.Suspense>
-                                <ProtectedRoute>
+                                {/* <ProtectedRoute> */}
                                     <EditPersonalDetails />
-                                </ProtectedRoute>
+                                {/* </ProtectedRoute> */}
                             </React.Suspense>
                         }
                     />
