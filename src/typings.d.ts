@@ -11,7 +11,10 @@ type LoanApplicationFormInfo = {
 };
 
 type PersonalDetailsFormInfo = {
-    fullname: string;
+    firstName: string;
+    lastName: string;
+    title: string;
+    middleName: string;
     emailAddress: string;
     phoneNumber: string;
     gender: { value: string; label: string } | Record;
@@ -19,10 +22,11 @@ type PersonalDetailsFormInfo = {
     maritalStatus: { value: string; label: string } | Record;
     cscsNumber: string;
     residentialAddress: string;
-    picture: FileList;
-    proofOfIdentification: FileList;
-    proofOfResidence: FileList;
-    salarySlips: FileList;
+    picture: string | null;
+    proofOfIdentification: string | null;
+    proofOfResidence: string | null;
+    salarySlips: string | null;
+    bvn: string;
 };
 
 type CreateAccountFormData = {
@@ -95,14 +99,28 @@ interface AuthState {
     accessToken: string | null;
     refreshToken: string | null;
     user: {
-        sub: string;
-        email_verified: boolean;
-        name: string;
-        preferred_username: string;
-        given_name: string;
-        family_name: string;
-        email: string;
-        customerNo: string;
+        title: string | null;
+        customerNo: string | null;
+        name: string | null;
+        firstName: string | null;
+        lastName: string | null;
+        middleName: string | null;
+        maritalStatus: string | null;
+        dateOfBirth: string | null;
+        gender: string | null;
+        phoneNumber: string | null;
+        email: string | null;
+        bvn: string | null;
+        residentialAddress: string | null;
+        cscsNumber: string | null;
+        identificationDocType?: string | null;
+        identificationDocRef?: string | null;
+        identificationIssueDate?: string | null;
+        identificationDocExpiryDate?: string | null;
+        identificationDocumentImage?: string | null;
+        proofOfAddressImage?: string | null;
+        picture?: string | null;
+        employmentInfo: {};
     } | null;
 
     isSuccess: boolean;
@@ -147,3 +165,51 @@ interface UserResponse {
     family_name: string;
     email: string;
 }
+
+interface UserInfoAppResponse {
+    customerNo: string | null;
+    name: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    otherName: string | null;
+    maritalStatus: string | null;
+    dob: string | null;
+    gender: string | null;
+    phoneRef: string | null;
+    email: string | null;
+    bvn: string | null;
+    address: string | null;
+    memberShipNo: string | null /* cscsNumber */;
+    // employment Info
+    employerName: string | null;
+    occupationCode: string | null /* Job title*/;
+    employerAddress: string | null;
+    officeEmail: string | null;
+    officePhoneNo: string | null;
+    grossAnnualIncome: number | null;
+    natureOfBuss: string | null /* nature of business*/;
+    // documents
+    kycdocs: [
+        ProofOfAddressFromGetUserAppResponse,
+        ProofOfAddressFromGetUserAppResponse,
+        PictureFromGetUserAppResponse
+    ];
+}
+
+type ProofOfIdentificationFromGetUserAppResponse = {
+    documentType: string | null;
+    documentReference: string | null;
+    documentIssueDate: string | null;
+    documentExpiryDate: string | null;
+    documentImage: string | null;
+};
+
+type ProofOfAddressFromGetUserAppResponse = {
+    documentType: "Proof of Address";
+    documentImage: string | null;
+};
+
+type PictureFromGetUserAppResponse = {
+    documentType: "Photo";
+    documentImage: string | null;
+};

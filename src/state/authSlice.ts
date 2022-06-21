@@ -1,21 +1,38 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import authRequest from "../services/requests/authRequest";
-import { AuthState } from "../typings";
+import { AuthState, UserInfoAppResponse } from "../typings";
 
 import { RootState } from "./store";
+import toast from 'react-hot-toast';
 
 const initialState: AuthState = {
     accessToken: "",
     refreshToken: "",
     user: {
-        email: "",
-        email_verified: false,
-        family_name: "",
-        given_name: "",
-        name: "",
-        preferred_username: "",
-        sub: "",
+        title: "",
         customerNo: "",
+        name: "",
+        firstName: "",
+        lastName: "",
+        middleName: "",
+        maritalStatus: "",
+        dateOfBirth: "",
+        gender: "",
+        phoneNumber: "",
+        email: "",
+        bvn: "",
+        residentialAddress: "",
+        cscsNumber: "",
+        identificationDocType: "",
+        identificationDocRef: "",
+        identificationIssueDate: "",
+        identificationDocExpiryDate: "",
+        identificationDocumentImage: "",
+        proofOfAddressImage: "",
+        picture: "",
+        employmentInfo: {
+            
+        }
     },
     isError: false,
     isLoading: false,
@@ -166,6 +183,143 @@ export const createUserFull = createAsyncThunk(
     }
 );
 
+export const getUserFull = createAsyncThunk(
+    "auth/getUserFullStatus",
+    async (_, thunkAPI) => {
+        try {
+            const { customerNo } = ((await thunkAPI.getState()) as RootState)
+                .auth.user!;
+            console.log(customerNo);
+            if (customerNo === "" || customerNo === null) {
+                return thunkAPI.rejectWithValue(
+                    "Problems getting your information, please login again"
+                );
+            }
+            const userInfoFullAppResponse = await authRequest.getUserApp({
+                customerNo,
+            });
+
+            if (userInfoFullAppResponse.code === "ECONNABORTED") {
+                return thunkAPI.rejectWithValue("Network timeout");
+            }
+
+            switch (userInfoFullAppResponse.status) {
+                case 200:
+                    let userInfo: UserInfoAppResponse =
+                        userInfoFullAppResponse.data as UserInfoAppResponse;
+                    return {
+                        allUserInformation: userInfo,
+                    };
+                default:
+                    return thunkAPI.rejectWithValue(
+                        "Something went wrong while getting your data. Please try again later."
+                    );
+            }
+        } catch {}
+    }
+);
+
+export const updateUserPersonalDetailsFull = createAsyncThunk(
+    "auth/updateUserPersonDetailsFullStatus",
+    async (
+        {
+            firstName,
+            middleName,
+            lastName,
+            bvn,
+            gender,
+            maritalStatus,
+            dateOfBirth,
+            email,
+            title,
+            phoneNumber,
+            residentialAddress,
+            cscsNumber,
+            identificationDocType,
+            identificationDocRef,
+            identificationIssueDate,
+            identificationDocExpiryDate,
+            identificationDocumentImage,
+            proofOfAddressImage,
+            picture,
+        }: {
+            firstName: string;
+            middleName: string;
+            lastName: string;
+            bvn: string;
+            gender: string;
+            maritalStatus: string;
+            dateOfBirth: string;
+            title: string;
+            email: string;
+            phoneNumber: string;
+            residentialAddress: string;
+            cscsNumber: string;
+            identificationDocType?: string | null;
+            identificationDocRef?: string | null;
+            identificationIssueDate?: string | null;
+            identificationDocExpiryDate?: string | null;
+            identificationDocumentImage?: string | null;
+            proofOfAddressImage?: string | null;
+            picture?: string | null;
+        },
+        thunkApi
+    ) => {
+        try {
+            const customerNo = (thunkApi.getState() as RootState).auth.user
+                ?.customerNo!;
+            const updateUserPersonalDetailsResponse =
+                await authRequest.updateUserPersonalInfoApp({
+                    firstName,
+                    bvn,
+                    dateOfBirth,
+                    email,
+                    gender,
+                    lastName,
+                    maritalStatus,
+                    middleName,
+                    phoneNumber,
+                    title,
+                    customerNo: customerNo,
+                    residentialAddress,
+                    cscsNumber,
+                    identificationDocType,
+                    identificationDocRef,
+                    identificationIssueDate,
+                    identificationDocExpiryDate,
+                    identificationDocumentImage,
+                    proofOfAddressImage,
+                    picture,
+                });
+
+            if (updateUserPersonalDetailsResponse.status === 200) {
+                return thunkApi.dispatch<unknown, any>(getUserFull());
+            } else if (
+                updateUserPersonalDetailsResponse.code === "ECONNABORTED"
+            ) {
+                return thunkApi.rejectWithValue(
+                    "Network timeout. Please check your internet connection."
+                );
+            } else {
+                switch (updateUserPersonalDetailsResponse.status) {
+                    case 0:
+                        return thunkApi.rejectWithValue(
+                            "A network error occured. Please check your connection"
+                        );
+                    default:
+                        return thunkApi.rejectWithValue(
+                            "Could not update your information please try again later"
+                        );
+                }
+            }
+        } catch (error) {
+            return thunkApi.rejectWithValue(
+                "Could not update your information please try again later"
+            );
+        }
+    }
+);
+
 // state management for logging in a user
 export const loginUser = createAsyncThunk(
     "auth/loginUserStatus",
@@ -187,11 +341,30 @@ export const loginUser = createAsyncThunk(
 
                 // checks if user info response was successful or not
                 if (userResponse.status === 200) {
-                    return {
-                        ...userResponse.data,
-                        accessToken: tokenResponse.data.access_token,
-                        refreshToken: tokenResponse.data.refresh_token,
-                    };
+                    const userInfoFullAppResponse =
+                        await authRequest.getUserApp({
+                            customerNo: userResponse.data["customerNo"],
+                        });
+
+                    switch (userInfoFullAppResponse.status) {
+                        case 200:
+                            let userInfo: UserInfoAppResponse =
+                                userInfoFullAppResponse.data as UserInfoAppResponse;
+                            return {
+                                ...userResponse.data,
+                                allUserInformation: userInfo,
+                                accessToken: tokenResponse.data.access_token,
+                                refreshToken: tokenResponse.data.refresh_token,
+                            };
+                        default:
+                            return thunkApi.rejectWithValue(
+                                "Something went wrong while login you in"
+                            );
+                    }
+                } else {
+                    return thunkApi.rejectWithValue(
+                        "Something went wrong while login you in"
+                    );
                 }
             } else {
                 console.log(tokenResponse.response.status);
@@ -378,9 +551,24 @@ const authSlice = createSlice({
                 state.isError = false;
                 state.accessToken = action?.payload!.accessToken;
                 state.refreshToken = action?.payload!.refreshToken;
-                state.user!.name = action?.payload!.name;
-                state.user!.email = action?.payload!.email;
-                state.user!.customerNo = action?.payload!.customerNo;
+                state.user!.name = action?.payload!.allUserInformation.name;
+                state.user!.email = action?.payload!.allUserInformation.email;
+                state.user!.customerNo =
+                    action?.payload!.allUserInformation.customerNo;
+                state.user!.dateOfBirth =
+                    action?.payload!.allUserInformation.dob;
+                state.user!.maritalStatus =
+                    action?.payload!.allUserInformation.maritalStatus;
+                state.user!.phoneNumber =
+                    action?.payload!.allUserInformation.phoneRef;
+                state.user!.firstName =
+                    action?.payload!.allUserInformation.firstName;
+                state.user!.lastName =
+                    action?.payload!.allUserInformation.lastName;
+                state.user!.middleName =
+                    action?.payload!.allUserInformation.otherName;
+                state.user!.gender = action?.payload!.allUserInformation.gender;
+                state.user!.bvn = action?.payload.allUserInformation.bvn;
                 return state;
             })
             .addCase(loginUser.pending, (state) => {
@@ -401,7 +589,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
-                state.errorMessage = ""
+                state.errorMessage = "";
                 return state;
             })
             .addCase(createUserAuth.pending, (state, action) => {
@@ -422,6 +610,7 @@ const authSlice = createSlice({
                 state.isSuccess = true;
                 state.isError = false;
                 state.errorMessage = "";
+                toast.success("Account creation Successful please Login in", {id:createUserFull.name});
                 return state;
             })
             .addCase(createUserFull.pending, (state, action) => {
@@ -429,6 +618,9 @@ const authSlice = createSlice({
                 state.isSuccess = false;
                 state.isError = false;
                 state.errorMessage = "";
+                toast.loading("Creating Account...", {
+                    id: createUserFull.name,
+                });
             })
             .addCase(createUserFull.rejected, (state, action) => {
                 console.log(action.payload);
@@ -436,6 +628,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = false;
                 state.errorMessage = action.payload as string;
+                toast.error(state.errorMessage, {id: createUserFull.name});
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
                 state = { ...initialState };
@@ -449,7 +642,86 @@ const authSlice = createSlice({
                 console.log(action.payload);
                 state = initialState;
                 state.errorMessage = action.payload as string;
-            });
+            })
+            .addCase(getUserFull.fulfilled, (state, action) => {
+                const allUserInformation = action.payload
+                    ?.allUserInformation as UserInfoAppResponse;
+                
+                // personal information
+                state.user!.customerNo = allUserInformation.customerNo;
+                state.user!.dateOfBirth = allUserInformation.dob;
+                state.user!.maritalStatus = allUserInformation.maritalStatus;
+                state.user!.phoneNumber = allUserInformation.phoneRef;
+                state.user!.firstName = allUserInformation.firstName;
+                state.user!.lastName = allUserInformation.lastName;
+                state.user!.middleName = allUserInformation.otherName;
+                state.user!.gender = allUserInformation.gender;
+                state.user!.bvn = allUserInformation.bvn;
+                state.user!.cscsNumber = allUserInformation.memberShipNo!;
+                state.user!.residentialAddress = allUserInformation.address!;
+                state.user!.identificationDocType = ""
+                state.user!.identificationDocRef = ""
+                state.user!.identificationIssueDate = ""
+                state.user!.identificationDocExpiryDate = ""
+                state.user!.identificationDocumentImage = ""
+                state.user!.proofOfAddressImage = ""
+                state.user!.picture = ""
+
+                // employmentInformation
+
+            })
+            .addCase(getUserFull.pending, (state, action) => {
+                state.isLoading = true;
+                state.isSuccess = false;
+                state.isError = false;
+            })
+            .addCase(getUserFull.rejected, (state, action) => {
+                console.log(action.payload);
+                if (
+                    action.payload ===
+                    "Problems getting your information, please login again"
+                ) {
+                    return initialState;
+                }
+                state = initialState;
+                state.errorMessage = action.payload as string;
+            })
+            .addCase(
+                updateUserPersonalDetailsFull.fulfilled,
+                (state, action) => {
+                    state.isSuccess = true;
+                    state.isLoading = false;
+                    state.isError = false;
+                    state.errorMessage = "";
+                    toast.success("Profile was updated successfully", {
+                        id: updateUserPersonalDetailsFull.name,
+                        position: "top-right",
+                    });
+                }
+            )
+            .addCase(updateUserPersonalDetailsFull.pending, (state, action) => {
+                state.isSuccess = false;
+                state.isLoading = true;
+                state.isError = false;
+                state.errorMessage = "";
+                toast.loading("Updating Profile...", {
+                    id: updateUserPersonalDetailsFull.name,
+                    position: "top-right",
+                });
+            })
+            .addCase(
+                updateUserPersonalDetailsFull.rejected,
+                (state, action) => {
+                    state.isSuccess = false;
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.errorMessage = action.payload as string;
+                    toast.error(state.errorMessage, {
+                        id: updateUserPersonalDetailsFull.name,
+                        position: "top-right",
+                    });
+                }
+            );
     },
 });
 

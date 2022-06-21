@@ -1,1 +1,2 @@
 customerNo = 009273
+null value for address (personal details field) = "\nnull\nnull\nnull" 

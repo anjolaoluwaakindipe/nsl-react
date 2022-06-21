@@ -1,8 +1,8 @@
 import React from "react";
 import Progress from "./Progress";
 import { useForm } from "react-hook-form";
-import { useNavigate } from 'react-router-dom';
-import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
+import { useNavigate } from "react-router-dom";
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 
 function EmploymentDetailsForm() {
     const navigate = useNavigate();
@@ -31,21 +31,17 @@ function EmploymentDetailsForm() {
                 autoSave="off"
                 onSubmit={onSubmitForm}
             >
-
-
                 {/* title*/}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="Title"
                         type="text"
                         register={register("title")}
-                        registerName='Account Name'
+                        registerName="Account Name"
                         id="UpdateProfile__title"
                         errorMessage={errors.title?.message}
                     />
                 </div>
-
-
 
                 {/*company name*/}
                 <div className=" col-span-12 md:col-span-6 ">
@@ -53,14 +49,10 @@ function EmploymentDetailsForm() {
                         placeholder="Company Name"
                         type="text"
                         register={register("company")}
-                        registerName='Company Name'
+                        registerName="Company Name"
                         id="UpdateProfile__companyName"
-
                     />
                 </div>
-
-
-
 
                 {/*work sector*/}
                 <div className=" col-span-12 md:col-span-6 ">
@@ -69,11 +61,8 @@ function EmploymentDetailsForm() {
                         type="text"
                         register={register("worksector")}
                         id="UpdateProfile__workSector"
-
                     />
                 </div>
-
-
 
                 {/*company phone number*/}
                 <div className=" col-span-12 md:col-span-6 ">
@@ -82,12 +71,8 @@ function EmploymentDetailsForm() {
                         type="text"
                         register={register("companyPhoneNumber")}
                         id="UpdateProfile__companyPhoneNumber"
-
                     />
                 </div>
-
-
-
 
                 {/*company email Address*/}
                 <div className=" col-span-12 md:col-span-6 ">
@@ -96,20 +81,16 @@ function EmploymentDetailsForm() {
                         type="text"
                         register={register("companyEmailAddress")}
                         id="UpdateProfile__companyEmailAddress"
-
                     />
                 </div>
 
-                
-
-                 {/*salary range*/}
-                 <div className=" col-span-12 md:col-span-6 ">
+                {/*salary range*/}
+                <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="Salary Range"
                         type="text"
                         register={register("salaryRange")}
                         id="UpdateProfile__salaryRange"
-                        
                     />
                 </div>
 
@@ -133,15 +114,11 @@ function EmploymentDetailsForm() {
                 <div className="col-span-12 flex justify-between">
                     <button
                         className={`btn1 bg-transparent border-2 hover:bg-transparent border-primaryColor text-primaryColor  w-full md:w-48`}
-
                     >
                         Previous
                     </button>
 
-                    <button
-                        className={`btn1   w-full md:w-48`}
-                        type="submit"
-                    >
+                    <button className={`btn1   w-full md:w-48`} type="submit">
                         Next
                     </button>
                 </div>

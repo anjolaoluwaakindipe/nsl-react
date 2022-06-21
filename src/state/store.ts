@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import modalReducer from "./modalSlice";
 import authReducer from "./authSlice";
 import { persistReducer } from "redux-persist";
@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
     modal: modalReducer,
     auth: persistReducer(
         {
-            key: "root",
+            key: "auth",
             storage,
             blacklist: ["isLoading", "errorMessage", "isError", "isSuccess"],
         },
@@ -29,6 +29,7 @@ const persistedReducer = persistReducer(
 
 export const store = configureStore({
     reducer: persistedReducer,
+    // middleware: getDefaultMiddleware({serializableCheck:false})
 });
 
 export type RootState = ReturnType<typeof store.getState>;

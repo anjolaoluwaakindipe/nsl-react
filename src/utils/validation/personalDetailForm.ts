@@ -1,7 +1,11 @@
 import Joi from "joi";
+import { onlyNumberReg } from "../constants/inputValidationPatterns";
 
 export const personalDetailsFormSchema = Joi.object({
-    fullname: Joi.string().required().trim().min(3).label("Fullname"),
+    title: Joi.string().required().trim().min(2).label("Title"),
+    firstName: Joi.string().required().trim().min(3).label("First Name"),
+    lastName: Joi.string().required().trim().min(3).label("Last Name"),
+    middleName: Joi.string().optional().trim().label("Middle Name"),
     emailAddress: Joi.string()
         .email({ tlds: { allow: false } })
         .required()
@@ -10,13 +14,28 @@ export const personalDetailsFormSchema = Joi.object({
     gender: Joi.object({
         label: Joi.string().required(),
         value: Joi.string().required(),
-    }).required().label("Gender"),
+    })
+        .required()
+        .label("Gender"),
     dateOfBirth: Joi.string().isoDate().required().label("Date of Birth"),
     maritalStatus: Joi.required().label("Marital Status"),
     cscsNumber: Joi.string().required().label("CSCS Number"),
     residentialAddress: Joi.string().required().label("Residential Address"),
-    picture: Joi.required().label("Picture"),
-    proofOfIdentification: Joi.required().label("Proof of Identification"),
-    proofOfResidence: Joi.required().label("Proof of Residence"),
-    salarySlips: Joi.required().label("Salary Slips"),
+    picture: Joi.string()
+        .required()
+        .label("Picture"),
+    proofOfIdentification: Joi.string()
+        .optional()
+        .label("Proof of Identification"),
+    proofOfResidence: Joi.string().optional().label("Proof of Residence"),
+    salarySlips: Joi.string().optional().label("Salary Slips"),
+    bvn: Joi.string()
+        .required()
+        .pattern(onlyNumberReg)
+        .messages({
+            "string.pattern.base": "Must contain only numbers",
+        })
+        .max(11)
+        .min(11)
+        .label("BVN"),
 });
