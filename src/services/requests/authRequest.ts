@@ -417,7 +417,7 @@ const authRequest = {
             // idDocExpiryDate: identificationDocExpiryDate,
             // idDocumentImage: identificationDocumentImage,
             // proofOfAddressImage: proofOfAddressImage,
-            photo: picture,
+            // photo: picture,
         };
 
         // response data format
@@ -427,18 +427,20 @@ const authRequest = {
             code: string;
         } = { status: null, data: {}, code: "" };
 
+        
         // request to api
         return await axios
             .post("/isslapi/ibank/api/v1/updateCustomerDetails2", body, {
                 headers: {
                     "content-type": "application/json",
-                    "X-TENANTID": "islandbankpoc",
+                    // "X-TENANTID": "islandbankpoc",
                 },
                 timeout: 20000,
                 method: "POST",
             })
 
             .then((response) => {
+                console.log(response);
                 res.status = response.status;
                 res.data = response.data;
                 console.log(res);
@@ -446,6 +448,7 @@ const authRequest = {
                 return res;
             })
             .catch((err) => {
+                console.log(err);
                 if (!err.response.status && !err.response.code) {
                     return res;
                 }
@@ -538,7 +541,7 @@ const authRequest = {
                 // /isslapi
                 {
                     params: {
-                        CustomerNo:  customerNo,
+                        CustomerNo: customerNo,
                     },
                 }
             )
@@ -556,23 +559,24 @@ const authRequest = {
 };
 export default authRequest;
 
-async function myFunc() {
-    console.log(await authRequest.updateUserPersonalInfoApp({
-        email: "anjyakindipe@gmail.com",
-        firstName: "Anjy",
-        lastName: "Anjy",
-        dateOfBirth: "2000-12-08",
-        bvn: "12345678901",
-        gender: "M",
-        phoneNumber: "+2347030444529",
-        cscsNumber: "12233344",
-        maritalStatus: "F",
-        middleName: "Daniel",
-        residentialAddress: "29 Adigun Close",
-        customerNo: "009298",
-        title:"Mr",
+// async function myFunc() {
+//     console.log(
+//         await authRequest.updateUserPersonalInfoApp({
+//             email: "anjyakindipe@gmail.com",
+//             firstName: "Anjy",
+//             lastName: "Anjy",
+//             dateOfBirth: "2000-12-08",
+//             bvn: "12345678901",
+//             gender: "M",
+//             phoneNumber: "+2347030444529",
+//             cscsNumber: "12233344",
+//             maritalStatus: "F",
+//             middleName: "Daniel",
+//             residentialAddress: "29 Adigun Close",
+//             customerNo: "009298",
+//             title: "Mr",
+//         })
+//     );
+// }
 
-    }));
-}
-
-myFunc();
+// myFunc();

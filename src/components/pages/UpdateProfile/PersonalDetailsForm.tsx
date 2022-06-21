@@ -1,36 +1,32 @@
-import React from "react";
-
 // custom components
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import Progress from "./Progress";
 
 // form imports
-import "react-phone-number-input/style.css";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 // react-icons
-import { AiOutlineCloudUpload } from "react-icons/ai";
 
 // react-router
-import { useNavigate } from "react-router-dom";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
-import { PersonalDetailsFormInfo } from "../../../typings";
-import { joiResolver } from "@hookform/resolvers/joi";
-import { personalDetailsFormSchema } from "../../../utils/validation/personalDetailForm";
-import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
-import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
     authSelector,
     updateUserPersonalDetailsFull,
 } from "../../../state/authSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
 import { AppDispatch } from "../../../state/store";
-import { date } from "joi";
-import toast from "react-hot-toast";
-import { render } from "@testing-library/react";
+import { PersonalDetailsFormInfo } from "../../../typings";
+import { personalDetailsFormSchema } from "../../../utils/validation/personalDetailForm";
 import FileInput from "../../shared/Inputs/FileInput";
+import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
+
+import Drop from "../../shared/Dropdowns/DropOptions";
 
 function PersonalDetailsForm() {
     // redux auth state
@@ -46,7 +42,7 @@ function PersonalDetailsForm() {
         maritalStatus,
         title,
         residentialAddress,
-        cscsNumber
+        cscsNumber,
     } = useSelector(authSelector).user!;
 
     const { isError, isLoading, isSuccess, errorMessage } =
@@ -105,7 +101,9 @@ function PersonalDetailsForm() {
                 maritalStatus: data.maritalStatus.value,
                 gender: data.gender.value,
                 middleName: data.middleName,
-                dateOfBirth: data.dateOfBirth.split("T")[0],
+                dateOfBirth: data.dateOfBirth.includes("T")
+                    ? data.dateOfBirth.split("T")[0]
+                    : data.dateOfBirth,
                 cscsNumber: data.cscsNumber,
                 residentialAddress: data.residentialAddress,
                 picture: data.picture,
@@ -116,7 +114,7 @@ function PersonalDetailsForm() {
         setButtonLoading(false);
     });
 
-    // 
+    //
     // watch variables from react-hook-form
     const watchPictureUpload = watch("picture");
     const watchGender = watch("gender");
@@ -152,7 +150,7 @@ function PersonalDetailsForm() {
             }
         }
         if (dateOfBirth) {
-            setValue("dateOfBirth", "2000-08-23");
+            setValue("dateOfBirth", dateOfBirth);
         }
         if (bvn) {
             setValue("bvn", bvn);
@@ -170,10 +168,9 @@ function PersonalDetailsForm() {
         if (residentialAddress) {
             setValue("residentialAddress", residentialAddress);
         }
-        if(cscsNumber){
-            setValue("cscsNumber", cscsNumber)
+        if (cscsNumber) {
+            setValue("cscsNumber", cscsNumber);
         }
-
     }, [email, phoneNumber, name, gender, otherName, dateOfBirth, bvn, title]); // eslint-disable-line
 
     return (
@@ -189,7 +186,7 @@ function PersonalDetailsForm() {
                 autoComplete="off"
                 autoSave="off"
             >
-                {/* Full Name */}
+                {/*firstname */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="Title"
@@ -247,6 +244,18 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
+                {/*email address */}
+                <div className=" col-span-12 md:col-span-6">
+                    <FloatingPlaceholderTextField
+                        placeholder="Email Address"
+                        type="text"
+                        id="UpdateProfile__emailAddress"
+                        register={register("emailAddress")}
+                        registerName="Email Address"
+                        errorMessage={errors.emailAddress?.message}
+                    />
+                </div>
+
                 {/* Phone Number */}
                 <div className="md:col-span-6 col-span-12 ">
                     <div className="border-0 border-b-2  border-underlineColor">
@@ -293,17 +302,17 @@ function PersonalDetailsForm() {
                                     placeholder="Gender"
                                     className="relative"
                                     placeholderClassName={
-                                        watchGender
+                                        watchMaritalStatus
                                             ? "text-black"
                                             : "text-gray-400"
                                     }
                                     controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
-                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
+                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3 z-10"
                                 />
                             )}
                         />
 
-                        <label htmlFor="gender"></label>
+                        <label htmlFor="tenor"></label>
                     </div>
 
                     {

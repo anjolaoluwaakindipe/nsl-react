@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 
 function Form() {
     const [numberOfAccounts, setNumberOfAccounts] = useState(1);
@@ -9,10 +10,10 @@ function Form() {
         defaultValues: {
             accountNumber1: "",
             accountNumber2: "",
-            accountName1:"",
-            accountName2:"",
+            accountName1: "",
+            accountName2: "",
             accountBank1: "",
-            accountBank2: ""
+            accountBank2: "",
         },
     });
 
@@ -20,12 +21,12 @@ function Form() {
         console.log(data);
     });
 
-    const addAccountInfo = ()=>{
-        if(numberOfAccounts>2){
-            return
+    const addAccountInfo = () => {
+        if (numberOfAccounts > 2) {
+            return;
         }
-        setNumberOfAccounts(numberOfAccounts + 1)
-    }
+        setNumberOfAccounts(numberOfAccounts + 1);
+    };
 
     const oneChar = numberOfAccounts > 1 ? "1" : "";
     return (
@@ -36,65 +37,45 @@ function Form() {
                 autoSave="off"
                 onSubmit={onSubmit}
             >
+                {/* account name*/}
                 <div className=" col-span-12 ">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__accountName"></label>
-                        <input
-                            type="text"
-                            {...register(`accountName1`, {
-                                required: false,
-                            })}
-                            formNoValidate={true}
-                            id="UpdateProfile__accountName"
-                            className="outline-none pb-4  w-full"
-                            placeholder={`Account Name ${oneChar}`}
-                        />
-                    </div>
-                    {/* {validationErrors.accountNumber && (
-                        <p className="text-xs text-red-900 ">
-                            {validationErrors.accountNumber}
-                        </p>
-                    )} */}
+                    <FloatingPlaceholderTextField
+                        placeholder={`Account Name ${oneChar}`}
+                        type="text"
+                        register={register("accountName1")}
+                        registerName="Account Name"
+                        id="EditProfile__accountName"
+                        //errorMessage={validationErrors.accountName1.message}
+                    />
                 </div>
-                <div className=" col-span-12 ">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__accountNumber"></label>
-                        <input
-                            type="text"
-                            max={10}
-                            {...register(`accountNumber1`, {
-                                required: false,
-                            })}
-                            id="UpdateProfile__accountNumber"
-                            className="outline-none pb-4  w-full"
-                            placeholder={`Account Number ${oneChar}`}
-                        />
-                    </div>
+
+                {/* account number*/}
+                <div className="md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder={`Account Number ${oneChar}`}
+                        type="text"
+                        register={register("accountNumber1")}
+                        registerName="account Number"
+                        id="EditProfile__accountNumber"
+                        // errorMessage={errors.accountNumber1?.message}
+                    />
                     {/* {validationErrors.accountBank && (
                         <p className="text-xs text-red-900 ">
                             {validationErrors.accountBank}
                         </p>
                     )} */}
                 </div>
-                <div className=" col-span-12 ">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__bankName"></label>
-                        <input
-                            type="text"
-                            max={10}
-                            {...register(`accountBank1`, {
-                                required: false,
-                            })}
-                            id="UpdateProfile__bankName"
-                            className="outline-none pb-4  w-full"
-                            placeholder={`Account Bank ${oneChar}`}
-                        />
-                    </div>
-                    {/* {validationErrors.accountBank && (
-                        <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
-                        </p>
-                    )} */}
+
+                {/* account bank*/}
+                <div className=" col-span-12  ">
+                    <FloatingPlaceholderTextField
+                        placeholder={`Account Bank ${oneChar}`}
+                        type="text"
+                        register={register("accountBank1")}
+                        registerName="Account Name"
+                        id="EditProfile__bankName"
+                        // errorMessage={errors.accountBank1?.message}
+                    />
                 </div>
 
                 {numberOfAccounts > 1 ? (
@@ -119,45 +100,33 @@ function Form() {
                         </p>
                     )} */}
                         </div>
-                        <div className=" col-span-12 ">
-                            <div className="border-0 border-b-2 border-underlineColor">
-                                <label htmlFor="UpdateProfile__accountNumber"></label>
-                                <input
-                                    type="text"
-                                    max={10}
-                                    {...register(`accountNumber2`, {
-                                        required: false,
-                                    })}
-                                    id="UpdateProfile__accountNumber"
-                                    className="outline-none pb-4  w-full"
-                                    placeholder="Account Number 2"
-                                />
-                            </div>
+
+                        {/* account number*/}
+                        <div className="col-span-12">
+                            <FloatingPlaceholderTextField
+                                placeholder={`Account Number ${oneChar}`}
+                                type="text"
+                                register={register("accountNumber1")}
+                                registerName="account Number"
+                                id="UpdateProfile__accountNumber"
+                                //   errorMessage={errors.accountNumber1?.message}
+                            />
                             {/* {validationErrors.accountBank && (
                         <p className="text-xs text-red-900 ">
                             {validationErrors.accountBank}
                         </p>
                     )} */}
                         </div>
+                        {/* account bank*/}
                         <div className=" col-span-12 ">
-                            <div className="border-0 border-b-2 border-underlineColor">
-                                <label htmlFor="UpdateProfile__bankName"></label>
-                                <input
-                                    type="text"
-                                    max={10}
-                                    {...register(`accountBank2`, {
-                                        required: false,
-                                    })}
-                                    id="UpdateProfile__bankName"
-                                    className="outline-none pb-4  w-full"
-                                    placeholder="Account Bank 2"
-                                />
-                            </div>
-                            {/* {validationErrors.accountBank && (
-                        <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
-                        </p>
-                    )} */}
+                            <FloatingPlaceholderTextField
+                                placeholder={`Account Bank ${oneChar}`}
+                                type="text"
+                                register={register("accountBank1")}
+                                registerName="Account Name"
+                                id="UpdateProfile__bankName"
+                                //   errorMessage={errors.accountBank1?.message}
+                            />
                         </div>
                     </>
                 ) : (
@@ -173,7 +142,11 @@ function Form() {
                 )}
 
                 <div className="col-span-12 flex justify-end">
-                    <button className={`btn1  w-full md:w-48`} type="submit" disabled={!formState.isDirty}>
+                    <button
+                        className={`btn1  w-full md:w-48`}
+                        type="submit"
+                        disabled={!formState.isDirty}
+                    >
                         Save
                     </button>
                 </div>

@@ -27,6 +27,8 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatterns";
 import { CreateAccountFormData } from "../../../typings";
 
+import Drop from "../../shared/Dropdowns/DropOptions";
+
 function Form() {
     const { isLoading, isSuccess, isError } = useSelector(authSelector);
     const {
@@ -41,10 +43,7 @@ function Form() {
     const dispatch = useDispatch<AppDispatch>();
     const [disableButton, setDisableButton] = useState(false);
 
-    const genderDropdownOptions = [
-        { value: "M", label: "Male" },
-        { value: "F", label: "Female" },
-    ];
+    
 
     const {
         register,
@@ -224,49 +223,11 @@ function Form() {
                 />
             </div>
 
-            {/*Gender*/}
+            {/* Gender */}
             <div className="col-span-12 md:col-span-6">
-                <div className=" border-0 border-b-2  border-underlineColor   ">
-                    <Controller
-                        name="gender"
-                        control={control}
-                        render={({ field: { onChange, value } }) => {
-                            return (
-                                <Dropdown
-                                    options={genderDropdownOptions}
-                                    onChange={onChange}
-                                    arrowClosed={<IoMdArrowDropdown />}
-                                    arrowOpen={<IoMdArrowDropup />}
-                                    value={
-                                        value &&
-                                        value.label === "" &&
-                                        value.value === ""
-                                            ? undefined
-                                            : value
-                                    }
-                                    placeholder="Gender"
-                                    className="relative"
-                                    placeholderClassName={
-                                        watchGender && watchGender.value !== ""
-                                            ? "text-black"
-                                            : "text-gray-400"
-                                    }
-                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
-                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
-                                />
-                            );
-                        }}
-                    />
-
-                    <label htmlFor="gender"></label>
-                </div>
-
-                {
-                    <p className="text-xs text-red-900 ">
-                        {errors?.gender?.value.message}
-                    </p>
-                }
+               <Drop a = "gender"/>
             </div>
+
 
             {/*enter phone number */}
             <div className="col-span-12 md:col-span-6 ">
