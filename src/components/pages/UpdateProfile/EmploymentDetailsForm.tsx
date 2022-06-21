@@ -2,6 +2,7 @@ import React from "react";
 import Progress from "./Progress";
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
+import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 
 function EmploymentDetailsForm() {
     const navigate = useNavigate();
@@ -30,106 +31,86 @@ function EmploymentDetailsForm() {
                 autoSave="off"
                 onSubmit={onSubmitForm}
             >
+
+
+                {/* title*/}
                 <div className=" col-span-12 md:col-span-6 ">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__title"></label>
-                        <input
-                            type="text"
-                            formNoValidate={true}
-                            id="UpdateProfile__title"
-                            className="outline-none pb-4  w-full"
-                            placeholder="Title"
-                        />
-                    </div>
-                    {/* {validationErrors.accountNumber && (
-                        <p className="text-xs text-red-900 ">
-                            {validationErrors.accountNumber}
-                        </p>
-                    )} */}
-                </div>
-                <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__companyName"></label>
-                        <input
-                            type="text"
-                            max={10}
-                            id="UpdateProfile__companyName"
-                            className="outline-none pb-4  w-full"
-                            placeholder="Companys Name"
-                        />
-                    </div>
-                    {/* {validationErrors.accountBank && (
-                        <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
-                        </p>
-                    )} */}
-                </div>
-                <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__workSector"></label>
-                        <input
-                            type="text"
-                            max={10}
-                            id="UpdateProfile__workSector"
-                            className="outline-none pb-4  w-full"
-                            placeholder="Work Sector"
-                        />
-                    </div>
-                    {/* {validationErrors.accountBank && (
-                        <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
-                        </p>
-                    )} */}
+                    <FloatingPlaceholderTextField
+                        placeholder="Title"
+                        type="text"
+                        register={register("title")}
+                        registerName='Account Name'
+                        id="UpdateProfile__title"
+                        errorMessage={errors.title?.message}
+                    />
                 </div>
 
-                <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__companyPhoneNumber"></label>
-                        <input
-                            type="text"
-                            id="UpdateProfile__companyPhoneNumber"
-                            className="outline-none pb-4  w-full"
-                            placeholder="Company Phone Number"
-                        />
-                    </div>
-                    {/* {validationErrors.accountBank && (
-                        <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
-                        </p>
-                    )} */}
+
+
+                {/*company name*/}
+                <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="Company Name"
+                        type="text"
+                        register={register("company")}
+                        registerName='Company Name'
+                        id="UpdateProfile__companyName"
+
+                    />
                 </div>
-                <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile_companyEmailAddress"></label>
-                        <input
-                            type="text"
-                            max={10}
-                            id="UpdateProfile__companyEmailAddress"
-                            className="outline-none pb-4  w-full"
-                            placeholder="Company Email Address"
-                        />
-                    </div>
-                    {/* {validationErrors.accountBank && (
-                        <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
-                        </p>
-                    )} */}
+
+
+
+
+                {/*work sector*/}
+                <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="Work Sector"
+                        type="text"
+                        register={register("worksector")}
+                        id="UpdateProfile__workSector"
+
+                    />
                 </div>
-                <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor">
-                        <label htmlFor="UpdateProfile__salaryRange"></label>
-                        <input
-                            type="text"
-                            id="UpdateProfile__salaryRange"
-                            className="outline-none pb-4  w-full"
-                            placeholder="Salary Range"
-                        />
-                    </div>
-                    {/* {validationErrors.accountBank && (
-                        <p className="text-xs text-red-900 ">
-                            {validationErrors.accountBank}
-                        </p>
-                    )} */}
+
+
+
+                {/*company phone number*/}
+                <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="Company PhoneNumber"
+                        type="text"
+                        register={register("companyPhoneNumber")}
+                        id="UpdateProfile__companyPhoneNumber"
+
+                    />
+                </div>
+
+
+
+
+                {/*company email Address*/}
+                <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="Company Email Address"
+                        type="text"
+                        register={register("companyEmailAddress")}
+                        id="UpdateProfile__companyEmailAddress"
+
+                    />
+                </div>
+
+                
+
+                 {/*salary range*/}
+                 <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="Salary Range"
+                        type="text"
+                        register={register("salaryRange")}
+                        id="UpdateProfile__salaryRange"
+                        
+                    />
                 </div>
 
                 <div className="col-span-12">
@@ -152,7 +133,7 @@ function EmploymentDetailsForm() {
                 <div className="col-span-12 flex justify-between">
                     <button
                         className={`btn1 bg-transparent border-2 hover:bg-transparent border-primaryColor text-primaryColor  w-full md:w-48`}
-                        
+
                     >
                         Previous
                     </button>
