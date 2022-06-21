@@ -5,9 +5,23 @@ import PhoneField from "../../shared/TextFields/PhoneField";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 
-import Drop from "../../shared/Dropdowns/DropOptions";
+import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 
 function EditPersonalDetailsForm() {
+
+    const genderDropdownOptions = [
+        { value: "M", label: "Male" },
+        { value: "F", label: "Female" },
+    ];
+
+    const maritalStatusDropdownOptions = [
+        { value: "Single", label: "Single" },
+        { value: "Married", label: "Married" },
+        { value: "Divorce", label: "Divorce" },
+        { value: "Widow", label: "Widow" },
+        { value: "Remarried", label: "Remarried" },
+    ];
+
     const {
         register,
         control,
@@ -87,9 +101,19 @@ function EditPersonalDetailsForm() {
                 </p>
             </div>
 
-            {/*Gender*/}
-            <div className="col-span-12 md:col-span-6">
-                <Drop a="gender" />
+           {/* Gender */}
+           <div className="col-span-12 md:col-span-6">
+                <Controller
+                    name="gender"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <DropDownOptions
+                            placeholder="Gender"
+                            options={genderDropdownOptions}
+                            errorMessage= {errors?.gender?.value.message}
+                        />
+                    )}
+                />
             </div>
 
             {/*Date Of Birth*/}
@@ -119,7 +143,17 @@ function EditPersonalDetailsForm() {
 
             {/*Marital Status*/}
             <div className="col-span-12 md:col-span-6">
-                <Drop a="maritalstatus" />
+                <Controller
+                    name="maritalstatus"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <DropDownOptions
+                            placeholder="Marital Status"
+                            options={maritalStatusDropdownOptions}
+                            errorMessage= {errors?.maritalstatus?.value.message}
+                        />
+                    )}
+                />
             </div>
 
             {/*CSCS account number*/}

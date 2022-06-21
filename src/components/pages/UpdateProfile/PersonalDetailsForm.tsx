@@ -14,17 +14,27 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 
 // react-router
 import { useNavigate } from "react-router-dom";
-import Dropdown from "react-dropdown";
-import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { PersonalDetailsFormInfo } from "../../../typings";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { personalDetailsFormSchema } from "../../../utils/validation/personalDetailForm";
 import PhoneField from "../../shared/TextFields/PhoneField";
 
-import Drop from "../../shared/Dropdowns/DropOptions";
+import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 
 function PersonalDetailsForm() {
-   
+
+    const genderDropdownOptions = [
+        { value: "M", label: "Male" },
+        { value: "F", label: "Female" },
+    ];
+
+    const maritalStatusDropdownOptions = [
+        { value: "Single", label: "Single" },
+        { value: "Married", label: "Married" },
+        { value: "Divorce", label: "Divorce" },
+        { value: "Widow", label: "Widow" },
+        { value: "Remarried", label: "Remarried" },
+    ];
 
     const navigate = useNavigate();
 
@@ -66,7 +76,7 @@ function PersonalDetailsForm() {
                 autoComplete="off"
                 autoSave="off"
             >
-        
+
                 {/*firstname */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
@@ -79,8 +89,8 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-                 {/*Lastname */}
-                 <div className=" col-span-12 md:col-span-6 ">
+                {/*Lastname */}
+                <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="LastName"
                         type="text"
@@ -91,19 +101,19 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-               
+
 
                 {/*email address */}
-            <div className=" col-span-12 md:col-span-6">
-                <FloatingPlaceholderTextField
-                    placeholder="Email Address"
-                    type="text"
-                    id="UpdateProfile__emailAddress"
-                    register={register("emailAddress")}
-                    registerName='Email Address'
-                    errorMessage={errors.emailAddress?.message}
-                />
-            </div>
+                <div className=" col-span-12 md:col-span-6">
+                    <FloatingPlaceholderTextField
+                        placeholder="Email Address"
+                        type="text"
+                        id="UpdateProfile__emailAddress"
+                        register={register("emailAddress")}
+                        registerName='Email Address'
+                        errorMessage={errors.emailAddress?.message}
+                    />
+                </div>
 
                 {/* Phone Number */}
                 <div className="md:col-span-6 col-span-12 ">
@@ -136,7 +146,17 @@ function PersonalDetailsForm() {
 
                 {/* Gender */}
                 <div className="col-span-12 md:col-span-6">
-                     <Drop a ="gender" />
+                    <Controller
+                        name="gender"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <DropDownOptions
+                                placeholder="Gender"
+                                options={genderDropdownOptions}
+                                errorMessage={errors?.gender?.value.message}
+                            />
+                        )}
+                    />
                 </div>
 
                 {/* Date of Birth */}
@@ -164,22 +184,32 @@ function PersonalDetailsForm() {
                     )}
                 </div>
 
-                {/* Marital Status */}
+                {/*Marital Status*/}
                 <div className="col-span-12 md:col-span-6">
-                <Drop a="maritalstatus"/>
+                    <Controller
+                        name="maritalStatus"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <DropDownOptions
+                                placeholder="Marital Status"
+                                options={maritalStatusDropdownOptions}
+                                errorMessage={errors?.maritalStatus?.value.message}
+                            />
+                        )}
+                    />
                 </div>
 
                 {/*CSCS account number*/}
-            <div className=" col-span-12 ">
-                <FloatingPlaceholderTextField
-                    placeholder="CSCS Number"
-                    type="text"
-                    register={register("cscsNumber")}
-                    registerName='CSCS Number'
-                    id="UpdateProfile__cscsNumber"
-                    errorMessage={errors.cscsNumber?.message}
-                />
-            </div>
+                <div className=" col-span-12 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="CSCS Number"
+                        type="text"
+                        register={register("cscsNumber")}
+                        registerName='CSCS Number'
+                        id="UpdateProfile__cscsNumber"
+                        errorMessage={errors.cscsNumber?.message}
+                    />
+                </div>
 
                 {/* Residential Area */}
                 <div className="col-span-12">
