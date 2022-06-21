@@ -19,6 +19,8 @@ type PersonalDetailsFormInfo = {
     phoneNumber: string;
     gender: { value: string; label: string } | Record;
     dateOfBirth: string;
+    IdissueDate: string;
+    IdexpiryDate:string;
     maritalStatus: { value: string; label: string } | Record;
     cscsNumber: string;
     residentialAddress: string;
@@ -27,6 +29,8 @@ type PersonalDetailsFormInfo = {
     proofOfResidence: string | null;
     salarySlips: string | null;
     bvn: string;
+    documentType: { value: string; label: string } | Record;
+    documentRefNumber: string;
 };
 
 type CreateAccountFormData = {

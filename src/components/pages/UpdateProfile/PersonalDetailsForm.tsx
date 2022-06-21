@@ -67,6 +67,15 @@ function PersonalDetailsForm() {
         { value: "Remarried", label: "Remarried" },
     ];
 
+
+    //document type options
+    const documentTypeDropdownOptions = [
+        { value: "Drivers License", label: "Drivers License" },
+        { value: "Passport", label: "Passport" },
+        { value: "library card", label: "Library Card" },
+        { value: "schoolid", label: "School ID" }
+    ]
+
     // raact-router variables
     const navigate = useNavigate();
 
@@ -187,7 +196,7 @@ function PersonalDetailsForm() {
                 autoComplete="off"
                 autoSave="off"
             >
-                {/*firstname */}
+                {/*Title */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="Title"
@@ -199,7 +208,7 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-                {/*Lastname */}
+                {/*Firstname */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="First Name"
@@ -210,7 +219,7 @@ function PersonalDetailsForm() {
                         errorMessage={errors.firstName?.message}
                     />
                 </div>
-                {/* Full Name */}
+                {/* Last Name */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="Last Name"
@@ -221,18 +230,6 @@ function PersonalDetailsForm() {
                         errorMessage={errors.lastName?.message}
                     />
                 </div>
-                {/* Full Name */}
-                <div className=" col-span-12 md:col-span-6 ">
-                    <FloatingPlaceholderTextField
-                        placeholder="Middle Name"
-                        type="text"
-                        register={register("middleName")}
-                        registerName="middleName"
-                        id="UpdateProfileDetails__middleName"
-                        errorMessage={errors.middleName?.message}
-                    />
-                </div>
-
 
                 {/*email address */}
                 <div className=" col-span-12 md:col-span-6">
@@ -243,6 +240,21 @@ function PersonalDetailsForm() {
                         register={register("emailAddress")}
                         registerName="Email Address"
                         errorMessage={errors.emailAddress?.message}
+                    />
+                </div>
+
+                {/* Gender */}
+                <div className="col-span-12 md:col-span-6">
+                    <Controller
+                        name="gender"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <DropDownOptions
+                                placeholder="Gender"
+                                options={genderDropdownOptions}
+                                errorMessage={errors?.gender?.value.message}
+                            />
+                        )}
                     />
                 </div>
 
@@ -276,20 +288,7 @@ function PersonalDetailsForm() {
                     </p>
                 </div>
 
-                {/* Gender */}
-                <div className="col-span-12 md:col-span-6">
-                    <Controller
-                        name="gender"
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <DropDownOptions
-                                placeholder="Gender"
-                                options={genderDropdownOptions}
-                                errorMessage={errors?.gender?.value.message}
-                            />
-                        )}
-                    />
-                </div>
+
 
                 {/* Date of Birth */}
                 <div className=" col-span-12 md:col-span-6">
@@ -331,8 +330,10 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
+
+
                 {/*CSCS account number*/}
-                <div className=" col-span-12 ">
+                <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="CSCS Number"
                         type="text"
@@ -353,7 +354,7 @@ function PersonalDetailsForm() {
                                     value.length > 30 || "Make it more",
                             })}
                             id="UpdateProfile_narration"
-                            className="outline-none bg-bgColor pb-4  resize-none h-32 p-3 w-full border-0 "
+                            className="outline-none bg-bgColor pb-4  resize-none h-25 p-3 w-full border-0 "
                             placeholder="Residential Address"
                         ></textarea>
                     </div>
@@ -362,6 +363,90 @@ function PersonalDetailsForm() {
                             {errors?.residentialAddress?.message}
                         </p>
                     }
+                </div>
+
+
+                <div className="text-lg text-red-900 col-span-12 md:w-full">
+                    Proof of Identification
+                </div>
+
+
+                {/* Document Type */}
+                <div className="col-span-12 md:col-span-6">
+                    <Controller
+                        name="documentType"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <DropDownOptions
+                                placeholder="Document Type"
+                                options={documentTypeDropdownOptions}
+                                errorMessage={errors?.gender?.value.message}
+                            />
+                        )}
+                    />
+                </div>
+
+                {/*Document reference number*/}
+                <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="Document Refernce Number"
+                        type="text"
+                        register={register("documentRefNumber")}
+
+                        id="UpdateProfile__documentRefNumber"
+                        errorMessage={errors.cscsNumber?.message}
+                    />
+                </div>
+
+                {/* expiry Date  */}
+                <div className=" col-span-12 md:col-span-6">
+                    <div className="border-0 border-b-2 border-underlineColor ">
+                        <label htmlFor="UpdateProfile_IdexpiryDate"> </label>
+                        <input
+                            type="text"
+                            {...register("IdexpiryDate")}
+                            id="UpdateProfile__IdexpiryDate"
+                            className="outline-none pb-4  w-full cursor-pointer"
+                            placeholder="Expiry Date"
+                            onFocus={(e) => {
+                                e.target.type = "date";
+                            }}
+                            onBlur={(e) => {
+                                e.target.type = "";
+                            }}
+                        />
+                    </div>
+                    {errors.dateOfBirth && (
+                        <p className="text-xs text-red-900 ">
+                            {errors.dateOfBirth?.message}
+                        </p>
+                    )}
+                </div>
+
+
+                  {/* issue Date  */}
+                  <div className=" col-span-12 md:col-span-6">
+                    <div className="border-0 border-b-2 border-underlineColor ">
+                        <label htmlFor="UpdateProfile_IdissueDate"> </label>
+                        <input
+                            type="text"
+                            {...register("IdissueDate")}
+                            id="UpdateProfile__IdexpiryDate"
+                            className="outline-none pb-4  w-full cursor-pointer"
+                            placeholder="Issue Date"
+                            onFocus={(e) => {
+                                e.target.type = "date";
+                            }}
+                            onBlur={(e) => {
+                                e.target.type = "";
+                            }}
+                        />
+                    </div>
+                    {errors.dateOfBirth && (
+                        <p className="text-xs text-red-900 ">
+                            {errors.dateOfBirth?.message}
+                        </p>
+                    )}
                 </div>
 
                 {/* Profile Picture */}
@@ -415,23 +500,7 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-                <div className="col-span-12">
-                    <Controller
-                        control={control}
-                        name="salarySlips"
-                        render={({ field: { onChange, value } }) => (
-                            <FileInput
-                                id="salarySlips"
-                                onChange={onChange}
-                                value={value}
-                                errorMessage={errors.salarySlips?.message}
-                                placeholder={
-                                    "Original/certified copy of the latest salary slips for the past 3 months"
-                                }
-                            />
-                        )}
-                    />
-                </div>
+
 
                 <div className="col-span-12">
                     <button

@@ -57,10 +57,10 @@ function EmploymentDetailsForm() {
                 {/*work sector*/}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
-                        placeholder="Work Sector"
+                        placeholder="Nature of Business"
                         type="text"
-                        register={register("worksector")}
-                        id="UpdateProfile__workSector"
+                        register={register("natureOfBusiness")}
+                        id="UpdateProfile__natureOfBusiness"
                     />
                 </div>
 
@@ -87,10 +87,10 @@ function EmploymentDetailsForm() {
                 {/*salary range*/}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
-                        placeholder="Salary Range"
+                        placeholder="Annual Income"
                         type="text"
-                        register={register("salaryRange")}
-                        id="UpdateProfile__salaryRange"
+                        register={register("annualIncome")}
+                        id="UpdateProfile__annualIncome"
                     />
                 </div>
 
