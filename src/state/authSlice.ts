@@ -3,7 +3,8 @@ import authRequest from "../services/requests/authRequest";
 import { AuthState, UserInfoAppResponse } from "../typings";
 
 import { RootState } from "./store";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
+import { stat } from "fs";
 
 const initialState: AuthState = {
     accessToken: "",
@@ -31,8 +32,14 @@ const initialState: AuthState = {
         proofOfAddressImage: "",
         picture: "",
         employmentInfo: {
-            
-        }
+            jobTitle: "",
+            natureOfBusiness: "",
+            companyName: "",
+            companyPhoneNumber: "",
+            companyEmail: "",
+            companyAddress: "",
+            grossIncome: "",
+        },
     },
     isError: false,
     isLoading: false,
@@ -220,7 +227,7 @@ export const getUserFull = createAsyncThunk(
 );
 
 export const updateUserPersonalDetailsFull = createAsyncThunk(
-    "auth/updateUserPersonDetailsFullStatus",
+    "auth/updateUserPersonalDetailsFullStatus",
     async (
         {
             firstName,
@@ -242,6 +249,7 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
             identificationDocumentImage,
             proofOfAddressImage,
             picture,
+            cb,
         }: {
             firstName: string;
             middleName: string;
@@ -262,6 +270,7 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
             identificationDocumentImage?: string | null;
             proofOfAddressImage?: string | null;
             picture?: string | null;
+            cb?: (...event: any[]) => void;
         },
         thunkApi
     ) => {
@@ -293,6 +302,75 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
                 });
 
             if (updateUserPersonalDetailsResponse.status === 200) {
+                cb!();
+                return thunkApi.dispatch<unknown, any>(getUserFull());
+            } else if (
+                updateUserPersonalDetailsResponse.code === "ECONNABORTED"
+            ) {
+                return thunkApi.rejectWithValue(
+                    "Network timeout. Please check your internet connection."
+                );
+            } else {
+                switch (updateUserPersonalDetailsResponse.status) {
+                    case 0:
+                        return thunkApi.rejectWithValue(
+                            "A network error occured. Please check your connection"
+                        );
+                    default:
+                        return thunkApi.rejectWithValue(
+                            "Could not update your information please try again later"
+                        );
+                }
+            }
+        } catch (error) {
+            return thunkApi.rejectWithValue(
+                "Could not update your information please try again later"
+            );
+        }
+    }
+);
+
+export const updateUserEmploymentDetailsFull = createAsyncThunk(
+    "auth/updateUserEmploymentDetailsFullStatus",
+    async (
+        {
+            jobTitle,
+            natureOfBusiness,
+            companyName,
+            companyPhoneNumber,
+            companyEmail,
+            companyAddress,
+            grossIncome,
+            cb,
+        }: {
+            jobTitle: string;
+            natureOfBusiness: string;
+            companyName: string;
+            companyPhoneNumber: string;
+            companyEmail: string;
+            companyAddress: string;
+            grossIncome: string;
+            cb?: (...event: any[]) => void;
+        },
+        thunkApi
+    ) => {
+        try {
+            const customerNo = (thunkApi.getState() as RootState).auth.user
+                ?.customerNo!;
+            const updateUserPersonalDetailsResponse =
+                await authRequest.updateUserEmploymentInfoApp({
+                    companyAddress,
+                    companyEmail,
+                    companyName,
+                    companyPhoneNumber,
+                    grossIncome,
+                    jobTitle,
+                    natureOfBusiness,
+                    customerNo,
+                });
+
+            if (updateUserPersonalDetailsResponse.status === 200) {
+                cb!();
                 return thunkApi.dispatch<unknown, any>(getUserFull());
             } else if (
                 updateUserPersonalDetailsResponse.code === "ECONNABORTED"
@@ -610,7 +688,9 @@ const authSlice = createSlice({
                 state.isSuccess = true;
                 state.isError = false;
                 state.errorMessage = "";
-                toast.success("Account creation Successful please Login in", {id:createUserFull.name});
+                toast.success("Account creation Successful please Login in", {
+                    id: createUserFull.name,
+                });
                 return state;
             })
             .addCase(createUserFull.pending, (state, action) => {
@@ -628,7 +708,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = false;
                 state.errorMessage = action.payload as string;
-                toast.error(state.errorMessage, {id: createUserFull.name});
+                toast.error(state.errorMessage, { id: createUserFull.name });
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
                 state = { ...initialState };
@@ -646,7 +726,7 @@ const authSlice = createSlice({
             .addCase(getUserFull.fulfilled, (state, action) => {
                 const allUserInformation = action.payload
                     ?.allUserInformation as UserInfoAppResponse;
-                
+
                 // personal information
                 state.user!.customerNo = allUserInformation.customerNo;
                 state.user!.dateOfBirth = allUserInformation.dob;
@@ -659,16 +739,29 @@ const authSlice = createSlice({
                 state.user!.bvn = allUserInformation.bvn;
                 state.user!.cscsNumber = allUserInformation.memberShipNo!;
                 state.user!.residentialAddress = allUserInformation.address!;
-                state.user!.identificationDocType = ""
-                state.user!.identificationDocRef = ""
-                state.user!.identificationIssueDate = ""
-                state.user!.identificationDocExpiryDate = ""
-                state.user!.identificationDocumentImage = ""
-                state.user!.proofOfAddressImage = ""
-                state.user!.picture = ""
+                state.user!.identificationDocType = "";
+                state.user!.identificationDocRef = "";
+                state.user!.identificationIssueDate = "";
+                state.user!.identificationDocExpiryDate = "";
+                state.user!.identificationDocumentImage = "";
+                state.user!.proofOfAddressImage = "";
+                state.user!.picture = "";
 
                 // employmentInformation
-
+                state.user!.employmentInfo.companyAddress =
+                    allUserInformation.employerAddress;
+                state.user!.employmentInfo.companyEmail =
+                    allUserInformation.officeEmail;
+                state.user!.employmentInfo.companyName =
+                    allUserInformation.employerName;
+                state.user!.employmentInfo.companyPhoneNumber =
+                    allUserInformation.officePhoneNo;
+                state.user!.employmentInfo.jobTitle =
+                    allUserInformation.occupationCode;
+                state.user!.employmentInfo.natureOfBusiness =
+                    allUserInformation.natureOfBuss;
+                state.user!.employmentInfo.grossIncome =
+                    allUserInformation.grossAnnualIncome?.toString()!;
             })
             .addCase(getUserFull.pending, (state, action) => {
                 state.isLoading = true;
@@ -693,7 +786,7 @@ const authSlice = createSlice({
                     state.isLoading = false;
                     state.isError = false;
                     state.errorMessage = "";
-                    toast.success("Profile was updated successfully", {
+                    toast.success("Personal Details was updated successfully", {
                         id: updateUserPersonalDetailsFull.name,
                         position: "top-right",
                     });
@@ -718,6 +811,48 @@ const authSlice = createSlice({
                     state.errorMessage = action.payload as string;
                     toast.error(state.errorMessage, {
                         id: updateUserPersonalDetailsFull.name,
+                        position: "top-right",
+                    });
+                }
+            )
+            .addCase(
+                updateUserEmploymentDetailsFull.fulfilled,
+                (state, action) => {
+                    state.isSuccess = true;
+                    state.isLoading = false;
+                    state.isError = false;
+                    state.errorMessage = "";
+                    toast.success(
+                        "Employment Details was updated successfully",
+                        {
+                            id: updateUserEmploymentDetailsFull.name,
+                            position: "top-right",
+                        }
+                    );
+                }
+            )
+            .addCase(
+                updateUserEmploymentDetailsFull.pending,
+                (state, action) => {
+                    state.isSuccess = false;
+                    state.isLoading = true;
+                    state.isError = false;
+                    state.errorMessage = "";
+                    toast.loading("Updating Profile...", {
+                        id: updateUserEmploymentDetailsFull.name,
+                        position: "top-right",
+                    });
+                }
+            )
+            .addCase(
+                updateUserEmploymentDetailsFull.rejected,
+                (state, action) => {
+                    state.isSuccess = false;
+                    state.isLoading = false;
+                    state.isError = true;
+                    state.errorMessage = action.payload as string;
+                    toast.error(state.errorMessage, {
+                        id: updateUserEmploymentDetailsFull.name,
                         position: "top-right",
                     });
                 }

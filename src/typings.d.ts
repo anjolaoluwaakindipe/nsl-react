@@ -29,6 +29,16 @@ type PersonalDetailsFormInfo = {
     bvn: string;
 };
 
+type EmploymentDetailsFormInfo = {
+    jobTitle:string ;
+    companyName: string ;
+    natureOfBusiness: string ;
+    companyPhoneNumber:string ;
+    companyEmailAddress: string ;
+    grossIncome:string;
+    companyAddress:string ;
+};
+
 type CreateAccountFormData = {
     // cscsAccountNumber: string;
     firstName: string;
@@ -120,7 +130,15 @@ interface AuthState {
         identificationDocumentImage?: string | null;
         proofOfAddressImage?: string | null;
         picture?: string | null;
-        employmentInfo: {};
+        employmentInfo: {
+            jobTitle:string|null,
+            natureOfBusiness:string |null,
+            companyName:string |null,
+            companyPhoneNumber:string | null,
+            companyEmail:string | null,
+            companyAddress:string | null,
+            grossIncome: string | null,
+        };
     } | null;
 
     isSuccess: boolean;

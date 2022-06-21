@@ -13,7 +13,8 @@ type PhoneFieldProps = {
     phoneElementClassName: string;
     style: object | undefined;
     placeholder?: string;
-    readOnly?:boolean
+    readOnly?: boolean;
+    errorMessage?: string | null;
 };
 function PhoneField({
     onChange,
@@ -21,7 +22,8 @@ function PhoneField({
     phoneElementClassName,
     style,
     placeholder,
-    readOnly
+    readOnly,
+    errorMessage,
 }: PhoneFieldProps) {
     const [isPlaceholderVisilble, setPlaceholderVisibiltiy] = useState(true);
     const phoneRef: React.LegacyRef<
@@ -40,34 +42,54 @@ function PhoneField({
         }
     }, [value]);
 
+    const normalPlaceholderState = () => "";
+    const floatingPlaceholderState = () =>
+        " -translate-y-8  scale-75 ";
+
     return (
-        <div className="relative">
-            <div
-                className={`absolute bottom-[15px] left-14  ${
-                    isPlaceholderVisilble
-                        ? ""
-                        : "bottom-12 origin-left scale-75 "
-                }text-gray-400 pointer-events-none transition-all delay-200 ease-in-out`}
-            >
-                {placeholder}
+        <div className="w-full">
+            <div className="border-0 border-b-2  border-underlineColor  ">
+                <div className="relative floating-placeholder ">
+                    <PhoneInput
+                        className={phoneElementClassName + "bg-transparent"}
+                        onChange={(value) => {
+                            onChange && onChange(value);
+                            if (value) {
+                                setPlaceholderVisibiltiy(false);
+                            } else {
+                                setPlaceholderVisibiltiy(true);
+                            }
+                        }}
+                        readOnly={readOnly}
+                        ref={phoneRef}
+                        value={value}
+                        style={style}
+                    />
+                    <div
+                        className={` absolute bottom-[15px] left-14 origin-left text-gray-400 ${
+                            isPlaceholderVisilble
+                                ? normalPlaceholderState()
+                                : floatingPlaceholderState()
+                        } pointer-events-none transition-all delay-200 ease-in-out`}
+                    >
+                        {placeholder}
+                    </div>
+                </div>
             </div>
-            <PhoneInput
-                className={phoneElementClassName + "bg-transparent"}
-                onChange={(value) => {
-                    onChange && onChange(value);
-                    if (value) {
-                        setPlaceholderVisibiltiy(false);
-                    } else {
-                        setPlaceholderVisibiltiy(true);
-                    }
-                }}
-                readOnly={readOnly}
-                ref={phoneRef}
-                value={value}
-                style={style}
-            />
+            <p className="text-xs text-red-900 ">{errorMessage}</p>
         </div>
     );
 }
 
 export default PhoneField;
+
+// {
+//     (" ");
+// }
+// <div
+//     className={`absolute bottom-[15px] left-14  ${
+//         isPlaceholderVisilble ? "" : "bottom-12 origin-left scale-75 "
+//     }text-gray-400 pointer-events-none transition-all delay-200 ease-in-out`}
+// >
+//     {placeholder}
+// </div>;

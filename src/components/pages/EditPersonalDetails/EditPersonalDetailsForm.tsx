@@ -5,7 +5,7 @@ import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import { joiResolver } from '@hookform/resolvers/joi';
-import { personalDetailsFormSchema } from '../../../utils/validation/personalDetailForm';
+import { personalDetailsFormSchema } from '../../../utils/validation/updateProfile';
 
 import Drop from "../../shared/Dropdowns/DropOptions";
 
