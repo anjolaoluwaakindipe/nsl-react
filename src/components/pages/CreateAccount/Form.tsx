@@ -20,8 +20,8 @@ import {
 import { AppDispatch } from "../../../state/store";
 import { paths } from "../../../utils/constants/allPaths";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
-import PhoneField from "../../shared/TextFields/PhoneField";
-import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
+import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import Dropdown from "react-dropdown";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatterns";
@@ -106,9 +106,9 @@ function Form() {
         }
     }, [isLoading, isSuccess, isError, openModalFunc]);
 
-    console.log(getValues());
 
     const onSubmit = handleSubmit(async (data) => {
+
         // disable button on click
         setDisableButton(true);
 
@@ -135,7 +135,7 @@ function Form() {
                         phoneNumber: data.phoneNumber.toString(),
                         bvn: data.bvn,
                         gender: data?.gender!,
-                        dateOfBirth: data.dateOfBirth,
+                        dateOfBirth: data.dateOfBirth.split("T")[0],
                         lastName: data.lastName,
                     })
                 );

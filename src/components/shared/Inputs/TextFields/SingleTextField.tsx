@@ -1,5 +1,5 @@
 import React from "react";
-import { SingleTextFieldProps } from "../../../typings";
+import { SingleTextFieldProps } from "../../../../typings";
 
 
 

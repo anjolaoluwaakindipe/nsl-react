@@ -47,9 +47,9 @@ const authRequest = {
         return await axios
             .post(
                 BASE_URL +
-                "/auth/realms/" +
-                CUSTOM_REALM +
-                "/protocol/openid-connect/token",
+                    "/auth/realms/" +
+                    CUSTOM_REALM +
+                    "/protocol/openid-connect/token",
                 body,
 
                 {
@@ -83,9 +83,9 @@ const authRequest = {
         return await axios
             .get(
                 BASE_URL +
-                "/auth/realms/" +
-                CUSTOM_REALM +
-                "/protocol/openid-connect/userinfo",
+                    "/auth/realms/" +
+                    CUSTOM_REALM +
+                    "/protocol/openid-connect/userinfo",
                 {
                     headers: {
                         Authorization: "Bearer " + token,
@@ -129,9 +129,9 @@ const authRequest = {
         return await axios
             .post(
                 BASE_URL +
-                "/auth/realms/" +
-                CUSTOM_REALM +
-                "/protocol/openid-connect/token",
+                    "/auth/realms/" +
+                    CUSTOM_REALM +
+                    "/protocol/openid-connect/token",
                 body,
                 {
                     headers: {
@@ -163,7 +163,6 @@ const authRequest = {
         email,
         bvn,
         phoneNumber,
-
     }: {
         firstName: string;
         lastName: string;
@@ -173,7 +172,11 @@ const authRequest = {
         bvn: string;
         phoneNumber: string;
     }) => {
-        const res: { status: null | number, data: Record<string, any>, code: string } = { status: null, data: {}, code: "" }
+        const res: {
+            status: null | number;
+            data: Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
         return await axios
             .get(
                 "/isslapi/ibank/api/v1/createBasicAccount",
@@ -191,19 +194,15 @@ const authRequest = {
                 }
             )
             .then((response) => {
-                console.log(response);
                 res.status = response.status;
                 res.data = response.data;
-                console.log("there was success");
-                console.log(res);
+
                 return res;
             })
             .catch((error) => {
-                console.log(error.response);
-                console.log("there was an error");
                 res.status = error.response.status;
                 res.code = error.code;
-                console.log(res);
+
                 return res;
             });
     },
@@ -224,7 +223,6 @@ const authRequest = {
         customerNo: string;
         adminToken: string;
     }) => {
-
         // information needed to register a new user on a keycloak server
         const body = {
             firstName: firstName,
@@ -267,11 +265,10 @@ const authRequest = {
             .then((response) => {
                 res.status = response.status;
                 res.data = response.data;
-                console.log(res);
+
                 return res;
             })
             .catch((err) => {
-                console.log(err.message);
                 return err;
             });
     },
@@ -295,9 +292,9 @@ const authRequest = {
         return await axios
             .post(
                 BASE_URL +
-                "/auth/realms/" +
-                CUSTOM_REALM +
-                "/protocol/openid-connect/logout",
+                    "/auth/realms/" +
+                    CUSTOM_REALM +
+                    "/protocol/openid-connect/logout",
                 body,
                 {
                     headers: {
@@ -318,7 +315,7 @@ const authRequest = {
             });
     },
 
-    // UPDATE USER PASSWORD
+    // UPDATE USER PASSWORD Not finished
     updatePassword: async ({
         newPassword,
         userId,
@@ -336,7 +333,7 @@ const authRequest = {
         // request to keycloak server
         return await fetch(
             BASE_URL +
-            `/auth/admin/realms/${CUSTOM_REALM}/users/${userId}/reset-password`,
+                `/auth/admin/realms/${CUSTOM_REALM}/users/${userId}/reset-password`,
             {
                 body: JSON.stringify(body),
                 method: "PUT",
@@ -354,36 +351,92 @@ const authRequest = {
             });
     },
 
-    //update user details 
-    updateUserApp: async () => {
+    //update user personal details on main app
+    updateUserPersonalInfoApp: async ({
+        customerNo,
+        firstName,
+        middleName,
+        lastName,
+        bvn,
+        gender,
+        maritalStatus,
+        dateOfBirth,
+        email,
+        title,
+        phoneNumber,
+        residentialAddress,
+        cscsNumber,
+        identificationDocType,
+        identificationDocRef,
+        identificationIssueDate,
+        identificationDocExpiryDate,
+        identificationDocumentImage,
+        proofOfAddressImage,
+        picture,
+    }: {
+        customerNo: string;
+        firstName: string;
+        middleName: string;
+        lastName: string;
+        bvn: string;
+        gender: string;
+        maritalStatus: string;
+        dateOfBirth: string;
+        title: string;
+        email: string;
+        phoneNumber: string;
+        residentialAddress: string;
+        cscsNumber: string;
+        identificationDocType?: string | null;
+        identificationDocRef?: string | null;
+        identificationIssueDate?: string | null;
+        identificationDocExpiryDate?: string | null;
+        identificationDocumentImage?: string | null;
+        proofOfAddressImage?: string | null;
+        picture?: string | null;
+    }) => {
         // required information to get
-        const Info = {
-            CustomerNo: customerno,
-            
-        };
 
-        // body
-        const body = X-TENEANTID(islandbankpoc);
+        const body = {
+            customerNo,
+            firstname: firstName,
+            middlename: middleName,
+            surname: lastName,
+            bvn,
+            gender,
+            title,
+            maritalStatus,
+            dateOfBirth,
+            email,
+            mobileNo: phoneNumber,
+            cscsno: cscsNumber,
+            ResidentialAddress: residentialAddress,
+            // idDocType: identificationDocType,
+            // idDocRef: identificationDocRef,
+            // idIssueDate: identificationIssueDate,
+            // idDocExpiryDate: identificationDocExpiryDate,
+            // idDocumentImage: identificationDocumentImage,
+            // proofOfAddressImage: proofOfAddressImage,
+            photo: picture,
+        };
 
         // response data format
-        let res: { status: number; data: any } = {
-            status: 0,
-            data: {},
-        };
+        const res: {
+            status: null | number;
+            data: Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
 
         // request to api
         return await axios
-            .post(
-                "/isslapi/ibank/api/v1/updateCustomerDetails2",
-                body,
-                {
-                    headers: {
-                        "content-type": "application/json",
-                    },
-
-                    method: "POST",
-                }
-            )
+            .post("/isslapi/ibank/api/v1/updateCustomerDetails2", body, {
+                headers: {
+                    "content-type": "application/json",
+                    "X-TENANTID": "islandbankpoc",
+                },
+                timeout: 20000,
+                method: "POST",
+            })
 
             .then((response) => {
                 res.status = response.status;
@@ -393,78 +446,133 @@ const authRequest = {
                 return res;
             })
             .catch((err) => {
-                console.log(err);
-                return err;
+                if (!err.response.status && !err.response.code) {
+                    return res;
+                }
+                res.status = err.response.status;
+                res.code = err.response.code;
+                return res;
             });
     },
 
+    //update user personal details on main app
+    updateUserEmploymentInfoApp: async ({
+        jobTitle,
+        natureOfBusiness,
+        companyName,
+        companyPhoneNumber,
+        companyEmail,
+        grossIncome,
+        companyAddress,
+    }: {
+        jobTitle: string;
+        natureOfBusiness: string;
+        companyName: string;
+        companyPhoneNumber: string;
+        companyEmail: string;
+        grossIncome: string;
+        companyAddress: string;
+    }) => {
+        // required information to get
 
+        const body = {
+            jobtitle: jobTitle,
+            natureofbusiness: natureOfBusiness,
+            employername: companyName,
+            employerphone: companyPhoneNumber,
+            employeremail: companyEmail,
+            employeraddress: companyAddress,
+            grossIncome: grossIncome,
+        };
 
-//get user details
-getUserApp: async ({
-    //information to get users
-    customerno,
-    firstName,
-    lastName,
-    dateOfBirth,
-    gender,
-    email,
-    bvn,
-    phoneNumber,
+        // response data format
+        const res: {
+            status: null | number;
+            data: Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
 
-}: {
-    customerno: string;
-    firstName: string;
-    lastName: string;
-    dateOfBirth: string;
-    gender: string;
-    email: string;
-    bvn: string;
-    phoneNumber: string;
-}) => {
-    const res: { status: null | number, data: Record<string, any>, code: string } = { status: null, data: {}, code: "" }
-    return await axios
-        .get(
-            "/isslapi/ibank/api/v1/getCustomer",
-            // /isslapi
-            {
-                params: {
-                    customerno: customerno
+        // request to api
+        return await axios
+            .post("/isslapi/ibank/api/v1/updateCustomerDetails2", body, {
+                headers: {
+                    "content-type": "application/json",
+                    // "X-TENANTID": "islandbankpoc",
                 },
-            }
-        )
-        .then((response) => {
-            console.log(response);
-            res.status = response.status;
-            res.data = response.data;
-            console.log("there was success");
-            console.log(res);
-            return res;
-        })
-        .catch((error) => {
-            console.log(error.response);
-            console.log("there was an error");
-            res.status = error.response.status;
-            res.code = error.code;
-            console.log(res);
-            return res;
-        });
-},
+                timeout: 20000,
+                method: "POST",
+            })
 
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                console.log(res);
+
+                return res;
+            })
+            .catch((err) => {
+                if (!err.response.status && !err.response.code) {
+                    return res;
+                }
+                res.status = err.response.status;
+                res.code = err.response.code;
+                return res;
+            });
+    },
+
+    //get user details
+    getUserApp: async ({
+        //information to get users
+        customerNo,
+    }: {
+        customerNo: string;
+    }) => {
+        const res: {
+            status: null | number;
+            data: Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
+        return await axios
+            .get(
+                "/isslapi/ibank/api/v1/getCustomerDetailsv3",
+                // /isslapi
+                {
+                    params: {
+                        CustomerNo:  customerNo,
+                    },
+                }
+            )
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                return res;
+            })
+            .catch((error) => {
+                res.status = error.response.status;
+                res.code = error.code;
+                return res;
+            });
+    },
 };
 export default authRequest;
 
-function myFunc() {
-    authRequest.registerUserApp({
-        email: "asdfasd@fmai.cos",
+async function myFunc() {
+    console.log(await authRequest.updateUserPersonalInfoApp({
+        email: "anjyakindipe@gmail.com",
         firstName: "Anjy",
-        "lastName": "Anjy",
+        lastName: "Anjy",
         dateOfBirth: "2000-12-08",
         bvn: "12345678901",
         gender: "M",
-        phoneNumber: "+313241234234",
+        phoneNumber: "+2347030444529",
+        cscsNumber: "12233344",
+        maritalStatus: "F",
+        middleName: "Daniel",
+        residentialAddress: "29 Adigun Close",
+        customerNo: "009298",
+        title:"Mr",
 
-    });
+    }));
 }
 
 myFunc();

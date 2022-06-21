@@ -1,10 +1,9 @@
-import { useSelector } from 'react-redux';
-import { authSelector } from '../../../state/authSlice';
+import { useSelector } from "react-redux";
+import { authSelector } from "../../../state/authSlice";
+import { capitalize } from "../../../utils/stringFormatting";
 
 function Header() {
-    
-
-    const {user} = useSelector(authSelector);
+    const { user } = useSelector(authSelector);
 
     return (
         <form className=" pb-10 px-5  md:px-10">
@@ -12,7 +11,8 @@ function Header() {
                 <div className="flex flex-col md:flex-row justify-between space-y-5 md:space-y-0 md:items-center heading-info-1 pt-4 text-accentColor ">
                     <div className="flex w-full justify-between  font-semibold text-xl pt-5">
                         <div className="text-primaryColor text-xl md:text-2xl">
-                            Welcome {user?.name.split(" ")[0]}
+                            Welcome{" "}
+                            {capitalize(user?.name?.split(",")[1] || "")}
                         </div>
                     </div>
 

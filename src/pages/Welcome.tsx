@@ -34,7 +34,7 @@ function Welcome() {
 
                 {/* Welcome page header */}
                 <h1 className="heading1">
-                    Welcome {capitalize(user?.name.split(" ")[0]!)}
+                    Welcome {capitalize(user?.name?.split(",")[1] || "")}
                 </h1>
 
                 {/* Welcome page info */}

@@ -12,6 +12,7 @@ type FloatinPlaceholderTextFieldProps = {
     value?: string;
   //  onChange?: React.HTMLInputElement;
     formNoValidate?: boolean;
+    readOnly ?: boolean
 };
 
 function FloatingPlaceholderTextField(props: FloatinPlaceholderTextFieldProps) {
@@ -27,6 +28,7 @@ function FloatingPlaceholderTextField(props: FloatinPlaceholderTextFieldProps) {
                     step={props.step}
                     pattern={props.pattern}
                     value={props.value}
+                    readOnly = {props.readOnly}
                     // onChange={props.onChange}
                     formNoValidate={props.formNoValidate}
                     

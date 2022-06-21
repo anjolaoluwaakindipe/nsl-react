@@ -20,7 +20,7 @@ import {
     signUpInfoSelector,
 } from "../state/signUpInfoSlice";
 import { AppDispatch } from "../state/store";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from 'react';
 import toast from "react-hot-toast";
 import { verificationRequests } from "../services/requests/verificationRequests";
 import { authSelector, createUserFull } from "../state/authSlice";
@@ -42,7 +42,7 @@ function PhoneVerification() {
         useSelector(authSelector);
     const dispatch = useDispatch<AppDispatch>();
     const [isButtonDisable, setIsButtonDisable] = useState(true);
-    const [toastId, setToastId] = useState("");
+    const pinToastId = "pinToastId";
     const [buttonLoading, setButtonLoading] = useState(false);
 
     // sends a toast message to advice the user to input a 4 digits code
@@ -68,19 +68,22 @@ function PhoneVerification() {
     });
 
     const inputedSmsCode = watch("phoneCode");
-
+    const timerRef = useRef<NodeJS.Timeout | undefined>(undefined)
     // checks if inputed code matches code sent to phone number
     useEffect(() => {
         setIsButtonDisable(true);
         if (inputedSmsCode.length === 4 && inputedSmsCode === smsCode) {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+            }
             toast.loading("Verifying Code...", {
-                id: toastId,
+                id: pinToastId,
                 position: "top-right",
             });
-            setTimeout(() => {
+            timerRef.current = setTimeout(() => {
                 toast.success("Sms verification code correct", {
                     position: "top-right",
-                    id: toastId,
+                    id: pinToastId,
                     duration: 8000,
                 });
                 setIsButtonDisable(false);
@@ -92,14 +95,17 @@ function PhoneVerification() {
         }
 
         if (inputedSmsCode.length === 4 && inputedSmsCode !== smsCode) {
+            if(timerRef.current){
+                clearTimeout(timerRef.current);
+            }
             toast.loading("Verifying Code...", {
-                id: toastId,
+                id: pinToastId,
                 position: "top-right",
             });
-            setTimeout(() => {
+            timerRef.current = setTimeout(() => {
                 toast.error("Code not correct", {
                     position: "top-right",
-                    id: toastId,
+                    id: pinToastId,
                 });
             }, 3000);
         }
@@ -143,11 +149,11 @@ function PhoneVerification() {
             navigate(paths.CREATE_ACCOUNT, { replace: true });
             return;
         }
-        setToastId(
-            toast("Please make sure code is 4 digits", {
-                position: "top-right",
-            })
-        );
+
+        toast("Please make sure code is 4 digits", {
+            position: "top-right",
+            id: pinToastId,
+        });
     }, [email, firstName, password, phoneNumber]); // eslint-disable-line
 
     const { openModalFunc } = useModal(
@@ -158,26 +164,12 @@ function PhoneVerification() {
     // checks if account creation was successful or not
     useEffect(() => {
         if (!isLoading && isSuccess) {
-            toast.success("Account creation Successful please Login in");
             setButtonLoading(false);
             dispatch(clearSignUpInfo);
             openModalFunc();
         }
         if (!isLoading && isError && errorMessage) {
-            toast.error(errorMessage);
             setButtonLoading(false);
-        }
-
-        if (
-            !isLoading &&
-            isError &&
-            errorMessage ===
-                "User already exists. Please try again with another email"
-        ) {
-            toast.error(errorMessage);
-            dispatch(clearSignUpInfo);
-            setButtonLoading(false);
-            navigate(paths.CREATE_ACCOUNT);
         }
     }, [isLoading, openModalFunc]); //
 

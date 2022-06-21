@@ -1,5 +1,6 @@
 import React, { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
+import TestPayment from "./pages/TestPayment";
 
 // paths
 import { paths } from "./utils/constants/allPaths";
@@ -237,6 +238,8 @@ function AppRouter() {
                             </React.Suspense>
                         }
                     />
+{/* 
+                    <Route path="/test" element={<TestPayment />} /> */}
                 </Routes>
             </React.Suspense>
         </>

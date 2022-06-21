@@ -5,7 +5,7 @@ import PhoneInput, {
     Props,
     State,
 } from "react-phone-number-input";
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 
 type PhoneFieldProps = {
     onChange?: (...event: [any]) => void;
@@ -13,6 +13,7 @@ type PhoneFieldProps = {
     phoneElementClassName: string;
     style: object | undefined;
     placeholder?: string;
+    readOnly?:boolean
 };
 function PhoneField({
     onChange,
@@ -20,6 +21,7 @@ function PhoneField({
     phoneElementClassName,
     style,
     placeholder,
+    readOnly
 }: PhoneFieldProps) {
     const [isPlaceholderVisilble, setPlaceholderVisibiltiy] = useState(true);
     const phoneRef: React.LegacyRef<
@@ -40,8 +42,14 @@ function PhoneField({
 
     return (
         <div className="relative">
-            <div className="absolute bottom-[15px] left-16 text-gray-400 pointer-events-none transition-all delay-200 ease-in-out ">
-                {placeholder && isPlaceholderVisilble && placeholder}
+            <div
+                className={`absolute bottom-[15px] left-14  ${
+                    isPlaceholderVisilble
+                        ? ""
+                        : "bottom-12 origin-left scale-75 "
+                }text-gray-400 pointer-events-none transition-all delay-200 ease-in-out`}
+            >
+                {placeholder}
             </div>
             <PhoneInput
                 className={phoneElementClassName + "bg-transparent"}
@@ -53,6 +61,7 @@ function PhoneField({
                         setPlaceholderVisibiltiy(true);
                     }
                 }}
+                readOnly={readOnly}
                 ref={phoneRef}
                 value={value}
                 style={style}

@@ -1,9 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
 import Dropdown from "react-dropdown";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
-import PhoneField from "../../shared/TextFields/PhoneField";
+import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 import { isValidPhoneNumber } from "react-phone-number-input";
-import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
+import { joiResolver } from '@hookform/resolvers/joi';
+import { personalDetailsFormSchema } from '../../../utils/validation/personalDetailForm';
 
 function EditPersonalDetailsForm() {
     const genderDropdownOptions = [
@@ -25,7 +27,7 @@ function EditPersonalDetailsForm() {
         watch,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({resolver: joiResolver(personalDetailsFormSchema)});
 
     const watchGender = watch("gender");
     const watchMaritalStatus = watch("maritalStatus");
@@ -38,24 +40,48 @@ function EditPersonalDetailsForm() {
             {/*firstname */}
             <div className=" col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
-                    placeholder="FirstName"
+                    placeholder="title"
                     type="text"
-                    register={register("firstname")}
-                    registerName='FirstName'
+                    register={register("title")}
+                    registerName="title"
+                    id="EditProfileDetails__title"
+                    errorMessage={errors.title?.message}
+                />
+            </div>
+
+            {/*firstname */}
+            <div className=" col-span-12 md:col-span-6 ">
+                <FloatingPlaceholderTextField
+                    placeholder="First Name"
+                    type="text"
+                    register={register("firstName")}
+                    registerName="FirstName"
                     id="EditProfileDetails__FirstName"
                     errorMessage={errors.firstName?.message}
                 />
             </div>
 
-             {/*Last Nmae */}
-             <div className=" col-span-12 md:col-span-6 ">
+            {/*Last Nmae */}
+            <div className=" col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
-                    placeholder="LastName"
+                    placeholder="Last Name"
                     type="text"
-                    register={register("Lastname")}
-                    registerName='LastName'
+                    register={register("lastName")}
+                    registerName="lastName"
                     id="EditProfileDetails__LastName"
-                    errorMessage={errors.LastName?.message}
+                    errorMessage={errors.lastName?.message}
+                />
+            </div>
+
+            {/*Other Name */}
+            <div className=" col-span-12 md:col-span-6 ">
+                <FloatingPlaceholderTextField
+                    placeholder="Other Names"
+                    type="text"
+                    register={register("otherName")}
+                    registerName="otherName"
+                    id="EditProfileDetails__LastName"
+                    errorMessage={errors.otherName?.message}
                 />
             </div>
 
@@ -66,7 +92,7 @@ function EditPersonalDetailsForm() {
                     type="text"
                     id="EditProfile__emailAddress"
                     register={register("emailaddress")}
-                    registerName='Email Address'
+                    registerName="Email Address"
                     errorMessage={errors.emailAddress?.message}
                 />
             </div>
@@ -178,7 +204,7 @@ function EditPersonalDetailsForm() {
                                         : "text-gray-400"
                                 }
                                 controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
-                                menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3"
+                                menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3 z-10"
                             />
                         )}
                     />
@@ -187,7 +213,7 @@ function EditPersonalDetailsForm() {
                 </div>
 
                 {
-                    <p className="text-xs text-red-900 ">
+                    <p className="text-xs text-red-900  ">
                         {errors?.gender?.value?.message}
                     </p>
                 }
@@ -199,7 +225,7 @@ function EditPersonalDetailsForm() {
                     placeholder="CSCS Number"
                     type="text"
                     register={register("cscsNumber")}
-                    registerName='CSCS Number'
+                    registerName="CSCS Number"
                     id="EditProfileDetails__cscsNumber"
                     errorMessage={errors.cscsNumber?.message}
                 />
@@ -211,9 +237,21 @@ function EditPersonalDetailsForm() {
                     placeholder="NIN"
                     type="text"
                     register={register("nin")}
-                    registerName='NIN'
+                    registerName="NIN"
                     id="EditProfileDetails__nin"
-                    errorMessage={errors.cscsNumber?.message}
+                    errorMessage={errors.nin?.message}
+                />
+            </div>
+
+            {/*bvn*/}
+            <div className=" col-span-12 ">
+                <FloatingPlaceholderTextField
+                    placeholder="BVN"
+                    type="text"
+                    register={register("bvn")}
+                    registerName="BVN"
+                    id="EditProfileDetails__bvn"
+                    errorMessage={errors.bvn?.message}
                 />
             </div>
 
@@ -233,18 +271,6 @@ function EditPersonalDetailsForm() {
                         {errors?.residentialAddress?.message}
                     </p>
                 }
-            </div>
-
-            {/*bvn*/}
-            <div className=" col-span-12 ">
-                <FloatingPlaceholderTextField
-                    placeholder="BVN"
-                    type="text"
-                    register={register("bvn")}
-                    registerName='BVN'
-                    id="EditProfileDetails__bvn"
-                    errorMessage={errors.cscsNumber?.message}
-                />
             </div>
 
             {/*save button */}

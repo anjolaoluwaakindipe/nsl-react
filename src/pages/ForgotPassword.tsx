@@ -6,7 +6,7 @@ import Header from "../components/pages/ForgotPassword/Header";
 import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 import { AiOutlineArrowLeft, AiOutlineClose } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import FloatingPlaceholderTextField from "../components/shared/TextFields/FloatingPlaceholderTextField";
+import FloatingPlaceholderTextField from "../components/shared/Inputs/TextFields/FloatingPlaceholderTextField";
 
 function ForgotPassword() {
     const navigate = useNavigate();
