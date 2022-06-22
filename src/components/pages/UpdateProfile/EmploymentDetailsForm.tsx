@@ -1,22 +1,22 @@
-import React from "react";
-import Progress from "./Progress";
-import { useForm, Controller } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
-import { useState, useEffect, useRef } from "react";
-import { paths } from "../../../utils/constants/allPaths";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../../state/store";
-import {
-    updateUserEmploymentDetailsFull,
-    authSelector,
-} from "../../../state/authSlice";
-import { EmploymentDetailsFormInfo } from "../../../typings";
 import { joiResolver } from "@hookform/resolvers/joi";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { isValidPhoneNumber } from "react-phone-number-input";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+    authSelector,
+    updateUserEmploymentDetailsFull,
+} from "../../../state/authSlice";
+import { AppDispatch } from "../../../state/store";
+import { EmploymentDetailsFormInfo } from "../../../typings";
+import { paths } from "../../../utils/constants/allPaths";
 import { employmentDetailsFormSchema } from "../../../utils/validation/updateProfile";
 import CurrencyInputField from "../../shared/Inputs/TextFields/CurrencyInputField";
-import { isValidPhoneNumber } from "react-phone-number-input";
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
+import Progress from "./Progress";
+import formatMoney from "../../../utils/moneyFormatter";
 
 function EmploymentDetailsForm() {
     const {
@@ -28,7 +28,6 @@ function EmploymentDetailsForm() {
         jobTitle,
         natureOfBusiness,
     } = useSelector(authSelector).user!.employmentInfo;
-    const { isLoading, isError, isSuccess } = useSelector(authSelector);
 
     const navigate = useNavigate();
     // loading button control
@@ -42,6 +41,7 @@ function EmploymentDetailsForm() {
         handleSubmit,
         control,
         setValue,
+        getValues,
     } = useForm<EmploymentDetailsFormInfo>({
         resolver: joiResolver(employmentDetailsFormSchema),
         defaultValues: { companyPhoneNumber: "" },
@@ -86,6 +86,7 @@ function EmploymentDetailsForm() {
         natureOfBusiness,
         setValue,
     ]);
+    console.log(getValues());
 
     // const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     //     e.preventDefault();
@@ -201,11 +202,18 @@ function EmploymentDetailsForm() {
 
                 {/*salary range*/}
                 <div className=" col-span-12 md:col-span-6 ">
-                    <CurrencyInputField
-                        placeholder="Gross Income"
-                        register={register("grossIncome")}
-                        id="UpdateProfile__grossIncome"
-                        errorMessage={errors.grossIncome?.message}
+                    <Controller
+                        control={control}
+                        name="grossIncome"
+                        render={({ field: { onChange, value } }) => (
+                            <CurrencyInputField
+                                placeholder="Gross Income"
+                                value={value}
+                                onChange={onChange}
+                                id="UpdateProfile__grossIncome"
+                                errorMessage={errors.grossIncome?.message}
+                            />
+                        )}
                     />
                 </div>
 
@@ -228,6 +236,7 @@ function EmploymentDetailsForm() {
 
                 <div className="col-span-12 flex justify-between">
                     <button
+                        type="button"
                         className={`btn1 bg-transparent border-2 hover:bg-transparent border-primaryColor text-primaryColor  w-full md:w-48`}
                         onClick={() =>
                             navigate(

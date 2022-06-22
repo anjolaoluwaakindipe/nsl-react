@@ -212,7 +212,7 @@ interface UserInfoAppResponse {
     natureOfBuss: string | null /* nature of business*/;
     // documents
     kycdocs: [
-        ProofOfAddressFromGetUserAppResponse,
+        ProofOfIdentificationFromGetUserAppResponse,
         ProofOfAddressFromGetUserAppResponse,
         PictureFromGetUserAppResponse
     ];

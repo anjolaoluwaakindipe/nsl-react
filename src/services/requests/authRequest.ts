@@ -417,7 +417,7 @@ const authRequest = {
             // idDocExpiryDate: identificationDocExpiryDate,
             // idDocumentImage: identificationDocumentImage,
             // proofOfAddressImage: proofOfAddressImage,
-            // photo: picture,
+            photo: picture,
         };
 
         // response data format
@@ -434,7 +434,7 @@ const authRequest = {
                     "content-type": "application/json",
                     // "X-TENANTID": "islandbankpoc",
                 },
-                timeout: 20000,
+                timeout: 2000000,
                 method: "POST",
             })
 
@@ -468,7 +468,7 @@ const authRequest = {
         grossIncome,
         companyAddress,
     }: {
-        customerNo:string
+        customerNo: string;
         jobTitle: string;
         natureOfBusiness: string;
         companyName: string;
@@ -504,7 +504,7 @@ const authRequest = {
                     "content-type": "application/json",
                     // "X-TENANTID": "islandbankpoc",
                 },
-                timeout: 20000,
+                timeout: 2000000,
                 method: "POST",
             })
 

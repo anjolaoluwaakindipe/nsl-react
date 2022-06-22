@@ -25,11 +25,10 @@ import { PersonalDetailsFormInfo } from "../../../typings";
 import { personalDetailsFormSchema } from "../../../utils/validation/updateProfile";
 import FileInput from "../../shared/Inputs/FileInput";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
-
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
+import { paths } from "../../../utils/constants/allPaths";
 
 function PersonalDetailsForm() {
-
     // redux auth state
     const {
         email,
@@ -44,10 +43,15 @@ function PersonalDetailsForm() {
         title,
         residentialAddress,
         cscsNumber,
+        picture,
+        identificationDocumentImage,
+        proofOfAddressImage,
+        identificationDocExpiryDate,
+        identificationDocRef,
+        identificationDocType,
+        identificationIssueDate,
     } = useSelector(authSelector).user!;
 
-    const { isError, isLoading, isSuccess, errorMessage } =
-        useSelector(authSelector);
 
     // react redux variables
     const dispatch = useDispatch<AppDispatch>();
@@ -82,7 +86,11 @@ function PersonalDetailsForm() {
     // loading button control
     const [isButtonLoading, setButtonLoading] = useState(false);
 
-    const navigateToUpdateEmploymentDetail = () =>{}
+    const navigateToUpdateEmploymentDetail = () => {
+        navigate(
+            paths.UPDATE_PROFILE.base + paths.UPDATE_PROFILE.EMPLOYMENT_DETAILS
+        );
+    };
 
     const {
         register,
@@ -116,6 +124,7 @@ function PersonalDetailsForm() {
                 cscsNumber: data.cscsNumber,
                 residentialAddress: data.residentialAddress,
                 picture: data.picture,
+                cb: navigateToUpdateEmploymentDetail,
             })
         );
         // navigate("/update-profile/employment-details");
@@ -180,7 +189,13 @@ function PersonalDetailsForm() {
         if (cscsNumber) {
             setValue("cscsNumber", cscsNumber);
         }
-    }, [email, phoneNumber, name, gender, otherName, dateOfBirth, bvn, title]); // eslint-disable-line
+        if (picture) {
+            setValue("picture", picture);
+        }
+        if (identificationDocumentImage) {
+            setValue("proofOfIdentification", identificationDocumentImage);
+        }
+    }, [email, phoneNumber, name, gender, otherName, dateOfBirth, bvn, title, identificationDocumentImage]); // eslint-disable-line
 
     return (
         <div>
@@ -206,8 +221,7 @@ function PersonalDetailsForm() {
                         errorMessage={errors.title?.message}
                     />
                 </div>
-
-                {/*Firstname */}
+                {/* Full Name */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="First Name"
@@ -282,7 +296,6 @@ function PersonalDetailsForm() {
                         )}
                     />
                 </div>
-
 
 
                 {/* Date of Birth */}
