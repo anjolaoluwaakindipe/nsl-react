@@ -427,7 +427,6 @@ const authRequest = {
             code: string;
         } = { status: null, data: {}, code: "" };
 
-        
         // request to api
         return await axios
             .post("/isslapi/ibank/api/v1/updateCustomerDetails2", body, {
@@ -460,6 +459,7 @@ const authRequest = {
 
     //update user personal details on main app
     updateUserEmploymentInfoApp: async ({
+        customerNo,
         jobTitle,
         natureOfBusiness,
         companyName,
@@ -468,6 +468,7 @@ const authRequest = {
         grossIncome,
         companyAddress,
     }: {
+        customerNo:string
         jobTitle: string;
         natureOfBusiness: string;
         companyName: string;
@@ -479,6 +480,7 @@ const authRequest = {
         // required information to get
 
         const body = {
+            customerNo,
             jobtitle: jobTitle,
             natureofbusiness: natureOfBusiness,
             employername: companyName,

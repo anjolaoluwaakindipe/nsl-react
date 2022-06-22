@@ -33,6 +33,16 @@ type PersonalDetailsFormInfo = {
     documentRefNumber: string;
 };
 
+type EmploymentDetailsFormInfo = {
+    jobTitle:string ;
+    companyName: string ;
+    natureOfBusiness: string ;
+    companyPhoneNumber:string ;
+    companyEmailAddress: string ;
+    grossIncome:string;
+    companyAddress:string ;
+};
+
 type CreateAccountFormData = {
     // cscsAccountNumber: string;
     firstName: string;
@@ -72,7 +82,7 @@ type LoginInfo = {
 type SingleTextFieldProps = {
     id?: string;
     name?: string;
-    type?: HTMLInputTypeAttribute;
+    type?: React.HTMLInputTypeAttribute;
     placeholder?: string;
     label?: string;
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -124,7 +134,15 @@ interface AuthState {
         identificationDocumentImage?: string | null;
         proofOfAddressImage?: string | null;
         picture?: string | null;
-        employmentInfo: {};
+        employmentInfo: {
+            jobTitle:string|null,
+            natureOfBusiness:string |null,
+            companyName:string |null,
+            companyPhoneNumber:string | null,
+            companyEmail:string | null,
+            companyAddress:string | null,
+            grossIncome: string | null,
+        };
     } | null;
 
     isSuccess: boolean;

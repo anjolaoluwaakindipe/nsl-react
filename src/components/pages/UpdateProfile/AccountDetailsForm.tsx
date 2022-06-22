@@ -53,7 +53,7 @@ const [modalName, setModalName] = useState("")
                 autoSave="off"
                 onSubmit={(e)=>{
                     e.preventDefault()
-                    setModalName("ProfileUpdateSuccessfulModal"); openModalFunc()}}
+                   }}
             >
 
                 <div className="col-span-12 w-full ">
@@ -64,7 +64,7 @@ const [modalName, setModalName] = useState("")
                 <div className="col-span-12 ">
                     <button
                         className="btn1 bg-primaryColor text-white w-full sm:w-max flex items-center space-x-2"
-                        onClick={()=>{setModalName("CardDetailsModal")}}
+                        onClick={()=>{openModalFunc("CardDetailsModal")}}
                     >
                         <AiFillPlusCircle />
                         <span>Add Card</span>
@@ -82,7 +82,7 @@ const [modalName, setModalName] = useState("")
                         Previous
                     </button>
 
-                    <button className={`btn1  w-full md:w-48`} type="submit">
+                    <button className={`btn1  w-full md:w-48`} onClick={()=>{ openModalFunc("ProfileUpdateSuccessfulModal")}}>
                         Update
                     </button>
                 </div>

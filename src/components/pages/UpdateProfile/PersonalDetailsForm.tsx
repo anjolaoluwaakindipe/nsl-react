@@ -22,7 +22,7 @@ import {
 } from "../../../state/authSlice";
 import { AppDispatch } from "../../../state/store";
 import { PersonalDetailsFormInfo } from "../../../typings";
-import { personalDetailsFormSchema } from "../../../utils/validation/personalDetailForm";
+import { personalDetailsFormSchema } from "../../../utils/validation/updateProfile";
 import FileInput from "../../shared/Inputs/FileInput";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 
@@ -82,8 +82,7 @@ function PersonalDetailsForm() {
     // loading button control
     const [isButtonLoading, setButtonLoading] = useState(false);
 
-    // toast Id
-    const toastId = "updateProfile";
+    const navigateToUpdateEmploymentDetail = () =>{}
 
     const {
         register,
@@ -260,32 +259,28 @@ function PersonalDetailsForm() {
 
                 {/* Phone Number */}
                 <div className="md:col-span-6 col-span-12 ">
-                    <div className="border-0 border-b-2  border-underlineColor">
-                        <Controller
-                            name="phoneNumber"
-                            control={control}
-                            rules={{
-                                validate: (value) =>
-                                    isValidPhoneNumber(value || "") ||
-                                    "Not a valid International Number",
-                            }}
-                            render={({ field: { onChange, value } }) => (
-                                <div>
-                                    <PhoneField
-                                        placeholder="Phone Number"
-                                        phoneElementClassName="pb-4 space-x-4 max-h-10"
-                                        onChange={onChange}
-                                        value={value}
-                                        readOnly={true}
-                                        style={{ borderRadius: "0px" }}
-                                    />
-                                </div>
-                            )}
-                        />
-                    </div>
-                    <p className="text-xs text-red-900 ">
-                        {errors.phoneNumber?.message}
-                    </p>
+                    <Controller
+                        name="phoneNumber"
+                        control={control}
+                        rules={{
+                            validate: (value) =>
+                                isValidPhoneNumber(value || "") ||
+                                "Not a valid International Number",
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                            <div>
+                                <PhoneField
+                                    placeholder="Phone Number"
+                                    phoneElementClassName="pb-4 space-x-4 max-h-10"
+                                    onChange={onChange}
+                                    value={value}
+                                    readOnly={true}
+                                    style={{ borderRadius: "0px" }}
+                                    errorMessage={errors.phoneNumber?.message}
+                                />
+                            </div>
+                        )}
+                    />
                 </div>
 
 

@@ -5,7 +5,7 @@ import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import { joiResolver } from '@hookform/resolvers/joi';
-import { personalDetailsFormSchema } from '../../../utils/validation/personalDetailForm';
+import { personalDetailsFormSchema } from '../../../utils/validation/updateProfile';
 
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 
@@ -42,7 +42,7 @@ function EditPersonalDetailsForm() {
             autoSave="off"
             autoComplete="off"
         >
-            {/*firstname */}
+            {/*Title */}
             <div className=" col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
                     placeholder="title"
