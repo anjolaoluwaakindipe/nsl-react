@@ -2,7 +2,7 @@ import { authSelector } from "../../../../state/authSlice";
 import { useSelector } from "react-redux";
 import FloatingPlaceholderTextField from "../../Inputs/TextFields/FloatingPlaceholderTextField";
 import SingleTextField from "../../Inputs/TextFields/SingleTextField";
-import CreditCardInput from 'react-credit-card-input';
+import creditCardType from "credit-card-type";
 
 function CardDetailsModal(prop: { cancelModal: () => void }) {
     const { errorMessage } = useSelector(authSelector);
@@ -18,13 +18,30 @@ function CardDetailsModal(prop: { cancelModal: () => void }) {
             </h3>
 
             {/*Accounnt Number*/}
-            <CreditCardInput
-  cardNumberInputProps={{ value: cardNumber, onChange: this.handleCardNumberChange }}
-  cardExpiryInputProps={{ value: expiry, onChange: this.handleCardExpiryChange }}
-  cardCVCInputProps={{ value: cvc, onChange: this.handleCardCVCChange }}
-  fieldClassName="input"
+            <div className=" cols-span-12">
+                <div className="w-full">
+                    <div className="rounded-sm">
+                    <input
+                        type="number"
+                        max={10}
+                        className="text-sm text-white  "
+                        placeholder="XX-XXX-XXX-XX"
+                    ></input>
+                    </div>
+                </div> 
+            </div>
+
+            <div className=" col-span-12 ">
+                <FloatingPlaceholderTextField
+                    placeholder="BVN"
+                    type="text"
+                    
+                    registerName="BVN"
+                    id="EditProfileDetails__bvn"
 />
             </div>
+
+
         </div>
 
     );
