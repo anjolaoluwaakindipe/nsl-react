@@ -5,9 +5,16 @@ import { AppDispatch } from '../../state/store';
 export const useModal = (modalName:string, isCancellable:boolean = true)=>{
     const dispatch = useDispatch<AppDispatch>();
 
-    const openModalFunc = () =>{
-        dispatch(openModal())
-        dispatch(setModalName(modalName));
+    const openModalFunc = (newModalName?:string) =>{
+        if(newModalName){
+
+                dispatch(setModalName(newModalName));
+                dispatch(openModal());
+        }else{
+            dispatch(setModalName(modalName));
+            dispatch(openModal());
+        }
+        
         dispatch(makeUnCancellable({ cancellable: isCancellable }));
     }
 

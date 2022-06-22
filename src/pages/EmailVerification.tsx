@@ -1,6 +1,6 @@
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from 'react';
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
@@ -73,16 +73,17 @@ function EmailVerification() {
             navigate(paths.CREATE_ACCOUNT, { replace: true });
         }
     }, [email, firstName, password, phoneNumber]); // eslint-disable-line
-
+    const timerRef = useRef<NodeJS.Timeout | undefined>(undefined)
     useEffect(() => {
+        
         setIsButtonDisable(true);
         if (inputedEmailCode.length === 4 && inputedEmailCode === emailCode) {
-            toast.dismiss(toastId);
+            clearTimeout(timerRef.current!)
             toast.loading("Verifying Code...", {
                 id: toastId,
                 position: "top-right",
             });
-            setTimeout(() => {
+            timerRef.current = setTimeout(() => {
                 toast.success("Email verification code correct", {
                     position: "top-right",
                     id: toastId,
@@ -97,12 +98,12 @@ function EmailVerification() {
         }
 
         if (inputedEmailCode.length === 4 && inputedEmailCode !== emailCode) {
-            toast.dismiss(toastId);
+            clearTimeout(timerRef.current!)
             toast.loading("Verifying Code...", {
                 id: toastId,
                 position: "top-right",
             });
-            setTimeout(() => {
+            timerRef.current = setTimeout(() => {
                 toast.error("Code not correct", {
                     position: "top-right",
                     id: toastId,

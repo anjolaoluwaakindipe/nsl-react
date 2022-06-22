@@ -20,6 +20,7 @@ import CardInput from "./CardInput";
 import{ useModal }from "../../../services/customHooks/useModal";
 import { paths } from "../../../utils/constants/allPaths";
 import { useNavigate } from "react-router-dom";
+import CurrencyInputField from "../../shared/Inputs/TextFields/CurrencyInputField";
 
 
 
@@ -107,8 +108,8 @@ function Form1({
                 autoSave="off"
                 autoCorrect="off"
             >
-                <div>
-                    {/*amount*/}
+                {/*amount*/}
+                {/* <div>
                     <div className=" border-0 border-b-2 border-underlineColor flex  space-x-3 items-end">
                         <h1 className="pb-4 ">N</h1>
                         <label htmlFor="amount"></label>
@@ -124,7 +125,13 @@ function Form1({
                             {errors?.amount?.message}
                         </p>
                     }
-                </div>
+                </div> */}
+                <CurrencyInputField
+                    register={register("amount")}
+                    id={"loanApplicatonAmount"}
+                    placeholder="Amount"
+                    errorMessage={errors?.amount?.message}
+                />
                 {/*tenor*/}
                 <div>
                     <div className="  ">
@@ -207,11 +214,7 @@ function Form1({
                     />
                 </div>
 
-                <button className={`w-full md:w-1/2 btn1 `}
-                 type="submit"
-                 
-                
-                 >
+                <button className={`w-full md:w-1/2 btn1 `} type="submit">
                     Proceed
                 </button>
             </form>

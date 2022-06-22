@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import PhoneField from "../../shared/TextFields/PhoneField";
-import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
+import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 
 function EditEmploymentDetailsForm() {
     const { register, formState, handleSubmit, control } = useForm({

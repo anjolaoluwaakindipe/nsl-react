@@ -7,7 +7,7 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import { paths } from "../../../utils/constants/allPaths";
 import { BASE_URL } from "../../../services/requests/authSettings";
 import { useModal } from '../../../services/customHooks/useModal';
-import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 
 function AccountDetailsForm() {
     const navigate = useNavigate();

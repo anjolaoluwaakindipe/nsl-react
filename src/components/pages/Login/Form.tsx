@@ -12,7 +12,7 @@ import { authSelector, loginUser } from "../../../state/authSlice";
 import { AppDispatch } from "../../../state/store";
 import { useEffect, useState } from "react";
 import { makeUnCancellable, setModalName } from "../../../state/modalSlice";
-import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 
 function Form() {
     const { isError, isLoading, errorMessage, isSuccess } =
@@ -89,19 +89,12 @@ function Form() {
                 <div>
                     <FloatingPlaceholderTextField
                     placeholder="Password"
-                    type= "text"
+                    type= "password"
                     register={register("password")}
                     registerName='Password'
                     errorMessage={errors.password?.message}
                     />
                 </div>
-
-
-
-
-
-
-
 
 
                 <div>

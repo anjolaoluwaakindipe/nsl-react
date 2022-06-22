@@ -117,7 +117,7 @@ console.log(data);
                           : "Original/certified copy of the latest salary slips for the past 3 months"}
 
                       <AiOutlineCloudUpload
-                          className="text-2xl min-w-max ml-12 md: ml-4"
+                          className="text-2xl min-w-max  md: ml-4"
                           strokeWidth={50}
                       />
                   </label>

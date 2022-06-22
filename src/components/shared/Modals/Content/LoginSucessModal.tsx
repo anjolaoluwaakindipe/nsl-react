@@ -1,14 +1,13 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { paths } from "../../../../utils/constants/allPaths";
 
 function LoginSuccessModal(prop: { cancelModal: () => void }) {
     const navigate = useNavigate();
-    const onProceed = () =>{
-        
-        prop.cancelModal()
-        navigate(paths.USER_DASHBOARD, {replace:true})
-    }
+    const onProceed = () => {
+        prop.cancelModal();
+        navigate(paths.WELCOME, { replace: true });
+    };
     return (
         <div className=" m-10 md:w-96 h-auto bg-white p-10 rounded-xl">
             <img

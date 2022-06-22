@@ -1,33 +1,68 @@
-import React from "react";
-
 // custom components
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import Progress from "./Progress";
-import FloatingPlaceholderTextField from "../../shared/TextFields/FloatingPlaceholderTextField";
 
 // form imports
+import { Controller, useForm } from "react-hook-form";
+import { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { useForm, Controller } from "react-hook-form";
-import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 
 // react-icons
-import { AiOutlineCloudUpload } from "react-icons/ai";
 
-// react-router
-import { useNavigate } from "react-router-dom";
-import { PersonalDetailsFormInfo } from "../../../typings";
+
 import { joiResolver } from "@hookform/resolvers/joi";
-import { personalDetailsFormSchema } from "../../../utils/validation/personalDetailForm";
-import PhoneField from "../../shared/TextFields/PhoneField";
-
+import { useEffect, useState } from "react";
+import Dropdown from "react-dropdown";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+    authSelector,
+    updateUserPersonalDetailsFull,
+} from "../../../state/authSlice";
+import { AppDispatch } from "../../../state/store";
+import { PersonalDetailsFormInfo } from "../../../typings";
+import { personalDetailsFormSchema } from "../../../utils/validation/updateProfile";
+import FileInput from "../../shared/Inputs/FileInput";
+import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
+import { paths } from "../../../utils/constants/allPaths";
 
 function PersonalDetailsForm() {
+    // redux auth state
+    const {
+        email,
+        firstName,
+        lastName,
+        middleName: otherName,
+        phoneNumber,
+        gender,
+        dateOfBirth,
+        bvn,
+        maritalStatus,
+        title,
+        residentialAddress,
+        cscsNumber,
+        picture,
+        identificationDocumentImage,
+        proofOfAddressImage,
+        identificationDocExpiryDate,
+        identificationDocRef,
+        identificationDocType,
+        identificationIssueDate,
+    } = useSelector(authSelector).user!;
 
+
+    // react redux variables
+    const dispatch = useDispatch<AppDispatch>();
+
+    // Gender options
     const genderDropdownOptions = [
         { value: "M", label: "Male" },
         { value: "F", label: "Female" },
     ];
 
+    // marital status options
     const maritalStatusDropdownOptions = [
         { value: "Single", label: "Single" },
         { value: "Married", label: "Married" },
@@ -36,23 +71,60 @@ function PersonalDetailsForm() {
         { value: "Remarried", label: "Remarried" },
     ];
 
+    // raact-router variables
     const navigate = useNavigate();
+
+    // loading button control
+    const [isButtonLoading, setButtonLoading] = useState(false);
+
+    const navigateToUpdateEmploymentDetail = () => {
+        navigate(
+            paths.UPDATE_PROFILE.base + paths.UPDATE_PROFILE.EMPLOYMENT_DETAILS
+        );
+    };
 
     const {
         register,
         control,
         watch,
         handleSubmit,
+        setValue,
         getValues,
         formState: { errors },
     } = useForm<PersonalDetailsFormInfo>({
         resolver: joiResolver(personalDetailsFormSchema),
+        mode: "onChange",
     });
 
-    const onSubmitForm = handleSubmit((data) => {
-        navigate("/update-profile/employment-details");
+    const onSubmitForm = handleSubmit(async (data) => {
+        setButtonLoading(true);
+        await dispatch(
+            updateUserPersonalDetailsFull({
+                firstName: data.firstName,
+                lastName: data.lastName,
+                title: data.title,
+                phoneNumber: data.phoneNumber,
+                email: data.emailAddress,
+                bvn: data.bvn,
+                maritalStatus: data.maritalStatus.value,
+                gender: data.gender.value,
+                middleName: data.middleName,
+                dateOfBirth: data.dateOfBirth.includes("T")
+                    ? data.dateOfBirth.split("T")[0]
+                    : data.dateOfBirth,
+                cscsNumber: data.cscsNumber,
+                residentialAddress: data.residentialAddress,
+                picture: data.picture,
+                cb: navigateToUpdateEmploymentDetail,
+            })
+        );
+        // navigate("/update-profile/employment-details");
+
+        setButtonLoading(false);
     });
 
+    //
+    // watch variables from react-hook-form
     const watchPictureUpload = watch("picture");
     const watchGender = watch("gender");
     const watchMaritalStatus = watch("maritalStatus");
@@ -60,8 +132,61 @@ function PersonalDetailsForm() {
     const watchproofOfResidence = watch("proofOfResidence");
     const watchSalarySlips = watch("salarySlips");
 
-    console.log(errors);
     console.log(getValues());
+
+    useEffect(() => {
+        if (email) {
+            setValue("emailAddress", email);
+        }
+        if (phoneNumber) {
+            setValue("phoneNumber", phoneNumber);
+        }
+        if (otherName) {
+            setValue("middleName", otherName);
+        }
+        if (firstName) {
+            setValue("firstName", firstName);
+        }
+        if (lastName) {
+            setValue("lastName", lastName);
+        }
+        if (gender) {
+            if (gender.toLowerCase() === "m") {
+                setValue("gender", { label: "Male", value: "M" });
+            }
+            if (gender.toLowerCase() === "f") {
+                setValue("gender", { label: "Female", value: "F" });
+            }
+        }
+        if (dateOfBirth) {
+            setValue("dateOfBirth", dateOfBirth);
+        }
+        if (bvn) {
+            setValue("bvn", bvn);
+        }
+        if (maritalStatus) {
+            const currentMaritalStatus = maritalStatusDropdownOptions.filter(
+                (option) => option.value === maritalStatus
+            );
+            if (currentMaritalStatus.length === 0) return;
+            setValue("maritalStatus", currentMaritalStatus[0]);
+        }
+        if (title) {
+            setValue("title", title);
+        }
+        if (residentialAddress) {
+            setValue("residentialAddress", residentialAddress);
+        }
+        if (cscsNumber) {
+            setValue("cscsNumber", cscsNumber);
+        }
+        if (picture) {
+            setValue("picture", picture);
+        }
+        if (identificationDocumentImage) {
+            setValue("proofOfIdentification", identificationDocumentImage);
+        }
+    }, [email, phoneNumber, name, gender, otherName, dateOfBirth, bvn, title, identificationDocumentImage]); // eslint-disable-line
 
     return (
         <div>
@@ -76,31 +201,66 @@ function PersonalDetailsForm() {
                 autoComplete="off"
                 autoSave="off"
             >
-
                 {/*firstname */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
-                        placeholder="FirstName"
+                        placeholder="Title"
                         type="text"
-                        register={register("fullname")}
-                        registerName='FirstName'
-                        id="UpdateProfile__FirstName"
-                        errorMessage={errors.fullname?.message}
+                        register={register("title")}
+                        registerName="title"
+                        id="UpdateProfileDetails__title"
+                        errorMessage={errors.title?.message}
                     />
                 </div>
-
-                {/*Lastname */}
+                {/* Full Name */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
-                        placeholder="LastName"
+                        placeholder="First Name"
                         type="text"
-                        register={register("fullname")}
-                        registerName='FirstName'
-                        id="UpdateProfile__LastName"
-                        errorMessage={errors.fullname?.message}
+                        register={register("firstName")}
+                        registerName="firstName"
+                        id="UpdateProfileDetails__firstName"
+                        errorMessage={errors.firstName?.message}
+                    />
+                </div>
+              
+                {/* Full Name */}
+                <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="Last Name"
+                        type="text"
+                        register={register("lastName")}
+                        registerName="lastName"
+                        id="UpdateProfileDetails__lastName"
+                        errorMessage={errors.lastName?.message}
+                    />
+                </div>
+                {/* Full Name */}
+
+                <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="Middle Name"
+                        type="text"
+                        register={register("middleName")}
+                        registerName="middleName"
+                        id="UpdateProfileDetails__middleName"
+                        errorMessage={errors.middleName?.message}
                     />
                 </div>
 
+
+                {/* Email Address */}
+                <div className=" col-span-12 md:col-span-6">
+                    <FloatingPlaceholderTextField
+                        placeholder="Email Address"
+                        type="text"
+                        register={register("emailAddress")}
+                        registerName="emailAddress"
+                        readOnly={true}
+                        id="UpdateProfileDetails__emailAddress"
+                        errorMessage={errors.emailAddress?.message}
+                    />
+                </div>
 
 
                 {/*email address */}
@@ -110,39 +270,66 @@ function PersonalDetailsForm() {
                         type="text"
                         id="UpdateProfile__emailAddress"
                         register={register("emailAddress")}
-                        registerName='Email Address'
+                        registerName="Email Address"
                         errorMessage={errors.emailAddress?.message}
                     />
                 </div>
 
                 {/* Phone Number */}
                 <div className="md:col-span-6 col-span-12 ">
-                    <div className="border-0 border-b-2  border-underlineColor">
+                    <Controller
+                        name="phoneNumber"
+                        control={control}
+                        rules={{
+                            validate: (value) =>
+                                isValidPhoneNumber(value || "") ||
+                                "Not a valid International Number",
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                            <div>
+                                <PhoneField
+                                    placeholder="Phone Number"
+                                    phoneElementClassName="pb-4 space-x-4 max-h-10"
+                                    onChange={onChange}
+                                    value={value}
+                                    readOnly={true}
+                                    style={{ borderRadius: "0px" }}
+                                    errorMessage={errors.phoneNumber?.message}
+                                />
+                            </div>
+                        )}
+                    />
+                </div>
+
+                {/* Gender */}
+                <div className="col-span-12 md:col-span-6">
+                    <div className=" border-0 border-b-2  border-underlineColor   ">
                         <Controller
-                            name="phoneNumber"
+                            name="gender"
                             control={control}
-                            rules={{
-                                validate: (value) =>
-                                    isValidPhoneNumber(value || "") ||
-                                    "Not a valid International Number",
-                            }}
                             render={({ field: { onChange, value } }) => (
-                                <div>
-                                    <PhoneField
-                                        placeholder="Phone Number"
-                                        phoneElementClassName="pb-4 space-x-4 max-h-10"
-                                        onChange={onChange}
-                                        value={value}
-                                        style={{ borderRadius: "0px" }}
-                                    />
-                                </div>
+                                <Dropdown
+                                    options={genderDropdownOptions}
+                                    onChange={onChange}
+                                    arrowClosed={<IoMdArrowDropdown />}
+                                    arrowOpen={<IoMdArrowDropup />}
+                                    value={value}
+                                    placeholder="Gender"
+                                    className="relative"
+                                    placeholderClassName={
+                                        watchMaritalStatus
+                                            ? "text-black"
+                                            : "text-gray-400"
+                                    }
+                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
+                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3 z-10"
+                                />
                             )}
                         />
+
+                        <label htmlFor="tenor"></label>
                     </div>
-                    <p className="text-xs text-red-900 ">
-                        {errors.phoneNumber?.message}
-                    </p>
-                </div>
+
 
                 {/* Gender */}
                 <div className="col-span-12 md:col-span-6">
@@ -157,6 +344,7 @@ function PersonalDetailsForm() {
                             />
                         )}
                     />
+
                 </div>
 
                 {/* Date of Birth */}
@@ -186,6 +374,7 @@ function PersonalDetailsForm() {
 
                 {/*Marital Status*/}
                 <div className="col-span-12 md:col-span-6">
+
                     <Controller
                         name="maritalStatus"
                         control={control}
@@ -200,16 +389,34 @@ function PersonalDetailsForm() {
                 </div>
 
                 {/*CSCS account number*/}
+
+                   
+
+                {/* CSCS Number */}
+
                 <div className=" col-span-12 ">
                     <FloatingPlaceholderTextField
                         placeholder="CSCS Number"
                         type="text"
                         register={register("cscsNumber")}
-                        registerName='CSCS Number'
-                        id="UpdateProfile__cscsNumber"
+                        registerName="cscsNumber"
+                        id="UpdateProfileDetails__cscsNumber"
                         errorMessage={errors.cscsNumber?.message}
                     />
                 </div>
+
+                {/*bvn*/}
+                <div className=" col-span-12 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="BVN"
+                        type="text"
+                        register={register("bvn")}
+                        registerName="BVN"
+                        id="UpdateProfileDetails__bvn"
+                        errorMessage={errors.bvn?.message}
+                    />
+                </div>
+
 
                 {/* Residential Area */}
                 <div className="col-span-12">
@@ -234,135 +441,78 @@ function PersonalDetailsForm() {
 
                 {/* Profile Picture */}
                 <div className="col-span-12">
-                    <div className=" border-0 border-b-2 border-underlineColor">
-                        <label
-                            htmlFor="UpdateProfile__picture"
-                            className={
-                                "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
-                            }
-                        >
-                            {watchPictureUpload &&
-                                watchPictureUpload?.length > 0
-                                ? "Upload Picture (" +
-                                watchPictureUpload.item(0)?.name +
-                                ")"
-                                : "Upload Picture"}
-                            <AiOutlineCloudUpload
-                                className="text-2xl"
-                                strokeWidth={50}
+                    <Controller
+                        control={control}
+                        name="picture"
+                        render={({ field: { onChange, value } }) => (
+                            <FileInput
+                                id="picture"
+                                onChange={onChange}
+                                value={value}
+                                errorMessage={errors.picture?.message}
+                                placeholder={"Upload Picture"}
                             />
-                        </label>
-                        <input
-                            type="file"
-                            {...register("picture", {
-                                validate: (value) => 5 < 3 || "hello",
-                            })}
-                            id="UpdateProfile__picture"
-                            className="outline-none pb-4 hidden"
-                            accept=".jpg,.png"
-                        />
-                    </div>
-                    {
-                        <p className="text-xs text-red-900 ">
-                            {errors.picture?.message}
-                        </p>
-                    }
+                        )}
+                    />
                 </div>
 
                 <div className="col-span-12">
-                    <div className=" border-0 border-b-2 border-underlineColor">
-                        <label
-                            htmlFor="LoanApplication__proofOfIdentification"
-                            className={
-                                "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
-                            }
-                        >
-                            {watchproofOfIdentification &&
-                                watchproofOfIdentification?.length > 0
-                                ? "Proof of Identification (" +
-                                watchproofOfIdentification.item(0)?.name +
-                                ")"
-                                : "Proof of Identification"}
-
-                            <AiOutlineCloudUpload
-                                className="text-2xl"
-                                strokeWidth={50}
+                    <Controller
+                        control={control}
+                        name="proofOfIdentification"
+                        render={({ field: { onChange, value } }) => (
+                            <FileInput
+                                id="proofOfIdentification"
+                                onChange={onChange}
+                                value={value}
+                                errorMessage={
+                                    errors.proofOfIdentification?.message
+                                }
+                                placeholder={"Proof of Identification"}
                             />
-                        </label>
-                        <input
-                            type="file"
-                            {...register("proofOfIdentification")}
-                            id="LoanApplication__proofOfIdentification"
-                            className="outline-none pb-4 hidden"
-                            accept=".pdf"
-                        />
-                    </div>
-                    {<p className="text-xs text-red-900 ">{""}</p>}
+                        )}
+                    />
                 </div>
-                <div className="col-span-12">
-                    <div className=" border-0 border-b-2 border-underlineColor">
-                        <label
-                            htmlFor="LoanApplication__proofOfResidence"
-                            className={
-                                "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
-                            }
-                        >
-                            {watchproofOfResidence &&
-                                watchproofOfResidence?.length > 0
-                                ? "Proof of Residence (" +
-                                watchproofOfResidence.item(0)?.name +
-                                ")"
-                                : "Proof of Residence"}
 
-                            <AiOutlineCloudUpload
-                                className="text-2xl"
-                                strokeWidth={50}
+                <div className="col-span-12">
+                    <Controller
+                        control={control}
+                        name="proofOfResidence"
+                        render={({ field: { onChange, value } }) => (
+                            <FileInput
+                                id="proofOfResidence"
+                                onChange={onChange}
+                                value={value}
+                                errorMessage={errors.proofOfResidence?.message}
+                                placeholder={"Proof of Residence"}
                             />
-                        </label>
-                        <input
-                            type="file"
-                            {...register("proofOfResidence")}
-                            id="LoanApplication__proofOfResidence"
-                            className="outline-none pb-4 hidden"
-                            accept=".pdf"
-                        />
-                    </div>
-                    {<p className="text-xs text-red-900 ">{""}</p>}
+                        )}
+                    />
                 </div>
-                <div className="col-span-12">
-                    <div className=" border-0 border-b-2 border-underlineColor">
-                        <label
-                            htmlFor="LoanApplication__salarySlips"
-                            className={
-                                "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
-                            }
-                        >
-                            {watchSalarySlips && watchSalarySlips?.length > 0
-                                ? "Original/certified copy of the latest salary slips for the past 3 months (" +
-                                watchSalarySlips.item(0)?.name +
-                                ")"
-                                : "Original/certified copy of the latest salary slips for the past 3 months"}
 
-                            <AiOutlineCloudUpload
-                                className="text-2xl"
-                                strokeWidth={50}
+                <div className="col-span-12">
+                    <Controller
+                        control={control}
+                        name="salarySlips"
+                        render={({ field: { onChange, value } }) => (
+                            <FileInput
+                                id="salarySlips"
+                                onChange={onChange}
+                                value={value}
+                                errorMessage={errors.salarySlips?.message}
+                                placeholder={
+                                    "Original/certified copy of the latest salary slips for the past 3 months"
+                                }
                             />
-                        </label>
-                        <input
-                            type="file"
-                            {...register("salarySlips")}
-                            id="LoanApplication__salarySlips"
-                            className="outline-none pb-4 hidden"
-                            accept=".pdf"
-                        />
-                    </div>
-                    {<p className="text-xs text-red-900 ">{""}</p>}
+                        )}
+                    />
                 </div>
 
                 <div className="col-span-12">
                     <button
                         className={`btn1  float-right w-full md:w-48`}
                         type="submit"
+                        disabled={isButtonLoading}
                     >
                         Next
                     </button>
