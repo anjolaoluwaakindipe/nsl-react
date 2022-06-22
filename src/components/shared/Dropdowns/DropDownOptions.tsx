@@ -2,57 +2,55 @@ import { UseFormRegisterReturn } from "react-hook-form";
 import Dropdown, { Group, Option } from "react-dropdown";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { Controller, useForm } from "react-hook-form";
-
+import { useState, useEffect } from "react";
 
 type DropDownOptionsProps = {
     placeholder: string;
     errorMessage?: string;
-    options: (string | Option | Group)[];
+    options: (string | Option | Group | {label:string, value:string})[];
     onChange?: (...event: any[]) => void;
     value?: Option | undefined;
 };
 
-
-
 function DropDownOptions(props: DropDownOptionsProps) {
-    const genderDropdownOptions = [
-        { value: "M", label: "Male" },
-        { value: "F", label: "Female" },
-    ];
+    const [options, setOptions] = useState<(string | Option | Group)[]>([]);
+    const [value, setValue] = useState<Option | undefined>(undefined);
 
-    const maritalStatusDropdownOptions = [
-        { value: "Single", label: "Single" },
-        { value: "Married", label: "Married" },
-        { value: "Divorce", label: "Divorce" },
-        { value: "Widow", label: "Widow" },
-        { value: "Remarried", label: "Remarried" },
-    ];
-    const {
+    useEffect(()=>{
+        if(props.options!){
+            setOptions(props.options)
+        }
+    }, [props.options])
 
-        watch,
-        formState: { errors },
-    } = useForm();
-    const watchGender = watch("gender");
+    const handleChange = (e: any) => {
+        setValue(e);
+        props.onChange!(e);
+    };
+
+    useEffect(() => {
+        if (props.value!) {
+            setValue(props.value);
+        }
+    }, [props.value]); //eslint-disable-line
+
+
     return (
         <div>
-            <div className=" border-0 border-b-2  border-underlineColor   ">
-
+            <div className=" border-0 border-b-2  border-underlineColor relative floating-placeholder  ">
                 <Dropdown
-                    options={props.options}
-                    onChange={props.onChange}
+                    options={options}
+                    onChange={handleChange}
                     arrowClosed={<IoMdArrowDropdown />}
                     arrowOpen={<IoMdArrowDropup />}
                     value={
-                        props.value &&
-                            props.value?.label! === "" &&
-                            props.value?.value! === ""
+                        value && value?.label! === "" && value?.value! === ""
                             ? undefined
-                            : props.value
+                            : value
                     }
-                    placeholder={props.placeholder}
+                    
                     className="relative"
                     placeholderClassName={
-                        watchGender && watchGender.value !== ""
+                        value && value.value !== ""
                             ? "text-black"
                             : "text-gray-400"
                     }
@@ -60,25 +58,20 @@ function DropDownOptions(props: DropDownOptionsProps) {
                     menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3 z-10"
                 />
 
-
-
-                <label htmlFor="gender"></label>
+                <label
+                    htmlFor="gender"
+                    className={`absolute bottom-[15px] left-14 origin-left cursor-pointer text-gray-400 pointer-events-none transition-all delay-200 ease-in-out
+                        ${value ? "-translate-y-8  scale-75" : ""}`}
+                >
+                    {props.placeholder}
+                </label>
             </div>
 
-            {
-                <p className="text-xs text-red-900 ">
-                    {props.errorMessage}
-                </p>
-            }
+            {<p className="text-xs text-red-900 ">{props.errorMessage}</p>}
         </div>
-    )
-};
-
-
-
-
+    );
+}
 
 export default DropDownOptions;
-
 
 // {errors?.gender?.value.message}
