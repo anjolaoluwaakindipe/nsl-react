@@ -32,7 +32,7 @@ function EditPersonalDetailsForm() {
         formState: { errors },
     } = useForm({resolver: joiResolver(personalDetailsFormSchema)});
 
- 
+
 
     const watchGender = watch("gender");
     const watchMaritalStatus = watch("maritalStatus");
