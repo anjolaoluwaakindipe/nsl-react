@@ -26,6 +26,7 @@ import FileInput from "../../shared/Inputs/FileInput";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 import { paths } from "../../../utils/constants/allPaths";
+import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
 
 function PersonalDetailsForm() {
     // redux auth state
@@ -300,36 +301,6 @@ function PersonalDetailsForm() {
                 </div>
 
                 {/* Gender */}
-                {/* <div className="col-span-12 md:col-span-6">
-                    <div className=" border-0 border-b-2  border-underlineColor   ">
-                        <Controller
-                            name="gender"
-                            control={control}
-                            render={({ field: { onChange, value } }) => (
-                                <Dropdown
-                                    options={genderDropdownOptions}
-                                    onChange={onChange}
-                                    arrowClosed={<IoMdArrowDropdown />}
-                                    arrowOpen={<IoMdArrowDropup />}
-                                    value={value}
-                                    placeholder="Gender"
-                                    className="relative"
-                                    placeholderClassName={
-                                        watchMaritalStatus
-                                            ? "text-black"
-                                            : "text-gray-400"
-                                    }
-                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
-                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3 z-10"
-                                />
-                            )}
-                        />
-
-                        <label htmlFor="tenor"></label>
-                    </div>
-                </div>
- */}
-                {/* Gender */}
                 <div className="col-span-12 md:col-span-6">
                     <Controller
                         name="gender"
@@ -348,27 +319,12 @@ function PersonalDetailsForm() {
 
                 {/* Date of Birth */}
                 <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor ">
-                        <label htmlFor="UpdateProfile_dateOfBirth"> </label>
-                        <input
-                            type="text"
-                            {...register("dateOfBirth")}
-                            id="UpdateProfile__dateOfBirth"
-                            className="outline-none pb-4  w-full cursor-pointer"
-                            placeholder="Date of Birth"
-                            onFocus={(e) => {
-                                e.target.type = "date";
-                            }}
-                            onBlur={(e) => {
-                                e.target.type = "";
-                            }}
-                        />
-                    </div>
-                    {errors.dateOfBirth && (
-                        <p className="text-xs text-red-900 ">
-                            {errors.dateOfBirth?.message}
-                        </p>
-                    )}
+                    <DateInputField
+                        register={register("dateOfBirth")}
+                        errorMessage={errors.dateOfBirth?.message}
+                        placeholder="Date of Birth"
+                        id="dateOfBirth"
+                    />
                 </div>
 
                 {/*Marital Status*/}
