@@ -159,7 +159,6 @@ function EmploymentDetailsForm() {
                         type="text"
                         register={register("natureOfBusiness")}
                         id="UpdateProfile__natureOfBusiness"
-                        errorMessage={errors.natureOfBusiness?.message}
                     />
                 </div>
 
