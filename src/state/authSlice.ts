@@ -302,8 +302,9 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
                 });
 
             if (updateUserPersonalDetailsResponse.status === 200) {
-                cb!();
-                return thunkApi.dispatch<unknown, any>(getUserFull());
+                
+                thunkApi.dispatch<unknown, any>(getUserFull());
+                return ({cb})
             } else if (
                 updateUserPersonalDetailsResponse.code === "ECONNABORTED"
             ) {
@@ -370,8 +371,9 @@ export const updateUserEmploymentDetailsFull = createAsyncThunk(
                 });
 
             if (updateUserPersonalDetailsResponse.status === 200) {
-                cb!();
-                return thunkApi.dispatch<unknown, any>(getUserFull());
+                
+                thunkApi.dispatch<unknown, any>(getUserFull());
+                return({cb})
             } else if (
                 updateUserPersonalDetailsResponse.code === "ECONNABORTED"
             ) {
@@ -739,13 +741,13 @@ const authSlice = createSlice({
                 state.user!.bvn = allUserInformation.bvn;
                 state.user!.cscsNumber = allUserInformation.memberShipNo!;
                 state.user!.residentialAddress = allUserInformation.address!;
-                state.user!.identificationDocType = "";
-                state.user!.identificationDocRef = "";
-                state.user!.identificationIssueDate = "";
-                state.user!.identificationDocExpiryDate = "";
-                state.user!.identificationDocumentImage = "";
-                state.user!.proofOfAddressImage = "";
-                state.user!.picture = "";
+                state.user!.identificationDocType = allUserInformation.kycdocs[0].documentType;
+                state.user!.identificationDocRef = allUserInformation.kycdocs[0].documentReference;
+                state.user!.identificationIssueDate = allUserInformation.kycdocs[0].documentIssueDate;
+                state.user!.identificationDocExpiryDate = allUserInformation.kycdocs[0].documentExpiryDate;
+                state.user!.identificationDocumentImage = allUserInformation.kycdocs[0].documentImage;
+                state.user!.proofOfAddressImage = allUserInformation.kycdocs[1].documentImage;
+                state.user!.picture = allUserInformation.kycdocs[2].documentImage;
 
                 // employmentInformation
                 state.user!.employmentInfo.companyAddress =
@@ -790,6 +792,7 @@ const authSlice = createSlice({
                         id: updateUserPersonalDetailsFull.name,
                         position: "top-right",
                     });
+                    action.payload.cb!();
                 }
             )
             .addCase(updateUserPersonalDetailsFull.pending, (state, action) => {
@@ -829,6 +832,7 @@ const authSlice = createSlice({
                             position: "top-right",
                         }
                     );
+                    action.payload.cb!();
                 }
             )
             .addCase(
