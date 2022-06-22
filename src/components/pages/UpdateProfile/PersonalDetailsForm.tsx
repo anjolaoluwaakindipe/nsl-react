@@ -9,7 +9,7 @@ import "react-phone-number-input/style.css";
 
 // react-icons
 
-// react-router
+
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
@@ -25,8 +25,7 @@ import { PersonalDetailsFormInfo } from "../../../typings";
 import { personalDetailsFormSchema } from "../../../utils/validation/updateProfile";
 import FileInput from "../../shared/Inputs/FileInput";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
-
-import Drop from "../../shared/Dropdowns/DropOptions";
+import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 import { paths } from "../../../utils/constants/allPaths";
 
 function PersonalDetailsForm() {
@@ -52,6 +51,7 @@ function PersonalDetailsForm() {
         identificationDocType,
         identificationIssueDate,
     } = useSelector(authSelector).user!;
+
 
     // react redux variables
     const dispatch = useDispatch<AppDispatch>();
@@ -223,6 +223,7 @@ function PersonalDetailsForm() {
                         errorMessage={errors.firstName?.message}
                     />
                 </div>
+              
                 {/* Full Name */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
@@ -235,6 +236,7 @@ function PersonalDetailsForm() {
                     />
                 </div>
                 {/* Full Name */}
+
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="Middle Name"
@@ -245,6 +247,7 @@ function PersonalDetailsForm() {
                         errorMessage={errors.middleName?.message}
                     />
                 </div>
+
 
                 {/* Email Address */}
                 <div className=" col-span-12 md:col-span-6">
@@ -258,6 +261,7 @@ function PersonalDetailsForm() {
                         errorMessage={errors.emailAddress?.message}
                     />
                 </div>
+
 
                 {/*email address */}
                 <div className=" col-span-12 md:col-span-6">
@@ -326,11 +330,21 @@ function PersonalDetailsForm() {
                         <label htmlFor="tenor"></label>
                     </div>
 
-                    {
-                        <p className="text-xs text-red-900 ">
-                            {errors?.gender?.message}
-                        </p>
-                    }
+
+                {/* Gender */}
+                <div className="col-span-12 md:col-span-6">
+                    <Controller
+                        name="gender"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <DropDownOptions
+                                placeholder="Gender"
+                                options={genderDropdownOptions}
+                                errorMessage={errors?.gender?.value.message}
+                            />
+                        )}
+                    />
+
                 </div>
 
                 {/* Date of Birth */}
@@ -358,43 +372,28 @@ function PersonalDetailsForm() {
                     )}
                 </div>
 
-                {/* Marital Status */}
+                {/*Marital Status*/}
                 <div className="col-span-12 md:col-span-6">
-                    <div className=" border-0 border-b-2  border-underlineColor   ">
-                        <Controller
-                            name="maritalStatus"
-                            control={control}
-                            render={({ field: { onChange, value } }) => (
-                                <Dropdown
-                                    options={maritalStatusDropdownOptions}
-                                    onChange={onChange}
-                                    arrowClosed={<IoMdArrowDropdown />}
-                                    arrowOpen={<IoMdArrowDropup />}
-                                    value={value}
-                                    placeholder="Marital Status"
-                                    className="relative"
-                                    placeholderClassName={
-                                        watchMaritalStatus
-                                            ? "text-black"
-                                            : "text-gray-400"
-                                    }
-                                    controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
-                                    menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3 z-10"
-                                />
-                            )}
-                        />
 
-                        <label htmlFor="tenor"></label>
-                    </div>
-
-                    {
-                        <p className="text-xs text-red-900 ">
-                            {errors?.maritalStatus?.message}
-                        </p>
-                    }
+                    <Controller
+                        name="maritalStatus"
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                            <DropDownOptions
+                                placeholder="Marital Status"
+                                options={maritalStatusDropdownOptions}
+                                errorMessage={errors?.maritalStatus?.value.message}
+                            />
+                        )}
+                    />
                 </div>
 
+                {/*CSCS account number*/}
+
+                   
+
                 {/* CSCS Number */}
+
                 <div className=" col-span-12 ">
                     <FloatingPlaceholderTextField
                         placeholder="CSCS Number"
@@ -417,6 +416,7 @@ function PersonalDetailsForm() {
                         errorMessage={errors.bvn?.message}
                     />
                 </div>
+
 
                 {/* Residential Area */}
                 <div className="col-span-12">

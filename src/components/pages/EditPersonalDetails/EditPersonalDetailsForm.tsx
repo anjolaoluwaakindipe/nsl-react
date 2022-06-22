@@ -7,9 +7,23 @@ import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/Floatin
 import { joiResolver } from '@hookform/resolvers/joi';
 import { personalDetailsFormSchema } from '../../../utils/validation/updateProfile';
 
-import Drop from "../../shared/Dropdowns/DropOptions";
+import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 
 function EditPersonalDetailsForm() {
+
+    const genderDropdownOptions = [
+        { value: "M", label: "Male" },
+        { value: "F", label: "Female" },
+    ];
+
+    const maritalStatusDropdownOptions = [
+        { value: "Single", label: "Single" },
+        { value: "Married", label: "Married" },
+        { value: "Divorce", label: "Divorce" },
+        { value: "Widow", label: "Widow" },
+        { value: "Remarried", label: "Remarried" },
+    ];
+
     const {
         register,
         control,
@@ -122,9 +136,19 @@ function EditPersonalDetailsForm() {
                 </p>
             </div>
 
-            {/*Gender*/}
-            <div className="col-span-12 md:col-span-6">
-                <Drop a="gender" />
+           {/* Gender */}
+           <div className="col-span-12 md:col-span-6">
+                <Controller
+                    name="gender"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <DropDownOptions
+                            placeholder="Gender"
+                            options={genderDropdownOptions}
+                            errorMessage= {errors?.gender?.value.message}
+                        />
+                    )}
+                />
             </div>
 
             {/*Date Of Birth*/}
@@ -154,38 +178,19 @@ function EditPersonalDetailsForm() {
 
             {/*Marital Status*/}
             <div className="col-span-12 md:col-span-6">
-                <div className=" border-0 border-b-2  border-underlineColor   ">
-                    <Controller
-                        name="maritalStatus"
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <Dropdown
-                                options={maritalStatusDropdownOptions}
-                                onChange={onChange}
-                                arrowClosed={<IoMdArrowDropdown />}
-                                arrowOpen={<IoMdArrowDropup />}
-                                value={value}
-                                placeholder="Marital Status"
-                                className="relative"
-                                placeholderClassName={
-                                    watchMaritalStatus
-                                        ? "text-black"
-                                        : "text-gray-400"
-                                }
-                                controlClassName="appearance-none text-gray-400 outline-none border-0 pb-4  m-0 cursor-pointer flex justify-between items-end"
-                                menuClassName="absolute  left-0 top-16 w-full bg-gray-100 max-h-36 rounded-md scrollbar scrollbar-visible space-y-2 overflow-y-scroll p-3 z-10"
-                            />
-                        )}
-                    />
 
-                    <label htmlFor="tenor"></label>
-                </div>
+                <Controller
+                    name="maritalstatus"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <DropDownOptions
+                            placeholder="Marital Status"
+                            options={maritalStatusDropdownOptions}
+                            errorMessage= {errors?.maritalstatus?.value.message}
+                        />
+                    )}
+                />
 
-                {
-                    <p className="text-xs text-red-900  ">
-                        {errors?.gender?.value?.message}
-                    </p>
-                }
             </div>
 
             {/*CSCS account number*/}

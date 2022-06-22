@@ -27,9 +27,15 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatterns";
 import { CreateAccountFormData } from "../../../typings";
 
-import Drop from "../../shared/Dropdowns/DropOptions";
+import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 
 function Form() {
+
+    const genderDropdownOptions = [
+        { value: "M", label: "Male" },
+        { value: "F", label: "Female" },
+    ];
+
     const { isLoading, isSuccess, isError } = useSelector(authSelector);
     const {
         email,
@@ -43,7 +49,7 @@ function Form() {
     const dispatch = useDispatch<AppDispatch>();
     const [disableButton, setDisableButton] = useState(false);
 
-    
+
 
     const {
         register,
@@ -225,7 +231,17 @@ function Form() {
 
             {/* Gender */}
             <div className="col-span-12 md:col-span-6">
-               <Drop a = "gender"/>
+                <Controller
+                    name="gender"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <DropDownOptions
+                            placeholder="Gender"
+                            options={genderDropdownOptions}
+                            errorMessage= {errors?.gender?.value.message}
+                        />
+                    )}
+                />
             </div>
 
 
