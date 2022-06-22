@@ -415,8 +415,8 @@ const authRequest = {
             // idDocRef: identificationDocRef,
             // idIssueDate: identificationIssueDate,
             // idDocExpiryDate: identificationDocExpiryDate,
-            // idDocumentImage: identificationDocumentImage,
-            // proofOfAddressImage: proofOfAddressImage,
+            idDocumentImage: identificationDocumentImage,
+            proofOfAddressImage: proofOfAddressImage,
             photo: picture,
         };
 

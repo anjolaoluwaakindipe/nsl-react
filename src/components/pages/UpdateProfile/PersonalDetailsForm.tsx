@@ -9,7 +9,6 @@ import "react-phone-number-input/style.css";
 
 // react-icons
 
-
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
@@ -52,7 +51,6 @@ function PersonalDetailsForm() {
         identificationIssueDate,
     } = useSelector(authSelector).user!;
 
-
     // react redux variables
     const dispatch = useDispatch<AppDispatch>();
 
@@ -86,7 +84,7 @@ function PersonalDetailsForm() {
     const {
         register,
         control,
-        watch,
+
         handleSubmit,
         setValue,
         getValues,
@@ -115,6 +113,8 @@ function PersonalDetailsForm() {
                 cscsNumber: data.cscsNumber,
                 residentialAddress: data.residentialAddress,
                 picture: data.picture,
+                identificationDocumentImage: data.proofOfIdentification,
+                proofOfAddressImage: data.proofOfResidence,
                 cb: navigateToUpdateEmploymentDetail,
             })
         );
@@ -122,15 +122,6 @@ function PersonalDetailsForm() {
 
         setButtonLoading(false);
     });
-
-    //
-    // watch variables from react-hook-form
-    const watchPictureUpload = watch("picture");
-    const watchGender = watch("gender");
-    const watchMaritalStatus = watch("maritalStatus");
-    const watchproofOfIdentification = watch("proofOfIdentification");
-    const watchproofOfResidence = watch("proofOfResidence");
-    const watchSalarySlips = watch("salarySlips");
 
     console.log(getValues());
 
@@ -186,7 +177,28 @@ function PersonalDetailsForm() {
         if (identificationDocumentImage) {
             setValue("proofOfIdentification", identificationDocumentImage);
         }
-    }, [email, phoneNumber, name, gender, otherName, dateOfBirth, bvn, title, identificationDocumentImage]); // eslint-disable-line
+        if (proofOfAddressImage) {
+            setValue("proofOfResidence", proofOfAddressImage);
+        }
+    }, [
+        email,
+        phoneNumber,
+        firstName,
+        lastName,
+        gender,
+        otherName,
+        dateOfBirth,
+        bvn,
+        title,
+        identificationDocumentImage,
+        maritalStatus,
+        residentialAddress,
+        cscsNumber,
+        picture,
+        proofOfAddressImage,
+        setValue,
+        maritalStatusDropdownOptions,
+    ]); // eslint-disable-line
 
     return (
         <div>
@@ -223,7 +235,7 @@ function PersonalDetailsForm() {
                         errorMessage={errors.firstName?.message}
                     />
                 </div>
-              
+
                 {/* Full Name */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
@@ -248,7 +260,6 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-
                 {/* Email Address */}
                 <div className=" col-span-12 md:col-span-6">
                     <FloatingPlaceholderTextField
@@ -258,19 +269,6 @@ function PersonalDetailsForm() {
                         registerName="emailAddress"
                         readOnly={true}
                         id="UpdateProfileDetails__emailAddress"
-                        errorMessage={errors.emailAddress?.message}
-                    />
-                </div>
-
-
-                {/*email address */}
-                <div className=" col-span-12 md:col-span-6">
-                    <FloatingPlaceholderTextField
-                        placeholder="Email Address"
-                        type="text"
-                        id="UpdateProfile__emailAddress"
-                        register={register("emailAddress")}
-                        registerName="Email Address"
                         errorMessage={errors.emailAddress?.message}
                     />
                 </div>
@@ -302,7 +300,7 @@ function PersonalDetailsForm() {
                 </div>
 
                 {/* Gender */}
-                <div className="col-span-12 md:col-span-6">
+                {/* <div className="col-span-12 md:col-span-6">
                     <div className=" border-0 border-b-2  border-underlineColor   ">
                         <Controller
                             name="gender"
@@ -329,8 +327,8 @@ function PersonalDetailsForm() {
 
                         <label htmlFor="tenor"></label>
                     </div>
-
-
+                </div>
+ */}
                 {/* Gender */}
                 <div className="col-span-12 md:col-span-6">
                     <Controller
@@ -339,12 +337,13 @@ function PersonalDetailsForm() {
                         render={({ field: { onChange, value } }) => (
                             <DropDownOptions
                                 placeholder="Gender"
+                                value={value}
+                                onChange={onChange}
                                 options={genderDropdownOptions}
                                 errorMessage={errors?.gender?.value.message}
                             />
                         )}
                     />
-
                 </div>
 
                 {/* Date of Birth */}
@@ -374,7 +373,6 @@ function PersonalDetailsForm() {
 
                 {/*Marital Status*/}
                 <div className="col-span-12 md:col-span-6">
-
                     <Controller
                         name="maritalStatus"
                         control={control}
@@ -382,15 +380,17 @@ function PersonalDetailsForm() {
                             <DropDownOptions
                                 placeholder="Marital Status"
                                 options={maritalStatusDropdownOptions}
-                                errorMessage={errors?.maritalStatus?.value.message}
+                                onChange={onChange}
+                                value={value}
+                                errorMessage={
+                                    errors?.maritalStatus?.value.message
+                                }
                             />
                         )}
                     />
                 </div>
 
                 {/*CSCS account number*/}
-
-                   
 
                 {/* CSCS Number */}
 
@@ -416,7 +416,6 @@ function PersonalDetailsForm() {
                         errorMessage={errors.bvn?.message}
                     />
                 </div>
-
 
                 {/* Residential Area */}
                 <div className="col-span-12">
@@ -490,7 +489,7 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-                <div className="col-span-12">
+                {/* <div className="col-span-12">
                     <Controller
                         control={control}
                         name="salarySlips"
@@ -506,7 +505,7 @@ function PersonalDetailsForm() {
                             />
                         )}
                     />
-                </div>
+                </div> */}
 
                 <div className="col-span-12">
                     <button

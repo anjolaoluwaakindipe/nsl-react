@@ -32,14 +32,7 @@ function EditPersonalDetailsForm() {
         formState: { errors },
     } = useForm({resolver: joiResolver(personalDetailsFormSchema)});
 
- 
-    const maritalStatusDropdownOptions = [
-        { value: "Single", label: "Single" },
-        { value: "Married", label: "Married" },
-        { value: "Divorce", label: "Divorce" },
-        { value: "Widow", label: "Widow" },
-        { value: "Remarried", label: "Remarried" },
-    ];
+
 
     const watchGender = watch("gender");
     const watchMaritalStatus = watch("maritalStatus");
