@@ -91,13 +91,13 @@ function EditEmploymentDetailsForm() {
                 />
             </div>
 
-            {/*salary range*/}
+            {/*Annual salary*/}
             <div className=" col-span-12 md:col-span-6">
                <FloatingPlaceholderTextField
-                    placeholder="Salary Range"
-                    type="text"
+                    placeholder="Annual Salary"
+                    type="number"
                     register={register("salaryRange")}
-                    registerName='Salary Range'
+                    registerName='annualSalary'
                     id="EditEmploymentDetails__SalaryRange"
                 />
             </div>

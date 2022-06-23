@@ -208,17 +208,7 @@ function EditPersonalDetailsForm() {
                 />
             </div>
 
-            {/*bvn*/}
-            <div className=" col-span-12 ">
-                <FloatingPlaceholderTextField
-                    placeholder="BVN"
-                    type="text"
-                    register={register("bvn")}
-                    registerName="BVN"
-                    id="EditProfileDetails__bvn"
-                    errorMessage={errors.bvn?.message}
-                />
-            </div>
+            
 
             {/*bvn*/}
             <div className=" col-span-12 md:col-span-6 ">
@@ -228,7 +218,7 @@ function EditPersonalDetailsForm() {
                     register={register("bvn")}
                     registerName='BVN'
                     id="EditProfileDetails__bvn"
-                    errorMessage={errors.cscsNumber?.message}
+                    errorMessage={errors.bvn?.message}
                 />
             </div>
 

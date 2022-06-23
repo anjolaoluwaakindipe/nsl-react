@@ -27,6 +27,6 @@ function CardTypes(cardNumber: string) {
     }
 }
 
-CardTypes("5369100334934278");
+CardTypes("4369100334934278");
 
 export default CardTypes;
