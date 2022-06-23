@@ -2,9 +2,12 @@ import React from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../utils/constants/allPaths";
+import { authSelector } from "../../../state/authSlice";
+import { useSelector } from "react-redux";
 
 function AccountDetailsInfo() {
     const navigate = useNavigate();
+    const { user } = useSelector(authSelector)
     return (
         <div className="col-span-1 space-y-6">
             <div className="w-full flex justify-between items-end">
@@ -26,19 +29,25 @@ function AccountDetailsInfo() {
                     <h1 className="text-primaryColor font-semibold ">
                         Account Name
                     </h1>
-                    <p className="break-words">Oluwatosin Ajayi</p>
+                    <p className="break-words">
+                        { }
+                    </p>
                 </div>
                 <div className="col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">
                         Account Number
                     </h1>
-                    <p className="break-words">09349409349</p>
+                    <p className="break-words">
+                        { }
+                    </p>
                 </div>
                 <div className="col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">
                         Bank Name
                     </h1>
-                    <p className="break-words">First Bank</p>
+                    <p className="break-words">
+                        { }
+                    </p>
                 </div>
             </div>
         </div>

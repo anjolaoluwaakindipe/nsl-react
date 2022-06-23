@@ -32,36 +32,38 @@ function PersonalDetailsInfo() {
                     <h1 className="text-primaryColor font-semibold">
                         Phone Number
                     </h1>
-                    <p className="break-words">+2347030444232</p>
+                    <p className="break-words">{user?.phoneNumber}</p>
                 </div>
                 <div className="md:col-span-1 col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">
                         Marital Status
                     </h1>
-                    <p className="break-words">Single</p>
+                    <p className="break-words">{user?.maritalStatus}</p>
                 </div>
                 <div className="md:col-span-1 col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">
                         CSCS Number
                     </h1>
-                    <p className="break-words">2314567909</p>
+                    <p className="break-words">{user?.cscsNumber}</p>
                 </div>
-                <div className="md:col-span-1 col-span-2 space-y-1">
+                {/* <div className="md:col-span-1 col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">
-                        NIN Numberr
+                        NIN Number
                     </h1>
-                    <p>2314567909</p>
-                </div>
+                    <p>{}</p>
+                </div> */}
                 <div className="md:col-span-1 col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">BVN </h1>
-                    <p>4884782392976</p>
+                    <p>
+                        {user?.bvn}
+                    </p>
                 </div>
                 <div className="md:col-span-1 col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">
                         Residential Address
                     </h1>
                     <p className="break-words">
-                        3, Alago Street, Eruwen, Ikorodu, Lagos State, Nigeria.
+                        {user?.residentialAddress}
                     </p>
                 </div>
             </div>
