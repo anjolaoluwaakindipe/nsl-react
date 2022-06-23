@@ -42,7 +42,7 @@ function EditPersonalDetailsForm() {
             autoSave="off"
             autoComplete="off"
         >
-            {/*firstname */}
+            {/*Title */}
             <div className=" col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
                     placeholder="title"
@@ -171,7 +171,6 @@ function EditPersonalDetailsForm() {
 
             {/*Marital Status*/}
             <div className="col-span-12 md:col-span-6">
-
                 <Controller
                     name="maritalstatus"
                     control={control}
@@ -183,7 +182,6 @@ function EditPersonalDetailsForm() {
                         />
                     )}
                 />
-
             </div>
 
             {/*CSCS account number*/}

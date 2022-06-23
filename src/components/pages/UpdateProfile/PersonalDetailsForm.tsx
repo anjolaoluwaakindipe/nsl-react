@@ -8,7 +8,6 @@ import { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 
 // react-icons
-
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useEffect, useState } from "react";
 import Dropdown from "react-dropdown";
@@ -70,6 +69,14 @@ function PersonalDetailsForm() {
         { value: "Remarried", label: "Remarried" },
     ];
 
+    //document type options
+    const documentTypeDropdownOptions = [
+        { value: "Drivers License", label: "Drivers License" },
+        { value: "Passport", label: "Passport" },
+        { value: "library card", label: "Library Card" },
+        { value: "schoolid", label: "School ID" },
+    ];
+
     // raact-router variables
     const navigate = useNavigate();
 
@@ -97,6 +104,7 @@ function PersonalDetailsForm() {
 
     const onSubmitForm = handleSubmit(async (data) => {
         setButtonLoading(true);
+        console.log(data)
         await dispatch(
             updateUserPersonalDetailsFull({
                 firstName: data.firstName,
@@ -115,7 +123,15 @@ function PersonalDetailsForm() {
                 residentialAddress: data.residentialAddress,
                 picture: data.picture,
                 identificationDocumentImage: data.proofOfIdentification,
-                proofOfAddressImage: data.proofOfResidence,
+                identificationDocExpiryDate: data.IdexpiryDate.includes("T")
+                    ? data.IdexpiryDate.split("T")[0]
+                    : data.IdexpiryDate,
+                identificationDocRef: data.documentRefNumber,
+                identificationIssueDate: data.IdissueDate.includes("T")
+                    ? data.IdissueDate.split("T")[0]
+                    : data.IdissueDate,
+                identificationDocType: data.documentType.value,
+            proofOfAddressImage: data.proofOfResidence,
                 cb: navigateToUpdateEmploymentDetail,
             })
         );
@@ -181,6 +197,26 @@ function PersonalDetailsForm() {
         if (proofOfAddressImage) {
             setValue("proofOfResidence", proofOfAddressImage);
         }
+        if (
+            identificationDocExpiryDate &&
+            identificationDocExpiryDate !== null
+        ) {
+            setValue("IdexpiryDate", identificationDocExpiryDate);
+        }
+        if (identificationDocRef) {
+            setValue("documentRefNumber", identificationDocRef);
+        }
+        if (identificationDocType) {
+            const currentOption = documentTypeDropdownOptions.filter(
+                (option) => option.value === identificationDocType
+            );
+            if (currentOption.length === 0) return;
+            setValue("documentType", currentOption[0]);
+        }
+        if (identificationIssueDate && !identificationIssueDate !== null) {
+            setValue("IdissueDate", identificationIssueDate);
+        }
+        console.log(identificationDocType);
     }, [
         email,
         phoneNumber,
@@ -198,7 +234,10 @@ function PersonalDetailsForm() {
         picture,
         proofOfAddressImage,
         setValue,
-        maritalStatusDropdownOptions,
+        identificationDocExpiryDate,
+        identificationDocRef,
+        identificationDocType,
+        identificationIssueDate,
     ]); // eslint-disable-line
 
     return (
@@ -214,7 +253,7 @@ function PersonalDetailsForm() {
                 autoComplete="off"
                 autoSave="off"
             >
-                {/*firstname */}
+                {/*Title */}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="Title"
@@ -237,7 +276,8 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-                {/* Full Name */}
+                {/* Last Name */}
+
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="Last Name"
@@ -248,7 +288,6 @@ function PersonalDetailsForm() {
                         errorMessage={errors.lastName?.message}
                     />
                 </div>
-                {/* Full Name */}
 
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
@@ -262,6 +301,7 @@ function PersonalDetailsForm() {
                 </div>
 
                 {/* Email Address */}
+
                 <div className=" col-span-12 md:col-span-6">
                     <FloatingPlaceholderTextField
                         placeholder="Email Address"
@@ -347,16 +387,13 @@ function PersonalDetailsForm() {
                 </div>
 
                 {/*CSCS account number*/}
-
-                {/* CSCS Number */}
-
-                <div className=" col-span-12 ">
+                <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="CSCS Number"
                         type="text"
                         register={register("cscsNumber")}
-                        registerName="cscsNumber"
-                        id="UpdateProfileDetails__cscsNumber"
+                        registerName="CSCS Number"
+                        id="UpdateProfile__cscsNumber"
                         errorMessage={errors.cscsNumber?.message}
                     />
                 </div>
@@ -383,7 +420,7 @@ function PersonalDetailsForm() {
                                     value.length > 30 || "Make it more",
                             })}
                             id="UpdateProfile_narration"
-                            className="outline-none bg-bgColor pb-4  resize-none h-32 p-3 w-full border-0 "
+                            className="outline-none bg-bgColor pb-4  resize-none h-25 p-3 w-full border-0 "
                             placeholder="Residential Address"
                         ></textarea>
                     </div>
@@ -394,20 +431,57 @@ function PersonalDetailsForm() {
                     }
                 </div>
 
-                {/* Profile Picture */}
-                <div className="col-span-12">
+                <div className="text-lg text-red-900 col-span-12 md:w-full">
+                    Proof of Identification
+                </div>
+
+                {/* Document Type */}
+                <div className="col-span-12 md:col-span-6">
                     <Controller
+                        name="documentType"
                         control={control}
-                        name="picture"
                         render={({ field: { onChange, value } }) => (
-                            <FileInput
-                                id="picture"
+                            <DropDownOptions
+                                placeholder="Document Type"
+                                options={documentTypeDropdownOptions}
                                 onChange={onChange}
                                 value={value}
-                                errorMessage={errors.picture?.message}
-                                placeholder={"Upload Picture"}
+                                errorMessage={
+                                    errors?.documentType?.value?.message
+                                }
                             />
                         )}
+                    />
+                </div>
+
+                {/*Document reference number*/}
+                <div className=" col-span-12 md:col-span-6 ">
+                    <FloatingPlaceholderTextField
+                        placeholder="Document Refernce Number"
+                        type="text"
+                        register={register("documentRefNumber")}
+                        id="UpdateProfile__documentRefNumber"
+                        errorMessage={errors.documentRefNumber?.message}
+                    />
+                </div>
+
+                {/* expiry Date  */}
+                <div className=" col-span-12 md:col-span-6">
+                    <DateInputField
+                        register={register("IdexpiryDate")}
+                        placeholder="Expiry Date"
+                        id="IdexpiryDate"
+                        errorMessage={errors.IdexpiryDate?.message}
+                    />
+                </div>
+
+                {/* issue Date  */}
+                <div className=" col-span-12 md:col-span-6">
+                    <DateInputField
+                        register={register("IdissueDate")}
+                        placeholder="Issue Date"
+                        id="IdissueDate"
+                        errorMessage={errors.IdissueDate?.message}
                     />
                 </div>
 
@@ -429,6 +503,25 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
+                <div className="col-span-12" />
+
+                {/* Profile Picture */}
+                <div className="col-span-12">
+                    <Controller
+                        control={control}
+                        name="picture"
+                        render={({ field: { onChange, value } }) => (
+                            <FileInput
+                                id="picture"
+                                onChange={onChange}
+                                value={value}
+                                errorMessage={errors.picture?.message}
+                                placeholder={"Upload Picture"}
+                            />
+                        )}
+                    />
+                </div>
+
                 <div className="col-span-12">
                     <Controller
                         control={control}
@@ -444,24 +537,6 @@ function PersonalDetailsForm() {
                         )}
                     />
                 </div>
-
-                {/* <div className="col-span-12">
-                    <Controller
-                        control={control}
-                        name="salarySlips"
-                        render={({ field: { onChange, value } }) => (
-                            <FileInput
-                                id="salarySlips"
-                                onChange={onChange}
-                                value={value}
-                                errorMessage={errors.salarySlips?.message}
-                                placeholder={
-                                    "Original/certified copy of the latest salary slips for the past 3 months"
-                                }
-                            />
-                        )}
-                    />
-                </div> */}
 
                 <div className="col-span-12">
                     <button

@@ -1,6 +1,6 @@
 import React from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { BsCheckAll } from "react-icons/bs";
+import { BsCheckAll, BsFillFileEarmarkImageFill } from "react-icons/bs";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
@@ -33,10 +33,9 @@ function FileInput({
             newFileReader.readAsDataURL(fileValue!);
             newFileReader.onload = () => {
                 // gets file as data url
-                const dataurl = newFileReader.result! as string
+                const dataurl = newFileReader.result! as string;
                 // gets file as base 64
-                onChange!(dataurl.replace('data:', '')
-                .replace(/^.+,/, ''));
+                onChange!(dataurl.replace("data:", "").replace(/^.+,/, ""));
             };
 
             newFileReader.onerror = () => {
@@ -65,9 +64,19 @@ function FileInput({
                         "text-sm justify-between pr-10 mb-2 cursor-pointer h-20 flex items-end bg-bgColor p-4 text-gray-400"
                     }
                 >
-                    {fileValue
-                        ? `${placeholder} (` + fileValue.name + ")"
-                        : placeholder}
+                    <div className="flex space-x-5 items-center">
+                        <BsFillFileEarmarkImageFill
+                            className={`${
+                                value || fileValue ? "text-primaryColor" : ""
+                            } text-2xl`}
+                        />
+                        <h1>
+                            {" "}
+                            {fileValue
+                                ? `${placeholder} (` + fileValue.name + ")"
+                                : placeholder}
+                        </h1>
+                    </div>
 
                     <div className="flex">
                         <AiOutlineCloudUpload

@@ -31,7 +31,7 @@ function DateInputField({
                     type="text"
                     {...register}
                     id={"DateInputField__" + id}
-                    onChange={onChange}
+                    
                     className="outline-none pb-4  w-full cursor-pointer"
                     placeholder=" "
                     onFocus={(e) => {

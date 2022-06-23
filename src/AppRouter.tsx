@@ -147,9 +147,9 @@ function AppRouter() {
                     <Route
                         path={paths.UPDATE_PROFILE.base + "/*"}
                         element={
-                            <ProtectedRoute>
+                            // <ProtectedRoute>
                                 <UpdateProfile />
-                            </ProtectedRoute>
+                            // </ProtectedRoute>
                         }
                     />
 
