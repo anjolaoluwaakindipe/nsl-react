@@ -74,7 +74,7 @@ const [modalName, setModalName] = useState("")
 
 
 
-                <div className="col-span-12 flex justify-between">
+                <div className="col-span-12 flex justify-between space-x-10">
                     <button
                         className={`btn1 bg-transparent border-2 hover:bg-transparent border-primaryColor text-primaryColor  w-full md:w-48`}
                         onClick={() => navigate(-1)}

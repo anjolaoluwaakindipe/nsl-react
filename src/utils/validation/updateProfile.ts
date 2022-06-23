@@ -23,9 +23,16 @@ export const personalDetailsFormSchema = Joi.object({
     residentialAddress: Joi.string().required().label("Residential Address"),
     picture: Joi.string().required().label("Picture"),
     proofOfIdentification: Joi.string()
-        .optional()
+        .required()
         .label("Proof of Identification"),
-    proofOfResidence: Joi.string().optional().label("Proof of Residence"),
+    documentType: Joi.object({
+        label: Joi.string().required(),
+        value: Joi.string().required(),
+    })
+        .required()
+        .label("Document Type"),
+
+    proofOfResidence: Joi.string().required().label("Proof of Residence"),
     salarySlips: Joi.string().optional().label("Salary Slips"),
     bvn: Joi.string()
         .required()
@@ -36,6 +43,11 @@ export const personalDetailsFormSchema = Joi.object({
         .max(11)
         .min(11)
         .label("BVN"),
+    IdexpiryDate: Joi.string().isoDate().required().label("Expiry Date"),
+    IdissueDate: Joi.string().isoDate().required().label("Issue Date"),
+    documentRefNumber: Joi.string()
+        .required()
+        .label("Document Reference Number"),
 });
 
 export const employmentDetailsFormSchema = Joi.object({

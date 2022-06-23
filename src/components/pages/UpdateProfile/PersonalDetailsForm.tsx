@@ -25,6 +25,7 @@ import FileInput from "../../shared/Inputs/FileInput";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 import { paths } from "../../../utils/constants/allPaths";
+import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
 
 function PersonalDetailsForm() {
     // redux auth state
@@ -68,14 +69,13 @@ function PersonalDetailsForm() {
         { value: "Remarried", label: "Remarried" },
     ];
 
-
     //document type options
     const documentTypeDropdownOptions = [
         { value: "Drivers License", label: "Drivers License" },
         { value: "Passport", label: "Passport" },
         { value: "library card", label: "Library Card" },
-        { value: "schoolid", label: "School ID" }
-    ]
+        { value: "schoolid", label: "School ID" },
+    ];
 
     // raact-router variables
     const navigate = useNavigate();
@@ -104,6 +104,7 @@ function PersonalDetailsForm() {
 
     const onSubmitForm = handleSubmit(async (data) => {
         setButtonLoading(true);
+        console.log(data)
         await dispatch(
             updateUserPersonalDetailsFull({
                 firstName: data.firstName,
@@ -122,7 +123,15 @@ function PersonalDetailsForm() {
                 residentialAddress: data.residentialAddress,
                 picture: data.picture,
                 identificationDocumentImage: data.proofOfIdentification,
-                proofOfAddressImage: data.proofOfResidence,
+                identificationDocExpiryDate: data.IdexpiryDate.includes("T")
+                    ? data.IdexpiryDate.split("T")[0]
+                    : data.IdexpiryDate,
+                identificationDocRef: data.documentRefNumber,
+                identificationIssueDate: data.IdissueDate.includes("T")
+                    ? data.IdissueDate.split("T")[0]
+                    : data.IdissueDate,
+                identificationDocType: data.documentType.value,
+            proofOfAddressImage: data.proofOfResidence,
                 cb: navigateToUpdateEmploymentDetail,
             })
         );
@@ -188,6 +197,26 @@ function PersonalDetailsForm() {
         if (proofOfAddressImage) {
             setValue("proofOfResidence", proofOfAddressImage);
         }
+        if (
+            identificationDocExpiryDate &&
+            identificationDocExpiryDate !== null
+        ) {
+            setValue("IdexpiryDate", identificationDocExpiryDate);
+        }
+        if (identificationDocRef) {
+            setValue("documentRefNumber", identificationDocRef);
+        }
+        if (identificationDocType) {
+            const currentOption = documentTypeDropdownOptions.filter(
+                (option) => option.value === identificationDocType
+            );
+            if (currentOption.length === 0) return;
+            setValue("documentType", currentOption[0]);
+        }
+        if (identificationIssueDate && !identificationIssueDate !== null) {
+            setValue("IdissueDate", identificationIssueDate);
+        }
+        console.log(identificationDocType);
     }, [
         email,
         phoneNumber,
@@ -205,7 +234,10 @@ function PersonalDetailsForm() {
         picture,
         proofOfAddressImage,
         setValue,
-        maritalStatusDropdownOptions,
+        identificationDocExpiryDate,
+        identificationDocRef,
+        identificationDocType,
+        identificationIssueDate,
     ]); // eslint-disable-line
 
     return (
@@ -257,7 +289,6 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="Middle Name"
@@ -275,29 +306,11 @@ function PersonalDetailsForm() {
                     <FloatingPlaceholderTextField
                         placeholder="Email Address"
                         type="text"
-
                         register={register("emailAddress")}
                         registerName="emailAddress"
                         readOnly={true}
                         id="UpdateProfileDetails__emailAddress"
-
                         errorMessage={errors.emailAddress?.message}
-                    />
-                </div>
-
-
-                {/* Gender */}
-                <div className="col-span-12 md:col-span-6">
-                    <Controller
-                        name="gender"
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                            <DropDownOptions
-                                placeholder="Gender"
-                                options={genderDropdownOptions}
-                                errorMessage={errors?.gender?.value.message}
-                            />
-                        )}
                     />
                 </div>
 
@@ -344,30 +357,14 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-
                 {/* Date of Birth */}
                 <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor ">
-                        <label htmlFor="UpdateProfile_dateOfBirth"> </label>
-                        <input
-                            type="text"
-                            {...register("dateOfBirth")}
-                            id="UpdateProfile__dateOfBirth"
-                            className="outline-none pb-4  w-full cursor-pointer"
-                            placeholder="Date of Birth"
-                            onFocus={(e) => {
-                                e.target.type = "date";
-                            }}
-                            onBlur={(e) => {
-                                e.target.type = "";
-                            }}
-                        />
-                    </div>
-                    {errors.dateOfBirth && (
-                        <p className="text-xs text-red-900 ">
-                            {errors.dateOfBirth?.message}
-                        </p>
-                    )}
+                    <DateInputField
+                        register={register("dateOfBirth")}
+                        errorMessage={errors.dateOfBirth?.message}
+                        placeholder="Date of Birth"
+                        id="dateOfBirth"
+                    />
                 </div>
 
                 {/*Marital Status*/}
@@ -389,15 +386,13 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-
-
                 {/*CSCS account number*/}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
                         placeholder="CSCS Number"
                         type="text"
                         register={register("cscsNumber")}
-                        registerName='CSCS Number'
+                        registerName="CSCS Number"
                         id="UpdateProfile__cscsNumber"
                         errorMessage={errors.cscsNumber?.message}
                     />
@@ -414,7 +409,6 @@ function PersonalDetailsForm() {
                         errorMessage={errors.bvn?.message}
                     />
                 </div>
-
 
                 {/* Residential Area */}
                 <div className="col-span-12">
@@ -437,11 +431,9 @@ function PersonalDetailsForm() {
                     }
                 </div>
 
-
                 <div className="text-lg text-red-900 col-span-12 md:w-full">
                     Proof of Identification
                 </div>
-
 
                 {/* Document Type */}
                 <div className="col-span-12 md:col-span-6">
@@ -452,7 +444,11 @@ function PersonalDetailsForm() {
                             <DropDownOptions
                                 placeholder="Document Type"
                                 options={documentTypeDropdownOptions}
-                                errorMessage={errors?.gender?.value.message}
+                                onChange={onChange}
+                                value={value}
+                                errorMessage={
+                                    errors?.documentType?.value?.message
+                                }
                             />
                         )}
                     />
@@ -464,77 +460,28 @@ function PersonalDetailsForm() {
                         placeholder="Document Refernce Number"
                         type="text"
                         register={register("documentRefNumber")}
-
                         id="UpdateProfile__documentRefNumber"
-                        errorMessage={errors.cscsNumber?.message}
+                        errorMessage={errors.documentRefNumber?.message}
                     />
                 </div>
 
                 {/* expiry Date  */}
                 <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor ">
-                        <label htmlFor="UpdateProfile_IdexpiryDate"> </label>
-                        <input
-                            type="text"
-                            {...register("IdexpiryDate")}
-                            id="UpdateProfile__IdexpiryDate"
-                            className="outline-none pb-4  w-full cursor-pointer"
-                            placeholder="Expiry Date"
-                            onFocus={(e) => {
-                                e.target.type = "date";
-                            }}
-                            onBlur={(e) => {
-                                e.target.type = "";
-                            }}
-                        />
-                    </div>
-                    {errors.dateOfBirth && (
-                        <p className="text-xs text-red-900 ">
-                            {errors.dateOfBirth?.message}
-                        </p>
-                    )}
+                    <DateInputField
+                        register={register("IdexpiryDate")}
+                        placeholder="Expiry Date"
+                        id="IdexpiryDate"
+                        errorMessage={errors.IdexpiryDate?.message}
+                    />
                 </div>
 
-
-                  {/* issue Date  */}
-                  <div className=" col-span-12 md:col-span-6">
-                    <div className="border-0 border-b-2 border-underlineColor ">
-                        <label htmlFor="UpdateProfile_IdissueDate"> </label>
-                        <input
-                            type="text"
-                            {...register("IdissueDate")}
-                            id="UpdateProfile__IdexpiryDate"
-                            className="outline-none pb-4  w-full cursor-pointer"
-                            placeholder="Issue Date"
-                            onFocus={(e) => {
-                                e.target.type = "date";
-                            }}
-                            onBlur={(e) => {
-                                e.target.type = "";
-                            }}
-                        />
-                    </div>
-                    {errors.dateOfBirth && (
-                        <p className="text-xs text-red-900 ">
-                            {errors.dateOfBirth?.message}
-                        </p>
-                    )}
-                </div>
-
-                {/* Profile Picture */}
-                <div className="col-span-12">
-                    <Controller
-                        control={control}
-                        name="picture"
-                        render={({ field: { onChange, value } }) => (
-                            <FileInput
-                                id="picture"
-                                onChange={onChange}
-                                value={value}
-                                errorMessage={errors.picture?.message}
-                                placeholder={"Upload Picture"}
-                            />
-                        )}
+                {/* issue Date  */}
+                <div className=" col-span-12 md:col-span-6">
+                    <DateInputField
+                        register={register("IdissueDate")}
+                        placeholder="Issue Date"
+                        id="IdissueDate"
+                        errorMessage={errors.IdissueDate?.message}
                     />
                 </div>
 
@@ -556,6 +503,25 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
+                <div className="col-span-12" />
+
+                {/* Profile Picture */}
+                <div className="col-span-12">
+                    <Controller
+                        control={control}
+                        name="picture"
+                        render={({ field: { onChange, value } }) => (
+                            <FileInput
+                                id="picture"
+                                onChange={onChange}
+                                value={value}
+                                errorMessage={errors.picture?.message}
+                                placeholder={"Upload Picture"}
+                            />
+                        )}
+                    />
+                </div>
+
                 <div className="col-span-12">
                     <Controller
                         control={control}
@@ -571,7 +537,6 @@ function PersonalDetailsForm() {
                         )}
                     />
                 </div>
-
 
                 <div className="col-span-12">
                     <button

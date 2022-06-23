@@ -14,9 +14,7 @@ import CardTypes from "./CardTypes";
 
 
 
-type CardDetailsProps={
-    id : string,
-}
+
  
 
 

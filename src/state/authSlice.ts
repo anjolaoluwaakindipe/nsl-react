@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import authRequest from "../services/requests/authRequest";
-import { AuthState, UserInfoAppResponse } from "../typings";
+import {
+    AuthState,
+    ProofOfIdentificationFromGetUserAppResponse,
+    UserInfoAppResponse,
+} from "../typings";
 
 import { RootState } from "./store";
 import toast from "react-hot-toast";
@@ -302,9 +306,8 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
                 });
 
             if (updateUserPersonalDetailsResponse.status === 200) {
-                
                 thunkApi.dispatch<unknown, any>(getUserFull());
-                return ({cb})
+                return { cb };
             } else if (
                 updateUserPersonalDetailsResponse.code === "ECONNABORTED"
             ) {
@@ -371,9 +374,8 @@ export const updateUserEmploymentDetailsFull = createAsyncThunk(
                 });
 
             if (updateUserPersonalDetailsResponse.status === 200) {
-                
                 thunkApi.dispatch<unknown, any>(getUserFull());
-                return({cb})
+                return { cb };
             } else if (
                 updateUserPersonalDetailsResponse.code === "ECONNABORTED"
             ) {
@@ -730,6 +732,7 @@ const authSlice = createSlice({
                     ?.allUserInformation as UserInfoAppResponse;
 
                 // personal information
+                console.log(allUserInformation.kycdocs);
                 state.user!.customerNo = allUserInformation.customerNo;
                 state.user!.dateOfBirth = allUserInformation.dob;
                 state.user!.maritalStatus = allUserInformation.maritalStatus;
@@ -741,13 +744,32 @@ const authSlice = createSlice({
                 state.user!.bvn = allUserInformation.bvn;
                 state.user!.cscsNumber = allUserInformation.memberShipNo!;
                 state.user!.residentialAddress = allUserInformation.address!;
-                state.user!.identificationDocType = allUserInformation.kycdocs[0].documentType;
-                state.user!.identificationDocRef = allUserInformation.kycdocs[0].documentReference;
-                state.user!.identificationIssueDate = allUserInformation.kycdocs[0].documentIssueDate;
-                state.user!.identificationDocExpiryDate = allUserInformation.kycdocs[0].documentExpiryDate;
-                state.user!.identificationDocumentImage = allUserInformation.kycdocs[0].documentImage;
-                state.user!.proofOfAddressImage = allUserInformation.kycdocs[1].documentImage;
-                state.user!.picture = allUserInformation.kycdocs[2].documentImage;
+
+                // upload info
+                const photoObject = allUserInformation.kycdocs.filter(
+                    (object) => object.documentType === "Photo"
+                )[0];
+                const proofOfAddressObject = allUserInformation.kycdocs.filter(
+                    (object) => object.documentType === "Proof of Address"
+                )[0];
+                const identificationObject = allUserInformation.kycdocs.filter(
+                    (object) =>
+                        object.documentType !== "Photo" &&
+                        object.documentType !== "Proof of Address"
+                )[0] as ProofOfIdentificationFromGetUserAppResponse;
+                state.user!.identificationDocType =
+                    identificationObject.documentType;
+                state.user!.identificationDocRef =
+                    identificationObject.documentReference;
+                state.user!.identificationIssueDate =
+                    identificationObject.documentIssueDate;
+                state.user!.identificationDocExpiryDate =
+                    identificationObject.documentExpiryDate;
+                state.user!.identificationDocumentImage =
+                    identificationObject.documentImage;
+                state.user!.proofOfAddressImage =
+                    proofOfAddressObject.documentImage;
+                state.user!.picture = photoObject.documentImage;
 
                 // employmentInformation
                 state.user!.employmentInfo.companyAddress =
