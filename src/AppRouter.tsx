@@ -8,6 +8,12 @@ import { paths } from "./utils/constants/allPaths";
 const ProtectedRoute = lazy(
     () => import("./components/shared/ProtectedRoutes/ProtectedRoute")
 );
+const NoUpdateProtectedRoute = lazy(
+    () => import("./components/shared/ProtectedRoutes/NoUpdatedProtectedRoute")
+);
+const LoggedProtectedRoute = lazy(
+    () => import("./components/shared/ProtectedRoutes/LoggedProtectedRoute")
+);
 
 // pages
 const CreateAccount = lazy(() => import("./pages/CreateAccount"));
@@ -32,6 +38,7 @@ const EditPersonalDetails = lazy(() => import("./pages/EditPersonalDetails"));
 const EditAccountDetails = lazy(() => import("./pages/EditAccountDetails"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Welcome = lazy(() => import("./pages/Welcome"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
 
 function AppRouter() {
     return (
@@ -42,7 +49,9 @@ function AppRouter() {
                         path={paths.CREATE_ACCOUNT}
                         element={
                             <React.Suspense>
-                                <CreateAccount />
+                                <LoggedProtectedRoute>
+                                    <CreateAccount />
+                                </LoggedProtectedRoute>
                             </React.Suspense>
                         }
                     />
@@ -50,18 +59,27 @@ function AppRouter() {
                         path={paths.EMAIL_VERIFICATION}
                         element={
                             <React.Suspense>
-                                <EmailVerification />
+                                <LoggedProtectedRoute>
+                                    <EmailVerification />
+                                </LoggedProtectedRoute>
                             </React.Suspense>
                         }
+                    />
+
+                    <Route
+                    path={paths.LANDINGPAGE}
+                    element = {
+                        <LandingPage/>
+                    }
                     />
 
                     <Route
                         path={paths.LOAN_APPLICATION}
                         element={
                             <React.Suspense>
-                                <ProtectedRoute>
+                                <NoUpdateProtectedRoute>
                                     <LoanApplication />
-                                </ProtectedRoute>
+                                </NoUpdateProtectedRoute>
                             </React.Suspense>
                         }
                     />
@@ -69,7 +87,9 @@ function AppRouter() {
                         path={paths.LOGIN}
                         element={
                             <React.Suspense>
-                                <Login />
+                                <LoggedProtectedRoute>
+                                    <Login />
+                                </LoggedProtectedRoute>
                             </React.Suspense>
                         }
                     />
@@ -77,7 +97,9 @@ function AppRouter() {
                         path={paths.PHONE_VERIFICATION}
                         element={
                             <React.Suspense>
-                                <PhoneVerification />
+                                <LoggedProtectedRoute>
+                                    <PhoneVerification />
+                                </LoggedProtectedRoute>
                             </React.Suspense>
                         }
                     />
@@ -85,9 +107,9 @@ function AppRouter() {
                         path={paths.LOAN_PAYMENT_OPTIONS}
                         element={
                             <React.Suspense>
-                                <ProtectedRoute>
+                                <NoUpdateProtectedRoute>
                                     <LoanPaymentOptions />
-                                </ProtectedRoute>
+                                </NoUpdateProtectedRoute>
                             </React.Suspense>
                         }
                     />
@@ -95,9 +117,9 @@ function AppRouter() {
                         path={paths.LOAN_INFORMATION}
                         element={
                             <React.Suspense>
-                                <ProtectedRoute>
+                                <NoUpdateProtectedRoute>
                                     <LoanInformation />
-                                </ProtectedRoute>
+                                </NoUpdateProtectedRoute>
                             </React.Suspense>
                         }
                     />
@@ -106,9 +128,9 @@ function AppRouter() {
                         path={paths.TOTAL_LOAN_INFORMATION}
                         element={
                             <React.Suspense>
-                                <ProtectedRoute>
+                                <NoUpdateProtectedRoute>
                                     <TotalLoanInformation />
-                                </ProtectedRoute>
+                                </NoUpdateProtectedRoute>
                             </React.Suspense>
                         }
                     />
@@ -117,21 +139,21 @@ function AppRouter() {
                         path={paths.LOAN_CONTRACT}
                         element={
                             <React.Suspense>
-                                <ProtectedRoute>
+                                <NoUpdateProtectedRoute>
                                     <LoanContract />
-                                </ProtectedRoute>
+                                </NoUpdateProtectedRoute>
                             </React.Suspense>
                         }
                     />
 
-                    <Route
+                    {/* <Route
                         path={paths.TOTAL_ADMIN_DASHBOARD}
                         element={
                             <React.Suspense>
                                 <TotalAdminDashboard />
                             </React.Suspense>
                         }
-                    />
+                    /> */}
 
                     <Route
                         path={paths.USER_DASHBOARD}
@@ -147,9 +169,9 @@ function AppRouter() {
                     <Route
                         path={paths.UPDATE_PROFILE.base + "/*"}
                         element={
-                            // <ProtectedRoute>
+                            <ProtectedRoute>
                                 <UpdateProfile />
-                            // </ProtectedRoute>
+                            </ProtectedRoute>
                         }
                     />
 
@@ -157,9 +179,9 @@ function AppRouter() {
                         path={paths.TERM_LOAN}
                         element={
                             <React.Suspense>
-                                <ProtectedRoute>
+                                <NoUpdateProtectedRoute>
                                     <TermLoan />
-                                </ProtectedRoute>
+                                </NoUpdateProtectedRoute>
                             </React.Suspense>
                         }
                     />
@@ -189,9 +211,9 @@ function AppRouter() {
                         path={paths.EDIT_PERSONAL_DETAILS}
                         element={
                             <React.Suspense>
-                                {/* <ProtectedRoute> */}
-                                <EditPersonalDetails />
-                                {/* </ProtectedRoute> */}
+                                <ProtectedRoute>
+                                    <EditPersonalDetails />
+                                </ProtectedRoute>
                             </React.Suspense>
                         }
                     />

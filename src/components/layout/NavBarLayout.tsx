@@ -5,9 +5,12 @@ import { CgProfile } from "react-icons/cg";
 import { VscBellDot } from "react-icons/vsc";
 import { paths } from "../../utils/constants/allPaths";
 import { useModal } from "../../services/customHooks/useModal";
+import { authSelector } from "../../state/authSlice";
+import { useSelector } from "react-redux";
 
 function NavBarLayout({ children }: { children?: React.ReactElement }) {
     const navigate = useNavigate();
+    const { user } = useSelector(authSelector)
 
     const { openModalFunc } = useModal(
         "LogOutModal",
@@ -45,11 +48,15 @@ function NavBarLayout({ children }: { children?: React.ReactElement }) {
                         </div>
                         {/*profile*/}
                         {/* <img src="" alt="" /> */}
-                        <div className="flex justify-center items-center bg-primaryColor w-6 h-6 md:w-10 md:h-10  rounded-full cursor-pointer hover:brightness-75">
-                            <CgProfile
-                                className="md:text-2xl text-white"
+                        <div className="flex justify-center items-center bg-primaryColor w-6 h-6 md:w-10 md:h-10  rounded-full cursor-pointer hover:brightness-75 overflow-hidden">
+
+                            {user?.picture ? (<img src={"data:image/png;base64," + user?.picture}
+                                alt="profile_picture"
+                                // width={90}
                                 onClick={() => navigate(paths.PROFILE)}
-                            />
+
+                            />) : (<CgProfile className="text-white text-2xl" />)}
+
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import { paths } from "../../../utils/constants/allPaths";
 import { useEffect, useState } from "react";
 import { AppDispatch } from "../../../state/store";
 
-function ProtectedRoute({ children }: { children: React.ReactElement }) {
+function LoggedProtectedRoute({ children }: { children: React.ReactElement }) {
     // react-redux variable
     const dispatch = useDispatch<AppDispatch>();
 
@@ -19,7 +19,7 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
     // local state
     const [isLoading, setIsLoading] = useState(true);
 
-
+    const location = useLocation()
 
     const refreshUserInfo = async () =>
         await dispatch(getUserFull());
@@ -31,8 +31,8 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
 
     // check if user is login
     useEffect(() => {
-        if (!accessToken && !refreshToken) {
-            return navigate(paths.LOGIN, { replace: true });
+        if (accessToken && refreshToken) {
+            return navigate(paths.USER_DASHBOARD, { replace: true });
         }
 
         setIsLoading(false);
@@ -41,4 +41,4 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
     return <>{isLoading ? <div></div> : children}</>;
 }
 
-export default ProtectedRoute;
+export default LoggedProtectedRoute;
