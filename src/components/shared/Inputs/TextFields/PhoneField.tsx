@@ -66,7 +66,7 @@ function PhoneField({
                         style={style}
                     />
                     <div
-                        className={` absolute bottom-[15px] left-14 origin-left text-gray-400 ${
+                        className={` absolute bottom-[15px] left-16 origin-left text-gray-400 ${
                             isPlaceholderVisilble
                                 ? normalPlaceholderState()
                                 : floatingPlaceholderState()

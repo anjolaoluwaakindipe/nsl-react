@@ -1,22 +1,21 @@
 import { joiResolver } from "@hookform/resolvers/joi";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
     authSelector,
-    updateUserEmploymentDetailsFull,
+    updateUserEmploymentDetailsFull
 } from "../../../state/authSlice";
 import { AppDispatch } from "../../../state/store";
 import { EmploymentDetailsFormInfo } from "../../../typings";
 import { paths } from "../../../utils/constants/allPaths";
-import { employmentDetailsFormSchema } from "../../../utils/validation/updateProfile";
+import { updateEmploymentDetailsFormSchema } from "../../../utils/validation/updateProfile";
 import CurrencyInputField from "../../shared/Inputs/TextFields/CurrencyInputField";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 import Progress from "./Progress";
-import formatMoney from "../../../utils/moneyFormatter";
 
 function EmploymentDetailsForm() {
     const {
@@ -33,7 +32,6 @@ function EmploymentDetailsForm() {
     // loading button control
     const [isButtonLoading, setButtonLoading] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
-    const finishedRequest = useRef(false);
 
     const {
         register,
@@ -43,7 +41,7 @@ function EmploymentDetailsForm() {
         setValue,
         getValues,
     } = useForm<EmploymentDetailsFormInfo>({
-        resolver: joiResolver(employmentDetailsFormSchema),
+        resolver: joiResolver(updateEmploymentDetailsFormSchema),
         defaultValues: { companyPhoneNumber: "" },
     });
 
@@ -110,7 +108,7 @@ function EmploymentDetailsForm() {
         );
         // navigate("/update-profile/employment-details");
 
-        finishedRequest.current = true;
+
 
         setButtonLoading(false);
     });
@@ -173,18 +171,16 @@ function EmploymentDetailsForm() {
                                 "Not a valid International Number",
                         }}
                         render={({ field: { onChange, value } }) => (
-                            <div>
-                                <PhoneField
-                                    placeholder="Comany Phone Number"
-                                    phoneElementClassName="pb-4 space-x-4 max-h-10"
-                                    onChange={onChange}
-                                    value={value!}
-                                    style={{ borderRadius: "0px" }}
-                                    errorMessage={
-                                        errors.companyPhoneNumber?.message
-                                    }
-                                />
-                            </div>
+                            <PhoneField
+                                placeholder="Comany Phone Number"
+                                phoneElementClassName="pb-4 space-x-4 max-h-10"
+                                onChange={onChange}
+                                value={value!}
+                                style={{ borderRadius: "0px" }}
+                                errorMessage={
+                                    errors.companyPhoneNumber?.message
+                                }
+                            />
                         )}
                     />
                 </div>
@@ -253,7 +249,7 @@ function EmploymentDetailsForm() {
                         type="submit"
                         disabled={isButtonLoading}
                     >
-                        Next
+                        {isButtonLoading ?"Loading..." : "Next"}
                     </button>
                 </div>
             </form>

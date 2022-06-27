@@ -8,7 +8,7 @@ function LoanBalanceDet() {
                 <LoanBalanceCard
                     status="#active"
                     title="Term Loan"
-                    amount={500000}
+                    amount={0}
                     tenor=" 3months"
                     days=" 32"
                 />

@@ -374,19 +374,19 @@ const authRequest = {
         proofOfAddressImage,
         picture,
     }: {
-        customerNo: string;
-        firstName: string;
-        middleName: string;
-        lastName: string;
-        bvn: string;
-        gender: string;
-        maritalStatus: string;
-        dateOfBirth: string;
-        title: string;
-        email: string;
-        phoneNumber: string;
-        residentialAddress: string;
-        cscsNumber: string;
+        customerNo?: string;
+        firstName?: string | null;
+        middleName?: string | null;
+        lastName?: string | null;
+        bvn?: string | null;
+        gender?: string | null;
+        maritalStatus?: string | null;
+        dateOfBirth?: string | null;
+        title?: string | null;
+        email?: string | null;
+        phoneNumber?: string | null;
+        residentialAddress?: string | null;
+        cscsNumber?: string  | null;
         identificationDocType?: string | null;
         identificationDocRef?: string | null;
         identificationIssueDate?: string | null;
@@ -397,28 +397,59 @@ const authRequest = {
     }) => {
         // required information to get
 
-        const body = {
-            customerNo,
-            firstname: firstName,
-            middlename: middleName,
-            surname: lastName,
-            bvn,
-            gender,
-            title,
-            maritalStatus,
-            dateOfBirth,
-            email,
-            mobileNo: phoneNumber,
-            cscsno: cscsNumber,
-            ResidentialAddress: residentialAddress,
-            idDocType: identificationDocType,
-            idDocRef: identificationDocRef,
-            idIssueDate: identificationIssueDate,
-            idDocExpiryDate: identificationDocExpiryDate,
-            idDocumentImage: identificationDocumentImage,
-            proofOfAddressImage: proofOfAddressImage,
-            photo: picture,
+
+        const body:Record<string, any> = {
+            customerNo : customerNo
         };
+        if (firstName){
+            body.firstname = firstName
+        }
+        if (lastName){
+            body.surname = lastName
+        }
+        if (middleName){
+            body.middlename = middleName
+        }
+        if( bvn){
+            body.bvn = bvn
+        }
+        if(gender){
+            body.gender = gender
+        }
+        if(title){
+            body.title = title
+        }
+        if (maritalStatus){
+            body.maritalStatus = maritalStatus
+        }
+        if (dateOfBirth){
+            body.dateOfBirth = dateOfBirth
+        }
+        if (email){
+            body.email = email
+        }
+        if(phoneNumber){
+            body.mobileNo = phoneNumber
+        }
+        if(cscsNumber){
+            body.cscsno = cscsNumber
+        }
+        if(residentialAddress){
+            body.ResidentialAddress = residentialAddress
+        }
+        if(identificationDocType && identificationDocRef && identificationIssueDate && identificationDocExpiryDate && identificationDocumentImage){
+            body.idDocType = identificationDocType;
+            body.idDocRef= identificationDocRef;
+            body.idIssueDate = identificationIssueDate;
+            body.idDocExpiryDate = identificationDocExpiryDate;
+            body.idDocumentImage = identificationDocumentImage;
+        }
+        if(proofOfAddressImage){
+            body.proofOfAddressImage = proofOfAddressImage
+        }
+        if(picture){
+            body.photo = picture
+        }
 
         // response data format
         const res: {

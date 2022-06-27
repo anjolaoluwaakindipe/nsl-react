@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { onlyNumberReg } from "../constants/inputValidationPatterns";
 
-export const updatePersonalDetailsFormSchema = Joi.object({
+export const editPersonalDetailsFormSchema = Joi.object({
     title: Joi.string().required().trim().min(2).label("Title"),
     firstName: Joi.string().required().trim().min(3).label("First Name"),
     lastName: Joi.string().required().trim().min(3).label("Last Name"),
@@ -21,19 +21,7 @@ export const updatePersonalDetailsFormSchema = Joi.object({
     maritalStatus: Joi.required().label("Marital Status"),
     cscsNumber: Joi.string().required().label("CSCS Number"),
     residentialAddress: Joi.string().required().label("Residential Address"),
-    picture: Joi.string().required().label("Picture"),
-    proofOfIdentification: Joi.string()
-        .required()
-        .label("Proof of Identification"),
-    documentType: Joi.object({
-        label: Joi.string().required(),
-        value: Joi.string().required(),
-    })
-        .required()
-        .label("Document Type"),
 
-    proofOfResidence: Joi.string().required().label("Proof of Residence"),
-    salarySlips: Joi.string().optional().label("Salary Slips"),
     bvn: Joi.string()
         .required()
         .pattern(onlyNumberReg)
@@ -43,14 +31,9 @@ export const updatePersonalDetailsFormSchema = Joi.object({
         .max(11)
         .min(11)
         .label("BVN"),
-    IdexpiryDate: Joi.string().isoDate().required().label("Expiry Date"),
-    IdissueDate: Joi.string().isoDate().required().label("Issue Date"),
-    documentRefNumber: Joi.string()
-        .required()
-        .label("Document Reference Number"),
 });
 
-export const updateEmploymentDetailsFormSchema = Joi.object({
+export const editEmploymentDetailsFormSchema = Joi.object({
     jobTitle: Joi.string().required().label("Job Title"),
     companyName: Joi.string().min(2).required().label("Company Name"),
     natureOfBusiness: Joi.string()
@@ -64,4 +47,24 @@ export const updateEmploymentDetailsFormSchema = Joi.object({
         .label("Company Email Address"),
     grossIncome: Joi.string().required().label("Gross Income"),
     companyAddress: Joi.string().required().label("Company Address"),
+});
+
+export const editUploadsDetailsFormSchema = Joi.object({
+    picture: Joi.string().required().label("Picture"),
+    proofOfIdentification: Joi.string()
+        .required()
+        .label("Proof of Identification"),
+    documentType: Joi.object({
+        label: Joi.string().required(),
+        value: Joi.string().required(),
+    })
+        .required()
+        .label("Document Type"),
+
+    proofOfResidence: Joi.string().required().label("Proof of Residence"),
+    IdexpiryDate: Joi.string().isoDate().required().label("Expiry Date"),
+    IdissueDate: Joi.string().isoDate().required().label("Issue Date"),
+    documentRefNumber: Joi.string()
+        .required()
+        .label("Document Reference Number"),
 });

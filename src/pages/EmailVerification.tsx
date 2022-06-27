@@ -1,36 +1,40 @@
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 import { Header } from "../components/pages/EmailVerification";
 import EmailVerificationPinCode from "../components/pages/EmailVerification/EmailVerificationPinCode";
 import { useModal } from "../services/customHooks/useModal";
+import { verificationRequests } from "../services/requests/verificationRequests";
 import {
     setEmailCode,
     setSmsCode,
     signUpInfoSelector,
 } from "../state/signUpInfoSlice";
-import { paths } from "../utils/constants/allPaths";
-import { verificationRequests } from "../services/requests/verificationRequests";
 import { AppDispatch } from "../state/store";
-import { authSelector, createUserAuth } from "../state/authSlice";
+import { paths } from "../utils/constants/allPaths";
 
 function EmailVerification() {
+    // signUpInfo selector
     const { email, firstName, password, phoneNumber, emailCode } =
         useSelector(signUpInfoSelector);
+    // react router variables
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
-    const [isButtonDisable, setIsButtonDisable] = useState(true);
-    const [toastId, setToastId] = useState("");
-    const [buttonLoading, setButtonLoading] = useState(false);
-    // substiute
-    const { isLoading, isSuccess, errorMessage, isError } =
-        useSelector(authSelector);
 
+    // react redux variables
+    const dispatch = useDispatch<AppDispatch>();
+
+    // button state
+    const [isButtonDisable, setIsButtonDisable] = useState(true);
+    const [buttonLoading, setButtonLoading] = useState(false);
+
+    const toastId = "email-verification-toastId";
+
+    // react-hook-forms
     const {
         handleSubmit,
         control,
@@ -52,33 +56,26 @@ function EmailVerification() {
         ),
     });
 
-    console.log(getValues())
+    console.log(getValues());
 
     useEffect(() => {
-        setToastId(
-            toast("Please make sure code is 4 digits", {
-                position: "top-right",
-            })
-        );
+        toast("Please make sure code is 4 digits", {
+            position: "top-right",
+        });
     }, []);
 
     const inputedEmailCode = watch("emailCode");
-
-    // const infoToast = toast("Please make sure code is 4 digits", {
-    //     position: "top-right",
-    // });
 
     useEffect(() => {
         if (!email || !firstName || !password || !phoneNumber) {
             navigate(paths.CREATE_ACCOUNT, { replace: true });
         }
     }, [email, firstName, password, phoneNumber]); // eslint-disable-line
-    const timerRef = useRef<NodeJS.Timeout | undefined>(undefined)
+    const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
     useEffect(() => {
-        
         setIsButtonDisable(true);
         if (inputedEmailCode.length === 4 && inputedEmailCode === emailCode) {
-            clearTimeout(timerRef.current!)
+            clearTimeout(timerRef.current!);
             toast.loading("Verifying Code...", {
                 id: toastId,
                 position: "top-right",
@@ -98,7 +95,7 @@ function EmailVerification() {
         }
 
         if (inputedEmailCode.length === 4 && inputedEmailCode !== emailCode) {
-            clearTimeout(timerRef.current!)
+            clearTimeout(timerRef.current!);
             toast.loading("Verifying Code...", {
                 id: toastId,
                 position: "top-right",
@@ -115,38 +112,6 @@ function EmailVerification() {
     //correct
     const { openModalFunc } = useModal("EmailVerificationSuccessModal", false);
 
-    // // substitute
-    // const { openModalFunc } = useModal(
-    //     "PhoneEmailVerificationSuccessModal",
-    //     false
-    // );
-
-    // // substitute
-    // // checks if account creation was successful or not
-    // useEffect(() => {
-    //     if (!isLoading && isSuccess) {
-    //         toast.success("Account creation Successful please Login in");
-    //         setButtonLoading(false);
-    //         dispatch(clearSignUpInfo);
-    //         openModalFunc();
-    //     }
-    //     if (!isLoading && isError) {
-    //         toast.error(errorMessage);
-    //         setButtonLoading(false);
-    //     }
-
-    //     if (
-    //         !isLoading &&
-    //         isError &&
-    //         errorMessage ===
-    //             "User already exists. Please try again with another email"
-    //     ) {
-    //         toast.error(errorMessage);
-    //         dispatch(clearSignUpInfo);
-    //         navigate(paths.CREATE_ACCOUNT);
-    //     }
-    // }, [isLoading, openModalFunc]); // eslint-disable-line
-
     const resendEmailVerificationCode = async () => {
         const newEmailCode = verificationRequests.generateVerificationCode();
         const loadingToastId = toast.loading(
@@ -157,9 +122,9 @@ function EmailVerification() {
         );
 
         await verificationRequests
-            .verifyEmail({
+            .verifySms({
                 fourDigitCode: newEmailCode,
-                toEmail: email,
+                recipient: phoneNumber.replace("+", ""),
             })
             .then((res) => {
                 dispatch(setEmailCode({ emailCode: newEmailCode }));
@@ -179,49 +144,37 @@ function EmailVerification() {
     const onSubmit = handleSubmit(async (data) => {
         setButtonLoading(true);
 
-        const phoneCode = verificationRequests.generateVerificationCode();
-        const loadingToastId = toast.loading(
-            "Sending code to your phone number",
-            { position: "top-right" }
-        );
-
-        const verificationResponse = await verificationRequests
-            .verifyEmail({ fourDigitCode: phoneCode, toEmail: email })
-            .then((res) => {
-                // if (res.data.sentOk === true) {
-                dispatch(setSmsCode({ smsCode: phoneCode }));
-                toast.success("Verification code sent to your phone", {
-                    id: loadingToastId,
-                });
-                openModalFunc();
-                // } else {
-                //     toast.error(
-                //         "Could not send sms to the phone number given. Please go back and try again",
-                //         { id: loadingToastId }
-                //     );
-                //     setButtonLoading(false);
-                // }
-            })
-            .catch((err) => {
-                console.log("hello");
-                toast.error(
-                    "Something went wrong while sending verification code. Please try again later",
-                    { id: loadingToastId }
-                );
-                setButtonLoading(false);
-            });
-        console.log(verificationResponse);
-
-        // // substitute
-        // setButtonLoading(true);
-        // await dispatch(
-        //     createUser({
-        //         fullName: fullName.trim(),
-        //         email: email.trim(),
-        //         phoneNumber: phoneNumber.trim(),
-        //         password: password.trim(),
+        // const phoneCode = verificationRequests.generateVerificationCode();
+        // const verificationResponse = await verificationRequests
+        //     .verifySms({
+        //         fourDigitCode: phoneCode,
+        //         recipient: phoneNumber.replace("+", ""),
         //     })
-        // );
+        //     .then((res) => {
+        //         if (res.data.sentOk === true) {
+        //             dispatch(setSmsCode({ smsCode: phoneCode }));
+        //             toast.success("Verification code sent to your phone", {
+        //                 id: loadingToastId,
+        //             });
+                    
+        //         } else {
+        //             toast.error(
+        //                 "Could not send sms to the phone number given. Please go back and try again",
+        //                 { id: loadingToastId }
+        //             );
+        //             setButtonLoading(false);
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         console.log("hello");
+        //         toast.error(
+        //             "Something went wrong while sending verification code. Please try again later",
+        //             { id: loadingToastId }
+        //         );
+        //         setButtonLoading(false);
+        //     });
+        openModalFunc();    
+            
     });
 
     return (

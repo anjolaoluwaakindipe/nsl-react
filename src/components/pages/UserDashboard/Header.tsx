@@ -12,7 +12,7 @@ function Header() {
                     <div className="flex w-full justify-between  font-semibold text-xl pt-5">
                         <div className="text-primaryColor text-xl md:text-2xl">
                             Welcome{" "}
-                            {capitalize(user?.name?.split(",")[1] || "")}
+                            {capitalize(user?.firstName!)}
                         </div>
                     </div>
 

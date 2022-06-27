@@ -39,7 +39,7 @@ function ProfileHeader() {
                         Profile
                     </h1>
                     <h1 className=" text-base md:text-xl font-light">
-                        {user?.name}
+                        {user?.firstName?.toUpperCase() + " " + (user?.middleName ? user?.middleName?.toUpperCase() + " " : "") + user?.lastName?.toUpperCase() }
                     </h1>
                     <div className="flex space-x-2 text-xs items-center justify-center md:justify-start">
                         <div className="p-1 text-white bg-successColor rounded-sm">

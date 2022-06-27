@@ -10,6 +10,7 @@ type LoanApplicationFormInfo = {
     termsAndCondition: boolean;
 };
 
+// Update Personal Details Form
 type PersonalDetailsFormInfo = {
     firstName: string;
     lastName: string;
@@ -33,6 +34,7 @@ type PersonalDetailsFormInfo = {
     documentRefNumber: string;
 };
 
+// Update Employment Details Form
 type EmploymentDetailsFormInfo = {
     jobTitle:string ;
     companyName: string ;
@@ -43,6 +45,7 @@ type EmploymentDetailsFormInfo = {
     companyAddress:string ;
 };
 
+// Sign Up Form
 type CreateAccountFormData = {
     // cscsAccountNumber: string;
     firstName: string;
@@ -56,8 +59,12 @@ type CreateAccountFormData = {
     confirmPassword: string;
 };
 
+// edit personal information form
 type EditPersonalDetailsInfo = {
-    fullname: string;
+    firstName: string;
+    lastName: string;
+    title: string;
+    middleName: string;
     emailAddress: string;
     phoneNumber: string;
     gender: { value: string; label: string } | Record;
@@ -65,12 +72,31 @@ type EditPersonalDetailsInfo = {
     maritalStatus: { value: string; label: string } | Record;
     cscsNumber: string;
     residentialAddress: string;
-    picture: FileList;
-    proofOfIdentification: FileList;
-    proofOfResidence: FileList;
-    salarySlips: FileList;
+    bvn: string;
 };
 
+// edit employment information form 
+type EditEmploymentInfo = {
+    jobTitle: string;
+    companyName: string;
+    natureOfBusiness: string;
+    companyPhoneNumber: string;
+    companyEmailAddress: string;
+    grossIncome: string;
+    companyAddress: string;
+};
+
+type EditUploadsInfo = {
+    IdissueDate: string;
+    IdexpiryDate: string;
+    picture: string | null;
+    proofOfIdentification: string | null;
+    proofOfResidence: string | null;
+    documentType: { value: string; label: string } | Record;
+    documentRefNumber: string;
+};
+
+// Login Form
 type LoginInfo = {
     usernameOrEmail: string;
     password: string;

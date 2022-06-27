@@ -255,18 +255,18 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
             picture,
             cb,
         }: {
-            firstName: string;
-            middleName: string;
-            lastName: string;
-            bvn: string;
-            gender: string;
-            maritalStatus: string;
-            dateOfBirth: string;
-            title: string;
-            email: string;
-            phoneNumber: string;
-            residentialAddress: string;
-            cscsNumber: string;
+            firstName?: string | null;
+            middleName?: string | null;
+            lastName?: string | null;
+            bvn?: string | null;
+            gender?: string | null;
+            maritalStatus?: string | null;
+            dateOfBirth?: string | null;
+            title?: string | null;
+            email?: string | null;
+            phoneNumber?: string | null;
+            residentialAddress?: string | null;
+            cscsNumber?: string | null;
             identificationDocType?: string | null;
             identificationDocRef?: string | null;
             identificationIssueDate?: string | null;
@@ -756,20 +756,20 @@ const authSlice = createSlice({
                     (object) =>
                         object.documentType !== "Photo" &&
                         object.documentType !== "Proof of Address"
-                )[0] as ProofOfIdentificationFromGetUserAppResponse;
+                )![0]! as ProofOfIdentificationFromGetUserAppResponse;
                 state.user!.identificationDocType =
-                    identificationObject.documentType;
+                    identificationObject?.documentType!;
                 state.user!.identificationDocRef =
-                    identificationObject.documentReference;
+                    identificationObject?.documentReference!;
                 state.user!.identificationIssueDate =
-                    identificationObject.documentIssueDate;
+                    identificationObject?.documentIssueDate!;
                 state.user!.identificationDocExpiryDate =
-                    identificationObject.documentExpiryDate;
+                    identificationObject?.documentExpiryDate!;
                 state.user!.identificationDocumentImage =
-                    identificationObject.documentImage;
-                state.user!.proofOfAddressImage =
-                    proofOfAddressObject.documentImage;
-                state.user!.picture = photoObject.documentImage;
+                    identificationObject?.documentImage!;
+                state.user!.proofOfAddressImage! =
+                    proofOfAddressObject?.documentImage!;
+                state.user!.picture = photoObject?.documentImage!;
 
                 // employmentInformation
                 state.user!.employmentInfo.companyAddress =
@@ -822,10 +822,13 @@ const authSlice = createSlice({
                 state.isLoading = true;
                 state.isError = false;
                 state.errorMessage = "";
-                toast.loading("Updating Profile...", {
-                    id: updateUserPersonalDetailsFull.name,
-                    position: "top-right",
-                });
+                toast.loading(
+                    "Updating Personal Information. Please wait this might take a while...",
+                    {
+                        id: updateUserPersonalDetailsFull.name,
+                        position: "top-right",
+                    }
+                );
             })
             .addCase(
                 updateUserPersonalDetailsFull.rejected,
@@ -864,7 +867,7 @@ const authSlice = createSlice({
                     state.isLoading = true;
                     state.isError = false;
                     state.errorMessage = "";
-                    toast.loading("Updating Profile...", {
+                    toast.loading("Updating Employment Information...", {
                         id: updateUserEmploymentDetailsFull.name,
                         position: "top-right",
                     });
