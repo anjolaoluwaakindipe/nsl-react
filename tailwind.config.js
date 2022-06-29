@@ -17,6 +17,7 @@ module.exports = {
                 underlineColor: "rgba(226, 210, 209, 1)",
                 successColor: "rgba(23, 120, 7, 1)",
                 bgColor3: "#E5E5E5",
+                lightPink: "rgba(109, 32, 27, 0.14)"
             },
             fontFamily: {
                 sans: ["Poppins", ...defaultTheme.fontFamily.sans],

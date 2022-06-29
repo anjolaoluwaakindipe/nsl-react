@@ -5,6 +5,7 @@
     "dependencies": {
         "@craco/craco": "^6.4.3",
         "@hookform/resolvers": "^2.8.8",
+        "@material-tailwind/react": "^1.0.6",
         "@react-keycloak/web": "^3.4.0",
         "@reduxjs/toolkit": "^1.8.1",
         "@tepez/joi-phone-number-extensions": "^1.2.0",
