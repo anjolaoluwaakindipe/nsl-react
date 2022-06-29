@@ -3,7 +3,6 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@craco/craco": "^6.4.3",
         "@hookform/resolvers": "^2.8.8",
         "@react-keycloak/web": "^3.4.0",
         "@reduxjs/toolkit": "^1.8.1",
@@ -36,7 +35,7 @@
         "react-phone-number-input": "^3.1.52",
         "react-redux": "^8.0.1",
         "react-router-dom": "^6.3.0",
-        "react-scripts": "^4.0.3",
+        "react-scripts": "^5.0.1",
         "react-webcam": "^7.0.1",
         "reactjs-popup": "^2.0.5",
         "redux-persist": "^6.0.0",
@@ -46,9 +45,9 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start": "cross-env TAILWIND_MODE=watch craco start",
-        "build": "craco build",
-        "test": "craco test",
+        "start": "cross-env TAILWIND_MODE=watch react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
     "resolutions": {
@@ -73,10 +72,10 @@
         ]
     },
     "devDependencies": {
-        "autoprefixer": "^9.8.8",
+        "autoprefixer": "^10.4.7",
         "cross-env": "^7.0.3",
-        "postcss": "^7.0.39",
+        "postcss": "^8.4.14",
         "react-error-overlay": "^6.0.9",
-        "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
+        "tailwindcss": "^3.1.4"
     }
 }
