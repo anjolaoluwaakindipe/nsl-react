@@ -1,7 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { authSelector, getUserFull } from "../../../state/authSlice";
+import {
+    authSelector,
+    getUserFull,
+    refreshUserTokens,
+} from "../../../state/authSlice";
 import { paths } from "../../../utils/constants/allPaths";
 import { useEffect, useState } from "react";
 import { AppDispatch } from "../../../state/store";
@@ -19,13 +23,12 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
     // local state
     const [isLoading, setIsLoading] = useState(true);
 
-
-
-    const refreshUserInfo = async () =>
+    const refreshUserInfo = async () => {
         await dispatch(getUserFull());
+        await dispatch(refreshUserTokens());
+    };
 
     useEffect(() => {
-
         refreshUserInfo();
     }, []); // eslint-disable-line
 
@@ -34,7 +37,6 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
         if (!accessToken && !refreshToken) {
             return navigate(paths.LOGIN, { replace: true });
         }
-
         setIsLoading(false);
     }, [accessToken, refreshToken, navigate]);
 

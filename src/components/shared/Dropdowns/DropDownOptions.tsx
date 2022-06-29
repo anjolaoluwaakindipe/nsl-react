@@ -48,7 +48,7 @@ function DropDownOptions(props: DropDownOptionsProps) {
                             ? undefined
                             : value
                     }
-                    placeholder="hkjk "
+                    placeholder="h"
                     className="relative"
                     placeholderClassName={
                         value && value.value !== ""

@@ -34,7 +34,6 @@ function Form() {
         { value: "F", label: "Female" },
     ];
 
-    const { isLoading, isSuccess, isError } = useSelector(authSelector);
     const {
         email,
         firstName,

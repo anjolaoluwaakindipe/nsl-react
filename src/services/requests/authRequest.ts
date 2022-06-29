@@ -1,5 +1,4 @@
 import axios from "axios";
-import { appendFile } from "fs";
 import {
     ADMIN_CLIENT_ID,
     BASE_URL,
@@ -8,6 +7,7 @@ import {
     CUSTOM_CLIENT_ID,
     CUSTOM_REALM,
     PASSWORD_GRANT_TYPE,
+    REFRESH_TOKEN_GRANT_TYPE,
 } from "./authSettings";
 
 // function needed to convert javascript object to x-www-form-urlencoded readable form
@@ -57,7 +57,7 @@ const authRequest = {
                         "content-type":
                             "application/x-www-form-urlencoded;charset=utf-8",
                     },
-                    timeout: 10000,
+                    timeout: 1000000,
                     timeoutErrorMessage: "Login Request Timeout",
                 }
             )
@@ -74,12 +74,14 @@ const authRequest = {
     },
 
     // GET USER INFORMATION
-    getUser: async (token: string) => {
+    getUserKeycloak: async (token: string) => {
         // get request to keycloak server for user info
-        let res: { status: number; data: any } = {
-            status: 0,
-            data: {},
-        };
+        const res: {
+            status: null | number;
+            data: Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
+
         return await axios
             .get(
                 BASE_URL +
@@ -101,9 +103,10 @@ const authRequest = {
                 res.data = response.data;
                 return res;
             })
-            .catch((err) => {
-                console.log(err.message);
-                return err;
+            .catch((error) => {
+                res.status = error.response.status;
+                res.code = error.code;
+                return res;
             });
     },
 
@@ -386,7 +389,7 @@ const authRequest = {
         email?: string | null;
         phoneNumber?: string | null;
         residentialAddress?: string | null;
-        cscsNumber?: string  | null;
+        cscsNumber?: string | null;
         identificationDocType?: string | null;
         identificationDocRef?: string | null;
         identificationIssueDate?: string | null;
@@ -397,58 +400,63 @@ const authRequest = {
     }) => {
         // required information to get
 
-
-        const body:Record<string, any> = {
-            customerNo : customerNo
+        const body: Record<string, any> = {
+            customerNo: customerNo,
         };
-        if (firstName){
-            body.firstname = firstName
+        if (firstName) {
+            body.firstname = firstName;
         }
-        if (lastName){
-            body.surname = lastName
+        if (lastName) {
+            body.surname = lastName;
         }
-        if (middleName){
-            body.middlename = middleName
+        if (middleName) {
+            body.middlename = middleName;
         }
-        if( bvn){
-            body.bvn = bvn
+        if (bvn) {
+            body.bvn = bvn;
         }
-        if(gender){
-            body.gender = gender
+        if (gender) {
+            body.gender = gender;
         }
-        if(title){
-            body.title = title
+        if (title) {
+            body.title = title;
         }
-        if (maritalStatus){
-            body.maritalStatus = maritalStatus
+        if (maritalStatus) {
+            body.maritalStatus = maritalStatus;
         }
-        if (dateOfBirth){
-            body.dateOfBirth = dateOfBirth
+        if (dateOfBirth) {
+            body.dateOfBirth = dateOfBirth;
         }
-        if (email){
-            body.email = email
+        if (email) {
+            body.email = email;
         }
-        if(phoneNumber){
-            body.mobileNo = phoneNumber
+        if (phoneNumber) {
+            body.mobileNo = phoneNumber;
         }
-        if(cscsNumber){
-            body.cscsno = cscsNumber
+        if (cscsNumber) {
+            body.cscsno = cscsNumber;
         }
-        if(residentialAddress){
-            body.ResidentialAddress = residentialAddress
+        if (residentialAddress) {
+            body.ResidentialAddress = residentialAddress;
         }
-        if(identificationDocType && identificationDocRef && identificationIssueDate && identificationDocExpiryDate && identificationDocumentImage){
+        if (
+            identificationDocType &&
+            identificationDocRef &&
+            identificationIssueDate &&
+            identificationDocExpiryDate &&
+            identificationDocumentImage
+        ) {
             body.idDocType = identificationDocType;
-            body.idDocRef= identificationDocRef;
+            body.idDocRef = identificationDocRef;
             body.idIssueDate = identificationIssueDate;
             body.idDocExpiryDate = identificationDocExpiryDate;
             body.idDocumentImage = identificationDocumentImage;
         }
-        if(proofOfAddressImage){
-            body.proofOfAddressImage = proofOfAddressImage
+        if (proofOfAddressImage) {
+            body.proofOfAddressImage = proofOfAddressImage;
         }
-        if(picture){
-            body.photo = picture
+        if (picture) {
+            body.photo = picture;
         }
 
         // response data format
@@ -589,27 +597,60 @@ const authRequest = {
                 return res;
             });
     },
+    refreshUserTokens: async (refreshToken: string) => {
+        const res: {
+            status: null | number;
+            data: Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
+
+        // information required to login in user
+        let refreshInfo = {
+            refresh_token: refreshToken,
+            grant_type: REFRESH_TOKEN_GRANT_TYPE,
+            client_id: CUSTOM_CLIENT_ID,
+        };
+
+        // convert login information to urlencoded form
+        const body = xformurlencoder(refreshInfo);
+
+        return await axios
+            .post(
+                BASE_URL +
+                    "/auth/realms/" +
+                    CUSTOM_REALM +
+                    "/protocol/openid-connect/token",
+                body,
+                {
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded;charset=utf-8",
+                    },
+                    timeout: 100000,
+                    timeoutErrorMessage: "Login Request Timeout",
+                }
+            )
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                return res;
+            })
+            .catch((error) => {
+                res.status = error.response.status;
+                res.code = error.code;
+                return res;
+            });
+    },
 };
+
 export default authRequest;
 
-// async function myFunc() {
-//     console.log(
-//         await authRequest.updateUserPersonalInfoApp({
-//             email: "anjyakindipe@gmail.com",
-//             firstName: "Anjy",
-//             lastName: "Anjy",
-//             dateOfBirth: "2000-12-08",
-//             bvn: "12345678901",
-//             gender: "M",
-//             phoneNumber: "+2347030444529",
-//             cscsNumber: "12233344",
-//             maritalStatus: "F",
-//             middleName: "Daniel",
-//             residentialAddress: "29 Adigun Close",
-//             customerNo: "009298",
-//             title: "Mr",
-//         })
-//     );
-// }
+async function myFunc() {
+    console.log(
+        await authRequest.refreshUserTokens(
+            "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2MzA5ZjU2MS0yNTk3LTQzYTgtYmU0OS04NzQ1NzNjNDllZjUifQ.eyJleHAiOjE2NTY1MTI1NzksImlhdCI6MTY1NjUxMDc3OSwianRpIjoiZDEyMWMxMjctZjI1Ni00NDY3LTk3ODktZDdlN2M5NDQ5NmI1IiwiaXNzIjoiaHR0cHM6Ly9zZW50cnkuaXNzbC5uZy9hdXRoL3JlYWxtcy9uc2wiLCJhdWQiOiJodHRwczovL3NlbnRyeS5pc3NsLm5nL2F1dGgvcmVhbG1zL25zbCIsInN1YiI6ImYyMzYxM2RlLTk3MWYtNDcxNi1hNDU0LTZmMzczNDRiOTg1YSIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJuc2wtcmVhY3QtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjI4M2UwYmE4LTgyZjgtNDY3ZS1iMDNhLTNmNDAxMzZjOTk1ZSIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCJ9.3u79cTQfJtzjnqxon0SlRsG34zs7CmLhMwJ80JIYmkQ"
+        )
+    );
+}
 
-// myFunc();
+myFunc();

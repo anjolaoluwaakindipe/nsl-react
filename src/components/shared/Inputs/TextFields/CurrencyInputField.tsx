@@ -26,17 +26,19 @@ function CurrencyInputField({
         if (parseFloat(newValue!)) {
             setInputValue(newValue!);
             onChange!(newValue!);
-        }else{
+        } else {
             setInputValue("0");
-            onChange!("0");
+            if (onChange) {
+                onChange!("0");
+            }
         }
     };
 
     useEffect(() => {
         if (parseFloat(value!)) {
             setInputValue(value!);
-        }else{
-            setInputValue("0")
+        } else {
+            setInputValue("0");
         }
     }, [value]);
 

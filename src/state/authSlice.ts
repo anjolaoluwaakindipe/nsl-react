@@ -6,9 +6,8 @@ import {
     UserInfoAppResponse,
 } from "../typings";
 
-import { RootState } from "./store";
 import toast from "react-hot-toast";
-import { stat } from "fs";
+import { RootState } from "./store";
 
 const initialState: AuthState = {
     accessToken: "",
@@ -412,12 +411,11 @@ export const loginUser = createAsyncThunk(
         try {
             // token response
             const tokenResponse = await authRequest.loginUser(email, password);
-            console.log(tokenResponse);
 
             // check if token response was successful or not
             if (tokenResponse.status === 200) {
                 // use access token to get user information
-                const userResponse = await authRequest.getUser(
+                const userResponse = await authRequest.getUserKeycloak(
                     tokenResponse.data["access_token"]
                 );
 
@@ -579,6 +577,42 @@ export const createUserAuth = createAsyncThunk(
     }
 );
 
+export const refreshUserTokens = createAsyncThunk(
+    "auth/refreshUserTokensStatus",
+    async (_, thunkAPI) => {
+        const { accessToken, refreshToken } = (
+            (await thunkAPI.getState()) as RootState
+        ).auth;
+        if (!accessToken || !refreshToken)
+            return thunkAPI.dispatch<unknown, any>(logoutUser());
+
+        const accessTokenResponse = await authRequest.getUserKeycloak(
+            accessToken
+        );
+
+        if (accessTokenResponse.status === 200) {
+            return thunkAPI.fulfillWithValue(null);
+        } else {
+            const refreshTokenResponse = await authRequest.refreshUserTokens(
+                refreshToken
+            );
+
+            if (refreshTokenResponse.status === 200) {
+                return thunkAPI.dispatch<unknown, any>(
+                    setAuthStateTokens({
+                        refreshToken:
+                            refreshTokenResponse.data["refresh_token"],
+                        token: refreshTokenResponse.data["access_token"],
+                    })
+                );
+            } else {
+                toast.error("Login Session Expired. Please login again");
+                return thunkAPI.dispatch<unknown, any>(logoutUser());
+            }
+        }
+    }
+);
+
 // state action for logging user out
 export const logoutUser = createAsyncThunk<
     any,
@@ -608,17 +642,75 @@ export const logoutUser = createAsyncThunk<
     }
 });
 
+const userInformationStateSetter = (
+    state: AuthState,
+    allUserInformation: UserInfoAppResponse
+) => {
+    // personal information
+    console.log(allUserInformation.kycdocs);
+    state.user!.email = allUserInformation.email;
+    state.user!.customerNo = allUserInformation.customerNo;
+    state.user!.dateOfBirth = allUserInformation.dob;
+    state.user!.maritalStatus = allUserInformation.maritalStatus;
+    state.user!.phoneNumber = allUserInformation.phoneRef;
+    state.user!.firstName = allUserInformation.firstName;
+    state.user!.lastName = allUserInformation.lastName;
+    state.user!.middleName = allUserInformation.otherName;
+    state.user!.gender = allUserInformation.gender;
+    state.user!.bvn = allUserInformation.bvn;
+    state.user!.cscsNumber = allUserInformation.memberShipNo!;
+    state.user!.residentialAddress = allUserInformation.address!;
+
+    // upload info
+    const photoObject = allUserInformation.kycdocs.filter(
+        (object) => object.documentType === "Photo"
+    )[0];
+    const proofOfAddressObject = allUserInformation.kycdocs.filter(
+        (object) => object.documentType === "Proof of Address"
+    )[0];
+    const identificationObject = allUserInformation.kycdocs.filter(
+        (object) =>
+            object.documentType !== "Photo" &&
+            object.documentType !== "Proof of Address"
+    )![0]! as ProofOfIdentificationFromGetUserAppResponse;
+    state.user!.identificationDocType = identificationObject?.documentType!;
+    state.user!.identificationDocRef = identificationObject?.documentReference!;
+    state.user!.identificationIssueDate =
+        identificationObject?.documentIssueDate!;
+    state.user!.identificationDocExpiryDate =
+        identificationObject?.documentExpiryDate!;
+    state.user!.identificationDocumentImage =
+        identificationObject?.documentImage!;
+    state.user!.proofOfAddressImage! = proofOfAddressObject?.documentImage!;
+    state.user!.picture = photoObject?.documentImage!;
+
+    // employmentInformation
+    state.user!.employmentInfo.companyAddress =
+        allUserInformation.employerAddress;
+    state.user!.employmentInfo.companyEmail = allUserInformation.officeEmail;
+    state.user!.employmentInfo.companyName = allUserInformation.employerName;
+    state.user!.employmentInfo.companyPhoneNumber =
+        allUserInformation.officePhoneNo;
+    state.user!.employmentInfo.jobTitle = allUserInformation.occupationCode;
+    state.user!.employmentInfo.natureOfBusiness =
+        allUserInformation.natureOfBuss;
+    state.user!.employmentInfo.grossIncome =
+        allUserInformation.grossAnnualIncome?.toString()!;
+
+    return state;
+};
+
 // state action for refreshing user tokens
 
 const authSlice = createSlice({
     name: "auth",
     initialState: initialState,
     reducers: {
-        setAuthState(
+        setAuthStateTokens(
             state: AuthState,
-            action: PayloadAction<{ refresToken: string; token: string }>
+            action: PayloadAction<{ refreshToken: string; token: string }>
         ) {
-            state.refreshToken = action.payload.refresToken;
+            state.refreshToken = action.payload.refreshToken;
             state.accessToken = action.payload.token;
         },
         clearAuthState(state: AuthState) {
@@ -633,25 +725,9 @@ const authSlice = createSlice({
                 state.isError = false;
                 state.accessToken = action?.payload!.accessToken;
                 state.refreshToken = action?.payload!.refreshToken;
-                state.user!.name = action?.payload!.allUserInformation.name;
-                state.user!.email = action?.payload!.allUserInformation.email;
-                state.user!.customerNo =
-                    action?.payload!.allUserInformation.customerNo;
-                state.user!.dateOfBirth =
-                    action?.payload!.allUserInformation.dob;
-                state.user!.maritalStatus =
-                    action?.payload!.allUserInformation.maritalStatus;
-                state.user!.phoneNumber =
-                    action?.payload!.allUserInformation.phoneRef;
-                state.user!.firstName =
-                    action?.payload!.allUserInformation.firstName;
-                state.user!.lastName =
-                    action?.payload!.allUserInformation.lastName;
-                state.user!.middleName =
-                    action?.payload!.allUserInformation.otherName;
-                state.user!.gender = action?.payload!.allUserInformation.gender;
-                state.user!.bvn = action?.payload.allUserInformation.bvn;
-                return state;
+                const allUserInformation = action.payload
+                    ?.allUserInformation as UserInfoAppResponse;
+                return userInformationStateSetter(state, allUserInformation);
             })
             .addCase(loginUser.pending, (state) => {
                 state.isLoading = true;
@@ -731,61 +807,7 @@ const authSlice = createSlice({
                 const allUserInformation = action.payload
                     ?.allUserInformation as UserInfoAppResponse;
 
-                // personal information
-                console.log(allUserInformation.kycdocs);
-                state.user!.customerNo = allUserInformation.customerNo;
-                state.user!.dateOfBirth = allUserInformation.dob;
-                state.user!.maritalStatus = allUserInformation.maritalStatus;
-                state.user!.phoneNumber = allUserInformation.phoneRef;
-                state.user!.firstName = allUserInformation.firstName;
-                state.user!.lastName = allUserInformation.lastName;
-                state.user!.middleName = allUserInformation.otherName;
-                state.user!.gender = allUserInformation.gender;
-                state.user!.bvn = allUserInformation.bvn;
-                state.user!.cscsNumber = allUserInformation.memberShipNo!;
-                state.user!.residentialAddress = allUserInformation.address!;
-
-                // upload info
-                const photoObject = allUserInformation.kycdocs.filter(
-                    (object) => object.documentType === "Photo"
-                )[0];
-                const proofOfAddressObject = allUserInformation.kycdocs.filter(
-                    (object) => object.documentType === "Proof of Address"
-                )[0];
-                const identificationObject = allUserInformation.kycdocs.filter(
-                    (object) =>
-                        object.documentType !== "Photo" &&
-                        object.documentType !== "Proof of Address"
-                )![0]! as ProofOfIdentificationFromGetUserAppResponse;
-                state.user!.identificationDocType =
-                    identificationObject?.documentType!;
-                state.user!.identificationDocRef =
-                    identificationObject?.documentReference!;
-                state.user!.identificationIssueDate =
-                    identificationObject?.documentIssueDate!;
-                state.user!.identificationDocExpiryDate =
-                    identificationObject?.documentExpiryDate!;
-                state.user!.identificationDocumentImage =
-                    identificationObject?.documentImage!;
-                state.user!.proofOfAddressImage! =
-                    proofOfAddressObject?.documentImage!;
-                state.user!.picture = photoObject?.documentImage!;
-
-                // employmentInformation
-                state.user!.employmentInfo.companyAddress =
-                    allUserInformation.employerAddress;
-                state.user!.employmentInfo.companyEmail =
-                    allUserInformation.officeEmail;
-                state.user!.employmentInfo.companyName =
-                    allUserInformation.employerName;
-                state.user!.employmentInfo.companyPhoneNumber =
-                    allUserInformation.officePhoneNo;
-                state.user!.employmentInfo.jobTitle =
-                    allUserInformation.occupationCode;
-                state.user!.employmentInfo.natureOfBusiness =
-                    allUserInformation.natureOfBuss;
-                state.user!.employmentInfo.grossIncome =
-                    allUserInformation.grossAnnualIncome?.toString()!;
+                return userInformationStateSetter(state, allUserInformation);
             })
             .addCase(getUserFull.pending, (state, action) => {
                 state.isLoading = true;
@@ -889,7 +911,7 @@ const authSlice = createSlice({
     },
 });
 
-export const { setAuthState, clearAuthState } = authSlice.actions;
+export const { setAuthStateTokens, clearAuthState } = authSlice.actions;
 
 export const authSelector = (state: RootState) => state.auth;
 

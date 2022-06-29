@@ -8,6 +8,7 @@ type LoanApplicationFormInfo = {
     interest: string;
     purpose: string;
     termsAndCondition: boolean;
+    picture: string;
 };
 
 // Update Personal Details Form
@@ -21,7 +22,7 @@ type PersonalDetailsFormInfo = {
     gender: { value: string; label: string } | Record;
     dateOfBirth: string;
     IdissueDate: string;
-    IdexpiryDate:string;
+    IdexpiryDate: string;
     maritalStatus: { value: string; label: string } | Record;
     cscsNumber: string;
     residentialAddress: string;
@@ -36,13 +37,13 @@ type PersonalDetailsFormInfo = {
 
 // Update Employment Details Form
 type EmploymentDetailsFormInfo = {
-    jobTitle:string ;
-    companyName: string ;
-    natureOfBusiness: string ;
-    companyPhoneNumber:string ;
-    companyEmailAddress: string ;
-    grossIncome:string;
-    companyAddress:string ;
+    jobTitle: string;
+    companyName: string;
+    natureOfBusiness: string;
+    companyPhoneNumber: string;
+    companyEmailAddress: string;
+    grossIncome: string;
+    companyAddress: string;
 };
 
 // Sign Up Form
@@ -75,7 +76,7 @@ type EditPersonalDetailsInfo = {
     bvn: string;
 };
 
-// edit employment information form 
+// edit employment information form
 type EditEmploymentInfo = {
     jobTitle: string;
     companyName: string;
@@ -161,13 +162,13 @@ interface AuthState {
         proofOfAddressImage?: string | null;
         picture?: string | null;
         employmentInfo: {
-            jobTitle:string|null,
-            natureOfBusiness:string |null,
-            companyName:string |null,
-            companyPhoneNumber:string | null,
-            companyEmail:string | null,
-            companyAddress:string | null,
-            grossIncome: string | null,
+            jobTitle: string | null;
+            natureOfBusiness: string | null;
+            companyName: string | null;
+            companyPhoneNumber: string | null;
+            companyEmail: string | null;
+            companyAddress: string | null;
+            grossIncome: string | null;
         };
     } | null;
 

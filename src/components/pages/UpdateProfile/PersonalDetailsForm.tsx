@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
     authSelector,
-    updateUserPersonalDetailsFull
+    updateUserPersonalDetailsFull,
 } from "../../../state/authSlice";
 import { AppDispatch } from "../../../state/store";
 import { PersonalDetailsFormInfo } from "../../../typings";
@@ -24,6 +24,7 @@ import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 import FileInput from "../../shared/Inputs/FileInput";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
+import { AiOutlineClose } from "react-icons/ai";
 
 function PersonalDetailsForm() {
     // redux auth state
@@ -100,6 +101,7 @@ function PersonalDetailsForm() {
         mode: "onChange",
     });
 
+    // submit personal details for update
     const onSubmitForm = handleSubmit(async (data) => {
         setButtonLoading(true);
         console.log(data);
@@ -141,21 +143,33 @@ function PersonalDetailsForm() {
     console.log(getValues());
 
     const FileImages = ({ base64 }: { base64: string }) => {
-        const [showFullImage, setShowFullImage] = useState(false)
+        const [showFullImage, setShowFullImage] = useState(false);
         return (
             <>
                 {showFullImage && (
-                    <div className="fixed top-0 left-0 w-full h-screen p-5 md:p-20 bg-gray-900 bg-opacity-40   flex justify-center items-center" onClick={()=>setShowFullImage(false)}>
+                    <div
+                        className="fixed top-0 left-0 w-full h-screen p-5 md:p-20 bg-gray-900 bg-opacity-40   flex justify-center items-center"
+                        onClick={() => setShowFullImage(false)}
+                    >
+                        <AiOutlineClose
+                            className="text-2xl text-white absolute top-10 right-10 cursor-pointer"
+                            onClick={() => setShowFullImage(false)}
+                        />
                         <img
-                            src={"data:image/png;base64," + base64}
+                            src={"data:image/jpg;base64," + base64}
                             alt="your_image"
-                            className="object-contain w-full object-top"
-                            onClick={(e)=>{e.stopPropagation()}}
+                            className="object-contain w-full md:w-auto  object-top"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
                         />
                     </div>
                 )}
                 <div className="col-span-12">
-                    <div className="w-full bg-gray-400 flex h-60 justify-center cursor-pointer overflow-hidden" onClick={()=>setShowFullImage(true)}>
+                    <div
+                        className="w-full bg-gray-400 flex h-60 justify-center cursor-pointer overflow-hidden"
+                        onClick={() => setShowFullImage(true)}
+                    >
                         <img
                             src={"data:image/png;base64," + base64}
                             alt="your_image"
