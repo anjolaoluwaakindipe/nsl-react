@@ -15,28 +15,25 @@ import { authSelector } from "../../../state/authSlice";
 import {
     setEmailCode,
     setSignUpInfo,
+    setSmsCode,
     signUpInfoSelector,
 } from "../../../state/signUpInfoSlice";
 import { AppDispatch } from "../../../state/store";
+import { CreateAccountFormData } from "../../../typings";
 import { paths } from "../../../utils/constants/allPaths";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
-import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
-import Dropdown from "react-dropdown";
-import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
-import { numbersNoDecimal } from "../../../utils/constants/inputValidationPatterns";
-import { CreateAccountFormData } from "../../../typings";
+import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
+import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
 
 function Form() {
-
     const genderDropdownOptions = [
         { value: "M", label: "Male" },
         { value: "F", label: "Female" },
     ];
 
-    const { isLoading, isSuccess, isError } = useSelector(authSelector);
     const {
         email,
         firstName,
@@ -49,16 +46,12 @@ function Form() {
     const dispatch = useDispatch<AppDispatch>();
     const [disableButton, setDisableButton] = useState(false);
 
-
-
     const {
         register,
         handleSubmit,
         control,
-        watch,
         formState: { errors },
         setValue,
-        getValues,
     } = useForm<CreateAccountFormData>({
         defaultValues: {
             firstName: "",
@@ -70,6 +63,7 @@ function Form() {
         },
         resolver: joiResolver(createAccountSchema),
     });
+
     const { openModalFunc } = useModal("BeginVerificationModal", false);
 
     useEffect(() => {
@@ -105,25 +99,27 @@ function Form() {
         setValue,
     ]);
 
-    useEffect(() => {
-        if (!isLoading && isSuccess) {
-            openModalFunc();
-        }
-    }, [isLoading, isSuccess, isError, openModalFunc]);
-
+    // useEffect(() => {
+    //     if (!isLoading && isSuccess) {
+    //         openModalFunc();
+    //     }
+    // }, [isLoading, isSuccess, isError]);
 
     const onSubmit = handleSubmit(async (data) => {
-
         // disable button on click
         setDisableButton(true);
 
-        // generate email code
+        // generate email and phone code
         const emailCode = verificationRequests.generateVerificationCode();
+        const phoneCode = verificationRequests.generateVerificationCode();
 
         // create loading toaster
-        const loading = toast.loading("Sending code to your email...", {
-            position: "top-right",
-        });
+        const loading = toast.loading(
+            "Sending code to your email and phone number...",
+            {
+                position: "top-right",
+            }
+        );
 
         // send email verification
         const verificationResponse = await verificationRequests
@@ -131,7 +127,7 @@ function Form() {
                 fourDigitCode: emailCode,
                 toEmail: data.emailAddress,
             })
-            .then((res) => {
+            .then(async (res) => {
                 dispatch(
                     setSignUpInfo({
                         email: data.emailAddress,
@@ -144,11 +140,39 @@ function Form() {
                         lastName: data.lastName,
                     })
                 );
+                console.log(data.phoneNumber.replace("+", ""));
                 dispatch(setEmailCode({ emailCode }));
-                toast.success("Verification code sent to your email", {
-                    id: loading,
-                });
-                openModalFunc();
+                await verificationRequests
+                    .verifySms({
+                        fourDigitCode: phoneCode,
+                        recipient: data.phoneNumber.replace("+", ""),
+                    })
+                    .then((res) => {
+                        console.log(res.data);
+                        if (res.data.sentOK === true) {
+                            dispatch(setSmsCode({ smsCode: phoneCode }));
+                            toast.success(
+                                "Verification code sent to your email and phone number",
+                                {
+                                    id: loading,
+                                }
+                            );
+                            openModalFunc();
+                        } else {
+                            toast.error(
+                                "Could not send sms. Please check your phone number",
+                                { id: loading }
+                            );
+                        }
+                        console.log(res.data);
+                    })
+                    .catch((err) => {
+                        console.log("hello");
+                        toast.error(
+                            "Something went wrong while sending verification code. Please try again later",
+                            { id: loading }
+                        );
+                    });
             })
             .catch((err) => {
                 console.log("hello");
@@ -187,8 +211,6 @@ function Form() {
 
         setDisableButton(false);
     });
-
-    const watchGender = watch("gender");
 
     return (
         <form
@@ -237,66 +259,46 @@ function Form() {
                     render={({ field: { onChange, value } }) => (
                         <DropDownOptions
                             placeholder="Gender"
+                            onChange={onChange}
+                            value={value}
                             options={genderDropdownOptions}
-                            errorMessage= {errors?.gender?.value.message}
+                            errorMessage={errors?.gender?.value.message}
                         />
                     )}
                 />
             </div>
 
-
             {/*enter phone number */}
             <div className="col-span-12 md:col-span-6 ">
-                <div className="border-0 border-b-2  border-underlineColor">
-                    <Controller
-                        name="phoneNumber"
-                        control={control}
-                        rules={{
-                            validate: (value) =>
-                                isValidPhoneNumber(value || "") ||
-                                "Not a valid International Number",
-                        }}
-                        render={({ field: { onChange, value } }) => (
-                            <div>
-                                <PhoneField
-                                    placeholder="Phone Number"
-                                    phoneElementClassName="pb-4 space-x-4 max-h-10"
-                                    onChange={onChange}
-                                    value={value}
-                                    style={{ borderRadius: "0px" }}
-                                />
-                            </div>
-                        )}
-                    />
-                </div>
-                <p className="text-xs text-red-900 ">
-                    {errors.phoneNumber?.message}
-                </p>
+                <Controller
+                    name="phoneNumber"
+                    control={control}
+                    rules={{
+                        validate: (value) =>
+                            isValidPhoneNumber(value || "") ||
+                            "Not a valid International Number",
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                        <PhoneField
+                            placeholder="Phone Number"
+                            phoneElementClassName="pb-4 space-x-4 max-h-10"
+                            onChange={onChange}
+                            value={value}
+                            style={{ borderRadius: "0px" }}
+                            errorMessage={errors.phoneNumber?.message}
+                        />
+                    )}
+                />
             </div>
 
             {/*Date Of Birth*/}
             <div className=" col-span-12 md:col-span-6">
-                <div className="border-0 border-b-2 border-underlineColor ">
-                    <label htmlFor="EditProfileDetails_dateOfBirth"> </label>
-                    <input
-                        type="text"
-                        {...register("dateOfBirth")}
-                        id="EditProfileDetails__dateOfBirth"
-                        className="outline-none pb-4  w-full cursor-pointer"
-                        placeholder="Date of Birth"
-                        onFocus={(e) => {
-                            e.target.type = "date";
-                        }}
-                        onBlur={(e) => {
-                            e.target.type = "text";
-                        }}
-                    />
-                </div>
-                {errors.dateOfBirth && (
-                    <p className="text-xs text-red-900 ">
-                        {errors.dateOfBirth?.message}
-                    </p>
-                )}
+                <DateInputField
+                    register={register("dateOfBirth")}
+                    errorMessage={errors.dateOfBirth?.message}
+                    id="dateOfBirth"
+                    placeholder="Date of Birth"
+                />
             </div>
 
             {/* BVN */}

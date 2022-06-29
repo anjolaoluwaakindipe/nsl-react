@@ -10,8 +10,6 @@ import "react-phone-number-input/style.css";
 // react-icons
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useEffect, useState } from "react";
-import Dropdown from "react-dropdown";
-import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -20,12 +18,13 @@ import {
 } from "../../../state/authSlice";
 import { AppDispatch } from "../../../state/store";
 import { PersonalDetailsFormInfo } from "../../../typings";
-import { personalDetailsFormSchema } from "../../../utils/validation/updateProfile";
-import FileInput from "../../shared/Inputs/FileInput";
-import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
-import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 import { paths } from "../../../utils/constants/allPaths";
+import { updatePersonalDetailsFormSchema } from "../../../utils/validation/updateProfile";
+import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
+import FileInput from "../../shared/Inputs/FileInput";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
+import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
+import { AiOutlineClose } from "react-icons/ai";
 
 function PersonalDetailsForm() {
     // redux auth state
@@ -92,19 +91,20 @@ function PersonalDetailsForm() {
     const {
         register,
         control,
-
+        watch,
         handleSubmit,
         setValue,
         getValues,
         formState: { errors },
     } = useForm<PersonalDetailsFormInfo>({
-        resolver: joiResolver(personalDetailsFormSchema),
+        resolver: joiResolver(updatePersonalDetailsFormSchema),
         mode: "onChange",
     });
 
+    // submit personal details for update
     const onSubmitForm = handleSubmit(async (data) => {
         setButtonLoading(true);
-        console.log(data)
+        console.log(data);
         await dispatch(
             updateUserPersonalDetailsFull({
                 firstName: data.firstName,
@@ -131,7 +131,7 @@ function PersonalDetailsForm() {
                     ? data.IdissueDate.split("T")[0]
                     : data.IdissueDate,
                 identificationDocType: data.documentType.value,
-            proofOfAddressImage: data.proofOfResidence,
+                proofOfAddressImage: data.proofOfResidence,
                 cb: navigateToUpdateEmploymentDetail,
             })
         );
@@ -142,6 +142,58 @@ function PersonalDetailsForm() {
 
     console.log(getValues());
 
+    const FileImages = ({ base64 }: { base64: string }) => {
+        const [showFullImage, setShowFullImage] = useState(false);
+        return (
+            <>
+                {showFullImage && (
+                    <div
+                        className="fixed top-0 left-0 w-full h-screen p-5 md:p-20 bg-gray-900 bg-opacity-40   flex justify-center items-center"
+                        onClick={() => setShowFullImage(false)}
+                    >
+                        <AiOutlineClose
+                            className="text-2xl text-white absolute top-10 right-10 cursor-pointer"
+                            onClick={() => setShowFullImage(false)}
+                        />
+                        <img
+                            src={"data:image/jpg;base64," + base64}
+                            alt="your_image"
+                            className="object-contain w-full md:w-auto  object-top"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
+                        />
+                    </div>
+                )}
+                <div className="col-span-12">
+                    <div
+                        className="w-full bg-gray-400 flex h-60 justify-center cursor-pointer overflow-hidden"
+                        onClick={() => setShowFullImage(true)}
+                    >
+                        <img
+                            src={"data:image/png;base64," + base64}
+                            alt="your_image"
+                            className="object-cover w-full object-top"
+                        />
+                    </div>
+                </div>
+            </>
+        );
+    };
+
+    const displayImage = (preferredImage: string, placeholderImage: string) => {
+        if (!preferredImage && !placeholderImage) return;
+
+        if (preferredImage || placeholderImage) {
+            if (preferredImage) {
+                return <FileImages base64={preferredImage} />;
+            }
+
+            return <FileImages base64={placeholderImage} />;
+        }
+    };
+
+    // update fields with user information
     useEffect(() => {
         if (email) {
             setValue("emailAddress", email);
@@ -216,7 +268,6 @@ function PersonalDetailsForm() {
         if (identificationIssueDate && !identificationIssueDate !== null) {
             setValue("IdissueDate", identificationIssueDate);
         }
-        console.log(identificationDocType);
     }, [
         email,
         phoneNumber,
@@ -288,6 +339,8 @@ function PersonalDetailsForm() {
                         errorMessage={errors.lastName?.message}
                     />
                 </div>
+
+                {/* Middle Name */}
 
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
@@ -503,6 +556,11 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
+                {displayImage(
+                    watch("proofOfIdentification")!,
+                    identificationDocumentImage!
+                )}
+
                 <div className="col-span-12" />
 
                 {/* Profile Picture */}
@@ -522,6 +580,8 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
+                {displayImage(watch("picture")!, picture!)}
+
                 <div className="col-span-12">
                     <Controller
                         control={control}
@@ -537,6 +597,8 @@ function PersonalDetailsForm() {
                         )}
                     />
                 </div>
+
+                {displayImage(watch("proofOfResidence")!, proofOfAddressImage!)}
 
                 <div className="col-span-12">
                     <button

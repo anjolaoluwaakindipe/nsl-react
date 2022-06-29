@@ -1,5 +1,4 @@
 import React from "react";
-import CurrencyInput from "react-currency-input-field";
 
 // Used to Accept react-hook-form values
 import {
@@ -17,12 +16,14 @@ import { BsCheck2 } from "react-icons/bs";
 import { LoanApplicationFormInfo } from "../../../typings";
 import CardInput from "./CardInput";
 
-import{ useModal }from "../../../services/customHooks/useModal";
-import { paths } from "../../../utils/constants/allPaths";
 import { useNavigate } from "react-router-dom";
+import { useModal } from "../../../services/customHooks/useModal";
+import { paths } from "../../../utils/constants/allPaths";
 import CurrencyInputField from "../../shared/Inputs/TextFields/CurrencyInputField";
-
-
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
+import WebCamInput from "../../shared/Inputs/WebCamInput";
+import { Controller } from "react-hook-form";
+import { render } from "@testing-library/react";
 
 type LoanApplicationForm1Props = {
     register: UseFormRegister<LoanApplicationFormInfo>;
@@ -51,10 +52,7 @@ function Form1({
     Controller,
     watch,
     control,
-}: LoanApplicationForm1Props) 
-{
-    
-
+}: LoanApplicationForm1Props) {
     const watchTermsAndCond = watch("termsAndCondition");
 
     const tenorDropdownOptions = [
@@ -65,28 +63,22 @@ function Form1({
         { value: "180 days", label: "180 days" },
     ];
 
-    const onProceed = ()=> {
-      
-        navigate(paths.LOGIN,{replace:true});
+    const onProceed = () => {
+        navigate(paths.LOGIN, { replace: true });
     };
 
-    const {openModalFunc} = useModal(
-        "LoanApplicationSucessModal",
-        false,
-    );
+    const { openModalFunc } = useModal("LoanApplicationSucessModal", false);
 
     const onSubmit = handleSubmit((data) => {
-        console.log(data)
+        console.log(data);
         openModalFunc();
-     });
-     console.log(errors)
+    });
+    console.log(errors);
 
-
-     const navigate=  useNavigate()
-  
+    const navigate = useNavigate();
 
     return (
-        <>
+        <div>
             <div className="pt-5">
                 <h4 className="heading-info1 font-light leading-6 text-justify">
                     Based on your portfolio evalution, you are eligible to a
@@ -109,29 +101,13 @@ function Form1({
                 autoCorrect="off"
             >
                 {/*amount*/}
-                {/* <div>
-                    <div className=" border-0 border-b-2 border-underlineColor flex  space-x-3 items-end">
-                        <h1 className="pb-4 ">N</h1>
-                        <label htmlFor="amount"></label>
-                        <CurrencyInput
-                            {...register("amount")}
-                            id="LoanApplication__amount"
-                            className="outline-none pb-4  w-full inline-block"
-                            placeholder="Amount"
-                        />
-                    </div>
-                    {
-                        <p className="text-xs text-red-900  ">
-                            {errors?.amount?.message}
-                        </p>
-                    }
-                </div> */}
                 <CurrencyInputField
                     register={register("amount")}
                     id={"loanApplicatonAmount"}
                     placeholder="Amount"
                     errorMessage={errors?.amount?.message}
                 />
+
                 {/*tenor*/}
                 <div>
                     <div className="  ">
@@ -159,21 +135,12 @@ function Form1({
                 </div>
                 {/*interest (should be fixed )*/}
                 <div>
-                    <div className=" border-0 border-b-2  border-underlineColor ">
-                        <label htmlFor="interest"></label>
-                        <input
-                            type="text"
-                            {...register("interest")}
-                            id="LoanApplication__interest"
-                            className="outline-none pb-4 border-0  w-full"
-                            placeholder="Interest-15%"
-                        />
-                    </div>
-                    {
-                        <p className="text-xs text-red-900 ">
-                            {errors?.interest?.message}
-                        </p>
-                    }
+                    <FloatingPlaceholderTextField
+                        register={register("interest")}
+                        type="text"
+                        placeholder="Interest"
+                        errorMessage={errors?.interest?.message}
+                    />
                 </div>
                 {/*purpose*/}
                 <div>
@@ -192,6 +159,23 @@ function Form1({
                         </p>
                     }
                 </div>
+
+                <div>
+                    <Controller
+                        name="picture"
+                        control={control}
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <WebCamInput
+                                    value={value}
+                                    onChange={onChange}
+                                    errorMessage={errors?.picture?.message}
+                                />
+                            );
+                        }}
+                    />
+                </div>
+
                 {/*terms tick box*/}
                 <div className="flex items-center space-x-3">
                     <label htmlFor="LoanApplication__termsAndCondition">
@@ -218,7 +202,7 @@ function Form1({
                     Proceed
                 </button>
             </form>
-        </>
+        </div>
     );
 }
 

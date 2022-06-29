@@ -44,12 +44,11 @@ function CardInput({ options, onChange, value, label }: CardInputProps) {
             <div className="grid md:grid-cols-10 sm:grid-cols-8 grid-cols-4 gap-y-4 lg:grid-cols-12">
                 {options.map((option, index) => {
                     return (
-                        <div className=" col-span-2">
+                        <div className=" col-span-2" key={index}>
                             <div
                                 className={` bg-yellow-200 ${selectedOptionColor(
                                     option
                                 )} px-4 py-2 rounded-md cursor-pointer max-w-max`}
-                                key={index}
                                 onClick={() => onOptionClick(option)}
                             >
                                 {option.label}

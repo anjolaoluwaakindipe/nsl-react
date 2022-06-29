@@ -11,6 +11,7 @@ import DefaultLayout from "../components/layout/DefaultLayout";
 // components
 import { Form1, Header, TopBar } from "../components/pages/LoanApplication";
 import { LoanApplicationFormInfo } from "../typings";
+import NavBarLayout from "../components/layout/NavBarLayout";
 
 function LoanApplication() {
     // initiate form state
@@ -23,31 +24,31 @@ function LoanApplication() {
     } = useForm<LoanApplicationFormInfo>({
         defaultValues: {
             amount: "",
-            interest: "",
+            interest: "Interest-15%",
             purpose: "",
             tenor: { value: "", label: "" },
         },
         resolver: joiResolver(loanApplicationFormSchema),
     });
 
-
-
     return (
-        <DefaultLayout>
-            <>
-                <TopBar />
-                <Header />
+        <NavBarLayout>
+            <DefaultLayout>
+                <>
+                    <TopBar />
+                    <Header />
 
-                <Form1
-                    register={register}
-                    errors={errors}
-                    handleSubmit={handleSubmit}
-                    Controller={Controller}
-                    control={control}
-                    watch={watch}
-                />
-            </>
-        </DefaultLayout>
+                    <Form1
+                        register={register}
+                        errors={errors}
+                        handleSubmit={handleSubmit}
+                        Controller={Controller}
+                        control={control}
+                        watch={watch}
+                    />
+                </>
+            </DefaultLayout>
+        </NavBarLayout>
     );
 }
 

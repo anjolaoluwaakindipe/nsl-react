@@ -21,17 +21,18 @@ export const verificationRequests = {
         recipient: string;
     }) => {
         // sms text
-        let message = `
-        Good day,\n\n
-        Please input this verification code to verify your phone number: ${fourDigitCode}\n\n
-        Please note that your account will only be created once your email and phoneNumber is verified
+        let message = `Good day,\n\nPlease input this verification code to verify your phone number: ${fourDigitCode}\n\nPlease note that your account will only be created once your email and phone number is verified
         `;
-        return await axios.get("/isslapi/onboarding-api/1.0/sendsms", {
-            params: {
-                message,
-                recipient,
-            },
-        });
+        return await axios.get(
+            "/isslapi/onboarding-api/1.0/sendsms",
+            ///
+            {
+                params: {
+                    message,
+                    recipient,
+                },
+            }
+        );
     },
 
     // request to send verfication email
@@ -61,13 +62,13 @@ export const verificationRequests = {
     },
 };
 
-const doWork = async() =>{
-    const response= await verificationRequests.verifySms({
-        fourDigitCode: verificationRequests.generateVerificationCode(),
-        recipient: "07030444529"
-    });
+// const doWork = async() =>{
+//     const response= await verificationRequests.verifySms({
+//         fourDigitCode: verificationRequests.generateVerificationCode(),
+//         recipient: "2347030444529"
+//     }).then(res=> res).catch(err=>err);
 
-    console.log(response);
-}
+//     console.log(response);
+// }
 
-doWork()
+// doWork()

@@ -1,148 +1,298 @@
-import React from 'react'
-import { useForm } from 'react-hook-form';
-import { AiOutlineCloudUpload } from 'react-icons/ai';
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import { useState, useEffect } from "react";
+import { EditUploadsInfo } from "../../../typings";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { editPersonalDetailsFormSchema, editUploadsDetailsFormSchema } from '../../../utils/validation/editProfile';
+import FileInput from "../../shared/Inputs/FileInput";
+import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
+import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
+import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    authSelector,
+    updateUserPersonalDetailsFull,
+} from "../../../state/authSlice";
+import { AppDispatch } from "../../../state/store";
+import { paths } from "../../../utils/constants/allPaths";
+import { useNavigate } from "react-router-dom";
 
 function Form() {
-    const {register, watch, handleSubmit, formState} = useForm({mode:'onChange',});
+    // redux auth state
+    const {
+        picture,
+        identificationDocumentImage,
+        proofOfAddressImage,
+        identificationDocExpiryDate,
+        identificationDocRef,
+        identificationDocType,
+        identificationIssueDate,
+    } = useSelector(authSelector).user!;
+
+    // loading button control
+    const [isButtonLoading, setButtonLoading] = useState(false);
+    const [canBeUpdated, setCanBeUpdated] = useState(false);
+
+    //document type options
+    const documentTypeDropdownOptions = [
+        { value: "Drivers License", label: "Drivers License" },
+        { value: "Passport", label: "Passport" },
+        { value: "library card", label: "Library Card" },
+        { value: "schoolid", label: "School ID" },
+    ];
+
+    // react redux variables
+    const dispatch = useDispatch<AppDispatch>();
+
+    // raact-router variables
+    const navigate = useNavigate();
+
+    const {
+        register,
+        control,
+        watch,
+        handleSubmit,
+        setValue,
+
+        formState: { errors },
+    } = useForm<EditUploadsInfo>({
+        resolver: joiResolver(editUploadsDetailsFormSchema),
+        mode: "onChange",
+    });
 
     const watchPictureUpload = watch("picture");
     const watchproofOfIdentification = watch("proofOfIdentification");
     const watchproofOfResidence = watch("proofOfResidence");
-    const watchSalarySlips = watch("salarySlips");
-    const onSubmit = handleSubmit((data)=>{
-console.log(data);
-    })
-  return (
-      <form
-      onSubmit={onSubmit}
-          autoComplete="off"
-          autoCorrect="off"
-          autoSave="off"
-          className="w-full grid grid-cols-12 py-20 md:gap-x-10 gap-y-20 text-darkTextColor"
-      >
-          <div className="col-span-12">
-              <div className=" border-0 border-b-2 border-underlineColor">
-                  <label
-                      htmlFor="EditUploads__picture"
-                      className={
-                          "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
-                      }
-                  >
-                      {watchPictureUpload && watchPictureUpload?.length > 0
-                          ? watchPictureUpload.item(0)?.name
-                          : "Upload Picture"}
-                      <AiOutlineCloudUpload
-                          className="text-2xl"
-                          strokeWidth={50}
-                      />
-                  </label>
-                  <input
-                      type="file"
-                      {...register("picture", {required:false,})}
-                      id="EditUploads__picture"
-                      className="outline-none pb-4 hidden"
-                      accept=".pdf"
-                  />
-              </div>
-              {<p className="text-xs text-red-900 ">{""}</p>}
-          </div>
+    const watchIdexpiryDate = watch("IdexpiryDate");
+    const watchIdissueDate = watch("IdissueDate");
+    const watchDocumentRefNumber = watch("documentRefNumber");
+    const watchDocumentType = watch("documentType");
 
-          <div className="col-span-12">
-              <div className=" border-0 border-b-2 border-underlineColor">
-                  <label
-                      htmlFor="EditUploads__proofOfIdentification"
-                      className={
-                          "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
-                      }
-                  >
-                      {watchproofOfIdentification &&
-                      watchproofOfIdentification?.length > 0
-                          ? watchproofOfIdentification.item(0)?.name
-                          : "Proof of Identification"}
+    // update fields with user information
+    useEffect(() => {
+        if (picture) {
+            setValue("picture", picture);
+        }
+        if (identificationDocumentImage) {
+            setValue("proofOfIdentification", identificationDocumentImage);
+        }
+        if (proofOfAddressImage) {
+            setValue("proofOfResidence", proofOfAddressImage);
+        }
+        if (
+            identificationDocExpiryDate &&
+            identificationDocExpiryDate !== null
+        ) {
+            setValue("IdexpiryDate", identificationDocExpiryDate);
+        }
+        if (identificationDocRef) {
+            setValue("documentRefNumber", identificationDocRef);
+        }
+        if (identificationDocType) {
+            const currentOption = documentTypeDropdownOptions.filter(
+                (option) => option.value === identificationDocType
+            );
+            if (currentOption.length === 0) return;
+            setValue("documentType", currentOption[0]);
+        }
+        if (identificationIssueDate && !identificationIssueDate !== null) {
+            setValue("IdissueDate", identificationIssueDate);
+        }
+    }, [
+        picture,
+        proofOfAddressImage,
+        setValue,
+        identificationDocExpiryDate,
+        identificationDocRef,
+        identificationDocType,
+        identificationIssueDate,
+        identificationDocumentImage,
+    ]); // eslint-disable-line
 
-                      <AiOutlineCloudUpload
-                          className="text-2xl"
-                          strokeWidth={50}
-                      />
-                  </label>
-                  <input
-                      type="file"
-                      {...register("proofOfIdentification", {required:false,})}
-                      id="EditUploads__proofOfIdentification"
-                      className="outline-none pb-4 hidden"
-                      accept=".pdf"
-                  />
-              </div>
-              {<p className="text-xs text-red-900 ">{""}</p>}
-          </div>
+    const onSubmitForm = handleSubmit(async (data) => {
+        setButtonLoading(true);
+        console.log(data);
+        await dispatch(
+            updateUserPersonalDetailsFull({
+                picture: data.picture,
+                identificationDocumentImage: data.proofOfIdentification,
+                identificationDocExpiryDate: data.IdexpiryDate.includes("T")
+                    ? data.IdexpiryDate.split("T")[0]
+                    : data.IdexpiryDate,
+                identificationDocRef: data.documentRefNumber,
+                identificationIssueDate: data.IdissueDate.includes("T")
+                    ? data.IdissueDate.split("T")[0]
+                    : data.IdissueDate,
+                identificationDocType: data.documentType.value,
+                proofOfAddressImage: data.proofOfResidence,
+                cb: navigateToProfile,
+            })
+        );
+        // navigate("/update-profile/employment-details");
 
-          <div className="col-span-12">
-              <div className=" border-0 border-b-2 border-underlineColor">
-                  <label
-                      htmlFor="EditUploads__proofOfResidence"
-                      className={
-                          "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
-                      }
-                  >
-                      {watchproofOfResidence &&
-                      watchproofOfResidence?.length > 0
-                          ? watchproofOfResidence.item(0)?.name
-                          : "Proof of Residence"}
+        setButtonLoading(false);
+    });
 
-                      <AiOutlineCloudUpload
-                          className="text-2xl"
-                          strokeWidth={50}
-                      />
-                  </label>
-                  <input
-                      type="file"
-                      {...register("proofOfResidence", {required:false,})}
-                      id="EditUploads__proofOfResidence"
-                      className="outline-none pb-4 hidden"
-                      accept=".pdf"
-                  />
-              </div>
-              {<p className="text-xs text-red-900 ">{""}</p>}
-          </div>
-          <div className="col-span-12">
-              <div className=" border-0 border-b-2 border-underlineColor">
-                  <label
-                      htmlFor="EditUploads__salarySlips"
-                      className={
-                          "text-sm justify-between pr-10 mb-2 cursor-pointer w-full h-20 flex items-end bg-bgColor p-4 text-gray-400"
-                      }
-                  >
-                      {watchSalarySlips && watchSalarySlips?.length > 0
-                          ? watchSalarySlips.item(0)?.name
-                          : "Original/certified copy of the latest salary slips for the past 3 months"}
+    useEffect(() => {
+        if (
+            picture === watchPictureUpload &&
+            identificationDocumentImage === watchproofOfIdentification &&
+            proofOfAddressImage === watchproofOfResidence &&
+            identificationDocRef === watchDocumentRefNumber &&
+            identificationDocType === watchDocumentType?.value! &&
+            (identificationIssueDate === watchIdissueDate ||
+                identificationIssueDate === watchIdissueDate.split("T")[0]) &&
+            (identificationDocExpiryDate === watchIdexpiryDate ||
+                identificationDocExpiryDate === watchIdexpiryDate.split("T")[0])
+        ) {
+            setCanBeUpdated(false);
+        } else {
+            setCanBeUpdated(true);
+        }
+    },[
+        identificationDocExpiryDate,
+        identificationDocRef,
+        identificationDocType,
+        identificationDocumentImage,
+        identificationIssueDate,
+        picture,
+        proofOfAddressImage,
+        watchDocumentRefNumber,
+        watchDocumentType,
+        watchIdexpiryDate,
+        watchIdissueDate,
+        watchPictureUpload,
+        watchproofOfIdentification,
+        watchproofOfResidence,
+    ]);
 
-                      <AiOutlineCloudUpload
-                          className="text-2xl min-w-max  md: ml-4"
-                          strokeWidth={50}
-                      />
-                  </label>
-                  <input
-                      type="file"
-                      {...register("salarySlips",{required:false,})}
-                      id="EditUploads__salarySlips"
-                      className="outline-none pb-4 hidden"
-                      accept=".pdf"
-                  />
-              </div>
-              {<p className="text-xs text-red-900 ">{""}</p>}
-          </div>
+    const navigateToProfile = () => {
+        navigate(paths.PROFILE, { replace: true });
+    };
 
-          <div className="col-span-12">
-              <button
-                  className={`btn1  float-right w-full md:w-48`}
-                  type="submit"
-                disabled= {!formState.isDirty}
-              >
-                  Save
-              </button>
-          </div>
-      </form>
-  );
+    return (
+        <form
+            onSubmit={onSubmitForm}
+            autoComplete="off"
+            autoCorrect="off"
+            autoSave="off"
+            className="w-full grid grid-cols-12 py-20 md:gap-x-10 gap-y-20 text-darkTextColor"
+        >
+            <div className="text-lg text-red-900 col-span-12 md:w-full">
+                Proof of Identification
+            </div>
+
+            {/* Document Type */}
+            <div className="col-span-12 md:col-span-6">
+                <Controller
+                    name="documentType"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <DropDownOptions
+                            placeholder="Document Type"
+                            options={documentTypeDropdownOptions}
+                            onChange={onChange}
+                            value={value}
+                            errorMessage={errors?.documentType?.value?.message}
+                        />
+                    )}
+                />
+            </div>
+
+            {/*Document reference number*/}
+            <div className=" col-span-12 md:col-span-6 ">
+                <FloatingPlaceholderTextField
+                    placeholder="Document Refernce Number"
+                    type="text"
+                    register={register("documentRefNumber")}
+                    id="UpdateProfile__documentRefNumber"
+                    errorMessage={errors.documentRefNumber?.message}
+                />
+            </div>
+
+            {/* expiry Date  */}
+            <div className=" col-span-12 md:col-span-6">
+                <DateInputField
+                    register={register("IdexpiryDate")}
+                    placeholder="Expiry Date"
+                    id="IdexpiryDate"
+                    errorMessage={errors.IdexpiryDate?.message}
+                />
+            </div>
+
+            {/* issue Date  */}
+            <div className=" col-span-12 md:col-span-6">
+                <DateInputField
+                    register={register("IdissueDate")}
+                    placeholder="Issue Date"
+                    id="IdissueDate"
+                    errorMessage={errors.IdissueDate?.message}
+                />
+            </div>
+
+            <div className="col-span-12">
+                <Controller
+                    control={control}
+                    name="proofOfIdentification"
+                    render={({ field: { onChange, value } }) => (
+                        <FileInput
+                            id="proofOfIdentification"
+                            onChange={onChange}
+                            value={value}
+                            errorMessage={errors.proofOfIdentification?.message}
+                            placeholder={"Proof of Identification"}
+                        />
+                    )}
+                />
+            </div>
+
+            <div className="col-span-12" />
+
+            {/* Profile Picture */}
+            <div className="col-span-12">
+                <Controller
+                    control={control}
+                    name="picture"
+                    render={({ field: { onChange, value } }) => (
+                        <FileInput
+                            id="picture"
+                            onChange={onChange}
+                            value={value}
+                            errorMessage={errors.picture?.message}
+                            placeholder={"Upload Picture"}
+                        />
+                    )}
+                />
+            </div>
+
+            <div className="col-span-12">
+                <Controller
+                    control={control}
+                    name="proofOfResidence"
+                    render={({ field: { onChange, value } }) => (
+                        <FileInput
+                            id="proofOfResidence"
+                            onChange={onChange}
+                            value={value}
+                            errorMessage={errors.proofOfResidence?.message}
+                            placeholder={"Proof of Residence"}
+                        />
+                    )}
+                />
+            </div>
+
+            <div className="col-span-12">
+                <button
+                    className={`btn1  float-right w-full md:w-48`}
+                    type="submit"
+                    disabled={isButtonLoading || !canBeUpdated}
+                >
+                    {isButtonLoading ? "Loading..." : "Save"}
+                </button>
+            </div>
+        </form>
+    );
 }
 
-export default Form
+export default Form;
