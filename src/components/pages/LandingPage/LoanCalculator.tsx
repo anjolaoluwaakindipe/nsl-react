@@ -122,14 +122,14 @@ function LoanCalculator() {
 
 
                 <div className="  grid grid-cols-3 px-10 gap-10  ">
-                    <div className="text-primaryColor bg-gray-500 p-3 flex items-center justify-center">Monthly Payment: <span> N {formatMoney(amount)}</span></div>
-                    <div className="text-primaryColor bg-gray-500 flex justify-center p-2 border-2">Total Paymnet: {" "} <span> N {formatMoney(loanvalue)}</span></div>
-                    <div className="text-primaryColor bg-gray-500 flex justify-center p-2 border-2">Tenor: <span> {tenorvalue} days</span></div>
+                    <div className="text-primaryColor bg-gray-300 text-xs px- py-4 flex items-center justify-center">Monthly Payment: <span> N {formatMoney(amount)}</span></div>
+                    <div className="text-primaryColor bg-gray-300 text-xs px- py-4 flex items-center justify-center">Total Paymnet: {" "} <span> N {formatMoney(loanvalue)}</span></div>
+                    <div className="text-primaryColor bg-gray-300 text-xs px- py-4 flex items-center justify-center">Tenor: <span> {tenorvalue} days</span></div>
                 </div>
 
 
                 <div className="md:px-80 md:p-10">
-                    <button className=" btn1 items-center md:px-20 md:py-5">
+                    <button className=" btn1 items-center md:px-10 md:py-5">
                         Get Started
                     </button>
                 </div>

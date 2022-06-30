@@ -4,10 +4,10 @@ import "./faqdrop.css";
 
 function Faq() {
     return (
-        <div className="pt-10 pb-10">
+        <div className="pt-10 pb-10 px-14">
 
 
-            <div className="text-primaryColor font-bold text-center text-xl space-y-10">
+            <div className="text-primaryColor font-bold text-center text-xl space-y-10 pb-10">
                 FAQs
                 <p className="text-accentColor ">Frequently Asked Questions</p>
             </div>

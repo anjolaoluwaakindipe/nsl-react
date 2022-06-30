@@ -10,7 +10,7 @@ function LoanProcess(){
 
             <img
             src= "/assets/loanprocess.svg"
-            className=""
+            className="px-10 pb-10 py-10 "
             />
 
         </div>
