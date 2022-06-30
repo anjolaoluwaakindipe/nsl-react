@@ -182,7 +182,7 @@ function PhoneVerification() {
                 lastName: lastName.trim(),
                 bvn: bvn.trim(),
                 dateOfBirth: dateOfBirth.trim(),
-                gender: gender?.value?.trim(),
+                gender: gender?.value?.trim()!,
                 email: email.trim(),
                 phoneNumber: phoneNumber.trim(),
                 password: password.trim(),

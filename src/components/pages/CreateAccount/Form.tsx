@@ -262,7 +262,7 @@ function Form() {
                             onChange={onChange}
                             value={value}
                             options={genderDropdownOptions}
-                            errorMessage={errors?.gender?.value.message}
+                            errorMessage={errors?.gender?.value?.message}
                         />
                     )}
                 />

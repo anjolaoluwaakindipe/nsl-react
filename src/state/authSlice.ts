@@ -583,6 +583,8 @@ export const refreshUserTokens = createAsyncThunk(
         const { accessToken, refreshToken } = (
             (await thunkAPI.getState()) as RootState
         ).auth;
+        console.log(accessToken);
+        console.log(refreshToken)
         if (!accessToken || !refreshToken)
             return thunkAPI.dispatch<unknown, any>(logoutUser());
 
@@ -590,9 +592,12 @@ export const refreshUserTokens = createAsyncThunk(
             accessToken
         );
 
+        console.log(accessTokenResponse);
+
         if (accessTokenResponse.status === 200) {
             return thunkAPI.fulfillWithValue(null);
         } else {
+            
             const refreshTokenResponse = await authRequest.refreshUserTokens(
                 refreshToken
             );

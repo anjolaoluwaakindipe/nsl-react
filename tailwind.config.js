@@ -20,7 +20,7 @@ module.exports = {
                 lightPink: "rgba(109, 32, 27, 0.14)"
             },
             fontFamily: {
-                sans: ["Poppins", ...defaultTheme.fontFamily.sans],
+                sans: ["Poppins"],
             },
         },
     },

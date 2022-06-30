@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
     authSelector,
-    updateUserEmploymentDetailsFull
+    updateUserEmploymentDetailsFull,
 } from "../../../state/authSlice";
 import { AppDispatch } from "../../../state/store";
 import { EmploymentDetailsFormInfo } from "../../../typings";
@@ -107,8 +107,6 @@ function EmploymentDetailsForm() {
             })
         );
         // navigate("/update-profile/employment-details");
-
-
 
         setButtonLoading(false);
     });
@@ -249,7 +247,7 @@ function EmploymentDetailsForm() {
                         type="submit"
                         disabled={isButtonLoading}
                     >
-                        {isButtonLoading ?"Loading..." : "Next"}
+                        {isButtonLoading ? "Loading..." : "Next"}
                     </button>
                 </div>
             </form>

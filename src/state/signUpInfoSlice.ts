@@ -25,8 +25,8 @@ const signUpInfoSlice = createSlice({
             action: PayloadAction<{
                 firstName: string;
                 email: string;
-                gender: Record<string, any> | undefined;
-                bvn: string;
+                gender: {value:string; label:string} | undefined;
+                bvn: string; 
                 dateOfBirth: string;
                 lastName: string;
                 password: string;
