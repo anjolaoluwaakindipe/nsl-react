@@ -4,7 +4,7 @@ import LoanCalculator from "./LoanCalculator";
 
 function Header() {
     return (
-        <div className="relative py-4">
+        <div className="relative py-4 bg-peach ">
 
             <img
             src="/assets/dots.svg"
@@ -29,9 +29,14 @@ function Header() {
             </p>
 
             </div>
-            
 
-          {/* <LoanCalculator/> */}
+
+
+            {/* <div className=" absolute top- z-10">
+            <LoanCalculator/>
+            </div> */}
+
+          
 
            
         </div>

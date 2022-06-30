@@ -1,20 +1,38 @@
 import React from "react";
 
-import { Header, Footer, Layout, Form, LoanCalculator, Faq } from "../components/pages/LandingPage";
+import {
+    Header,
+    Footer3,
+    Layout,
+    Form,
+    LoanCalculator,
+    Faq,
+    Footer2,
+    Footer,
+    LoanProcess
+} from "../components/pages/LandingPage";
 
 
 function LandingPage() {
     return (
         <Layout>
-            <div className="md:px-20 space-y-10" >
+            <div className="max-w-full" >
                 <Header />
-                <div className="md:px-10">
+                
                     <LoanCalculator />
-                    <Form />
-                    <Faq />
+                    <LoanProcess />
+                   
+               
+                <Faq />
+                <Footer2 />
+
+                <div className="md:px-0" >
+                    <Footer />
                 </div>
-                <Footer />
+                {/* <Footer3/> */}
             </div>
+
+
         </Layout>
     )
 }

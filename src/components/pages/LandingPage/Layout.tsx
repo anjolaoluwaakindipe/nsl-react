@@ -15,8 +15,8 @@ function Layout({ children }: { children?: React.ReactElement }) {
 
 
     return (
-        <div className=" sticky">
-            <div className="w-full py-5 shadow-xl z-10 bg-bgColor">
+        <div className=" w-full ">
+            <div className="w-full md:max-w-7xl py-5 shadow-xl z-10 bg-bgColor">
                 <div className=" md:max-w-7xl m-auto w-full px-5 md:px-5 flex items-center justify-between ">
                     <div>
                         <img
@@ -60,10 +60,13 @@ function Layout({ children }: { children?: React.ReactElement }) {
             <div className="w-full  bg-lightPink">
                 {children}
                 <Outlet />
+
+                <div className="text-accentColor items-center p-10  justify-center flex center">
+
+                    copyright @nsl 2022
+                </div>
             </div>
-            <div className="text-accentColor items-center p-10  justify-center flex center">
-                copyright @nsl 2022
-            </div>
+
         </div>
     );
 }
