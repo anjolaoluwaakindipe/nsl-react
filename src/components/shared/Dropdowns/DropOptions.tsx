@@ -5,13 +5,11 @@ import { Controller, useForm } from "react-hook-form";
 
 type pickprop = {
     a: string;
-}
+};
 
-function DropOptions({status}:{ status:string } ){
-
+function DropOptions({ status }: { status: string }) {
     //gender
     function GenderDropDown() {
-
         const genderDropdownOptions = [
             { value: "M", label: "Male" },
             { value: "F", label: "Female" },
@@ -21,13 +19,12 @@ function DropOptions({status}:{ status:string } ){
             watch,
             formState: { errors },
         } = useForm();
-        
+
         const watchGender = watch("gender");
         return (
             <div>
                 <div className=" border-0 border-b-2  border-underlineColor   ">
                     <Controller
-    
                         name="gender"
                         control={control}
                         render={({ field: { onChange, value } }) => {
@@ -39,8 +36,8 @@ function DropOptions({status}:{ status:string } ){
                                     arrowOpen={<IoMdArrowDropup />}
                                     value={
                                         value &&
-                                            value.label === "" &&
-                                            value.value === ""
+                                        value.label === "" &&
+                                        value.value === ""
                                             ? undefined
                                             : value
                                     }
@@ -57,23 +54,21 @@ function DropOptions({status}:{ status:string } ){
                             );
                         }}
                     />
-    
+
                     <label htmlFor="gender"></label>
                 </div>
-    
+
                 {
                     <p className="text-xs text-red-900 ">
-                        {errors?.gender?.value.message}
+                        {/* {errors?.gender?.value.message} */}
                     </p>
                 }
             </div>
-        )
-    };
-
+        );
+    }
 
     //marital status
     function MaritalStatusDropDown() {
-
         const maritalStatusDropdownOptions = [
             { value: "Single", label: "Single" },
             { value: "Married", label: "Married" },
@@ -81,13 +76,13 @@ function DropOptions({status}:{ status:string } ){
             { value: "Widow", label: "Widow" },
             { value: "Remarried", label: "Remarried" },
         ];
-    
-        const { 
+
+        const {
             control,
             watch,
             formState: { errors },
         } = useForm();
-    
+
         const watchMaritalStatus = watch("maritalStatus");
         return (
             <div>
@@ -102,7 +97,7 @@ function DropOptions({status}:{ status:string } ){
                                 arrowClosed={<IoMdArrowDropdown />}
                                 arrowOpen={<IoMdArrowDropup />}
                                 value={value}
-                                placeholder= "Marital Status"
+                                placeholder="Marital Status"
                                 className="relative"
                                 placeholderClassName={
                                     watchMaritalStatus
@@ -114,42 +109,40 @@ function DropOptions({status}:{ status:string } ){
                             />
                         )}
                     />
-    
+
                     <label htmlFor="maritalstatus"></label>
                 </div>
-    
+
                 {
                     <p className="text-xs text-red-900 ">
-                       {errors?.maritalstatus?.value.message}
+                        {/* {errors?.maritalstatus?.value.message} */}
                     </p>
                 }
             </div>
         );
-    };
+    }
 
-    switch (status){
-        case"gender" :{
-            return <GenderDropDown/>;
+    switch (status) {
+        case "gender": {
+            return <GenderDropDown />;
         }
-        case "maritalstatus":{
-            return <MaritalStatusDropDown/>
+        case "maritalstatus": {
+            return <MaritalStatusDropDown />;
         }
-        default :{
-            return <div></div>
+        default: {
+            return <div></div>;
         }
     }
 }
 
-
 //main dropdown function
-function Drop ( prop: pickprop){
-
+function Drop(prop: pickprop) {
     return (
-    <div>
-     <DropOptions status={prop.a}/>
-        </div>);
+        <div>
+            <DropOptions status={prop.a} />
+        </div>
+    );
 }
 export default Drop;
-
 
 // {errors?.gender?.value.message}

@@ -8,7 +8,7 @@ const ModalProvider = React.lazy(
 
 function App() {
     return (
-        <div className="App">
+        <div className="App font-sans">
             <React.Suspense>
                 <ModalProvider />
             </React.Suspense>

@@ -331,7 +331,7 @@ function EditPersonalDetailsForm() {
                             value={value}
                             onChange={onChange}
                             options={genderDropdownOptions}
-                            errorMessage={errors?.gender?.value.message}
+                            errorMessage={errors?.gender?.value?.message}
                         />
                     )}
                 />
@@ -358,7 +358,7 @@ function EditPersonalDetailsForm() {
                             options={maritalStatusDropdownOptions}
                             onChange={onChange}
                             value={value}
-                            errorMessage={errors?.maritalStatus?.value.message}
+                            errorMessage={errors?.maritalStatus?.value?.message}
                         />
                     )}
                 />

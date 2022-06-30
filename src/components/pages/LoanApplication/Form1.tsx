@@ -79,7 +79,7 @@ function Form1({
 
     return (
         <div>
-            <div className="pt-5">
+            <div className="pt-5 space-y-5 shadow-red-600 ">
                 <h4 className="heading-info1 font-light leading-6 text-justify">
                     Based on your portfolio evalution, you are eligible to a
                     maximum loan amount of N 500,000, The principal and interest

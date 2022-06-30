@@ -404,7 +404,7 @@ function PersonalDetailsForm() {
                                 value={value}
                                 onChange={onChange}
                                 options={genderDropdownOptions}
-                                errorMessage={errors?.gender?.value.message}
+                                errorMessage={errors?.gender?.value?.message}
                             />
                         )}
                     />
@@ -432,7 +432,7 @@ function PersonalDetailsForm() {
                                 onChange={onChange}
                                 value={value}
                                 errorMessage={
-                                    errors?.maritalStatus?.value.message
+                                    errors?.maritalStatus?.value?.message
                                 }
                             />
                         )}

@@ -19,11 +19,11 @@ type PersonalDetailsFormInfo = {
     middleName: string;
     emailAddress: string;
     phoneNumber: string;
-    gender: { value: string; label: string } | Record;
+    gender: { value: string; label: string };
     dateOfBirth: string;
     IdissueDate: string;
     IdexpiryDate: string;
-    maritalStatus: { value: string; label: string } | Record;
+    maritalStatus: { value: string; label: string };
     cscsNumber: string;
     residentialAddress: string;
     picture: string | null;
@@ -31,7 +31,7 @@ type PersonalDetailsFormInfo = {
     proofOfResidence: string | null;
     salarySlips: string | null;
     bvn: string;
-    documentType: { value: string; label: string } | Record;
+    documentType: { value: string; label: string };
     documentRefNumber: string;
 };
 
@@ -56,7 +56,7 @@ type CreateAccountFormData = {
     bvn: string;
     password: string;
     dateOfBirth: string;
-    gender: { value: string; label: string } | Record;
+    gender: { value: string; label: string };
     confirmPassword: string;
 };
 
@@ -68,9 +68,9 @@ type EditPersonalDetailsInfo = {
     middleName: string;
     emailAddress: string;
     phoneNumber: string;
-    gender: { value: string; label: string } | Record;
+    gender: { value: string; label: string };
     dateOfBirth: string;
-    maritalStatus: { value: string; label: string } | Record;
+    maritalStatus: { value: string; label: string };
     cscsNumber: string;
     residentialAddress: string;
     bvn: string;
@@ -93,7 +93,7 @@ type EditUploadsInfo = {
     picture: string | null;
     proofOfIdentification: string | null;
     proofOfResidence: string | null;
-    documentType: { value: string; label: string } | Record;
+    documentType: { value: string; label: string };
     documentRefNumber: string;
 };
 
@@ -184,7 +184,7 @@ interface SignUpInfoState {
     firstName: string;
     lastName: string;
     dateOfBirth: string;
-    gender: { value: string; label: string } | Record;
+    gender: { value: string; label: string } | undefined;
     email: string;
     bvn: string;
     phoneNumber: string;

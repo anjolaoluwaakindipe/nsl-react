@@ -64,6 +64,7 @@ div.floating-placeholder > input:not(:placeholder-shown) + label {
     transform-origin: left;
 }
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -82,3 +83,5 @@ div.floating-placeholder > input:not(:placeholder-shown) + label {
         @apply text-xs text-red-900;
     }
 }
+
+

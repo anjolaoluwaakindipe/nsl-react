@@ -18,7 +18,7 @@ module.exports = {
                 bgColor3: "#E5E5E5",
             },
             fontFamily: {
-                sans: ["Poppins", ...defaultTheme.fontFamily.sans],
+                sans: ["Poppins"],
             },
         },
     },

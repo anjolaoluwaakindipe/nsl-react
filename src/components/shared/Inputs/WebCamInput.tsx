@@ -35,6 +35,8 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
 
     const videoConstraints = {
         facingMode: "user",
+        width: 1280,
+        height: 720,
     };
 
     return (
@@ -48,7 +50,7 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
                         />
                     </div>
 
-                    <div className="max-w-2xl p-4 text-left absolute top-8 bg-white   text-primaryColor rounded-lg space-y-4">
+                    <div className=" max-w-xs xl:max-w-2xl p-2 text-left absolute bottom-5 left-5 xl:top-10 xl:bottom-auto xl:left-auto  bg-white   text-primaryColor rounded-lg space-y-1 xl:space-y-2 text-xs xl:text-base">
                         <h1>
                             Please know that your picture will be used in making
                             a decision for your loan application.

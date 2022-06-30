@@ -94,8 +94,7 @@ const authRequest = {
                         Accept: "application/json",
                     },
                     method: "GET",
-                    timeout: 10000,
-                    timeoutErrorMessage: "User Data Request Timeout",
+                   
                 }
             )
             .then((response) => {
@@ -104,6 +103,7 @@ const authRequest = {
                 return res;
             })
             .catch((error) => {
+                console.log(error)
                 res.status = error.response.status;
                 res.code = error.code;
                 return res;
@@ -645,12 +645,12 @@ const authRequest = {
 
 export default authRequest;
 
-async function myFunc() {
-    console.log(
-        await authRequest.refreshUserTokens(
-            "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2MzA5ZjU2MS0yNTk3LTQzYTgtYmU0OS04NzQ1NzNjNDllZjUifQ.eyJleHAiOjE2NTY1MTI1NzksImlhdCI6MTY1NjUxMDc3OSwianRpIjoiZDEyMWMxMjctZjI1Ni00NDY3LTk3ODktZDdlN2M5NDQ5NmI1IiwiaXNzIjoiaHR0cHM6Ly9zZW50cnkuaXNzbC5uZy9hdXRoL3JlYWxtcy9uc2wiLCJhdWQiOiJodHRwczovL3NlbnRyeS5pc3NsLm5nL2F1dGgvcmVhbG1zL25zbCIsInN1YiI6ImYyMzYxM2RlLTk3MWYtNDcxNi1hNDU0LTZmMzczNDRiOTg1YSIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJuc2wtcmVhY3QtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjI4M2UwYmE4LTgyZjgtNDY3ZS1iMDNhLTNmNDAxMzZjOTk1ZSIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCJ9.3u79cTQfJtzjnqxon0SlRsG34zs7CmLhMwJ80JIYmkQ"
-        )
-    );
-}
+// async function myFunc() {
+//     console.log(
+//         await authRequest.refreshUserTokens(
+//             "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2MzA5ZjU2MS0yNTk3LTQzYTgtYmU0OS04NzQ1NzNjNDllZjUifQ.eyJleHAiOjE2NTY1MTI1NzksImlhdCI6MTY1NjUxMDc3OSwianRpIjoiZDEyMWMxMjctZjI1Ni00NDY3LTk3ODktZDdlN2M5NDQ5NmI1IiwiaXNzIjoiaHR0cHM6Ly9zZW50cnkuaXNzbC5uZy9hdXRoL3JlYWxtcy9uc2wiLCJhdWQiOiJodHRwczovL3NlbnRyeS5pc3NsLm5nL2F1dGgvcmVhbG1zL25zbCIsInN1YiI6ImYyMzYxM2RlLTk3MWYtNDcxNi1hNDU0LTZmMzczNDRiOTg1YSIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJuc2wtcmVhY3QtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjI4M2UwYmE4LTgyZjgtNDY3ZS1iMDNhLTNmNDAxMzZjOTk1ZSIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCJ9.3u79cTQfJtzjnqxon0SlRsG34zs7CmLhMwJ80JIYmkQ"
+//         )
+//     );
+// }
 
-myFunc();
+// myFunc();

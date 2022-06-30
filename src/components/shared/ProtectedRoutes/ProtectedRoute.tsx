@@ -25,12 +25,19 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
 
     const refreshUserInfo = async () => {
         await dispatch(getUserFull());
-        await dispatch(refreshUserTokens());
     };
 
+    const refreshUserToken = async() => {
+
+        await dispatch(refreshUserTokens());
+    }
     useEffect(() => {
         refreshUserInfo();
     }, []); // eslint-disable-line
+
+    useEffect(()=>{
+        refreshUserToken()
+    }, [])// eslint-disable-line
 
     // check if user is login
     useEffect(() => {
