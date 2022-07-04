@@ -6,7 +6,7 @@ import { GrMail } from "react-icons/gr";
 function Footer() {
     return (
         <div
-            className="grid grid-cols-4 md:gap-x-1 pb-5 pt-5 px-5">
+            className="grid grid-cols-4 md:gap-x-1 pb-5 pt-10 px-5">
 
             {/* logo */}
             <div>

@@ -18,7 +18,7 @@ function LoanCalculator() {
             <div className="bg-contColor w-3/4 absolute -top-20 left-0 right-0 mx-auto ">
 
                 <div className="px-5 py-10">
-                    <div className="text-2xl text-primaryColor pb-10">
+                    <div className="text-2xl text-primaryColor pb-10 px-5 font-bold">
                         Loan Calculator
                     </div>
 
@@ -29,13 +29,13 @@ function LoanCalculator() {
 
                     {/* loan amount*/}
 
-                    <div className=" grid grid-cols-10 w-full md:gap-x-5 justify-center">
-                        <div className="md:col-span-2">
+                    <div className=" grid grid-cols-10  w-full md:gap-x-1 justify-center">
+                        <div className="md:col-span-2 pt-10 pl-14 ">
                             Amount:
                         </div>
 
-                        <div className="md:p-10 p-5 w-full  md:w-7/12 flex flex-col  space-y-3 rounded-md md:col-span-6">
-                            <div className="flex justify-between mb-1">
+                        <div className="md:pt-10 md:pb-10  w-full  md:w-[550px] flex justify-center itens-center flex-col  space-y-3 rounded-md md:col-span-6 ">
+                            <div className="flex justify-between mb-1 ">
                                 <h1 className="text-base font-medium text-primaryColor dark:text-white">
                                     50,000
                                 </h1>
@@ -54,11 +54,11 @@ function LoanCalculator() {
                         </div>
 
 
-                        <div className="md:col-span-2">
+                        <div className="md:col-span-2 pt-10 pl-5    ">
                             N
                             <input
-                                className="border-0 border-b-4 border-underlineColor w-28"
-                                type="number"
+                                className="border-0 border-b-2  border-underlineColor w-28 pb-4"
+                                type="number" 
                                 placeholder="enter amount"
                                 value={loanvalue}
                                 onChange={(e) => { setloanvalue(parseFloat(e.target.value)) }}
@@ -67,6 +67,7 @@ function LoanCalculator() {
 
 
                             >
+
                             </input>
 
                         </div>
@@ -76,12 +77,12 @@ function LoanCalculator() {
 
                     {/* tenor*/}
 
-                    <div className=" grid grid-cols-10 w-full md:gap-x-5 justify-center">
-                        <div className="md:col-span-2">
+                    <div className=" grid grid-cols-10 w-full md:gap-x-1 justify-center">
+                        <div className="md:col-span-2 pt-10 pl-14">
                             Tenor:
                         </div>
 
-                        <div className="md:p-10 p-5 w-full  md:w-7/12 flex flex-col  space-y-3 rounded-md md:col-span-6">
+                        <div className="md:pt-10 md:pb-10  w-full  md:w-[550px] flex justify-center itens-center flex-col  space-y-3 rounded-md md:col-span-6 ">
                             <div className="flex justify-between mb-1">
                                 <h1 className="text-base font-medium text-primaryColor dark:text-white">
                                     30days
@@ -102,9 +103,9 @@ function LoanCalculator() {
                         </div>
 
 
-                        <div className="md:col-span-2">
+                        <div className="md:col-span-2 pt-10 pl-10">
                             <input
-                                className="border-0 border-b-4 border-underlineColor w-28"
+                                className="border-0 border-b-2 border-underlineColor w-16 pb-4 "
                                 type="number"
                                 placeholder="enter tenor"
                                 value={tenorvalue}
@@ -121,15 +122,15 @@ function LoanCalculator() {
                 </div>
 
 
-                <div className="  grid grid-cols-3 px-10 gap-10  ">
+                <div className="  grid grid-cols-3 px-10 gap-10 ">
                     <div className="text-primaryColor bg-gray-300 text-xs px- py-4 flex items-center justify-center">Monthly Payment: <span> N {formatMoney(amount)}</span></div>
                     <div className="text-primaryColor bg-gray-300 text-xs px- py-4 flex items-center justify-center">Total Paymnet: {" "} <span> N {formatMoney(loanvalue)}</span></div>
                     <div className="text-primaryColor bg-gray-300 text-xs px- py-4 flex items-center justify-center">Tenor: <span> {tenorvalue} days</span></div>
                 </div>
 
 
-                <div className="md:px-80 md:p-10">
-                    <button className=" btn1 items-center md:px-10 md:py-5">
+                <div className="md:px-[400px] md:p-10 ">
+                    <button className=" btn1 items-center md:px-15 md:py-5">
                         Get Started
                     </button>
                 </div>

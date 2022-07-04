@@ -12,7 +12,7 @@ function Footer2() {
                     id="email-address-icon"
                     className="bg-peach border  text-gray-900 text-sm rounded-full focus:ring-contColor focus:border-contColor  w-40 pl-5 p-2.5"
                     placeholder="Your email" />
-                    <div className="absolute  inset-y-0 right-[400px] flex items-center pl-3 cursor-pointer">
+                    <div className="absolute  inset-y-0 md:right-[529px] flex items-center pl-3 cursor-pointer">
                     <img className="w-5 h-5 text-gray-500 "
                         src="/assets/sendicon.svg"
                         onClick={()=>{}}
