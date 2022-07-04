@@ -159,9 +159,9 @@ function AppRouter() {
                         path={paths.USER_DASHBOARD}
                         element={
                             <React.Suspense>
-                                <ProtectedRoute>
+                                {/* <ProtectedRoute> */}
                                     <Dashboard />
-                                </ProtectedRoute>
+                                {/* </ProtectedRoute> */}
                             </React.Suspense>
                         }
                     />
