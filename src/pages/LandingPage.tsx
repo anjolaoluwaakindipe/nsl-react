@@ -1,13 +1,39 @@
 import React from "react";
- 
-import { Header } from "../components/pages/LandingPage";
+
+import {
+    Header,
+    Footer3,
+    Layout,
+    Form,
+    LoanCalculator,
+    Faq,
+    Footer2,
+    Footer,
+    LoanProcess
+} from "../components/pages/LandingPage";
 
 
-function LandingPage(){
+function LandingPage() {
     return (
-        <>
-        <Header/>
-        </>
+        <Layout>
+            <div className="max-w-full" >
+                <Header />
+                
+                    <LoanCalculator />
+                    <LoanProcess />
+                   
+               
+                <Faq />
+                <Footer2 />
+
+                <div className="md:px-0" >
+                    <Footer />
+                </div>
+                {/* <Footer3/> */}
+            </div>
+
+
+        </Layout>
     )
 }
 
