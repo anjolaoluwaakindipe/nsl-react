@@ -77,7 +77,7 @@ function AccountDetailsForm() {
     const onSuccess = (reference: any) => {
         console.log(reference);
         getUserCardInfo(reference.reference)
-            .then(() => navigate(paths.USER_DASHBOARD))
+            .then(() => navigate(paths.SUMMARY))
             .catch(() =>
                 toast.error(
                     "Something went wrong while verifiying your card. Please try again later."

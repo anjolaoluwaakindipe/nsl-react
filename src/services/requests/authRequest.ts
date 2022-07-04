@@ -84,8 +84,7 @@ const authRequest = {
 
         return await axios
             .get(
-                BASE_URL +
-                    "/auth/realms/" +
+                "/sentryapi/auth/realms/" +
                     CUSTOM_REALM +
                     "/protocol/openid-connect/userinfo",
                 {
@@ -94,16 +93,19 @@ const authRequest = {
                         Accept: "application/json",
                     },
                     method: "GET",
-                   
                 }
             )
             .then((response) => {
                 res.status = response.status;
-                res.data = response.data;
+                res.data = {
+                    customerNo: response.data.customerNo,
+                    rfid: response.data.rfid,
+                    keycloakId: response.data.sub,
+                };
                 return res;
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
                 res.status = error.response.status;
                 res.code = error.code;
                 return res;
@@ -180,19 +182,24 @@ const authRequest = {
             data: Record<string, any>;
             code: string;
         } = { status: null, data: {}, code: "" };
+        const body = {
+            firstName: firstName,
+            lastName: lastName,
+            bvn: bvn,
+            dateOfBirth: dateOfBirth,
+            gender: gender,
+            email: email,
+            mobilePhoneNo: phoneNumber,
+        };
         return await axios
-            .get(
-                "/isslapi/ibank/api/v1/createBasicAccount",
+            .post(
+                "/isslapi/ibank/api/v1/newcustomer",
                 // /isslapi
+                body,
                 {
-                    params: {
-                        FirstName: firstName,
-                        LastName: lastName,
-                        BVN: bvn,
-                        DateofBirth: dateOfBirth,
-                        Gender: gender,
-                        EMailAddress: email,
-                        MobilePhoneNo: phoneNumber,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-TENANTID": "islandbankpoc",
                     },
                 }
             )
@@ -216,14 +223,14 @@ const authRequest = {
         lastName,
         email,
         password,
-        customerNo,
+        rfid,
         adminToken,
     }: {
         firstName: string;
         lastName: string;
         email: string;
         password: string;
-        customerNo: string;
+        rfid: string;
         adminToken: string;
     }) => {
         // information needed to register a new user on a keycloak server
@@ -242,14 +249,15 @@ const authRequest = {
                 },
             ],
             attributes: {
-                customerNo: customerNo,
+                rfid: rfid,
             },
         };
 
         // ok response data format
-        let res: { status: number; data: any } = {
+        let res: { status: number; data: any; code: string } = {
             status: 0,
             data: {},
+            code: "",
         };
 
         // request to keycloak server
@@ -272,6 +280,8 @@ const authRequest = {
                 return res;
             })
             .catch((err) => {
+                res.status = err.response.status;
+                res.code = err.response.code;
                 return err;
             });
     },
@@ -356,7 +366,7 @@ const authRequest = {
 
     //update user personal details on main app
     updateUserPersonalInfoApp: async ({
-        customerNo,
+        rfid,
         firstName,
         middleName,
         lastName,
@@ -377,7 +387,7 @@ const authRequest = {
         proofOfAddressImage,
         picture,
     }: {
-        customerNo?: string;
+        rfid?: string;
         firstName?: string | null;
         middleName?: string | null;
         lastName?: string | null;
@@ -400,9 +410,7 @@ const authRequest = {
     }) => {
         // required information to get
 
-        const body: Record<string, any> = {
-            customerNo: customerNo,
-        };
+        const body: Record<string, any> = {};
         if (firstName) {
             body.firstname = firstName;
         }
@@ -468,7 +476,7 @@ const authRequest = {
 
         // request to api
         return await axios
-            .post("/isslapi/ibank/api/v1/updateCustomerDetails2", body, {
+            .patch("/isslapi/onboarding-api/1.0/newcustomer/" + rfid, body, {
                 headers: {
                     "content-type": "application/json",
                     // "X-TENANTID": "islandbankpoc",
@@ -487,9 +495,7 @@ const authRequest = {
             })
             .catch((err) => {
                 console.log(err);
-                if (!err.response.status && !err.response.code) {
-                    return res;
-                }
+
                 res.status = err.response.status;
                 res.code = err.response.code;
                 return res;
@@ -498,7 +504,7 @@ const authRequest = {
 
     //update user personal details on main app
     updateUserEmploymentInfoApp: async ({
-        customerNo,
+        rfid,
         jobTitle,
         natureOfBusiness,
         companyName,
@@ -507,7 +513,7 @@ const authRequest = {
         grossIncome,
         companyAddress,
     }: {
-        customerNo: string;
+        rfid: string;
         jobTitle: string;
         natureOfBusiness: string;
         companyName: string;
@@ -519,7 +525,6 @@ const authRequest = {
         // required information to get
 
         const body = {
-            customerNo,
             jobtitle: jobTitle,
             natureofbusiness: natureOfBusiness,
             employername: companyName,
@@ -538,10 +543,10 @@ const authRequest = {
 
         // request to api
         return await axios
-            .post("/isslapi/ibank/api/v1/updateCustomerDetails2", body, {
+            .patch("/isslapi/onboarding-api/1.0/newcustomer/" + rfid, body, {
                 headers: {
                     "content-type": "application/json",
-                    // "X-TENANTID": "islandbankpoc",
+                    "X-TENANTID": "islandbankpoc",
                 },
                 timeout: 2000000,
                 method: "POST",
@@ -567,9 +572,9 @@ const authRequest = {
     //get user details
     getUserApp: async ({
         //information to get users
-        customerNo,
+        rfid,
     }: {
-        customerNo: string;
+        rfid: string;
     }) => {
         const res: {
             status: null | number;
@@ -578,11 +583,11 @@ const authRequest = {
         } = { status: null, data: {}, code: "" };
         return await axios
             .get(
-                "/isslapi/ibank/api/v1/getCustomerDetailsv3",
+                "/isslapi/ibank/api/v1/getpendingcustomerdetails",
                 // /isslapi
                 {
                     params: {
-                        CustomerNo: customerNo,
+                        rqid: rfid,
                     },
                 }
             )
@@ -639,6 +644,48 @@ const authRequest = {
                 res.status = error.response.status;
                 res.code = error.code;
                 return res;
+            });
+    },
+    updateUserRfidKeycloak: async ({
+        rfid,
+        customerNo,
+        adminToken,
+        keycloakId,
+    }: {
+        rfid: string;
+        customerNo: string;
+        adminToken: string;
+        keycloakId: string;
+    }) => {
+        const res: {
+            status: null | number;
+            data: Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
+
+        const body = {
+            attributes: {
+                rfid,
+                customerNo,
+            },
+        };
+
+        return await axios
+            .put(
+                "/sentryapi/auth/admin/realms/" +
+                    CUSTOM_REALM +
+                    "/users/" +
+                    keycloakId,
+                body,
+                { headers: { Authorization: "Bearer " + adminToken } }
+            )
+            .then((response) => {
+                res.status = response.status;
+                return res;
+            })
+            .catch((err) => {
+                res.status = err.response.status;
+                res.code = err.code;
             });
     },
 };

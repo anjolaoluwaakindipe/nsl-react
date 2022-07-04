@@ -148,7 +148,7 @@ function PersonalDetailsForm() {
             <>
                 {showFullImage && (
                     <div
-                        className="fixed top-0 left-0 w-full h-screen p-5 md:p-20 bg-gray-900 bg-opacity-40   flex justify-center items-center"
+                        className="fixed top-0 left-0 w-full h-screen p-5 md:p-20 bg-gray-900 bg-opacity-80   flex justify-center items-center"
                         onClick={() => setShowFullImage(false)}
                     >
                         <AiOutlineClose
@@ -219,7 +219,7 @@ function PersonalDetailsForm() {
             }
         }
         if (dateOfBirth) {
-            setValue("dateOfBirth", dateOfBirth);
+            setValue("dateOfBirth", dateOfBirth.split("T")[0]);
         }
         if (bvn) {
             setValue("bvn", bvn);
@@ -253,7 +253,7 @@ function PersonalDetailsForm() {
             identificationDocExpiryDate &&
             identificationDocExpiryDate !== null
         ) {
-            setValue("IdexpiryDate", identificationDocExpiryDate);
+            setValue("IdexpiryDate", identificationDocExpiryDate.split("T")[0]);
         }
         if (identificationDocRef) {
             setValue("documentRefNumber", identificationDocRef);
@@ -266,7 +266,7 @@ function PersonalDetailsForm() {
             setValue("documentType", currentOption[0]);
         }
         if (identificationIssueDate && !identificationIssueDate !== null) {
-            setValue("IdissueDate", identificationIssueDate);
+            setValue("IdissueDate", identificationIssueDate.split("T")[0]);
         }
     }, [
         email,

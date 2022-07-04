@@ -1,14 +1,13 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
     authSelector,
     getUserFull,
     refreshUserTokens,
 } from "../../../state/authSlice";
-import { paths } from "../../../utils/constants/allPaths";
-import { useEffect, useState } from "react";
 import { AppDispatch } from "../../../state/store";
+import { paths } from "../../../utils/constants/allPaths";
 
 function ProtectedRoute({ children }: { children: React.ReactElement }) {
     // react-redux variable
@@ -18,26 +17,19 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
     const navigate = useNavigate();
 
     // redux react state varialbe
-    const { accessToken, refreshToken, user } = useSelector(authSelector);
+    const { accessToken, refreshToken } = useSelector(authSelector);
 
     // local state
     const [isLoading, setIsLoading] = useState(true);
 
+    // refresh user info
     const refreshUserInfo = async () => {
+        await dispatch(refreshUserTokens());
         await dispatch(getUserFull());
     };
-
-    const refreshUserToken = async() => {
-
-        await dispatch(refreshUserTokens());
-    }
     useEffect(() => {
         refreshUserInfo();
     }, []); // eslint-disable-line
-
-    useEffect(()=>{
-        refreshUserToken()
-    }, [])// eslint-disable-line
 
     // check if user is login
     useEffect(() => {

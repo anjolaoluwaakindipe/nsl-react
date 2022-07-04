@@ -13,4 +13,16 @@ module.exports = function (app) {
             },
         })
     );
+    app.use(
+        createProxyMiddleware("/sentryapi", {
+            target: "https://sentry.issl.ng", // API endpoint 1
+            changeOrigin: true,
+            pathRewrite: {
+                "^/sentryapi": "",
+            },
+            headers: {
+                Connection: "keep-alive",
+            },
+        })
+    );
 };

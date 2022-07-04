@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 // paths
 import { paths } from "./utils/constants/allPaths";
+import Summary from './pages/Summary';
 
 // components
 const ProtectedRoute = lazy(
@@ -192,6 +193,16 @@ function AppRouter() {
                             <React.Suspense>
                                 <ProtectedRoute>
                                     <Profile />
+                                </ProtectedRoute>
+                            </React.Suspense>
+                        }
+                    />
+                    <Route
+                        path={paths.SUMMARY}
+                        element={
+                            <React.Suspense>
+                                <ProtectedRoute>
+                                    <Summary />
                                 </ProtectedRoute>
                             </React.Suspense>
                         }

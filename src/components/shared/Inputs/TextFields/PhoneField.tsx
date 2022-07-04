@@ -26,6 +26,7 @@ function PhoneField({
     errorMessage,
 }: PhoneFieldProps) {
     const [isPlaceholderVisilble, setPlaceholderVisibiltiy] = useState(true);
+    const [phoneValue, setPhoneValue] = useState("");
     const phoneRef: React.LegacyRef<
         React.Component<
             Props<DefaultInputComponentProps>,
@@ -37,32 +38,36 @@ function PhoneField({
     useEffect(() => {
         if (value) {
             setPlaceholderVisibiltiy(false);
+            setPhoneValue(value);
         } else {
             setPlaceholderVisibiltiy(true);
+            setPhoneValue("");
         }
     }, [value]);
 
     const normalPlaceholderState = () => "";
-    const floatingPlaceholderState = () =>
-        " -translate-y-8  scale-75 ";
+    const floatingPlaceholderState = () => " -translate-y-8  scale-75 ";
 
     return (
         <div className="w-full">
             <div className="border-0 border-b-2  border-underlineColor  ">
                 <div className="relative floating-placeholder ">
                     <PhoneInput
-                        className={phoneElementClassName + "bg-transparent"}
+                        className={phoneElementClassName + "bg-transparent" }
                         onChange={(value) => {
                             onChange && onChange(value);
+
                             if (value) {
                                 setPlaceholderVisibiltiy(false);
+                                setPhoneValue(value);
                             } else {
                                 setPlaceholderVisibiltiy(true);
+                                setPhoneValue("");
                             }
                         }}
                         readOnly={readOnly}
                         ref={phoneRef}
-                        value={value}
+                        value={phoneValue}
                         style={style}
                     />
                     <div

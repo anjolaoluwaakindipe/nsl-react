@@ -24,5 +24,6 @@ export const paths = {
     EDIT_ACCOUNT_DETAILS: "/edit-account-details",
     FORGOT_PASSWORD: "/forgot-password",
     WELCOME: "/welcome",
-    LANDINGPAGE: "/"
+    LANDINGPAGE: "/",
+    SUMMARY: "/submission-summary",
 };

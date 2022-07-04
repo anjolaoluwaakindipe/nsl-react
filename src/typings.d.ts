@@ -1,4 +1,5 @@
 import { HTMLInputTypeAttribute } from "react";
+import keycloak from './services/keycloak/keycloak';
 
 // Form Information
 // Loan Application Form
@@ -141,6 +142,8 @@ interface AuthState {
     refreshToken: string | null;
     user: {
         title: string | null;
+        rfid: string | null;
+        keycloakId: string | null;
         customerNo: string | null;
         name: string | null;
         firstName: string | null;
