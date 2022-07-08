@@ -171,11 +171,13 @@ function AppRouter() {
                         path={paths.USER_DASHBOARD}
                         element={
                             <React.Suspense>
+
                                 <ProtectedRoute>
                                     <ProcessedUserPage>
                                         <Dashboard />
                                     </ProcessedUserPage>
                                 </ProtectedRoute>
+
                             </React.Suspense>
                         }
                     />
