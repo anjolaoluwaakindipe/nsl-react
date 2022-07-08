@@ -16,6 +16,7 @@ const initialState: AuthState = {
     user: {
         title: "",
         rfid: "",
+        rfStatus: null,
         keycloakId: "",
         customerNo: "",
         name: "",
@@ -360,8 +361,7 @@ export const updateUserEmploymentDetailsFull = createAsyncThunk(
         thunkApi
     ) => {
         try {
-            const rfid = (thunkApi.getState() as RootState).auth.user
-                ?.rfid!;
+            const rfid = (thunkApi.getState() as RootState).auth.user?.rfid!;
             const updateUserPersonalDetailsResponse =
                 await authRequest.updateUserEmploymentInfoApp({
                     companyAddress,
@@ -414,7 +414,7 @@ export const loginUser = createAsyncThunk(
             // token response
             const tokenResponse = await authRequest.loginUser(email, password);
 
-            console.log(tokenResponse);
+    
             // check if token response was successful or not
             if (tokenResponse.status === 200) {
                 // use access token to get user information
@@ -422,7 +422,7 @@ export const loginUser = createAsyncThunk(
                     tokenResponse.data["access_token"]
                 );
 
-                console.log(userResponse);
+            
 
                 // checks if user info response was successful or not
                 if (userResponse.status === 200) {
@@ -430,19 +430,36 @@ export const loginUser = createAsyncThunk(
                         await authRequest.getUserApp({
                             rfid: userResponse.data["rfid"],
                         });
-                    console.log(userInfoFullAppResponse);
+
 
                     switch (userInfoFullAppResponse.status) {
                         case 200:
                             let userInfo: UserInfoAppResponse =
                                 userInfoFullAppResponse.data as UserInfoAppResponse;
-                            return {
-                                rfid: userResponse.data.rfid,
-                                keycloakId: userResponse.data.keycloakId,
-                                allUserInformation: userInfo,
-                                accessToken: tokenResponse.data.access_token,
-                                refreshToken: tokenResponse.data.refresh_token,
-                            };
+
+                            const accountStatusResponse =
+                                await authRequest.checkAccountStatus({
+                                    rfid: userResponse.data.rfid,
+                                });
+
+                            if (accountStatusResponse.status === 200) {
+                                return {
+                                    rfid: userResponse.data.rfid,
+                                    keycloakId: userResponse.data.keycloakId,
+                                    allUserInformation: userInfo,
+                                    accessToken:
+                                        tokenResponse.data.access_token,
+                                    refreshToken:
+                                        tokenResponse.data.refresh_token,
+                                    rfidStatus:
+                                        accountStatusResponse.data.rqStatus,
+                                };
+                            } else {
+                                return thunkApi.rejectWithValue(
+                                    "Something went wrong while getting your account status"
+                                );
+                            }
+
                         default:
                             return thunkApi.rejectWithValue(
                                 "Something went wrong while login you in"
@@ -454,7 +471,7 @@ export const loginUser = createAsyncThunk(
                     );
                 }
             } else {
-                console.log(tokenResponse.response.status);
+        
                 switch (tokenResponse.response.status) {
                     case 0:
                         return thunkApi.rejectWithValue(
@@ -742,7 +759,7 @@ const userInformationStateSetter = (
     allUserInformation: UserInfoAppResponse
 ) => {
     // personal information
-    console.log(allUserInformation.kycdocs);
+    console.log(allUserInformation);
     state.user!.email = allUserInformation.email;
     state.user!.customerNo = allUserInformation.customerNo;
     state.user!.dateOfBirth = allUserInformation.dob;
@@ -783,10 +800,11 @@ const userInformationStateSetter = (
     state.user!.employmentInfo.companyAddress =
         allUserInformation.employerAddress;
     state.user!.employmentInfo.companyEmail = allUserInformation.officeEmail;
-    state.user!.employmentInfo.companyName = allUserInformation.employerName;
+    state.user!.employmentInfo.companyName =
+        allUserInformation.employmentStatus;
     state.user!.employmentInfo.companyPhoneNumber =
         allUserInformation.officePhoneNo;
-    state.user!.employmentInfo.jobTitle = allUserInformation.occupationCode;
+    state.user!.employmentInfo.jobTitle = allUserInformation.occupationDesc;
     state.user!.employmentInfo.natureOfBusiness =
         allUserInformation.natureOfBuss;
     state.user!.employmentInfo.grossIncome =
@@ -816,6 +834,9 @@ const authSlice = createSlice({
                 state.user.rfid = action.payload.rfid;
             }
         },
+        setRfStatusToReview(){
+            
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -827,6 +848,7 @@ const authSlice = createSlice({
                 state.user!.rfid = action?.payload?.rfid
                     ? action?.payload.rfid
                     : "";
+                state.user!.rfStatus = action?.payload.rfidStatus;
                 state.user!.keycloakId = action?.payload?.keycloakId
                     ? action?.payload.keycloakId
                     : "";

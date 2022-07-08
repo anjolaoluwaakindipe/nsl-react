@@ -1,44 +1,42 @@
 import React from "react";
 import LoanCalculator from "./LoanCalculator";
 
-
 function Header() {
     return (
-        <div className="relative py-4 bg-peach ">
+        <div className=" py-4 bg-peach min-h-screen ">
+            <div className="max-w-[90%] mx-auto relative min-h-screen pt-32">
+                <img
+                    src="/assets/dots.svg"
+                    className="absolute object-contain top-20 left-4 z-0 w-48"
+                    alt="dots"
+                />
+                <img
+                    src="/assets/landingguy.svg"
+                    alt="logo"
+                    className="object-contain md:h-[400px] lg:h-[350px] float-right absolute bottom-16 right-0 "
+                />
+                <div className="text-primaryColor font-bold text-7xl z-10 px-11 py-14 relative bottom-2 left-3">
+                    <span className="font-normal">S</span>ecure,{" "}
+                    <span className="font-normal">F</span>ast,{" "}
+                    <span className="font-normal">R</span>eliable
+                    <p>
+                        <span className="font-normal"> and E</span>ffective.
+                    </p>
+                    <p className="text-darkTextColor text-3xl font-light max-w-xl py-10">
+                        Lörem ipsum räst social selling, kassalösa butiker fer i
+                        vittneslitteratur.
+                        <p>
+                            {" "}
+                            Tosm röserade: trilig astronar. Ögosade ivis, #metoo
+                            om.
+                        </p>
+                    </p>
+                </div>
 
-            <img
-            src="/assets/dots.svg"
-            className="absolute top-8 left-4 z-0 w-20"
-            />
-             <img
-                src="/assets/landingguy.svg"
-                alt="logo"
-                className="object-contain w-10 md:w-96 float-right absolute top-3 right-4 "
-
-            />
-            <div className="text-primaryColor font-bold text-4xl z-10 px-11 py-14 relative bottom-2 left-3">
-            <span className="font-normal">S</span>ecure, <span className="font-normal">F</span>ast, <span className="font-normal">R</span>eliable 
-            <p>
-            <span className="font-normal"> and E</span>ffective.
-            </p>
-
-
-            <p className="text-darkTextColor font-normal text-sm py-10">
-                Lörem ipsum räst social selling, kassalösa butiker fer i vittneslitteratur. 
-                <p> Tosm röserade: trilig astronar. Ögosade ivis, #metoo om.</p>
-            </p>
-
-            </div>
-
-
-
-            {/* <div className=" absolute top- z-10">
+                {/* <div className=" absolute top- z-10">
             <LoanCalculator/>
             </div> */}
-
-          
-
-           
+            </div>
         </div>
     );
 }

@@ -38,7 +38,8 @@ function NavBarLayout({ children }: { children?: React.ReactElement }) {
 
                         {/*logout*/}
                         <div>
-                            <button className="flex justify-center items-center  w-20 h-7 md:w-25 md:h-10 text-sm bg-primaryColor rounded-lg text-contColor cursor-pointer hover:brightness-75"
+                            <button
+                                className="flex justify-center items-center  w-20 h-7 md:w-25 md:h-10 text-sm bg-primaryColor rounded-lg text-contColor cursor-pointer hover:brightness-75"
                                 onClick={() => {
                                     openModalFunc();
                                 }}
@@ -49,14 +50,19 @@ function NavBarLayout({ children }: { children?: React.ReactElement }) {
                         {/*profile*/}
                         {/* <img src="" alt="" /> */}
                         <div className="flex justify-center items-center bg-primaryColor w-6 h-6 md:w-10 md:h-10  rounded-full cursor-pointer hover:brightness-75 overflow-hidden">
-
-                            {user?.picture ? (<img src={"data:image/png;base64," + user?.picture}
-                                alt="profile_picture"
-                                // width={90}
-                                onClick={() => navigate(paths.PROFILE)}
-
-                            />) : (<CgProfile className="text-white text-2xl" />)}
-
+                            {user?.picture ? (
+                                <img
+                                    className="h-full w-full"
+                                    src={
+                                        "data:image/png;base64," + user?.picture
+                                    }
+                                    alt="profile_picture"
+                                    // width={90}
+                                    onClick={() => navigate(paths.PROFILE)}
+                                />
+                            ) : (
+                                <CgProfile className="text-white text-2xl" />
+                            )}
                         </div>
                     </div>
                 </div>

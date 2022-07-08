@@ -15,9 +15,9 @@ import { makeUnCancellable, setModalName } from "../../../state/modalSlice";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 
 function Form() {
-    const { isError, isLoading, errorMessage, isSuccess } =
+    const { isError, isLoading, isSuccess, } =
         useSelector(authSelector);
-    const [modalOptions, setModalOptions] = useState({
+    const [modalOptions,] = useState({
         name: "",
         isCancellable: true,
     });

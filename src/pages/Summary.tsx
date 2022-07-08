@@ -16,46 +16,47 @@ function Summary() {
     const dispatch = useDispatch<AppDispatch>();
 
     const submitApplication = async () => {
-        dispatch(
-            submitUserInfoToNslDb({
-                allUserInfo: {
-                    bvn: user?.bvn!,
-                    firstName: user?.firstName!,
-                    lastName: user?.lastName!,
-                    cscsNumber: user?.cscsNumber!,
-                    email: user?.email!,
-                    gender: user?.gender!,
-                    dateOfBirth: user?.dateOfBirth!,
-                    customerNo: user?.customerNo!,
-                    middleName: user?.middleName!,
-                    phoneNumber: user?.phoneNumber!,
-                    residentialAddress: user?.residentialAddress!,
-                    maritalStatus: user?.maritalStatus!,
-                    identificationDocExpiryDate:
-                        user?.identificationDocExpiryDate!,
-                    identificationDocRef: user?.identificationDocRef!,
-                    identificationDocType: user?.identificationDocType!,
-                    identificationIssueDate: user?.identificationIssueDate!,
-                    identificationDocumentImage:
-                        user?.identificationDocumentImage!,
-                    proofOfAddressImage: user?.proofOfAddressImage!,
-                    // picture: user?.picture!,
-                    companyName: user?.employmentInfo.companyName!,
-                    companyAddress: user?.employmentInfo.companyAddress!,
-                    companyEmail: user?.employmentInfo.companyEmail!,
-                    companyPhoneNumber:
-                        user?.employmentInfo.companyPhoneNumber!,
-                    grossIncome: user?.employmentInfo.grossIncome!,
-                    jobTitle: user?.employmentInfo.jobTitle!,
-                    natureOfBusiness: user?.employmentInfo.natureOfBusiness!,
-                },
-                cb: navigateToDashboard,
-            })
-        );
+        // dispatch(
+        //     submitUserInfoToNslDb({
+        //         allUserInfo: {
+        //             bvn: user?.bvn!,
+        //             firstName: user?.firstName!,
+        //             lastName: user?.lastName!,
+        //             cscsNumber: user?.cscsNumber!,
+        //             email: user?.email!,
+        //             gender: user?.gender!,
+        //             dateOfBirth: user?.dateOfBirth!,
+        //             customerNo: user?.customerNo!,
+        //             middleName: user?.middleName!,
+        //             phoneNumber: user?.phoneNumber!,
+        //             residentialAddress: user?.residentialAddress!,
+        //             maritalStatus: user?.maritalStatus!,
+        //             identificationDocExpiryDate:
+        //                 user?.identificationDocExpiryDate!,
+        //             identificationDocRef: user?.identificationDocRef!,
+        //             identificationDocType: user?.identificationDocType!,
+        //             identificationIssueDate: user?.identificationIssueDate!,
+        //             identificationDocumentImage:
+        //                 user?.identificationDocumentImage!,
+        //             proofOfAddressImage: user?.proofOfAddressImage!,
+        //             // picture: user?.picture!,
+        //             companyName: user?.employmentInfo.companyName!,
+        //             companyAddress: user?.employmentInfo.companyAddress!,
+        //             companyEmail: user?.employmentInfo.companyEmail!,
+        //             companyPhoneNumber:
+        //                 user?.employmentInfo.companyPhoneNumber!,
+        //             grossIncome: user?.employmentInfo.grossIncome!,
+        //             jobTitle: user?.employmentInfo.jobTitle!,
+        //             natureOfBusiness: user?.employmentInfo.natureOfBusiness!,
+        //         },
+        //         cb: navigateToDashboard,
+        //     })
+        // );
+        navigateToDashboard();
     };
 
     const navigateToDashboard = () =>{
-        navigate(paths.USER_DASHBOARD)
+        navigate(paths.WELCOME)
     }
     return (
         <NavBarLayout>

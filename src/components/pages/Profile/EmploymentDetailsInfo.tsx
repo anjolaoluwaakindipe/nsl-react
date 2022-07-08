@@ -1,14 +1,14 @@
 import React from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { paths } from '../../../utils/constants/allPaths';
+import { paths } from "../../../utils/constants/allPaths";
 import { useSelector } from "react-redux";
 import { authSelector } from "../../../state/authSlice";
 
 function EmploymentDetailsInfo() {
     const navigate = useNavigate();
-    const {user}= useSelector(authSelector)
-    
+    const { user } = useSelector(authSelector);
+
     return (
         <div className="col-span-1 space-y-6">
             <div className="w-full flex justify-between items-end">
@@ -41,7 +41,7 @@ function EmploymentDetailsInfo() {
                     <h1 className="text-primaryColor font-semibold">
                         Company Phone Number
                     </h1>
-                    <p>{user?.employmentInfo.companyName}</p>
+                    <p>{user?.employmentInfo.companyPhoneNumber}</p>
                 </div>
                 <div className="md:col-span-1 col-span-2 space-y-1">
                     <h1 className="text-primaryColor font-semibold">

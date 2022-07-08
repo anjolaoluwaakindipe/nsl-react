@@ -33,6 +33,7 @@ function ProfileHeader() {
                     {/* <div className="w-24 h-24 md:w-40 md:h-40 rounded-full border-2 border-white flex justify-center items-center"></div> */}
                     {user?.picture ? (
                         <img
+                        className="h-full w-full"
                             src={"data:image/png;base64," + user?.picture}
                             alt="profile_picture"
                             // width={90}

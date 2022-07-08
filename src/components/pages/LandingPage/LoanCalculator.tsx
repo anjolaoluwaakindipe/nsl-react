@@ -14,18 +14,13 @@ function LoanCalculator() {
 
     var amount = (loanvalue * tenorvalue * 0.15) / 100;
     return (
-        <div className="relative h-[600px] w-full  z-10 ">
-            <div className="bg-contColor w-3/4 absolute -top-20 left-0 right-0 mx-auto ">
+        <div className="relative h-[100vh] w-full  z-10 ">
+            <div className="bg-contColor max-w-[90%] absolute -top-20 left-0 right-0 mx-auto ">
 
-                <div className="px-5 py-10">
-                    <div className="text-2xl text-primaryColor pb-10 px-5 font-bold">
+                <div className="p-20">
+                    <div className="text-4xl font-light text-primaryColor pb-10 px-5 ">
                         Loan Calculator
                     </div>
-
-
-
-
-
 
                     {/* loan amount*/}
 

@@ -21,4 +21,6 @@ export const loanApplicationFormSchema = Joi.object({
     picture: Joi.string()
         .required()
         .label("Your Picture"),
+    repaymentAmount: Joi.string().required().label("Repayment Amount"),
+    repaymentDate: Joi.string().required().label("Repayment Date")
 });

@@ -497,7 +497,7 @@ const authRequest = {
                 console.log(err);
 
                 res.status = err.response.status;
-                res.code = err.response.code;
+                res.code = err.code;
                 return res;
             });
     },
@@ -548,7 +548,7 @@ const authRequest = {
                     "content-type": "application/json",
                     "X-TENANTID": "islandbankpoc",
                 },
-                timeout: 2000000,
+                timeout: 20000000,
                 method: "POST",
             })
 
@@ -594,6 +594,7 @@ const authRequest = {
             .then((response) => {
                 res.status = response.status;
                 res.data = response.data;
+                console.log(res);
                 return res;
             })
             .catch((error) => {
@@ -686,6 +687,45 @@ const authRequest = {
             .catch((err) => {
                 res.status = err.response.status;
                 res.code = err.code;
+            });
+    },
+    checkAccountStatus: async ({ rfid }: { rfid: string }) => {
+        const res: {
+            status: null | number;
+            data:
+                | {
+                      rqChannel: string;
+                      rqDate: string;
+                    //   rqFldsJson: string;
+                      rqId: number;
+                      rqNotes: string;
+                      rqStatus: string;
+                      rqStatusBy: string;
+                      rqStatusById: string;
+                      rqStatusDate: string;
+                      rqStatusInfo: string;
+                      rqType: string;
+                  }
+                | Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
+
+        return await axios
+            .get("/isslapi/ibank/api/v1/pendingservicerequest/" + rfid, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-TENANTID": "islandbankpoc",
+                },
+            })
+            .then((response) => {
+                res.status = response.status;
+                res.data = { ...response.data,  };
+                return res;
+            })
+            .catch((err) => {
+                res.status = err.response.status;
+                res.code = err.code;
+                return res;
             });
     },
 };
