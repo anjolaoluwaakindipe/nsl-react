@@ -1,4 +1,5 @@
 import { HTMLInputTypeAttribute } from "react";
+import keycloak from "./services/keycloak/keycloak";
 
 // Form Information
 // Loan Application Form
@@ -7,6 +8,8 @@ type LoanApplicationFormInfo = {
     tenor: { value: string; label: string };
     interest: string;
     purpose: string;
+    repaymentAmount?: string;
+    repaymentDate?: string;
     termsAndCondition: boolean;
     picture: string;
 };
@@ -122,7 +125,9 @@ type SingleTextFieldProps = {
 type LoanApplicationValidationErrors = {
     amount?: string;
     tenor?: Record<string, any> | undefined;
-    intrest?: string;
+    interest?: string;
+    repaymentAmount?: string;
+    repaymentDate?:string;
     narration?: string;
 };
 
@@ -141,6 +146,9 @@ interface AuthState {
     refreshToken: string | null;
     user: {
         title: string | null;
+        rfid: string | null;
+        rfStatus: "Processed" | "New" | null;
+        keycloakId: string | null;
         customerNo: string | null;
         name: string | null;
         firstName: string | null;
@@ -178,6 +186,7 @@ interface AuthState {
     errorMessage: string;
     requestStatus: number;
 }
+
 
 // signUpInfo state
 interface SignUpInfoState {
@@ -230,8 +239,8 @@ interface UserInfoAppResponse {
     address: string | null;
     memberShipNo: string | null /* cscsNumber */;
     // employment Info
-    employerName: string | null;
-    occupationCode: string | null /* Job title*/;
+    employmentStatus: string | null; /* company name*/
+    occupationDesc: string | null /* Job title*/;
     employerAddress: string | null;
     officeEmail: string | null;
     officePhoneNo: string | null;

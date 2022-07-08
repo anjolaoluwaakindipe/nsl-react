@@ -1,6 +1,7 @@
 import React from "react";
 import { BsCheck2 } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
+import { paths } from "../../../utils/constants/allPaths";
 
 function Progress({ progress }: { progress?: number }) {
     const location = useLocation();
@@ -18,7 +19,15 @@ function Progress({ progress }: { progress?: number }) {
                         ) : (
                             ""
                         )}
-                        <div className="w-5 h-5 rounded-full bg-successColor"></div>
+                        <div
+                            className={`w-5 h-5 rounded-full bg-successColor ${
+                                location.pathname.includes(
+                                    paths.UPDATE_PROFILE.PERSONAL_DETAILS
+                                )
+                                    ? "animate-pulse shadow-sm shadow-successColor"
+                                    : ""
+                            }`}
+                        ></div>
                     </div>
                 ) : (
                     <div className="w-5 h-5 border-2 rounded-full border-primaryColor"></div>
@@ -34,7 +43,15 @@ function Progress({ progress }: { progress?: number }) {
                         ) : (
                             ""
                         )}
-                        <div className="w-5 h-5 rounded-full bg-successColor"></div>
+                        <div
+                            className={`w-5 h-5 rounded-full bg-successColor ${
+                                location.pathname.includes(
+                                    paths.UPDATE_PROFILE.EMPLOYMENT_DETAILS
+                                )
+                                    ? "animate-pulse shadow-sm shadow-successColor"
+                                    : ""
+                            }`}
+                        ></div>
                     </div>
                 ) : (
                     <div className="w-5 h-5 border-2 rounded-full border-successColor"></div>
@@ -44,7 +61,15 @@ function Progress({ progress }: { progress?: number }) {
             <>
                 {location.pathname.includes("account-details") ? (
                     <div>
-                        <div className="w-5 h-5 rounded-full bg-successColor"></div>
+                        <div
+                            className={`w-5 h-5 rounded-full bg-successColor ${
+                                location.pathname.includes(
+                                    paths.UPDATE_PROFILE.ACCOUNT_DETAILS
+                                )
+                                    ? "animate-pulse shadow-sm shadow-successColor"
+                                    : ""
+                            }`}
+                        ></div>
                     </div>
                 ) : (
                     <div className="w-5 h-5 border-2 rounded-full border-successColor"></div>

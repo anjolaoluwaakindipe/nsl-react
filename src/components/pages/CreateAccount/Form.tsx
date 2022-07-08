@@ -34,6 +34,7 @@ function Form() {
         { value: "F", label: "Female" },
     ];
 
+    // sign up selector for e
     const {
         email,
         firstName,

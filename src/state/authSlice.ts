@@ -8,12 +8,16 @@ import {
 
 import toast from "react-hot-toast";
 import { RootState } from "./store";
+import { nslRequests } from "../services/requests/nslrequests";
 
 const initialState: AuthState = {
     accessToken: "",
     refreshToken: "",
     user: {
         title: "",
+        rfid: "",
+        rfStatus: null,
+        keycloakId: "",
         customerNo: "",
         name: "",
         firstName: "",
@@ -119,7 +123,7 @@ export const createUserFull = createAsyncThunk(
                             lastName,
                             email,
                             password,
-                            customerNo: createUserOnAppResponse.data.customerNo,
+                            rfid: createUserOnAppResponse.data.requestId,
                             adminToken: adminTokenResponse.data["access_token"],
                         });
 
@@ -197,16 +201,16 @@ export const getUserFull = createAsyncThunk(
     "auth/getUserFullStatus",
     async (_, thunkAPI) => {
         try {
-            const { customerNo } = ((await thunkAPI.getState()) as RootState)
-                .auth.user!;
-            console.log(customerNo);
-            if (customerNo === "" || customerNo === null) {
+            const { rfid } = ((await thunkAPI.getState()) as RootState).auth
+                .user!;
+            console.log(rfid);
+            if (rfid === "" || rfid === null) {
                 return thunkAPI.rejectWithValue(
                     "Problems getting your information, please login again"
                 );
             }
             const userInfoFullAppResponse = await authRequest.getUserApp({
-                customerNo,
+                rfid,
             });
 
             if (userInfoFullAppResponse.code === "ECONNABORTED") {
@@ -278,8 +282,7 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
         thunkApi
     ) => {
         try {
-            const customerNo = (thunkApi.getState() as RootState).auth.user
-                ?.customerNo!;
+            const rfid = (thunkApi.getState() as RootState).auth.user?.rfid!;
             const updateUserPersonalDetailsResponse =
                 await authRequest.updateUserPersonalInfoApp({
                     firstName,
@@ -292,7 +295,7 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
                     middleName,
                     phoneNumber,
                     title,
-                    customerNo: customerNo,
+                    rfid: rfid,
                     residentialAddress,
                     cscsNumber,
                     identificationDocType,
@@ -358,8 +361,7 @@ export const updateUserEmploymentDetailsFull = createAsyncThunk(
         thunkApi
     ) => {
         try {
-            const customerNo = (thunkApi.getState() as RootState).auth.user
-                ?.customerNo!;
+            const rfid = (thunkApi.getState() as RootState).auth.user?.rfid!;
             const updateUserPersonalDetailsResponse =
                 await authRequest.updateUserEmploymentInfoApp({
                     companyAddress,
@@ -369,7 +371,7 @@ export const updateUserEmploymentDetailsFull = createAsyncThunk(
                     grossIncome,
                     jobTitle,
                     natureOfBusiness,
-                    customerNo,
+                    rfid,
                 });
 
             if (updateUserPersonalDetailsResponse.status === 200) {
@@ -412,6 +414,7 @@ export const loginUser = createAsyncThunk(
             // token response
             const tokenResponse = await authRequest.loginUser(email, password);
 
+    
             // check if token response was successful or not
             if (tokenResponse.status === 200) {
                 // use access token to get user information
@@ -419,23 +422,44 @@ export const loginUser = createAsyncThunk(
                     tokenResponse.data["access_token"]
                 );
 
+            
+
                 // checks if user info response was successful or not
                 if (userResponse.status === 200) {
                     const userInfoFullAppResponse =
                         await authRequest.getUserApp({
-                            customerNo: userResponse.data["customerNo"],
+                            rfid: userResponse.data["rfid"],
                         });
+
 
                     switch (userInfoFullAppResponse.status) {
                         case 200:
                             let userInfo: UserInfoAppResponse =
                                 userInfoFullAppResponse.data as UserInfoAppResponse;
-                            return {
-                                ...userResponse.data,
-                                allUserInformation: userInfo,
-                                accessToken: tokenResponse.data.access_token,
-                                refreshToken: tokenResponse.data.refresh_token,
-                            };
+
+                            const accountStatusResponse =
+                                await authRequest.checkAccountStatus({
+                                    rfid: userResponse.data.rfid,
+                                });
+
+                            if (accountStatusResponse.status === 200) {
+                                return {
+                                    rfid: userResponse.data.rfid,
+                                    keycloakId: userResponse.data.keycloakId,
+                                    allUserInformation: userInfo,
+                                    accessToken:
+                                        tokenResponse.data.access_token,
+                                    refreshToken:
+                                        tokenResponse.data.refresh_token,
+                                    rfidStatus:
+                                        accountStatusResponse.data.rqStatus,
+                                };
+                            } else {
+                                return thunkApi.rejectWithValue(
+                                    "Something went wrong while getting your account status"
+                                );
+                            }
+
                         default:
                             return thunkApi.rejectWithValue(
                                 "Something went wrong while login you in"
@@ -447,7 +471,7 @@ export const loginUser = createAsyncThunk(
                     );
                 }
             } else {
-                console.log(tokenResponse.response.status);
+        
                 switch (tokenResponse.response.status) {
                     case 0:
                         return thunkApi.rejectWithValue(
@@ -517,7 +541,7 @@ export const createUserAuth = createAsyncThunk(
                         firstName,
                         lastName,
                         email,
-                        customerNo,
+                        rfid: customerNo,
                         password,
                         adminToken: adminTokenResponse.data["access_token"],
                     });
@@ -580,40 +604,123 @@ export const createUserAuth = createAsyncThunk(
 export const refreshUserTokens = createAsyncThunk(
     "auth/refreshUserTokensStatus",
     async (_, thunkAPI) => {
-        const { accessToken, refreshToken } = (
-            (await thunkAPI.getState()) as RootState
-        ).auth;
-        console.log(accessToken);
-        console.log(refreshToken)
-        if (!accessToken || !refreshToken)
-            return thunkAPI.dispatch<unknown, any>(logoutUser());
+        try {
+            const { accessToken, refreshToken } = (
+                (await thunkAPI.getState()) as RootState
+            ).auth;
 
-        const accessTokenResponse = await authRequest.getUserKeycloak(
-            accessToken
-        );
-
-        console.log(accessTokenResponse);
-
-        if (accessTokenResponse.status === 200) {
-            return thunkAPI.fulfillWithValue(null);
-        } else {
-            
-            const refreshTokenResponse = await authRequest.refreshUserTokens(
-                refreshToken
-            );
-
-            if (refreshTokenResponse.status === 200) {
-                return thunkAPI.dispatch<unknown, any>(
-                    setAuthStateTokens({
-                        refreshToken:
-                            refreshTokenResponse.data["refresh_token"],
-                        token: refreshTokenResponse.data["access_token"],
-                    })
-                );
-            } else {
-                toast.error("Login Session Expired. Please login again");
+            if (!accessToken || !refreshToken)
                 return thunkAPI.dispatch<unknown, any>(logoutUser());
+
+            const accessTokenResponse = await authRequest.getUserKeycloak(
+                accessToken
+            );
+            console.log(accessTokenResponse);
+
+            if (accessTokenResponse.status === 200) {
+                return thunkAPI.fulfillWithValue(null);
+            } else if (accessTokenResponse.status === 401) {
+                const refreshTokenResponse =
+                    await authRequest.refreshUserTokens(refreshToken);
+
+                if (refreshTokenResponse.status === 200) {
+                    return thunkAPI.dispatch<unknown, any>(
+                        setAuthStateTokens({
+                            refreshToken:
+                                refreshTokenResponse.data["refresh_token"],
+                            token: refreshTokenResponse.data["access_token"],
+                        })
+                    );
+                } else if (refreshTokenResponse.status === 400) {
+                    toast.error("Login Session Expired. Please login again");
+                    return await thunkAPI.dispatch<unknown, any>(logoutUser());
+                }
+            } else {
+                toast.error(
+                    "Something is currently wrong with our servers. Please try and login later."
+                );
+                await thunkAPI.dispatch<unknown, any>(logoutUser());
             }
+        } catch (e: any) {
+            console.log(e);
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const submitUserInfoToNslDb = createAsyncThunk(
+    "auth/submitUserInfoToNslDb",
+    async (
+        {
+            allUserInfo,
+            cb,
+        }: {
+            allUserInfo: {
+                customerNo: string | null;
+                firstName: string | null;
+                lastName: string | null;
+                middleName: string | null;
+                maritalStatus: string | null;
+                dateOfBirth: string | null;
+                gender: string | null;
+                phoneNumber: string | null;
+                email: string | null;
+                bvn: string | null;
+                residentialAddress: string | null;
+                cscsNumber: string | null;
+                identificationDocType?: string | null;
+                identificationDocRef?: string | null;
+                identificationIssueDate?: string | null;
+                identificationDocExpiryDate?: string | null;
+                identificationDocumentImage?: string | null;
+                proofOfAddressImage?: string | null;
+                picture?: string | null;
+                jobTitle: string | null;
+                natureOfBusiness: string | null;
+                companyName: string | null;
+                companyPhoneNumber: string | null;
+                companyEmail: string | null;
+                companyAddress: string | null;
+                grossIncome: string | null;
+            };
+            cb?: (...event: any[]) => void;
+        },
+        thunkApi
+    ) => {
+        try {
+            const isValid = Object.values(allUserInfo).every(
+                (x) => x !== null && x !== ""
+            );
+            if (!isValid)
+                return thunkApi.rejectWithValue(
+                    "Please make sure all information is filled"
+                );
+
+            const submitCustomerInfoResponse =
+                await nslRequests.submitCompletedCustomerAccount({
+                    ...allUserInfo,
+                });
+
+            if (submitCustomerInfoResponse.status === 200) {
+                if (submitCustomerInfoResponse.data.signUpOK === true) {
+                    return {
+                        message:
+                            "Information Submission Successful. Please wait till your account is verified",
+                        cb: cb,
+                    };
+                } else {
+                    return thunkApi.rejectWithValue(
+                        "Something went wrong while submitting your information. Please check your details"
+                    );
+                }
+            } else {
+                return thunkApi.rejectWithValue(
+                    "Something went wrong while submitting your information. Please try again later"
+                );
+            }
+        } catch (e: any) {
+            console.log(e);
+            return thunkApi.rejectWithValue(e);
         }
     }
 );
@@ -652,7 +759,7 @@ const userInformationStateSetter = (
     allUserInformation: UserInfoAppResponse
 ) => {
     // personal information
-    console.log(allUserInformation.kycdocs);
+    console.log(allUserInformation);
     state.user!.email = allUserInformation.email;
     state.user!.customerNo = allUserInformation.customerNo;
     state.user!.dateOfBirth = allUserInformation.dob;
@@ -671,12 +778,12 @@ const userInformationStateSetter = (
         (object) => object.documentType === "Photo"
     )[0];
     const proofOfAddressObject = allUserInformation.kycdocs.filter(
-        (object) => object.documentType === "Proof of Address"
+        (object) => object.documentType === "ProofofAddr"
     )[0];
     const identificationObject = allUserInformation.kycdocs.filter(
         (object) =>
             object.documentType !== "Photo" &&
-            object.documentType !== "Proof of Address"
+            object.documentType !== "ProofofAddr"
     )![0]! as ProofOfIdentificationFromGetUserAppResponse;
     state.user!.identificationDocType = identificationObject?.documentType!;
     state.user!.identificationDocRef = identificationObject?.documentReference!;
@@ -693,10 +800,11 @@ const userInformationStateSetter = (
     state.user!.employmentInfo.companyAddress =
         allUserInformation.employerAddress;
     state.user!.employmentInfo.companyEmail = allUserInformation.officeEmail;
-    state.user!.employmentInfo.companyName = allUserInformation.employerName;
+    state.user!.employmentInfo.companyName =
+        allUserInformation.employmentStatus;
     state.user!.employmentInfo.companyPhoneNumber =
         allUserInformation.officePhoneNo;
-    state.user!.employmentInfo.jobTitle = allUserInformation.occupationCode;
+    state.user!.employmentInfo.jobTitle = allUserInformation.occupationDesc;
     state.user!.employmentInfo.natureOfBusiness =
         allUserInformation.natureOfBuss;
     state.user!.employmentInfo.grossIncome =
@@ -721,6 +829,14 @@ const authSlice = createSlice({
         clearAuthState(state: AuthState) {
             return initialState;
         },
+        setUserRfid(state: AuthState, action: PayloadAction<{ rfid: string }>) {
+            if (state.user?.rfid) {
+                state.user.rfid = action.payload.rfid;
+            }
+        },
+        setRfStatusToReview(){
+            
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -728,6 +844,14 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
+                console.log(action.payload);
+                state.user!.rfid = action?.payload?.rfid
+                    ? action?.payload.rfid
+                    : "";
+                state.user!.rfStatus = action?.payload.rfidStatus;
+                state.user!.keycloakId = action?.payload?.keycloakId
+                    ? action?.payload.keycloakId
+                    : "";
                 state.accessToken = action?.payload!.accessToken;
                 state.refreshToken = action?.payload!.refreshToken;
                 const allUserInformation = action.payload
@@ -796,7 +920,7 @@ const authSlice = createSlice({
                 toast.error(state.errorMessage, { id: createUserFull.name });
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
-                state = { ...initialState };
+                return initialState;
             })
             .addCase(logoutUser.pending, (state, action) => {
                 state.isLoading = true;
@@ -912,7 +1036,29 @@ const authSlice = createSlice({
                         position: "top-right",
                     });
                 }
-            );
+            )
+            .addCase(refreshUserTokens.rejected, (state, action) => {})
+            .addCase(refreshUserTokens.fulfilled, (state, action) => {})
+            .addCase(refreshUserTokens.pending, (state, action) => {})
+            .addCase(submitUserInfoToNslDb.rejected, (state, action) => {
+                toast.loading(action.payload as string, {
+                    id: submitUserInfoToNslDb.name,
+                    position: "top-right",
+                });
+            })
+            .addCase(submitUserInfoToNslDb.fulfilled, (state, action) => {
+                toast.success(action.payload.message, {
+                    id: submitUserInfoToNslDb.name,
+                    position: "top-right",
+                });
+                if (action.payload.cb) action.payload.cb();
+            })
+            .addCase(submitUserInfoToNslDb.pending, (state, action) => {
+                toast.loading("Submitting your Information...", {
+                    id: submitUserInfoToNslDb.name,
+                    position: "top-right",
+                });
+            });
     },
 });
 

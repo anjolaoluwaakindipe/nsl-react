@@ -1,22 +1,20 @@
-import React from "react";
-import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
+import { IoIosArrowDropleftCircle } from "react-icons/io";
+import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { paths } from "../../../utils/constants/allPaths";
-import { useSelector } from "react-redux";
-import { authSelector } from "../../../state/authSlice";
+import { authSelector } from '../../../state/authSlice';
 
-function ProfileHeader() {
+function SummaryHeader() {
     const navigate = useNavigate();
-    const { user } = useSelector(authSelector);
+    const {user} = useSelector(authSelector)
     return (
         <div className="relative w-full ">
-            {/* Back Button */}
+            {/* Back Button
             <IoIosArrowDropleftCircle
                 size={32}
                 className="absolute  md:right-10 md:left-auto left-4 top-4 md:top-20  text-2xl text-primaryColor cursor-pointer"
                 onClick={() => navigate(-1)}
-            />
+            /> */}
 
             {/* Yellow Banner */}
             <div className="w-full ">
@@ -33,7 +31,7 @@ function ProfileHeader() {
                     {/* <div className="w-24 h-24 md:w-40 md:h-40 rounded-full border-2 border-white flex justify-center items-center"></div> */}
                     {user?.picture ? (
                         <img
-                        className="h-full w-full"
+                            className="h-full w-full"
                             src={"data:image/png;base64," + user?.picture}
                             alt="profile_picture"
                             // width={90}
@@ -45,7 +43,7 @@ function ProfileHeader() {
 
                 <div className="flex flex-col justify-end md:space-y-2 md:px-8 pt-4 md:pt-0">
                     <h1 className="text-sm font-bold text-primaryColor">
-                        Profile
+                        Profile Summary
                     </h1>
                     <h1 className=" text-base md:text-xl font-light">
                         {user?.firstName?.toUpperCase() +
@@ -67,4 +65,4 @@ function ProfileHeader() {
     );
 }
 
-export default ProfileHeader;
+export default SummaryHeader;

@@ -16,7 +16,7 @@ function Layout({ children }: { children?: React.ReactElement }) {
 
     return (
         <div className=" w-full ">
-            <div className="w-full md:max-w-7xl py-5 shadow-xl z-10 bg-bgColor overscroll-x-contain">
+            <div className="w-full py-5 shadow-xl z-10 bg-bgColor overscroll-x-contain">
                 <div className=" md:max-w-7xl m-auto w-full px-5 md:px-5 flex items-center justify-between ">
                     <div>
                         <img

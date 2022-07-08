@@ -1,79 +1,120 @@
-import React from "react";
-
 // Used to Accept react-hook-form values
-import {
-    Control,
-    ControllerProps,
-    FieldErrors,
-    FieldValues,
-    UseFormHandleSubmit,
-    UseFormRegister,
-    UseFormWatch,
-} from "react-hook-form";
 import { BsCheck2 } from "react-icons/bs";
 
 // types
 import { LoanApplicationFormInfo } from "../../../typings";
 import CardInput from "./CardInput";
 
+import { joiResolver } from "@hookform/resolvers/joi";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../../../services/customHooks/useModal";
-import { paths } from "../../../utils/constants/allPaths";
+import { loanApplicationFormSchema } from "../../../utils/validation/loanApplication";
 import CurrencyInputField from "../../shared/Inputs/TextFields/CurrencyInputField";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import WebCamInput from "../../shared/Inputs/WebCamInput";
-import { Controller } from "react-hook-form";
-import { render } from "@testing-library/react";
+import { useEffect, useRef } from "react";
+import { loanRequests } from "../../../services/requests/loanRequests";
+import toast from "react-hot-toast";
+import formatMoney from "../../../utils/moneyFormatter";
 
-type LoanApplicationForm1Props = {
-    register: UseFormRegister<LoanApplicationFormInfo>;
-    errors?: FieldErrors<LoanApplicationFormInfo>;
-    handleSubmit: UseFormHandleSubmit<LoanApplicationFormInfo>;
-    setNextPage?: React.Dispatch<React.SetStateAction<boolean>>;
-    control: Control<LoanApplicationFormInfo, any>;
-    watch: UseFormWatch<LoanApplicationFormInfo>;
+function Form1() {
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+        watch,
+        setValue,
+        control,
+    } = useForm<LoanApplicationFormInfo>({
+        defaultValues: {
+            amount: "",
+            interest: "",
+            purpose: "",
+            tenor: { value: "", label: "" },
+        },
+        resolver: joiResolver(loanApplicationFormSchema),
+    });
 
-    Controller: <
-        TFieldValues extends FieldValues = FieldValues,
-        TName extends import("react-hook-form/dist/types").Path<TFieldValues> = import("react-hook-form/dist/types").Path<TFieldValues>
-    >(
-        props: ControllerProps<TFieldValues, TName>
-    ) => import("react").ReactElement<
-        any,
-        string | import("react").JSXElementConstructor<any>
-    >;
-};
-
-function Form1({
-    register,
-    errors,
-    handleSubmit,
-    setNextPage,
-    Controller,
-    watch,
-    control,
-}: LoanApplicationForm1Props) {
+    // watches
     const watchTermsAndCond = watch("termsAndCondition");
+    const watchAmount = watch("amount");
+    const watchTenor = watch("tenor");
+
+    const loanInfoToastId = "loanInfoToastId";
 
     const tenorDropdownOptions = [
-        { value: "14 days", label: "20 days" },
-        { value: "30 days", label: "30 days" },
-        { value: "60 days", label: "60 days" },
-        { value: "90 days", label: "90 days" },
-        { value: "180 days", label: "180 days" },
+        { value: "14", label: "14 days" },
+        { value: "30", label: "30 days" },
+        { value: "60", label: "60 days" },
+        { value: "90", label: "90 days" },
+        { value: "180", label: "180 days" },
     ];
 
-    const onProceed = () => {
-        navigate(paths.LOGIN, { replace: true });
-    };
+    console.log(errors)
 
     const { openModalFunc } = useModal("LoanApplicationSucessModal", false);
 
-    const onSubmit = handleSubmit((data) => {
+    const onSubmit = handleSubmit(async (data) => {
         console.log(data);
-        openModalFunc();
+
+        const submissionResponse = await loanRequests.submitLoanApplication({
+            customerNo: "0001",
+            amountNeeded: data.amount.replace(",", ""),
+            channel: "web",
+        });
+
+        if (submissionResponse.status === 200) {
+            toast.success(submissionResponse.data.responseMessage, {
+                position: "top-right",
+            });
+            openModalFunc();
+        } else {
+            toast.error(
+                "Something went wrong while trying to submit your loan. Please try again later."
+            );
+        }
     });
-    console.log(errors);
+
+    const getOtherLoanInformation = async () => {
+        const response = await loanRequests.getLoanTenureRepaymentAndDate({
+            amount: parseFloat(watchAmount.replace(",", "")),
+            tenor: parseInt(watchTenor.value),
+        });
+        console.log(response);
+
+        if (response.status === 200) {
+            setValue(
+                "repaymentAmount",
+                `N     ${formatMoney(response.data.repaymentAmount)}`
+            );
+            setValue("interest", `${response.data.rate}%`);
+            setValue(
+                "repaymentDate",
+                new Date(response.data.repaymentDueDate).toDateString()
+            );
+            toast.success("Please check your Interest and loan Info!!!", {
+                id: loanInfoToastId,
+            });
+        } else {
+            toast.error(
+                "An error occured while calculating your interest and repayment info. Please try again later.",
+                { id: loanInfoToastId }
+            );
+        }
+    };
+    const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+    useEffect(() => {
+        if (!watchAmount || !watchTenor.value) return;
+        clearTimeout(timerRef.current!);
+        console.log("start");
+        toast.loading("loading interest and repayment info...", {
+            id: loanInfoToastId,
+        });
+        timerRef.current = setTimeout(async () => {
+            await getOtherLoanInformation();
+        }, 1000);
+    }, [watchAmount, watchTenor]);
 
     const navigate = useNavigate();
 
@@ -101,12 +142,21 @@ function Form1({
                 autoCorrect="off"
             >
                 {/*amount*/}
-                <CurrencyInputField
-                    register={register("amount")}
-                    id={"loanApplicatonAmount"}
-                    placeholder="Amount"
-                    errorMessage={errors?.amount?.message}
-                />
+                <div className=" col-span-12 md:col-span-6 ">
+                    <Controller
+                        control={control}
+                        name="amount"
+                        render={({ field: { onChange, value } }) => (
+                            <CurrencyInputField
+                                placeholder="Gross Income"
+                                value={value}
+                                onChange={onChange}
+                                id="UpdateProfile__grossIncome"
+                                errorMessage={errors.amount?.message}
+                            />
+                        )}
+                    />
+                </div>
 
                 {/*tenor*/}
                 <div>
@@ -139,6 +189,27 @@ function Form1({
                         register={register("interest")}
                         type="text"
                         placeholder="Interest"
+                        readOnly={true}
+                        errorMessage={errors?.interest?.message}
+                    />
+                </div>
+                {/*interest (should be fixed )*/}
+                <div>
+                    <FloatingPlaceholderTextField
+                        register={register("repaymentAmount")}
+                        type="text"
+                        placeholder="Repayment Amount"
+                        readOnly={true}
+                        errorMessage={errors?.interest?.message}
+                    />
+                </div>
+                {/*interest (should be fixed )*/}
+                <div>
+                    <FloatingPlaceholderTextField
+                        register={register("repaymentDate")}
+                        type="text"
+                        placeholder="Repayment Date"
+                        readOnly={true}
                         errorMessage={errors?.interest?.message}
                     />
                 </div>

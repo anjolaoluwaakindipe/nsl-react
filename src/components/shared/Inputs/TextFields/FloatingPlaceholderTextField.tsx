@@ -24,7 +24,7 @@ function FloatingPlaceholderTextField(props: FloatinPlaceholderTextFieldProps) {
                     {...props.register}
                     className="outline-none pb-4   w-full "
                     id={props.id}
-                    placeholder=" "
+                    placeholder={props.readOnly ? undefined: " "}
                     step={props.step}
                     pattern={props.pattern}
                     value={props.value}

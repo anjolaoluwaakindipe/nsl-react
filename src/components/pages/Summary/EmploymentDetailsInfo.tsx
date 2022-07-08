@@ -5,7 +5,7 @@ import { paths } from "../../../utils/constants/allPaths";
 import { useSelector } from "react-redux";
 import { authSelector } from "../../../state/authSlice";
 
-function EmploymentDetailsInfo() {
+function EmploymentDetailsSummaryInfo() {
     const navigate = useNavigate();
     const { user } = useSelector(authSelector);
 
@@ -60,4 +60,4 @@ function EmploymentDetailsInfo() {
     );
 }
 
-export default EmploymentDetailsInfo;
+export default EmploymentDetailsSummaryInfo;

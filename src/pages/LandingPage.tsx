@@ -9,32 +9,28 @@ import {
     Faq,
     Footer2,
     Footer,
-    LoanProcess
+    LoanProcess,
 } from "../components/pages/LandingPage";
-
 
 function LandingPage() {
     return (
         <Layout>
-            <div className="max-w-full" >
+            <div className="">
                 <Header />
-                
-                    <LoanCalculator />
-                    <LoanProcess />
-                   
-               
+
+                <LoanCalculator />
+                <LoanProcess />
+
                 <Faq />
                 <Footer2 />
 
-                <div className="md:px-0" >
+                <div className="md:px-0">
                     <Footer />
                 </div>
                 {/* <Footer3/> */}
             </div>
-
-
         </Layout>
-    )
+    );
 }
 
 export default LandingPage;
