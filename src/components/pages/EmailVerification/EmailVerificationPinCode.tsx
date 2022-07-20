@@ -3,15 +3,41 @@ import { useRef, useState, useEffect } from "react";
 
 type EmailVerificaitonPinCodeProps = {
     onChange: (...event: any[]) => void;
-    value: string;
+    value: string[];
 };
 
 function EmailVerificationPinCode({ value, onChange }: EmailVerificaitonPinCodeProps) {
-    const [pin, setPin] = useState(value);
+    const [pin, setPin] = useState<string[]>(["", "", "", ""]);
 
-    const preventLetters: React.KeyboardEventHandler<HTMLInputElement> = (
-        e
+    const preventLetters = (
+        e: React.KeyboardEvent<HTMLInputElement>,
+        index: number
     ) => {
+        if (e.keyCode === 8) {
+            if (index === 4) {
+                e.preventDefault();
+                setFourthDigit("");
+                thirdDigitRef.current?.focus();
+                return;
+            }
+            if (index === 3) {
+                e.preventDefault();
+                setThirdDigit("");
+                secondDigitRef.current?.focus();
+                return;
+            }
+            if (index === 2) {
+                e.preventDefault();
+                setSecondDigit("");
+                firstDigitRef.current?.focus();
+                return;
+            }
+            if (index === 1) {
+                e.preventDefault();
+                setFirstDigit("");
+                return;
+            }
+        }
         if (!RegExp("[0-9]").test(e.key)) {
             e.preventDefault();
             return;
@@ -28,77 +54,72 @@ function EmailVerificationPinCode({ value, onChange }: EmailVerificaitonPinCodeP
     const [firstDigit, setFirstDigit] = useState("");
     const [secondDigit, setSecondDigit] = useState("");
     const [thirdDigit, setThirdDigit] = useState("");
-    const [fourthDigit, setFourthDigit ] = useState("");
-
-    useEffect(()=>{
-        onChange(pin)
-    }, [pin, onChange])
+    const [fourthDigit, setFourthDigit] = useState("");
 
     useEffect(() => {
-        if (firstDigit) {
-            setPin((prevpin: string) => {
-                const prevpinChar = prevpin.split("");
-                prevpinChar[0] = firstDigit;
-                return prevpinChar.join("");
+        onChange(pin);
+        console.log(pin);
+    }, [pin, onChange]);
+
+    useEffect(() => {
+        if (firstDigit || firstDigit === "") {
+            setPin((prevpin: string[]) => {
+                prevpin[0] = firstDigit;
+                console.log(prevpin);
+                return [...prevpin];
             });
         }
     }, [firstDigit]);
 
     useEffect(() => {
-        if (secondDigit) {
-            setPin((prevpin: string) => {
-                const prevpinChar = prevpin.split("");
-                prevpinChar[1] = secondDigit;
-                return prevpinChar.join("");
+        if (secondDigit || secondDigit === "") {
+            setPin((prevpin: string[]) => {
+                prevpin[1] = secondDigit;
+                return [...prevpin];
             });
         }
     }, [secondDigit]);
     useEffect(() => {
-        if (thirdDigit) {
-            setPin((prevpin: string) => {
-                const prevpinChar = prevpin.split("");
-                prevpinChar[2] = thirdDigit;
-                return prevpinChar.join("");
+        if (thirdDigit || thirdDigit === "") {
+            setPin((prevpin: string[]) => {
+                prevpin[2] = thirdDigit;
+                return [...prevpin];
             });
         }
     }, [thirdDigit]);
     useEffect(() => {
-        if (fourthDigit) {
-            setPin((prevpin: string) => {
-                const prevpinChar = prevpin.split("");
-                prevpinChar[3] = fourthDigit;
-                return prevpinChar.join("");
+        if (fourthDigit || fourthDigit === "") {
+            setPin((prevpin: string[]) => {
+                prevpin[3] = fourthDigit;
+                return [...prevpin];
             });
         }
     }, [fourthDigit]);
 
     return (
-        <div
-            className="flex space-x-5"
-           
-        >
+        <div className="flex space-x-5">
             <input
                 type="text"
-                className=" w-8 md:w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
+                className="w-8 md:w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
                 placeholder="*"
                 value={firstDigit}
                 onChange={(e) => {
                     setFirstDigit(e.target.value.replace(firstDigit, ""));
                     secondDigitRef.current?.focus();
                 }}
-                onKeyDown={preventLetters}
+                onKeyDown={(e) => preventLetters(e, 1)}
                 ref={firstDigitRef}
             />
             <input
                 type="text"
-                className="w-8 md:w-16  h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
+                className="w-8 md:w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
                 placeholder="*"
                 value={secondDigit}
                 onChange={(e) => {
                     setSecondDigit(e.target.value.replace(secondDigit, ""));
                     thirdDigitRef.current?.focus();
                 }}
-                onKeyDown={preventLetters}
+                onKeyDown={(e) => preventLetters(e, 2)}
                 ref={secondDigitRef}
             />
             <input
@@ -110,15 +131,15 @@ function EmailVerificationPinCode({ value, onChange }: EmailVerificaitonPinCodeP
                     setThirdDigit(e.target.value.replace(thirdDigit, ""));
                     fourthDigitRef.current?.focus();
                 }}
-                onKeyDown={preventLetters}
+                onKeyDown={(e) => preventLetters(e, 3)}
                 ref={thirdDigitRef}
             />
             <input
                 type="text"
-                className="w-8 md:w-16  h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
+                className="w-8 md:w-16 h-16 border-b-2 border-primaryColor text-darkTextColor   text-center "
                 placeholder="*"
                 value={fourthDigit}
-                onKeyDown={preventLetters}
+                onKeyDown={(e) => preventLetters(e, 4)}
                 onChange={(e) => {
                     setFourthDigit(e.target.value.replace(fourthDigit, ""));
                     fourthDigitRef.current?.blur();

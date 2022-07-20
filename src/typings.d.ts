@@ -8,8 +8,8 @@ type LoanApplicationFormInfo = {
     tenor: { value: string; label: string };
     interest: string;
     purpose: string;
-    repaymentAmount?: string;
-    repaymentDate?: string;
+    repaymentAmount: string;
+    repaymentDate: string;
     termsAndCondition: boolean;
     picture: string;
 };
@@ -147,7 +147,7 @@ interface AuthState {
     user: {
         title: string | null;
         rfid: string | null;
-        rfStatus: "Processed" | "New" | null;
+        rfStatus: "Processed" | "New" | "Draft" | "" | null;
         keycloakId: string | null;
         customerNo: string | null;
         name: string | null;

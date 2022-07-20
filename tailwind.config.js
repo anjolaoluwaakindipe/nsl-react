@@ -2,7 +2,12 @@
 
 const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
-    content: ["./src/**/*.{js,jsx,ts,tsx}"],
+    content: [
+        "./src/pages/*.{js,jsx,ts,tsx}",
+        "./src/components/**/*.{js,jsx,ts,tsx}",
+        "./src/components/**/**/*.{js,jsx,ts,tsx}",
+        "./public/index.html",
+    ],
     theme: {
         extend: {
             colors: {
@@ -17,10 +22,10 @@ module.exports = {
                 successColor: "rgba(23, 120, 7, 1)",
                 bgColor3: "#E5E5E5",
                 peach: "#FFFCF0",
-                lightPink: "rgba(109, 32, 27, 0.14)"
+                lightPink: "rgba(109, 32, 27, 0.14)",
             },
             fontFamily: {
-                sans: ["Poppins"],
+                sans: ["Poppins", ...defaultTheme.fontFamily.sans],
             },
         },
     },

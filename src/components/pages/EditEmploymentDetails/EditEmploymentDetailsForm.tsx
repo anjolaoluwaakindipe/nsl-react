@@ -49,6 +49,8 @@ function EditEmploymentDetailsForm() {
         natureOfBusiness,
     } = useSelector(authSelector).user!.employmentInfo;
 
+    const { user } = useSelector(authSelector);
+
     // state values of all input fields
     const watchCompanyAddress = watch("companyAddress");
     const watchCompanyEmail = watch("companyEmailAddress");
@@ -127,6 +129,36 @@ function EditEmploymentDetailsForm() {
     ]);
 
     const onSubmitForm = handleSubmit(async (data) => {
+        const userInfo = {
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+            title: user?.title,
+            phoneNumber: user?.phoneNumber,
+            email: user?.email,
+            bvn: user?.bvn,
+            maritalStatus: user?.maritalStatus,
+            gender: user?.gender,
+            middleName: user?.middleName,
+            dateOfBirth: user?.dateOfBirth?.includes("T")
+                ? user?.dateOfBirth?.split("T")[0]
+                : user?.dateOfBirth,
+            cscsNumber: user?.cscsNumber,
+            residentialAddress: user?.residentialAddress,
+            picture: user?.picture,
+            identificationDocumentImage: user?.identificationDocumentImage,
+            identificationDocExpiryDate:
+                user?.identificationDocExpiryDate?.includes("T")
+                    ? user?.identificationDocExpiryDate?.split("T")[0]
+                    : user?.identificationDocExpiryDate,
+            identificationDocRef: user?.identificationDocRef,
+            identificationIssueDate: user?.identificationIssueDate?.includes(
+                "T"
+            )
+                ? user?.identificationIssueDate?.split("T")[0]
+                : user?.identificationIssueDate,
+            identificationDocType: user?.identificationDocType,
+            proofOfAddressImage: user?.proofOfAddressImage,
+        };
         setButtonLoading(true);
         await dispatch(
             updateUserEmploymentDetailsFull({
@@ -137,6 +169,8 @@ function EditEmploymentDetailsForm() {
                 companyPhoneNumber: data.companyPhoneNumber!,
                 grossIncome: data.grossIncome!.replace(",", ""),
                 natureOfBusiness: data.natureOfBusiness!,
+                inputStatus: "Draft",
+                userInfo: {...userInfo, inputStatus: "Draft"},
                 cb: navigateToProfile,
             })
         );

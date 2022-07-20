@@ -1,12 +1,7 @@
-import React from "react";
-import { AiFillEdit } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
-import { paths } from "../../../utils/constants/allPaths";
 import { useSelector } from "react-redux";
 import { authSelector } from "../../../state/authSlice";
 
 function EmploymentDetailsInfo() {
-    const navigate = useNavigate();
     const { user } = useSelector(authSelector);
 
     return (
@@ -14,12 +9,12 @@ function EmploymentDetailsInfo() {
             <div className="w-full flex justify-between items-end">
                 <h1 className="font-semibold">Employment Details</h1>
 
-                <AiFillEdit
+                {/* <AiFillEdit
                     className="cursor-pointer text-primaryColor brightness-125"
                     onClick={() => {
                         navigate(paths.EDIT_EMPLOYMENT_DETAILS);
                     }}
-                />
+                /> */}
             </div>
 
             <div className="grid grid-cols-2 p-6 bg-white text-sm rounded-md gap-y-8 gap-x-4">

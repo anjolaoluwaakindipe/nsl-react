@@ -26,4 +26,5 @@ export const paths = {
     WELCOME: "/welcome",
     LANDINGPAGE: "/",
     SUMMARY: "/submission-summary",
+    WAITING: "/waiting",
 };

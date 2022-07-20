@@ -33,6 +33,13 @@ function EditPersonalDetailsForm() {
         title,
         residentialAddress,
         cscsNumber,
+        identificationDocExpiryDate,
+        identificationDocRef,
+        identificationDocType,
+        identificationDocumentImage,
+        identificationIssueDate,
+        proofOfAddressImage,
+        picture
     } = useSelector(authSelector).user!;
 
     // raact-router variables
@@ -214,6 +221,14 @@ function EditPersonalDetailsForm() {
                     : data.dateOfBirth,
                 cscsNumber: data.cscsNumber,
                 residentialAddress: data.residentialAddress,
+                identificationDocExpiryDate,
+                identificationDocRef,
+                identificationDocType,
+                identificationDocumentImage,
+                identificationIssueDate,
+                proofOfAddressImage,
+                picture,
+                inputStatus: "Draft",
                 cb: navigateToProfile,
             })
         );

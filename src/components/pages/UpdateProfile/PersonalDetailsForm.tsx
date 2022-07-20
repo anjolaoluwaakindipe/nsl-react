@@ -133,6 +133,7 @@ function PersonalDetailsForm() {
                 identificationDocType: data.documentType.value,
                 proofOfAddressImage: data.proofOfResidence,
                 cb: navigateToUpdateEmploymentDetail,
+                inputStatus: "Draft"
             })
         );
         // navigate("/update-profile/employment-details");
@@ -417,6 +418,13 @@ function PersonalDetailsForm() {
                         errorMessage={errors.dateOfBirth?.message}
                         placeholder="Date of Birth"
                         id="dateOfBirth"
+                        max={new Date(
+                            new Date().setFullYear(
+                                new Date().getFullYear() - 18
+                            )
+                        )
+                            .toISOString()
+                            .substring(0, 10)}
                     />
                 </div>
 
@@ -510,7 +518,7 @@ function PersonalDetailsForm() {
                 {/*Document reference number*/}
                 <div className=" col-span-12 md:col-span-6 ">
                     <FloatingPlaceholderTextField
-                        placeholder="Document Refernce Number"
+                        placeholder="Document Reference Number"
                         type="text"
                         register={register("documentRefNumber")}
                         id="UpdateProfile__documentRefNumber"
@@ -525,6 +533,7 @@ function PersonalDetailsForm() {
                         placeholder="Expiry Date"
                         id="IdexpiryDate"
                         errorMessage={errors.IdexpiryDate?.message}
+                        min={new Date().toISOString().substring(0, 10)}
                     />
                 </div>
 
@@ -535,6 +544,7 @@ function PersonalDetailsForm() {
                         placeholder="Issue Date"
                         id="IdissueDate"
                         errorMessage={errors.IdissueDate?.message}
+                        max={new Date().toISOString().substring(0, 10)}
                     />
                 </div>
 

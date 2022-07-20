@@ -1,19 +1,31 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import NavBarLayout from "../components/layout/NavBarLayout";
 import AccountDetailsSummaryInfo from "../components/pages/Summary/AccountDetailsInfo";
 import EmploymentDetailsSummaryInfo from "../components/pages/Summary/EmploymentDetailsInfo";
 import PersonalDetailsSummaryInfo from "../components/pages/Summary/PersonalDetailsInfo";
 import SummaryHeader from "../components/pages/Summary/SummaryHeader";
 import UploadSummaryInfo from "../components/pages/Summary/UploadInfo";
-import { authSelector, submitUserInfoToNslDb } from "../state/authSlice";
-import { paths } from '../utils/constants/allPaths';
-import { AppDispatch } from '../state/store';
+import {
+    authSelector,
+    setRfStatusToNew,
+    submitUserInfoToNslDb,
+} from "../state/authSlice";
+import { paths } from "../utils/constants/allPaths";
+import { AppDispatch } from "../state/store";
+import { useModal } from "../services/customHooks/useModal";
+import { useEffect, useState } from "react";
+import { isAnyKeyEmptyInAnObj } from "../utils/objectChecker";
+import toast from "react-hot-toast";
+import authRequest from "../services/requests/authRequest";
 
 function Summary() {
     const { user } = useSelector(authSelector);
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
+    const [canSubmit, setCanSubmit] = useState(false);
+    const [isButtonLoading, setButtonLoading] = useState(false);
+    const [isButtonDisabled, setButtonDisabled] = useState(true);
 
     const submitApplication = async () => {
         // dispatch(
@@ -52,12 +64,69 @@ function Summary() {
         //         cb: navigateToDashboard,
         //     })
         // );
-        navigateToDashboard();
+        const loadingId = "loading";
+        toast.loading("Submiting your information for review...", {
+            id: loadingId,
+        });
+        setButtonLoading(true);
+        if (user?.rfid) {
+            await authRequest
+                .changeStatusFromDraftToNewUser(user?.rfid)
+                .then((data) => {
+                    toast.remove(loadingId);
+                    openSummaryModal();
+                    dispatch(setRfStatusToNew());
+                })
+                .catch(() => {
+                    toast.error(
+                        "Something went wrong while submiting your information. Please try again later.",
+                        { id: loadingId }
+                    );
+                });
+        }
+        setButtonLoading(false);
     };
 
-    const navigateToDashboard = () =>{
-        navigate(paths.WELCOME)
-    }
+    useEffect(() => {}, []); // eslint-disable-line
+
+    const { openModalFunc } = useModal("ProfileSuccessfullySubmitted", false);
+    const openSummaryModal = () => {
+        openModalFunc();
+    };
+
+    useEffect(() => {
+        setTimeout(() => {
+            const userObject = user as object;
+            const redirect = isAnyKeyEmptyInAnObj(userObject, [
+                "title",
+                "cscsNumber",
+                "customerNo",
+                "companyAddress",
+                "name",
+                "identificationDocType",
+                "identificationDocRef",
+                "identificationIssueDate",
+                "identificationDocExpiryDate",
+                "identificationDocumentImage",
+                "proofOfAddressImage",
+            ]);
+
+            if (redirect === true) {
+                setButtonDisabled(true);
+                toast.error(
+                    "Please make sure all information are filled before submit"
+                );
+            } else if (redirect === false) {
+                setButtonDisabled(false);
+                toast.success(
+                    "Information complete you may continue with submission"
+                );
+            } else {
+                return;
+            }
+        }, 3000);
+    }, []);
+
     return (
         <NavBarLayout>
             <div className="bg-bgColor2 w-full min-h-screen py-10">
@@ -78,8 +147,12 @@ function Summary() {
                         <UploadSummaryInfo />
 
                         <div className="w-full  flex justify-end py-5">
-                            <button className="btn1 md:w-52 w-full" onClick={submitApplication}>
-                                Submit
+                            <button
+                                className="btn1 md:w-52 w-full"
+                                onClick={submitApplication}
+                                disabled={isButtonDisabled || isButtonLoading}
+                            >
+                                {isButtonLoading ? "Loading..." : "Submit"}
                             </button>
                         </div>
                     </div>

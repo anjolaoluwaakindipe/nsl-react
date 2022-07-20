@@ -42,15 +42,18 @@ export const loanRequests = {
             });
     },
 
-    async submitLoanApplication({
-        customerNo,
-        amountNeeded,
-        channel
-    }: // repaymentAmount,
+    async submitLoanApplication(params: // repaymentAmount,
     {
         customerNo: string;
         amountNeeded: string;
         channel: string;
+        name: string;
+        phoneNumber: string;
+        rate: string;
+        repaymentAmount: string;
+        tenor: string;
+        repaymentDate: string;
+        email:string;
         // repaymentAmount: string;
     }) {
         const res: {
@@ -65,22 +68,16 @@ export const loanRequests = {
                 | Record<string, any>;
         } = { status: 0, code: "", data: {} };
         const body = {
-            customerNo,
-            amountNeeded,
-            channel,
+            ...params,
             // repaymentAmount,
         };
         return await axios
-            .post(
-                "/isslapi/ibank/api/v1/loanapplication",
-                body,
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-TENANTID": "islandbankpoc",
-                    },
-                }
-            )
+            .post("/isslapi/ibank/api/v1/loanapplication", body, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-TENANTID": "islandbankpoc",
+                },
+            })
             .then((response) => {
                 res.data = response.data;
                 res.status = response.status;

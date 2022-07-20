@@ -20,7 +20,7 @@ function LogOutModal(prop: { cancelModal: () => void }) {
                 Log Out
             </h3>
             <h5 className="md:max-w-[600px]  max-w-[500px] min-w-[200px] text-center md:text-xl  py-10">
-                Are you sure you wish to LogOut?
+                Are you sure you wish to Logout?
             </h5>
             <button
                 className="md:text-xl py-5 px-5 bg-accentColor w-30 rounded-xl text-white"

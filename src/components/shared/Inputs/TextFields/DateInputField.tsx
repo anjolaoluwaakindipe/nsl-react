@@ -15,6 +15,8 @@ type DateInputFieldProp = {
     formNoValidate?: boolean;
     readOnly?: boolean;
     onChange?: (...event: any[]) => void;
+    min?:string;
+    max?:string;
 };
 
 function DateInputField({
@@ -23,6 +25,8 @@ function DateInputField({
     errorMessage,
     placeholder,
     id,
+    min,
+    max
 }: DateInputFieldProp) {
     return (
         <div className="w-full">
@@ -40,6 +44,8 @@ function DateInputField({
                     onBlur={(e) => {
                         e.target.type = "text";
                     }}
+                    min={min}
+                    max={max}
                 />
                 <label
                     htmlFor={"DateInputField__" + id}

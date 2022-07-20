@@ -17,6 +17,7 @@ import ProfileUpdateSuccessfulModal from "./Content/ProfileUpdateSuccessfulModal
 import LoanApplicationSuccessModal from "./Content/LoanApplicationSucessModal";
 import LogOutModal from "./Content/LogOutModal";
 import CardDetailsModal from "./Content/CardDetailsModal";
+import ProfileSuccessfullySubmitted from "./Content/ProfileSuccessfullySubmitted";
 
 function ModalContent(
     modalName: string,
@@ -47,7 +48,8 @@ function ModalContent(
             return <LogOutModal cancelModal={cancelModal} />;
         case "CardDetailsModal":
             return <CardDetailsModal cancelModal={cancelModal} />
-
+        case "ProfileSuccessfullySubmitted":
+            return <ProfileSuccessfullySubmitted cancelModal={cancelModal}/>
         default:
             return <div></div>;
     }

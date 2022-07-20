@@ -108,7 +108,7 @@ function AccountDetailsForm() {
                 <div className="col-span-12 w-full ">
                     You are required to provide your card details to update your
                     profile. A charge of N50.00 wil be debited from your account
-                    in order to verify your card .You can provide more than one
+                    as your registration fee and in order to verify your card.You can provide more than one
                     card details later.
                 </div>
 

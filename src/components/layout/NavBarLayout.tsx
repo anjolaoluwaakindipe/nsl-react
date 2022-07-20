@@ -10,12 +10,9 @@ import { useSelector } from "react-redux";
 
 function NavBarLayout({ children }: { children?: React.ReactElement }) {
     const navigate = useNavigate();
-    const { user } = useSelector(authSelector)
+    const { user } = useSelector(authSelector);
 
-    const { openModalFunc } = useModal(
-        "LogOutModal",
-        false,
-    );
+    const { openModalFunc } = useModal("LogOutModal", false);
 
     return (
         <div>
@@ -26,7 +23,17 @@ function NavBarLayout({ children }: { children?: React.ReactElement }) {
                             src="/assets/companylogo2.svg"
                             alt="logo"
                             className="object-contain w-10 md:w-auto cursor-pointer hover:scale-105 "
-                            onClick={() => navigate(paths.USER_DASHBOARD)}
+                            onClick={() => {
+                                if (user?.rfStatus === "Draft") {
+                                    navigate(paths.WELCOME);
+                                } else if (user?.rfStatus === "New") {
+                                    navigate(paths.WAITING);
+                                } else if (user?.rfStatus === "Processed") {
+                                    navigate(paths.USER_DASHBOARD);
+                                } else {
+                                    navigate(paths.LANDINGPAGE);
+                                }
+                            }}
                         />
                     </div>
 
@@ -49,21 +56,26 @@ function NavBarLayout({ children }: { children?: React.ReactElement }) {
                         </div>
                         {/*profile*/}
                         {/* <img src="" alt="" /> */}
-                        <div className="flex justify-center items-center bg-primaryColor w-6 h-6 md:w-10 md:h-10  rounded-full cursor-pointer hover:brightness-75 overflow-hidden">
-                            {user?.picture ? (
-                                <img
-                                    className="h-full w-full"
-                                    src={
-                                        "data:image/png;base64," + user?.picture
-                                    }
-                                    alt="profile_picture"
-                                    // width={90}
-                                    onClick={() => navigate(paths.PROFILE)}
-                                />
-                            ) : (
-                                <CgProfile className="text-white text-2xl" />
-                            )}
-                        </div>
+                        {user?.rfStatus === "Processed" && (
+                            <div
+                                className="flex justify-center items-center bg-primaryColor w-6 h-6 md:w-10 md:h-10  rounded-full cursor-pointer hover:brightness-75 overflow-hidden"
+                                onClick={() => navigate(paths.PROFILE)}
+                            >
+                                {user?.picture ? (
+                                    <img
+                                        className="h-full w-full"
+                                        src={
+                                            "data:image/png;base64," +
+                                            user?.picture
+                                        }
+                                        alt="profile_picture"
+                                        // width={90}
+                                    />
+                                ) : (
+                                    <CgProfile className="text-white text-2xl" />
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

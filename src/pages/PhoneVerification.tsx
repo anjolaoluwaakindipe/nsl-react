@@ -4,26 +4,26 @@ import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 // components
 import {
     Header,
-    PhoneVerificationPinCode,
+    PhoneVerificationPinCode
 } from "../components/pages/PhoneVerification";
 
 // form
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
+import { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../services/customHooks/useModal";
-import { paths } from "../utils/constants/allPaths";
-import { useSelector, useDispatch } from "react-redux";
+import { verificationRequests } from "../services/requests/verificationRequests";
+import { authSelector, createUserFull } from "../state/authSlice";
 import {
     clearSignUpInfo,
     setSmsCode,
-    signUpInfoSelector,
+    signUpInfoSelector
 } from "../state/signUpInfoSlice";
 import { AppDispatch } from "../state/store";
-import { useState, useEffect, useRef } from 'react';
-import toast from "react-hot-toast";
-import { verificationRequests } from "../services/requests/verificationRequests";
-import { authSelector, createUserFull } from "../state/authSlice";
+import { paths } from "../utils/constants/allPaths";
 
 function PhoneVerification() {
     const {
@@ -55,10 +55,10 @@ function PhoneVerification() {
         formState: { errors },
         watch,
     } = useForm({
-        defaultValues: { phoneCode: "" },
+        defaultValues: { phoneCode: ["", "", "", ""] },
         resolver: joiResolver(
             Joi.object({
-                phoneCode: Joi.string()
+                phoneCode: Joi.array()
                     .required()
                     .label("Phone Code")
                     .min(4)
@@ -72,7 +72,7 @@ function PhoneVerification() {
     // checks if inputed code matches code sent to phone number
     useEffect(() => {
         setIsButtonDisable(true);
-        if (inputedSmsCode.length === 4 && inputedSmsCode === smsCode) {
+        if (inputedSmsCode.join("").length === 4 && inputedSmsCode.join("") === smsCode) {
             if (timerRef.current) {
                 clearTimeout(timerRef.current);
             }
@@ -94,7 +94,7 @@ function PhoneVerification() {
             setIsButtonDisable(true);
         }
 
-        if (inputedSmsCode.length === 4 && inputedSmsCode !== smsCode) {
+        if (inputedSmsCode.join("").length === 4 && inputedSmsCode.join("") !== smsCode) {
             if(timerRef.current){
                 clearTimeout(timerRef.current);
             }

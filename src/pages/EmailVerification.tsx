@@ -43,11 +43,11 @@ function EmailVerification() {
         getValues,
     } = useForm({
         defaultValues: {
-            emailCode: "",
+            emailCode: ["", "", "", ""],
         },
         resolver: joiResolver(
             Joi.object({
-                emailCode: Joi.string()
+                emailCode: Joi.array()
                     .required()
                     .min(4)
                     .max(4)
@@ -74,7 +74,10 @@ function EmailVerification() {
     const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
     useEffect(() => {
         setIsButtonDisable(true);
-        if (inputedEmailCode.length === 4 && inputedEmailCode === emailCode) {
+        if (
+            inputedEmailCode.join("").length === 4 &&
+            inputedEmailCode.join("") === emailCode
+        ) {
             clearTimeout(timerRef.current!);
             toast.loading("Verifying Code...", {
                 id: toastId,
@@ -94,7 +97,10 @@ function EmailVerification() {
             setIsButtonDisable(true);
         }
 
-        if (inputedEmailCode.length === 4 && inputedEmailCode !== emailCode) {
+        if (
+            inputedEmailCode.join("").length === 4 &&
+            inputedEmailCode.join("") !== emailCode
+        ) {
             clearTimeout(timerRef.current!);
             toast.loading("Verifying Code...", {
                 id: toastId,
@@ -122,9 +128,9 @@ function EmailVerification() {
         );
 
         await verificationRequests
-            .verifySms({
+            .verifyEmail({
                 fourDigitCode: newEmailCode,
-                recipient: phoneNumber.replace("+", ""),
+                toEmail: email,
             })
             .then((res) => {
                 dispatch(setEmailCode({ emailCode: newEmailCode }));
@@ -156,7 +162,7 @@ function EmailVerification() {
         //             toast.success("Verification code sent to your phone", {
         //                 id: loadingToastId,
         //             });
-                    
+
         //         } else {
         //             toast.error(
         //                 "Could not send sms to the phone number given. Please go back and try again",
@@ -173,8 +179,7 @@ function EmailVerification() {
         //         );
         //         setButtonLoading(false);
         //     });
-        openModalFunc();    
-            
+        openModalFunc();
     });
 
     return (

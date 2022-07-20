@@ -9,6 +9,7 @@ import {
 import toast from "react-hot-toast";
 import { RootState } from "./store";
 import { nslRequests } from "../services/requests/nslrequests";
+import { object } from "joi";
 
 const initialState: AuthState = {
     accessToken: "",
@@ -104,18 +105,28 @@ export const createUserFull = createAsyncThunk(
 
             console.log(createUserOnAppResponse);
 
-            if (createUserOnAppResponse.status === 200) {
+            if (
+                createUserOnAppResponse.status === 200 &&
+                createUserOnAppResponse.data.signUpOK === true
+            ) {
+                const changeToDraftedUserResponse =
+                    await authRequest.changeStatusFromNewToDraftUser(
+                        createUserOnAppResponse.data.requestId
+                    );
+
+                if (changeToDraftedUserResponse.status !== 200)
+                    return thunkApi.rejectWithValue(
+                        "Something went wrong while creating your account. Please try again later."
+                    );
+
                 // get admin token response from keycloak
                 const adminTokenResponse = await authRequest.getAdminToken();
-                console.log(adminTokenResponse);
 
                 // check if admin token response was successful or not
                 if (
                     adminTokenResponse.status &&
                     adminTokenResponse.status === 200
                 ) {
-                    console.log(adminTokenResponse);
-
                     // use the access token of the admin token and user inputed fields to register user on keycloak
                     const registerUserResponse =
                         await authRequest.registerUserKeycloak({
@@ -255,6 +266,7 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
             identificationDocExpiryDate,
             identificationDocumentImage,
             proofOfAddressImage,
+            inputStatus,
             picture,
             cb,
         }: {
@@ -276,6 +288,7 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
             identificationDocExpiryDate?: string | null;
             identificationDocumentImage?: string | null;
             proofOfAddressImage?: string | null;
+            inputStatus?: "New" | "Draft" | "Processed" | null;
             picture?: string | null;
             cb?: (...event: any[]) => void;
         },
@@ -294,6 +307,7 @@ export const updateUserPersonalDetailsFull = createAsyncThunk(
                     maritalStatus,
                     middleName,
                     phoneNumber,
+                    inputStatus,
                     title,
                     rfid: rfid,
                     residentialAddress,
@@ -347,7 +361,9 @@ export const updateUserEmploymentDetailsFull = createAsyncThunk(
             companyEmail,
             companyAddress,
             grossIncome,
+            inputStatus,
             cb,
+            userInfo,
         }: {
             jobTitle: string;
             natureOfBusiness: string;
@@ -356,13 +372,37 @@ export const updateUserEmploymentDetailsFull = createAsyncThunk(
             companyEmail: string;
             companyAddress: string;
             grossIncome: string;
+            inputStatus?: "Processed" | "New" | "Draft" | null;
+            userInfo?: {
+                firstName?: string | null;
+                middleName?: string | null;
+                lastName?: string | null;
+                bvn?: string | null;
+                gender?: string | null;
+                maritalStatus?: string | null;
+                dateOfBirth?: string | null;
+                title?: string | null;
+                email?: string | null;
+                phoneNumber?: string | null;
+                residentialAddress?: string | null;
+                cscsNumber?: string | null;
+                identificationDocType?: string | null;
+                identificationDocRef?: string | null;
+                identificationIssueDate?: string | null;
+                identificationDocExpiryDate?: string | null;
+                identificationDocumentImage?: string | null;
+                proofOfAddressImage?: string | null;
+                picture?: string | null;
+                inputStatus?: "New" | "Draft" | "Processed" | null;
+                cb?: (...event: any[]) => void;
+            };
             cb?: (...event: any[]) => void;
         },
         thunkApi
     ) => {
         try {
             const rfid = (thunkApi.getState() as RootState).auth.user?.rfid!;
-            const updateUserPersonalDetailsResponse =
+            const updateUserEmploymentDetailsResponse =
                 await authRequest.updateUserEmploymentInfoApp({
                     companyAddress,
                     companyEmail,
@@ -371,20 +411,62 @@ export const updateUserEmploymentDetailsFull = createAsyncThunk(
                     grossIncome,
                     jobTitle,
                     natureOfBusiness,
+                    inputStatus,
                     rfid,
                 });
 
-            if (updateUserPersonalDetailsResponse.status === 200) {
+            let updateUserPersonalDetailsResponse: {
+                status: null | number;
+                data: Record<string, any>;
+                code: string;
+            } | null = null;
+
+            if (userInfo) {
+                updateUserPersonalDetailsResponse =
+                    await authRequest.updateUserPersonalInfoApp({
+                        firstName: userInfo?.firstName,
+                        bvn: userInfo?.bvn,
+                        dateOfBirth: userInfo?.dateOfBirth,
+                        email: userInfo?.email,
+                        gender: userInfo?.gender,
+                        lastName: userInfo?.lastName,
+                        maritalStatus: userInfo?.maritalStatus,
+                        middleName: userInfo?.middleName,
+                        phoneNumber: userInfo?.phoneNumber,
+                        title: userInfo?.title,
+                        rfid: rfid,
+                        residentialAddress: userInfo?.residentialAddress,
+                        cscsNumber: userInfo?.cscsNumber,
+                        identificationDocType: userInfo?.identificationDocType,
+                        identificationDocRef: userInfo?.identificationDocRef,
+                        identificationIssueDate:
+                            userInfo?.identificationIssueDate,
+                        identificationDocExpiryDate:
+                            userInfo?.identificationDocExpiryDate,
+                        identificationDocumentImage:
+                            userInfo?.identificationDocumentImage,
+                        proofOfAddressImage: userInfo?.proofOfAddressImage,
+                        inputStatus: "Draft",
+                        picture: userInfo?.picture,
+                    });
+            }
+
+            if (
+                updateUserEmploymentDetailsResponse.status === 200 &&
+                (updateUserPersonalDetailsResponse !== null
+                    ? updateUserPersonalDetailsResponse?.status === 200
+                    : true)
+            ) {
                 thunkApi.dispatch<unknown, any>(getUserFull());
                 return { cb };
             } else if (
-                updateUserPersonalDetailsResponse.code === "ECONNABORTED"
+                updateUserEmploymentDetailsResponse.code === "ECONNABORTED"
             ) {
                 return thunkApi.rejectWithValue(
                     "Network timeout. Please check your internet connection."
                 );
             } else {
-                switch (updateUserPersonalDetailsResponse.status) {
+                switch (updateUserEmploymentDetailsResponse.status) {
                     case 0:
                         return thunkApi.rejectWithValue(
                             "A network error occured. Please check your connection"
@@ -414,7 +496,6 @@ export const loginUser = createAsyncThunk(
             // token response
             const tokenResponse = await authRequest.loginUser(email, password);
 
-    
             // check if token response was successful or not
             if (tokenResponse.status === 200) {
                 // use access token to get user information
@@ -422,15 +503,12 @@ export const loginUser = createAsyncThunk(
                     tokenResponse.data["access_token"]
                 );
 
-            
-
                 // checks if user info response was successful or not
                 if (userResponse.status === 200) {
                     const userInfoFullAppResponse =
                         await authRequest.getUserApp({
                             rfid: userResponse.data["rfid"],
                         });
-
 
                     switch (userInfoFullAppResponse.status) {
                         case 200:
@@ -471,7 +549,6 @@ export const loginUser = createAsyncThunk(
                     );
                 }
             } else {
-        
                 switch (tokenResponse.response.status) {
                     case 0:
                         return thunkApi.rejectWithValue(
@@ -783,7 +860,8 @@ const userInformationStateSetter = (
     const identificationObject = allUserInformation.kycdocs.filter(
         (object) =>
             object.documentType !== "Photo" &&
-            object.documentType !== "ProofofAddr"
+            object.documentType !== "ProofofAddr" &&
+            object.documentType !== "BVN"
     )![0]! as ProofOfIdentificationFromGetUserAppResponse;
     state.user!.identificationDocType = identificationObject?.documentType!;
     state.user!.identificationDocRef = identificationObject?.documentReference!;
@@ -834,9 +912,10 @@ const authSlice = createSlice({
                 state.user.rfid = action.payload.rfid;
             }
         },
-        setRfStatusToReview(){
-            
-        }
+        setRfStatusToNew(state: AuthState) {
+            state.user!.rfStatus = "New";
+        },
+        setRfStatusToReview() {},
     },
     extraReducers: (builder) => {
         builder
@@ -1062,7 +1141,8 @@ const authSlice = createSlice({
     },
 });
 
-export const { setAuthStateTokens, clearAuthState } = authSlice.actions;
+export const { setAuthStateTokens, clearAuthState, setRfStatusToNew } =
+    authSlice.actions;
 
 export const authSelector = (state: RootState) => state.auth;
 

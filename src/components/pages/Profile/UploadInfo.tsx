@@ -1,23 +1,19 @@
-import React from "react";
-import { AiFillEdit, AiOutlineCloudUpload } from "react-icons/ai";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 import { GrDocumentText } from "react-icons/gr";
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { paths } from '../../../utils/constants/allPaths';
 
 function UploadInfo() {
-    const navigate  = useNavigate();
+    // const navigate  = useNavigate();
 
-    const editUploads = () =>{
-        navigate(paths.EDIT_UPLOADS)
-    }
+    // const editUploads = () =>{
+    //     navigate(paths.EDIT_UPLOADS)
+    // }
 
     return (
         <div className="col-span-1 space-y-6">
             <div className="w-full flex justify-between items-end">
                 <h1 className="font-semibold">Uploads</h1>
 
-                <AiFillEdit className="cursor-pointer text-primaryColor brightness-125 " onClick={editUploads} />
+                {/* <AiFillEdit className="cursor-pointer text-primaryColor brightness-125 " onClick={editUploads} /> */}
             </div>
 
             <div className="grid grid-cols-2   text-sm  gap-y-4 text-primaryColor">

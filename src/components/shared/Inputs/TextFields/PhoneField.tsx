@@ -69,6 +69,8 @@ function PhoneField({
                         ref={phoneRef}
                         value={phoneValue}
                         style={style}
+                        international={true}
+                        
                     />
                     <div
                         className={` absolute bottom-[15px] left-16 origin-left text-gray-400 ${
@@ -77,7 +79,7 @@ function PhoneField({
                                 : floatingPlaceholderState()
                         } pointer-events-none transition-all delay-200 ease-in-out`}
                     >
-                        {placeholder}
+                        {placeholder} (+234)
                     </div>
                 </div>
             </div>

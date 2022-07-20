@@ -179,7 +179,14 @@ const authRequest = {
     }) => {
         const res: {
             status: null | number;
-            data: Record<string, any>;
+            data:
+                | {
+                      requestId: string;
+                      signUpOK: boolean;
+                      statusCode: string;
+                      statusMessage: string;
+                  }
+                | Record<string, any>;
             code: string;
         } = { status: null, data: {}, code: "" };
         const body = {
@@ -386,6 +393,7 @@ const authRequest = {
         identificationDocumentImage,
         proofOfAddressImage,
         picture,
+        inputStatus
     }: {
         rfid?: string;
         firstName?: string | null;
@@ -407,6 +415,7 @@ const authRequest = {
         identificationDocumentImage?: string | null;
         proofOfAddressImage?: string | null;
         picture?: string | null;
+        inputStatus?: "New" | "Processed" | "Draft" | null
     }) => {
         // required information to get
 
@@ -467,6 +476,10 @@ const authRequest = {
             body.photo = picture;
         }
 
+        if(inputStatus){
+            body.inputStatus = inputStatus
+        }
+
         // response data format
         const res: {
             status: null | number;
@@ -512,6 +525,7 @@ const authRequest = {
         companyEmail,
         grossIncome,
         companyAddress,
+        inputStatus
     }: {
         rfid: string;
         jobTitle: string;
@@ -521,10 +535,11 @@ const authRequest = {
         companyEmail: string;
         grossIncome: string;
         companyAddress: string;
+        inputStatus?: "New" | "Processed" | "Draft" | null
     }) => {
-        // required information to get
 
-        const body = {
+        // required information to get
+        const body: Record<string, string> = {
             jobtitle: jobTitle,
             natureofbusiness: natureOfBusiness,
             employername: companyName,
@@ -533,6 +548,10 @@ const authRequest = {
             employeraddress: companyAddress,
             grossIncome: grossIncome,
         };
+
+        if( inputStatus){
+            body.inputStatus = inputStatus
+        }
 
         // response data format
         const res: {
@@ -564,7 +583,7 @@ const authRequest = {
                     return res;
                 }
                 res.status = err.response.status;
-                res.code = err.response.code;
+                res.code = err.code;
                 return res;
             });
     },
@@ -696,7 +715,7 @@ const authRequest = {
                 | {
                       rqChannel: string;
                       rqDate: string;
-                    //   rqFldsJson: string;
+                      //   rqFldsJson: string;
                       rqId: number;
                       rqNotes: string;
                       rqStatus: string;
@@ -719,7 +738,7 @@ const authRequest = {
             })
             .then((response) => {
                 res.status = response.status;
-                res.data = { ...response.data,  };
+                res.data = { ...response.data };
                 return res;
             })
             .catch((err) => {
@@ -728,16 +747,81 @@ const authRequest = {
                 return res;
             });
     },
+
+    async changeStatusFromDraftToNewUser(rfid: string) {
+        const res: {
+            status: null | number;
+            data: {} | Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
+        const body = { inputStatus: "New" };
+
+        return await axios
+            .patch(
+                "/isslapi/onboarding-api/1.0/newcustomer/" +
+                    rfid,
+                body,
+                {
+                    headers: {
+                        "content-type": "application/json",
+                        "X-TENANTID": "islandbankpoc",
+                    },
+                    timeout: 20000000,
+                }
+            )
+
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                console.log(res);
+                return res;
+            })
+            .catch((err) => {
+                res.status = err.response.status;
+                res.code = err.response.code;
+                return res;
+            });
+    },
+    async changeStatusFromNewToDraftUser(rfid: string) {
+        const res: {
+            status: null | number;
+            data: {} | Record<string, any>;
+            code: string;
+        } = { status: null, data: {}, code: "" };
+        const body = { inputStatus: "Draft" };
+
+        return await axios
+            .patch(
+                "/isslapi/onboarding-api/1.0/newcustomer/" +
+                    rfid,
+                body,
+                {
+                    headers: {
+                        "content-type": "application/json",
+                        "X-TENANTID": "islandbankpoc",
+                    },
+                    timeout: 20000000,
+                }
+            )
+
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                console.log(res);
+                return res;
+            })
+            .catch((err) => {
+                res.status = err.response.status;
+                res.code = err.response.code;
+                return res;
+            });
+    },
 };
 
 export default authRequest;
 
 // async function myFunc() {
-//     console.log(
-//         await authRequest.refreshUserTokens(
-//             "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2MzA5ZjU2MS0yNTk3LTQzYTgtYmU0OS04NzQ1NzNjNDllZjUifQ.eyJleHAiOjE2NTY1MTI1NzksImlhdCI6MTY1NjUxMDc3OSwianRpIjoiZDEyMWMxMjctZjI1Ni00NDY3LTk3ODktZDdlN2M5NDQ5NmI1IiwiaXNzIjoiaHR0cHM6Ly9zZW50cnkuaXNzbC5uZy9hdXRoL3JlYWxtcy9uc2wiLCJhdWQiOiJodHRwczovL3NlbnRyeS5pc3NsLm5nL2F1dGgvcmVhbG1zL25zbCIsInN1YiI6ImYyMzYxM2RlLTk3MWYtNDcxNi1hNDU0LTZmMzczNDRiOTg1YSIsInR5cCI6IlJlZnJlc2giLCJhenAiOiJuc2wtcmVhY3QtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjI4M2UwYmE4LTgyZjgtNDY3ZS1iMDNhLTNmNDAxMzZjOTk1ZSIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCJ9.3u79cTQfJtzjnqxon0SlRsG34zs7CmLhMwJ80JIYmkQ"
-//         )
-//     );
+//     console.log(await authRequest.changeStatusFromDraftToNewUser("9"));
 // }
 
 // myFunc();

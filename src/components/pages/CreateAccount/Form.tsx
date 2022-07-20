@@ -11,7 +11,7 @@ import "react-phone-number-input/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../services/customHooks/useModal";
 import { verificationRequests } from "../../../services/requests/verificationRequests";
-import { authSelector } from "../../../state/authSlice";
+import { authSelector, createUserFull } from "../../../state/authSlice";
 import {
     setEmailCode,
     setSignUpInfo,
@@ -81,7 +81,14 @@ function Form() {
             setValue("bvn", bvn);
         }
         if (dateOfBirth) {
-            setValue("dateOfBirth", dateOfBirth);
+            setValue(
+                "dateOfBirth",
+                dateOfBirth.substring(0, 4) +
+                    "-" +
+                    dateOfBirth.substring(4, 6) +
+                    "-" +
+                    dateOfBirth.substring(6)
+            );
         }
         if (gender) {
             setValue("gender", gender);
@@ -107,8 +114,22 @@ function Form() {
     // }, [isLoading, isSuccess, isError]);
 
     const onSubmit = handleSubmit(async (data) => {
+        console.log(data.dateOfBirth.split("T")[0].replaceAll("-", ""));
         // disable button on click
         setDisableButton(true);
+
+        // await dispatch(
+        //     createUserFull({
+        //         firstName: data.firstName.trim(),
+        //         lastName: data.lastName.trim(),
+        //         bvn: data.bvn.trim(),
+        //         dateOfBirth: data.dateOfBirth.trim(),
+        //         gender: data.gender?.value?.trim()!,
+        //         email: data.emailAddress.trim(),
+        //         phoneNumber: data.phoneNumber.trim(),
+        //         password: data.password.trim(),
+        //     })
+        // );
 
         // generate email and phone code
         const emailCode = verificationRequests.generateVerificationCode();
@@ -137,7 +158,7 @@ function Form() {
                         phoneNumber: data.phoneNumber.toString(),
                         bvn: data.bvn,
                         gender: data?.gender!,
-                        dateOfBirth: data.dateOfBirth.split("T")[0],
+                        dateOfBirth: data.dateOfBirth.split("T")[0].replaceAll("-", ""),
                         lastName: data.lastName,
                     })
                 );
@@ -299,6 +320,11 @@ function Form() {
                     errorMessage={errors.dateOfBirth?.message}
                     id="dateOfBirth"
                     placeholder="Date of Birth"
+                    max={new Date(
+                        new Date().setFullYear(new Date().getFullYear() - 18)
+                    )
+                        .toISOString()
+                        .substring(0, 10)}
                 />
             </div>
 

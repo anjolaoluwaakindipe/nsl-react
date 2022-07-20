@@ -17,43 +17,38 @@ function Layout({ children }: { children?: React.ReactElement }) {
     return (
         <div className=" w-full ">
             <div className="w-full py-5 shadow-xl z-10 bg-bgColor overscroll-x-contain">
-                <div className=" md:max-w-7xl m-auto w-full px-5 md:px-5 flex items-center justify-between ">
+                <div className=" md:max-w-7xl m-auto w-full px-5 md:px-10 flex items-center justify-between ">
                     <div>
                         <img
                             src="/assets/companylogo2.svg"
                             alt="logo"
-                            className="object-contain w-10 md:w-20 float-left "
-
+                            className="object-contain w-10 md:w-16 float-left "
                         />
                     </div>
 
                     <div className="flex space-x-5  md:space-x-10 justify-end items-center">
-
-
                         {/*login*/}
                         <div>
-                            <button className="flex justify-center items-center  w-20 h-7 md:w-25 md:h-10 text-sm bg-primaryColor rounded-lg text-contColor cursor-pointer hover:brightness-75"
+                            <button
+                                className="btn1  text-sm py-3 w-32 border-transparent bg-transparent text-primaryColor"
                                 onClick={() => {
-                                    navigate(paths.LOGIN)
-
+                                    navigate(paths.LOGIN);
                                 }}
                             >
                                 Login
                             </button>
                         </div>
 
-
                         <div>
-                            <button className="flex justify-center items-center  w-20 h-7 md:w-25 md:h-10 text-sm bg-contColor rounded-lg text-primaryColor border-primaryColor cursor-pointer hover:brightness-75"
+                            <button
+                                className="btn1  text-sm py-3 w-32 border-primaryColor border-2 bg-transparent text-primaryColor"
                                 onClick={() => {
-                                    navigate(paths.CREATE_ACCOUNT)
-
+                                    navigate(paths.CREATE_ACCOUNT);
                                 }}
                             >
                                 Sign Up
                             </button>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -62,11 +57,9 @@ function Layout({ children }: { children?: React.ReactElement }) {
                 <Outlet />
 
                 <div className="text-accentColor items-center p-10  justify-center flex center">
-
                     copyright @nsl 2022
                 </div>
             </div>
-
         </div>
     );
 }

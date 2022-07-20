@@ -17,8 +17,12 @@ import { useEffect, useRef } from "react";
 import { loanRequests } from "../../../services/requests/loanRequests";
 import toast from "react-hot-toast";
 import formatMoney from "../../../utils/moneyFormatter";
+import { useSelector } from 'react-redux';
+import { authSelector } from '../../../state/authSlice';
 
 function Form1() {
+    const {customerNo, firstName, lastName, middleName, phoneNumber, email} = useSelector(authSelector).user!
+
     const {
         register,
         formState: { errors },
@@ -44,7 +48,6 @@ function Form1() {
     const loanInfoToastId = "loanInfoToastId";
 
     const tenorDropdownOptions = [
-        { value: "14", label: "14 days" },
         { value: "30", label: "30 days" },
         { value: "60", label: "60 days" },
         { value: "90", label: "90 days" },
@@ -59,9 +62,17 @@ function Form1() {
         console.log(data);
 
         const submissionResponse = await loanRequests.submitLoanApplication({
-            customerNo: "0001",
-            amountNeeded: data.amount.replace(",", ""),
+            customerNo: customerNo!,
+            amountNeeded: data.amount.replaceAll(",", ""),
             channel: "web",
+            email: email!,
+            name: `${lastName} ${firstName} ${middleName}`,
+            phoneNumber: phoneNumber!,
+            rate: data.interest,
+            repaymentAmount: data.repaymentAmount.replaceAll(",","").replaceAll("N", "").trim(),
+            repaymentDate: data.repaymentDate,
+            tenor: data.tenor.value + " days"
+
         });
 
         if (submissionResponse.status === 200) {

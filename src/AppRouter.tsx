@@ -21,6 +21,9 @@ const ProcessedUserPage = lazy(
 const NewUserPage = lazy(
     () => import("./components/shared/ProtectedRoutes/NewUserPage")
 );
+const DraftUserPage = lazy(
+    () => import("./components/shared/ProtectedRoutes/DraftUserPage")
+);
 
 // pages
 const CreateAccount = lazy(() => import("./pages/CreateAccount"));
@@ -46,6 +49,7 @@ const EditAccountDetails = lazy(() => import("./pages/EditAccountDetails"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Welcome = lazy(() => import("./pages/Welcome"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
+const Waiting = lazy(()=> import("./pages/Waiting"))
 
 function AppRouter() {
     return (
@@ -171,13 +175,11 @@ function AppRouter() {
                         path={paths.USER_DASHBOARD}
                         element={
                             <React.Suspense>
-
                                 <ProtectedRoute>
                                     <ProcessedUserPage>
                                         <Dashboard />
                                     </ProcessedUserPage>
                                 </ProtectedRoute>
-
                             </React.Suspense>
                         }
                     />
@@ -186,9 +188,9 @@ function AppRouter() {
                         path={paths.UPDATE_PROFILE.base + "/*"}
                         element={
                             <ProtectedRoute>
-                                <NewUserPage>
+                                <DraftUserPage>
                                     <UpdateProfile />
-                                </NewUserPage>
+                                </DraftUserPage>
                             </ProtectedRoute>
                         }
                     />
@@ -223,9 +225,9 @@ function AppRouter() {
                         element={
                             <React.Suspense>
                                 <ProtectedRoute>
-                                    <NewUserPage>
+                                    <DraftUserPage>
                                         <Summary />
-                                    </NewUserPage>
+                                    </DraftUserPage>
                                 </ProtectedRoute>
                             </React.Suspense>
                         }
@@ -235,9 +237,9 @@ function AppRouter() {
                         element={
                             <React.Suspense>
                                 <ProtectedRoute>
-                                    <ProcessedUserPage>
+                                    <DraftUserPage>
                                         <EditUploads />
-                                    </ProcessedUserPage>
+                                    </DraftUserPage>
                                 </ProtectedRoute>
                             </React.Suspense>
                         }
@@ -248,9 +250,9 @@ function AppRouter() {
                         element={
                             <React.Suspense>
                                 <ProtectedRoute>
-                                    <ProcessedUserPage>
+                                    <DraftUserPage>
                                         <EditPersonalDetails />
-                                    </ProcessedUserPage>
+                                    </DraftUserPage>
                                 </ProtectedRoute>
                             </React.Suspense>
                         }
@@ -261,9 +263,9 @@ function AppRouter() {
                         element={
                             <React.Suspense>
                                 <ProtectedRoute>
-                                    <ProcessedUserPage>
+                                    <DraftUserPage>
                                         <EditEmploymentDetails />
-                                    </ProcessedUserPage>
+                                    </DraftUserPage>
                                 </ProtectedRoute>
                             </React.Suspense>
                         }
@@ -274,9 +276,9 @@ function AppRouter() {
                         element={
                             <React.Suspense>
                                 <ProtectedRoute>
-                                    <ProcessedUserPage>
+                                    <DraftUserPage>
                                         <EditAccountDetails />
-                                    </ProcessedUserPage>
+                                    </DraftUserPage>
                                 </ProtectedRoute>
                             </React.Suspense>
                         }
@@ -286,7 +288,9 @@ function AppRouter() {
                         path={paths.FORGOT_PASSWORD}
                         element={
                             <React.Suspense>
-                                <ForgotPassword />
+                                <LoggedProtectedRoute>
+                                    <ForgotPassword />
+                                </LoggedProtectedRoute>
                             </React.Suspense>
                         }
                     />
@@ -296,8 +300,21 @@ function AppRouter() {
                         element={
                             <React.Suspense>
                                 <ProtectedRoute>
-                                    <NewUserPage>
+                                    <DraftUserPage>
                                         <Welcome />
+                                    </DraftUserPage>
+                                </ProtectedRoute>
+                            </React.Suspense>
+                        }
+                    />
+
+                    <Route
+                        path={paths.WAITING}
+                        element={
+                            <React.Suspense>
+                                <ProtectedRoute>
+                                    <NewUserPage>
+                                        <Waiting />
                                     </NewUserPage>
                                 </ProtectedRoute>
                             </React.Suspense>

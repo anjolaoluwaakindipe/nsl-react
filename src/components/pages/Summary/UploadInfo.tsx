@@ -27,11 +27,11 @@ function UploadSummaryInfo() {
 
             <div className="grid grid-cols-2   text-sm  gap-y-4 text-primaryColor">
                 <div className="col-span-2 bg-bgColor px-5 md:px-10 pb-8 pt-5 rounded-md space-y-4">
-                    <img
+                    {identificationDocumentImage&&<img
                         className="object-cover h-20 md:h-80 w-full"
                         src={"data:image/png;base64," + identificationDocumentImage}
                         alt="proof_of_address"
-                    />
+                    />}
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                             <GrDocumentText
@@ -50,11 +50,11 @@ function UploadSummaryInfo() {
                     </div>
                 </div>
                 <div className="col-span-2 bg-bgColor px-5 md:px-10 pb-8 pt-5 rounded-md space-y-4">
-                    <img
+                    { proofOfAddressImage && <img
                         className="object-cover h-20 md:h-80 w-full"
                         src={"data:image/png;base64," + proofOfAddressImage}
                         alt="proof_of_address"
-                    />
+                    />}
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                             <GrDocumentText
