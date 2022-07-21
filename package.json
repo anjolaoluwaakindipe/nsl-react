@@ -53,7 +53,7 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "craco start",
         "serverdev": "npx nodemon ./server/server.js",
         "build": "craco build",
         "test": "craco test",

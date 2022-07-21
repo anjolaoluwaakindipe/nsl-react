@@ -47,7 +47,7 @@ app.use(express.static(path.join(__dirname, "../build")));
 console.log(path.join(__dirname, "../build"));
 
 app.get(
-    "/*",
+    "*",
     function (req, res, next) {
         req.url = req.url + ".gz";
         res.set("Content-Encoding", "gzip");
