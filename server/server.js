@@ -2,8 +2,10 @@ const express = require("express");
 const path = require("path");
 const { NODE_PORT } = require("./environments");
 const cors = require("cors");
-const { createProxyMiddleware, fixRequestBody } = require("http-proxy-middleware");
-
+const {
+    createProxyMiddleware,
+    fixRequestBody,
+} = require("http-proxy-middleware");
 
 const app = express();
 const root = path.join(__dirname, "../build");
@@ -18,7 +20,7 @@ app.use(
         pathRewrite: {
             "^/isslapi": "",
         },
-        onProxyReq:fixRequestBody,
+        onProxyReq: fixRequestBody,
         changeOrigin: true,
         headers: {
             Connection: "keep-alive",
@@ -44,9 +46,17 @@ app.use(express.static(path.join(__dirname, "../build")));
 
 console.log(path.join(__dirname, "../build"));
 
-app.get("/*", (req, res) => {
-    res.sendFile("index.html", { root });
-});
+app.get(
+    "/*",
+    function (req, res, next) {
+        req.url = req.url + ".gz";
+        res.set("Content-Encoding", "gzip");
+        next();
+    },
+    (req, res) => {
+        res.sendFile("index.html", { root });
+    }
+);
 
 app.listen(NODE_PORT, () => {
     console.log("server starting on port: ", NODE_PORT);
