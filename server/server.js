@@ -48,15 +48,19 @@ console.log(path.join(__dirname, "../build"));
 
 app.get(
     "*",
-    function (req, res, next) {
-        req.url = req.url + ".gz";
-        res.set("Content-Encoding", "gzip");
-        next();
-    },
+    // function (req, res, next) {
+    //     req.url = req.url + ".gz";
+    //     res.set("Content-Encoding", "gzip");
+    //     next();
+    // },
     (req, res) => {
         res.sendFile("index.html", { root });
     }
 );
+
+app.use((req, res)=>{
+    res.send("Could not get page")
+})
 
 app.listen(NODE_PORT, () => {
     console.log("server starting on port: ", NODE_PORT);

@@ -49,7 +49,7 @@ const EditAccountDetails = lazy(() => import("./pages/EditAccountDetails"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Welcome = lazy(() => import("./pages/Welcome"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
-const Waiting = lazy(()=> import("./pages/Waiting"))
+const Waiting = lazy(() => import("./pages/Waiting"));
 
 function AppRouter() {
     return (

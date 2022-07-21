@@ -2,7 +2,7 @@ export const paths = {
     CREATE_ACCOUNT: "/create-account",
     EMAIL_VERIFICATION: "/email-verification",
     LOAN_APPLICATION: "/loan-application",
-    PHONE_VERIFICATION: "/phone-Verification",
+    PHONE_VERIFICATION: "/phone-verification",
     LOGIN: "/login",
     LOAN_PAYMENT_OPTIONS: "/loan-payment-options",
     LOAN_INFORMATION: "/loan-information",
