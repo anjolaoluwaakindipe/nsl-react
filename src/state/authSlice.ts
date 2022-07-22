@@ -977,7 +977,7 @@ const authSlice = createSlice({
                 state.isError = false;
                 state.errorMessage = "";
                 toast.success("Account creation Successful please Login in", {
-                    id: createUserFull.name,
+                    id: "createUser",
                 });
                 return state;
             })
@@ -987,7 +987,7 @@ const authSlice = createSlice({
                 state.isError = false;
                 state.errorMessage = "";
                 toast.loading("Creating Account...", {
-                    id: createUserFull.name,
+                    id: "createUser",
                 });
             })
             .addCase(createUserFull.rejected, (state, action) => {
@@ -996,7 +996,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = false;
                 state.errorMessage = action.payload as string;
-                toast.error(state.errorMessage, { id: createUserFull.name });
+                toast.error(state.errorMessage, { id: "createUser" });
             })
             .addCase(logoutUser.fulfilled, (state, action) => {
                 return initialState;
@@ -1041,7 +1041,7 @@ const authSlice = createSlice({
                     state.isError = false;
                     state.errorMessage = "";
                     toast.success("Personal Details was updated successfully", {
-                        id: updateUserPersonalDetailsFull.name,
+                        id: "updateUserPersonalDetailsFull",
                         position: "top-right",
                     });
                     action.payload.cb!();
@@ -1055,7 +1055,7 @@ const authSlice = createSlice({
                 toast.loading(
                     "Updating Personal Information. Please wait this might take a while...",
                     {
-                        id: updateUserPersonalDetailsFull.name,
+                        id: "updateUserPersonalDetailsFull",
                         position: "top-right",
                     }
                 );
@@ -1068,7 +1068,7 @@ const authSlice = createSlice({
                     state.isError = true;
                     state.errorMessage = action.payload as string;
                     toast.error(state.errorMessage, {
-                        id: updateUserPersonalDetailsFull.name,
+                        id: "updateUserPersonalDetailsFull",
                         position: "top-right",
                     });
                 }
@@ -1083,7 +1083,7 @@ const authSlice = createSlice({
                     toast.success(
                         "Employment Details was updated successfully",
                         {
-                            id: updateUserEmploymentDetailsFull.name,
+                            id: "updateUserEmploymentDetailsFull",
                             position: "top-right",
                         }
                     );
@@ -1098,7 +1098,7 @@ const authSlice = createSlice({
                     state.isError = false;
                     state.errorMessage = "";
                     toast.loading("Updating Employment Information...", {
-                        id: updateUserEmploymentDetailsFull.name,
+                        id: "updateUserEmploymentDetailsFull",
                         position: "top-right",
                     });
                 }
@@ -1111,7 +1111,7 @@ const authSlice = createSlice({
                     state.isError = true;
                     state.errorMessage = action.payload as string;
                     toast.error(state.errorMessage, {
-                        id: updateUserEmploymentDetailsFull.name,
+                        id: "updateUserEmploymentDetailsFull",
                         position: "top-right",
                     });
                 }
@@ -1121,20 +1121,20 @@ const authSlice = createSlice({
             .addCase(refreshUserTokens.pending, (state, action) => {})
             .addCase(submitUserInfoToNslDb.rejected, (state, action) => {
                 toast.loading(action.payload as string, {
-                    id: submitUserInfoToNslDb.name,
+                    id: "submitUserInfoToNslDb",
                     position: "top-right",
                 });
             })
             .addCase(submitUserInfoToNslDb.fulfilled, (state, action) => {
                 toast.success(action.payload.message, {
-                    id: submitUserInfoToNslDb.name,
+                    id: "submitUserInfoToNslDb",
                     position: "top-right",
                 });
                 if (action.payload.cb) action.payload.cb();
             })
             .addCase(submitUserInfoToNslDb.pending, (state, action) => {
                 toast.loading("Submitting your Information...", {
-                    id: submitUserInfoToNslDb.name,
+                    id: "submitUserInfoToNslDb",
                     position: "top-right",
                 });
             });
