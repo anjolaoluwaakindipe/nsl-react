@@ -1,5 +1,6 @@
 const webpack = require("webpack")
 var CompressionPlugin = require("compression-webpack-plugin")
+// import { createWebpackProdConfig} from "@craco/craco"
 
 module.exports = {
     webpack: {

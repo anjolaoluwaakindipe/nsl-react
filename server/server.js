@@ -54,7 +54,7 @@ app.get(
     //     next();
     // },
     (req, res) => {
-        res.sendFile("index.html", { root });
+        res.sendFile(path.resolve(__dirname, "../build/index.html"));
     }
 );
 
