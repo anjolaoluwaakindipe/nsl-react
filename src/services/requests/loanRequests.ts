@@ -44,17 +44,17 @@ export const loanRequests = {
 
     async submitLoanApplication(params: // repaymentAmount,
     {
+        applicationReference: string;
         customerNo: string;
-        amountNeeded: string;
+        amount: string;
         channel: string;
-        name: string;
+        applicantName: string;
         phoneNumber: string;
         rate: string;
         repaymentAmount: string;
         tenor: string;
-        repaymentDate: string;
-        email:string;
-        // repaymentAmount: string;
+        emailAddress: string;
+        purpose: string;
     }) {
         const res: {
             status: number;

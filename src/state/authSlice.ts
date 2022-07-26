@@ -531,6 +531,7 @@ export const loginUser = createAsyncThunk(
                                         tokenResponse.data.refresh_token,
                                     rfidStatus:
                                         accountStatusResponse.data.rqStatus,
+                                    customerNo: accountStatusResponse.data.rqStatusInfo
                                 };
                             } else {
                                 return thunkApi.rejectWithValue(
@@ -838,7 +839,6 @@ const userInformationStateSetter = (
     // personal information
     console.log(allUserInformation);
     state.user!.email = allUserInformation.email;
-    state.user!.customerNo = allUserInformation.customerNo;
     state.user!.dateOfBirth = allUserInformation.dob;
     state.user!.maritalStatus = allUserInformation.maritalStatus;
     state.user!.phoneNumber = allUserInformation.phoneRef;
@@ -920,6 +920,7 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.fulfilled, (state, action) => {
+                // when login is succesful
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
@@ -928,6 +929,9 @@ const authSlice = createSlice({
                     ? action?.payload.rfid
                     : "";
                 state.user!.rfStatus = action?.payload.rfidStatus;
+                if(action?.payload.customerNo){
+                    state.user!.customerNo = action?.payload.customerNo;
+                }
                 state.user!.keycloakId = action?.payload?.keycloakId
                     ? action?.payload.keycloakId
                     : "";
@@ -938,13 +942,14 @@ const authSlice = createSlice({
                 return userInformationStateSetter(state, allUserInformation);
             })
             .addCase(loginUser.pending, (state) => {
+                // when login is pending
                 state.isLoading = true;
                 state.isSuccess = false;
                 state.isError = false;
                 return state;
             })
             .addCase(loginUser.rejected, (state, action) => {
-                console.log(action.payload);
+                // when login is unsuccessful
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
@@ -952,6 +957,7 @@ const authSlice = createSlice({
                 return state;
             })
             .addCase(createUserAuth.fulfilled, (state, action) => {
+                // when registration is successful
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
@@ -959,13 +965,14 @@ const authSlice = createSlice({
                 return state;
             })
             .addCase(createUserAuth.pending, (state, action) => {
+                // when registration is pending
                 state.isLoading = true;
                 state.isSuccess = false;
                 state.isError = false;
                 state.errorMessage = "";
             })
             .addCase(createUserAuth.rejected, (state, action) => {
-                console.log(action.payload);
+                // when registration is unsuccessful
                 state.isError = true;
                 state.isLoading = false;
                 state.isSuccess = false;

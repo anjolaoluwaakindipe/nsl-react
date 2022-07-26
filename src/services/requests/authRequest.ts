@@ -613,7 +613,7 @@ const authRequest = {
             .then((response) => {
                 res.status = response.status;
                 res.data = response.data;
-                console.log(res);
+              
                 return res;
             })
             .catch((error) => {
@@ -739,6 +739,7 @@ const authRequest = {
             .then((response) => {
                 res.status = response.status;
                 res.data = { ...response.data };
+                console.log(res);
                 return res;
             })
             .catch((err) => {

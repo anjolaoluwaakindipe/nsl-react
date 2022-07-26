@@ -16,7 +16,7 @@ export const loanApplicationFormSchema = Joi.object({
         .label("Tenor"),
 
     interest: Joi.string().required().label("Interest"),
-    purpose: Joi.string().alphanum().min(10).max(255).label("Narration"),
+    purpose: Joi.string().min(10).max(255).label("Narration"),
     termsAndCondition: Joi.boolean().truthy().required(),
     picture: Joi.string()
         .required()

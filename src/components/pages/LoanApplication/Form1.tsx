@@ -17,11 +17,21 @@ import { useEffect, useRef } from "react";
 import { loanRequests } from "../../../services/requests/loanRequests";
 import toast from "react-hot-toast";
 import formatMoney from "../../../utils/moneyFormatter";
-import { useSelector } from 'react-redux';
-import { authSelector } from '../../../state/authSlice';
+import { useSelector } from "react-redux";
+import { authSelector } from "../../../state/authSlice";
+import { useState } from "react";
 
 function Form1() {
-    const {customerNo, firstName, lastName, middleName, phoneNumber, email} = useSelector(authSelector).user!
+    const {
+        customerNo,
+        firstName,
+        lastName,
+        middleName,
+        phoneNumber,
+        email,
+        rfid,
+    } = useSelector(authSelector).user!;
+    const [isButtonLoading, setButtonLoading] = useState(false);
 
     const {
         register,
@@ -54,25 +64,28 @@ function Form1() {
         { value: "180", label: "180 days" },
     ];
 
-    console.log(errors)
+    console.log(errors);
 
     const { openModalFunc } = useModal("LoanApplicationSucessModal", false);
 
     const onSubmit = handleSubmit(async (data) => {
         console.log(data);
-
+        setButtonLoading(true);
         const submissionResponse = await loanRequests.submitLoanApplication({
+            applicationReference: rfid!,
             customerNo: customerNo!,
-            amountNeeded: data.amount.replaceAll(",", ""),
+            amount: data.amount.replaceAll(",", ""),
             channel: "web",
-            email: email!,
-            name: `${lastName} ${firstName} ${middleName}`,
+            emailAddress: email!,
+            applicantName: `${lastName} ${firstName} ${middleName}`,
             phoneNumber: phoneNumber!,
-            rate: data.interest,
-            repaymentAmount: data.repaymentAmount.replaceAll(",","").replaceAll("N", "").trim(),
-            repaymentDate: data.repaymentDate,
-            tenor: data.tenor.value + " days"
-
+            rate: data.interest.replaceAll("%", ""),
+            repaymentAmount: data.repaymentAmount
+                .replaceAll(",", "")
+                .replaceAll("N", "")
+                .trim(),
+            tenor: data.tenor.value,
+            purpose: data.purpose,
         });
 
         if (submissionResponse.status === 200) {
@@ -85,6 +98,7 @@ function Form1() {
                 "Something went wrong while trying to submit your loan. Please try again later."
             );
         }
+        setButtonLoading(false);
     });
 
     const getOtherLoanInformation = async () => {
@@ -126,8 +140,6 @@ function Form1() {
             await getOtherLoanInformation();
         }, 1000);
     }, [watchAmount, watchTenor]);
-
-    const navigate = useNavigate();
 
     return (
         <div>
@@ -280,8 +292,12 @@ function Form1() {
                     />
                 </div>
 
-                <button className={`w-full md:w-1/2 btn1 `} type="submit">
-                    Proceed
+                <button
+                    className={`w-full md:w-1/2 btn1 `}
+                    type="submit"
+                    disabled={isButtonLoading}
+                >
+                    {isButtonLoading ? "Loading..." : "Proceed"}
                 </button>
             </form>
         </div>
