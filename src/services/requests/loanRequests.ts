@@ -90,15 +90,35 @@ export const loanRequests = {
                 return res;
             });
     },
+    async getPortforlioInfo() {
+        const res: {
+            status: number;
+            code: string;
+            data: { data: { portfolio: number }[] } | null;
+        } = {
+            status: 0,
+            code: "",
+            data: null,
+        };
+
+        return await axios
+            .get("http://api.issl.ng:7777/cscs-api/1.0/portfolioxbvn/1234566")
+            .then((data) => {
+                res.data = data.data;
+                res.status = data.status;
+                console.log(res.data?.data);
+                return res;
+            })
+            .catch((err) => {
+                res.status = err.response.status;
+                res.code = err.code;
+                console.log(res);
+                return res;
+            });
+    },
 };
 
 // async function doWork() {
-//     const response = await loanRequests.submitLoanApplication({
-//         customerNo: "0001",
-//         amountNeeded: "700000",
-//         channel:"web"
-//         // repaymentAmount: "716333",
-//     });
-//     console.log(response);
+//     await loanRequests.getPortforlioInfo();
 // }
 // doWork();

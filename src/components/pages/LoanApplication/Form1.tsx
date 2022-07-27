@@ -6,20 +6,18 @@ import { LoanApplicationFormInfo } from "../../../typings";
 import CardInput from "./CardInput";
 
 import { joiResolver } from "@hookform/resolvers/joi";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { useModal } from "../../../services/customHooks/useModal";
+import { loanRequests } from "../../../services/requests/loanRequests";
+import { authSelector } from "../../../state/authSlice";
+import formatMoney from "../../../utils/moneyFormatter";
 import { loanApplicationFormSchema } from "../../../utils/validation/loanApplication";
 import CurrencyInputField from "../../shared/Inputs/TextFields/CurrencyInputField";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import WebCamInput from "../../shared/Inputs/WebCamInput";
-import { useEffect, useRef } from "react";
-import { loanRequests } from "../../../services/requests/loanRequests";
-import toast from "react-hot-toast";
-import formatMoney from "../../../utils/moneyFormatter";
-import { useSelector } from "react-redux";
-import { authSelector } from "../../../state/authSlice";
-import { useState } from "react";
 
 function Form1() {
     const {
@@ -40,6 +38,7 @@ function Form1() {
         watch,
         setValue,
         control,
+        setError,
     } = useForm<LoanApplicationFormInfo>({
         defaultValues: {
             amount: "",
@@ -57,14 +56,16 @@ function Form1() {
 
     const loanInfoToastId = "loanInfoToastId";
 
+    const [maximumLoanAmmount, setMaximumLoanAmmount] = useState<string | null>(
+        ""
+    );
+
     const tenorDropdownOptions = [
         { value: "30", label: "30 days" },
         { value: "60", label: "60 days" },
         { value: "90", label: "90 days" },
         { value: "180", label: "180 days" },
     ];
-
-    console.log(errors);
 
     const { openModalFunc } = useModal("LoanApplicationSucessModal", false);
 
@@ -139,7 +140,37 @@ function Form1() {
         timerRef.current = setTimeout(async () => {
             await getOtherLoanInformation();
         }, 1000);
-    }, [watchAmount, watchTenor]);
+    }, [watchAmount, watchTenor]); // eslint-disable-line
+
+    useEffect(()=>{
+        if(!isNaN(+watchAmount.replaceAll(",","")) && maximumLoanAmmount && !isNaN(parseFloat(maximumLoanAmmount))){
+            if(parseFloat(watchAmount.replaceAll(",", ""))> parseFloat(maximumLoanAmmount)){
+                setError("amount", {
+                    message:
+                        "Amount given must me less than the amount allowed",
+                });
+            }
+        }
+    }, [watchAmount])// eslint-disable-line
+
+    const calculateMaximumLoanAmount = async () => {
+        setMaximumLoanAmmount("Loading...");
+        const portfolioInfoAmount = await loanRequests.getPortforlioInfo();
+        if (portfolioInfoAmount.status === 200) {
+            let totalAmount = 0;
+            portfolioInfoAmount.data?.data.forEach((portfolio) => {
+                totalAmount += portfolio.portfolio;
+            });
+            totalAmount = totalAmount * 0.5;
+            setMaximumLoanAmmount(totalAmount.toString());
+        } else {
+            setMaximumLoanAmmount(null);
+        }
+    };
+
+    useEffect(() => {
+        calculateMaximumLoanAmount();
+    });
 
     return (
         <div>
@@ -156,6 +187,24 @@ function Form1() {
                     <span className="font-normal"> Note:</span> The loan will
                     range from 30 days – 90 days
                 </h4>
+
+                <p>
+                    Maximum loan amount based on your portfolio is:{" "}
+                    {maximumLoanAmmount ? (
+                        maximumLoanAmmount
+                    ) : (
+                        <>
+                            Error loading Max Loan Amount, please{" "}
+                            <div
+                                onClick={async () =>
+                                    await calculateMaximumLoanAmount()
+                                }
+                            >
+                                Refresh
+                            </div>
+                        </>
+                    )}{" "}
+                </p>
             </div>
             <form
                 onSubmit={onSubmit}
