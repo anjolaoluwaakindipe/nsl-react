@@ -38,6 +38,7 @@ function Form1() {
         watch,
         setValue,
         control,
+        unregister,
         setError,
     } = useForm<LoanApplicationFormInfo>({
         defaultValues: {
@@ -46,7 +47,14 @@ function Form1() {
             purpose: "",
             tenor: { value: "", label: "" },
         },
-        resolver: joiResolver(loanApplicationFormSchema),
+        resolver: joiResolver(loanApplicationFormSchema, {
+            abortEarly: false,
+        }),
+        mode: "onChange",
+        reValidateMode: "onChange",
+        criteriaMode: "firstError",
+        shouldFocusError: true,
+        shouldUnregister: true,
     });
 
     // watches
@@ -70,7 +78,12 @@ function Form1() {
     const { openModalFunc } = useModal("LoanApplicationSucessModal", false);
 
     const onSubmit = handleSubmit(async (data) => {
-        console.log(data);
+        const isOkay = loanAmountCheck();
+
+        if(!isOkay){
+            return
+        }
+
         setButtonLoading(true);
         const submissionResponse = await loanRequests.submitLoanApplication({
             applicationReference: rfid!,
@@ -107,7 +120,6 @@ function Form1() {
             amount: parseFloat(watchAmount.replace(",", "")),
             tenor: parseInt(watchTenor.value),
         });
-        console.log(response);
 
         if (response.status === 200) {
             setValue(
@@ -133,7 +145,7 @@ function Form1() {
     useEffect(() => {
         if (!watchAmount || !watchTenor.value) return;
         clearTimeout(timerRef.current!);
-        console.log("start");
+
         toast.loading("loading interest and repayment info...", {
             id: loanInfoToastId,
         });
@@ -142,16 +154,31 @@ function Form1() {
         }, 1000);
     }, [watchAmount, watchTenor]); // eslint-disable-line
 
-    useEffect(()=>{
-        if(!isNaN(+watchAmount.replaceAll(",","")) && maximumLoanAmmount && !isNaN(parseFloat(maximumLoanAmmount))){
-            if(parseFloat(watchAmount.replaceAll(",", ""))> parseFloat(maximumLoanAmmount)){
+    const loanAmountCheck = () => {
+        if (
+            !isNaN(parseFloat(watchAmount.replaceAll(",", ""))) &&
+            maximumLoanAmmount &&
+            !isNaN(parseFloat(maximumLoanAmmount))
+        ) {
+            if (
+                parseFloat(watchAmount.replaceAll(",", "")) >
+                parseFloat(maximumLoanAmmount)
+            ) {
                 setError("amount", {
+                    type: "server",
                     message:
-                        "Amount given must me less than the amount allowed",
+                        "Amount must be less than your portfolio amount",
                 });
+                console.log(errors);
+                return false
             }
         }
-    }, [watchAmount])// eslint-disable-line
+        return true;
+    };
+
+    useEffect(() => {
+        loanAmountCheck();
+    }, [watchAmount]);
 
     const calculateMaximumLoanAmount = async () => {
         setMaximumLoanAmmount("Loading...");
@@ -164,13 +191,13 @@ function Form1() {
             totalAmount = totalAmount * 0.5;
             setMaximumLoanAmmount(totalAmount.toString());
         } else {
-            setMaximumLoanAmmount(null);
+            setMaximumLoanAmmount("400000");
         }
     };
 
     useEffect(() => {
         calculateMaximumLoanAmount();
-    });
+    }, []);
 
     return (
         <div>
@@ -191,17 +218,17 @@ function Form1() {
                 <p>
                     Maximum loan amount based on your portfolio is:{" "}
                     {maximumLoanAmmount ? (
-                        maximumLoanAmmount
+                      "N  " +  maximumLoanAmmount
                     ) : (
                         <>
                             Error loading Max Loan Amount, please{" "}
-                            <div
-                                onClick={async () =>
-                                    await calculateMaximumLoanAmount()
-                                }
+                            <span
+                                onClick={() => {
+                                    calculateMaximumLoanAmount();
+                                }}
                             >
                                 Refresh
-                            </div>
+                            </span>
                         </>
                     )}{" "}
                 </p>
@@ -218,9 +245,19 @@ function Form1() {
                     <Controller
                         control={control}
                         name="amount"
+                        // rules={{
+                        //     required: {
+                        //         value: true,
+                        //         message: "Amount is required",
+                        //     },
+                        //     maxLength: { value: 2, message: "Hello" },
+                        //     // validate: (value) => {
+                        //     //     return loanAmountCheck(value);
+                        //     // },
+                        // }}
                         render={({ field: { onChange, value } }) => (
                             <CurrencyInputField
-                                placeholder="Gross Income"
+                                placeholder="Amount"
                                 value={value}
                                 onChange={onChange}
                                 id="UpdateProfile__grossIncome"

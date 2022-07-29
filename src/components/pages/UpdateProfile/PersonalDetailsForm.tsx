@@ -133,7 +133,7 @@ function PersonalDetailsForm() {
                 identificationDocType: data.documentType.value,
                 proofOfAddressImage: data.proofOfResidence,
                 cb: navigateToUpdateEmploymentDetail,
-                inputStatus: "Draft"
+                inputStatus: "Draft",
             })
         );
         // navigate("/update-profile/employment-details");
@@ -159,7 +159,7 @@ function PersonalDetailsForm() {
                         <img
                             src={"data:image/jpg;base64," + base64}
                             alt="your_image"
-                            className="object-contain w-full md:w-auto  object-top"
+                            className="object-contain w-full md:w-auto  object-top h-3/4"
                             onClick={(e) => {
                                 e.stopPropagation();
                             }}

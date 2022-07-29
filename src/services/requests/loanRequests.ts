@@ -102,7 +102,9 @@ export const loanRequests = {
         };
 
         return await axios
-            .get("http://api.issl.ng:7777/cscs-api/1.0/portfolioxbvn/1234566")
+            .get("/isslapi/cscs-api/1.0/portfolioxbvn/1234566", {
+                timeout: 500,
+            })
             .then((data) => {
                 res.data = data.data;
                 res.status = data.status;
@@ -110,7 +112,10 @@ export const loanRequests = {
                 return res;
             })
             .catch((err) => {
-                res.status = err.response.status;
+                console.log(err);
+                if (err.code !== "ECONNABORTED") {
+                    res.status = err.response.status;
+                }
                 res.code = err.code;
                 console.log(res);
                 return res;
