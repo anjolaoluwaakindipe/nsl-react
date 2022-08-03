@@ -62,6 +62,11 @@ app.use((req, res) => {
     res.send("Could not get page");
 });
 
-app.listen(NODE_PORT, () => {
-    console.log("server starting on port: ", NODE_PORT);
-});
+module.exports = app;
+
+if (require.main === module) {
+    console.log("hello")
+    app.listen(NODE_PORT, () => {
+        console.log("server starting on port: ", NODE_PORT);
+    });
+}
