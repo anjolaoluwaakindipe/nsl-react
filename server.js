@@ -39,9 +39,4 @@ function httpsWorker(glx) {
         }
     );
 
-    var httpServer = glx.httpServer();
-
-    httpServer.listen(80, "0.0.0.0", function () {
-        console.info("Listening on ", httpServer.address());
-    });
 }
