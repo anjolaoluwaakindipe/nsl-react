@@ -29,19 +29,19 @@ function httpsWorker(glx) {
     const httpsServer = glx.httpsServer(null, app);
 
     httpsServer.listen(
-       443,
+       4000,
         "0.0.0.0",
         () => {
             console.log(
                 "https server starting on port: ",
-                443
+                4000
             );
         }
     );
 
      var httpServer = glx.httpServer();
 
-     httpServer.listen(80, "0.0.0.0", function () {
+     httpServer.listen(4001, "0.0.0.0", function () {
          console.info("Listening on ", httpServer.address());
      });
 
