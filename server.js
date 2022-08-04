@@ -30,7 +30,6 @@ function httpsWorker(glx) {
 
     httpsServer.listen(
        4000,
-        "0.0.0.0",
         () => {
             console.log(
                 "https server starting on port: ",
@@ -41,7 +40,7 @@ function httpsWorker(glx) {
 
      var httpServer = glx.httpServer();
 
-     httpServer.listen(4001, "0.0.0.0", function () {
+     httpServer.listen(4001, function () {
          console.info("Listening on ", httpServer.address());
      });
 

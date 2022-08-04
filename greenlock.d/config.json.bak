@@ -13,14 +13,5 @@
     "accountKeyType": "EC-P256",
     "serverKeyType": "RSA-2048"
   },
-  "sites": [
-    {
-      "subject": "nigerianstockbrokersltd.com",
-      "altnames": [
-        "nigerianstockbrokersltd.com",
-        "www.nigerianstockbrokersltd.com"
-      ],
-      "renewAt": 1
-    }
-  ]
+  "sites": []
 }
