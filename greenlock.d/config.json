@@ -11,7 +11,9 @@
     "renewOffset": "-45d",
     "renewStagger": "3d",
     "accountKeyType": "EC-P256",
-    "serverKeyType": "RSA-2048"
+    "serverKeyType": "RSA-2048",
+    "subscriberEmail": "isslservngt@isslng.com",
+    "agreeToTerms": true
   },
   "sites": [
     {
