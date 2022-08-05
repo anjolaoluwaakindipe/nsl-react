@@ -56,7 +56,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "serverdev": "cross-env NODE_ENV=production npx nodemon ./server/app.js",
+        "serverdev": "cross-env NODE_ENV=development NODE_PORT=3000 npx nodemon ./server.js",
         "build": "craco build",
         "test": "craco test",
         "eject": "react-scripts eject",

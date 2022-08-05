@@ -1,49 +1,35 @@
 const app = require("./server/app");
-const { NODE_PORT } = require("./server/environments");
-const greenlock = require("greenlock-express");
+
+const https = require("https")
+const http = require("http");
+const { NODE_ENV, NODE_PORT } = require("./server/environments");
+const fs = require("fs")
+const path = require("path")
 
 
 
+if(NODE_ENV === "production"){
+    https.createServer(
+        {
+            cert: fs.readFileSync(
+                path.resolve("/ssl/nigerianstockbrokersltd.com-crt.pem")
+            ),
+            key: fs.readFileSync(
+                path.resolve("/ssl/nigerianstockbrokersltd.com-key.pem")
+            ),
+        },
+        app
+    ).listen(NODE_PORT, ()=>{
+        console.log("Production Application Ready, Listening on port ", NODE_PORT)
+    });
+}else{
+    http.createServer(app).listen(NODE_PORT, () => {
+        console.log(
+            "Development Application Ready, Listening on port ",
+            NODE_PORT
+        );
+    });
+}
 
-greenlock
-    .init({
-        packageRoot: __dirname,
-
-        // where to look for configuration
-        configDir: "./greenlock.d",
-
-        maintainerEmail: "devops@isslng.com",
-
-        // whether or not to run at cloudscale
-        cluster: false,
-    })
-    // .serve(app);
-    // Serves on 80 and 443
-    // Get's SSL certificates magically!
-    .serve(app);
 
 
-
-// function httpsWorker(glx) {
-//     console.log(glx);
-
-//     const httpsServer = glx.httpsServer(null, app);
-
-//     httpsServer.listen(
-//        4000,
-//        "0.0.0.0",
-//         () => {
-//             console.log(
-//                 "https server starting on port: ",
-//                 4000
-//             );
-//         }
-//     );
-
-//      var httpServer = glx.httpServer();
-
-//      httpServer.listen(80, "0.0.0.0" ,function () {
-//          console.info("Listening on ", httpServer.address());
-//      });
-
-// }
