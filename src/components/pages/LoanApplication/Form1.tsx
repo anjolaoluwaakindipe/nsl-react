@@ -340,7 +340,7 @@ function Form1() {
                     }
                 </div>
 
-                {/* <div>
+                <div>
                     <Controller
                         name="picture"
                         control={control}
@@ -354,7 +354,7 @@ function Form1() {
                             );
                         }}
                     />
-                </div> */}
+                </div>
 
                 {/*terms tick box*/}
                 <div className="flex items-center space-x-3">
