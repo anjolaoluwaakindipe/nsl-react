@@ -17,6 +17,7 @@ if(NODE_ENV === "production"){
             key: fs.readFileSync(
                 path.resolve("/ssl/nigerianstockbrokersltd.com-key.pem")
             ),
+            passphrase: "nsl24"
         },
         app
     ).listen(NODE_PORT, ()=>{
