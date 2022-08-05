@@ -20,29 +20,30 @@ greenlock
     // .serve(app);
     // Serves on 80 and 443
     // Get's SSL certificates magically!
-    .ready(httpsWorker);
+    .serve(app);
 
 
 
-function httpsWorker(glx) {
-    console.log(glx);
+// function httpsWorker(glx) {
+//     console.log(glx);
 
-    const httpsServer = glx.httpsServer(null, app);
+//     const httpsServer = glx.httpsServer(null, app);
 
-    httpsServer.listen(
-       4000,
-        () => {
-            console.log(
-                "https server starting on port: ",
-                4000
-            );
-        }
-    );
+//     httpsServer.listen(
+//        4000,
+//        "0.0.0.0",
+//         () => {
+//             console.log(
+//                 "https server starting on port: ",
+//                 4000
+//             );
+//         }
+//     );
 
-     var httpServer = glx.httpServer();
+//      var httpServer = glx.httpServer();
 
-     httpServer.listen(4001, function () {
-         console.info("Listening on ", httpServer.address());
-     });
+//      httpServer.listen(80, "0.0.0.0" ,function () {
+//          console.info("Listening on ", httpServer.address());
+//      });
 
-}
+// }

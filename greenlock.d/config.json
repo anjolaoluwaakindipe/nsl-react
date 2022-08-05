@@ -12,15 +12,13 @@
     "renewStagger": "3d",
     "accountKeyType": "EC-P256",
     "serverKeyType": "RSA-2048",
-    "subscriberEmail": "isslservngt@isslng.com",
-    "agreeToTerms": true
+    "subscriberEmail": "devops@isslng.com"
   },
   "sites": [
     {
       "subject": "nigerianstockbrokersltd.com",
       "altnames": [
-        "nigerianstockbrokersltd.com",
-        "www.nigerianstockbrokersltd.com"
+        "nigerianstockbrokersltd.com"
       ],
       "renewAt": 1
     }
