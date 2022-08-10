@@ -3,30 +3,32 @@ import React from "react";
 
 function Footer2() {
     return (
-        <div className="relative text-center bg-white w-full p-10">
+        <div className=" bg-white w-full p-10">
+            <div className="text-gray-500 flex flex-col md:flex-row  items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                <h1>Newsletter</h1>
 
-            <div className="text-gray-500">
-                Newsletter 
-                {"            "}
-                <input type="text"
-                    id="email-address-icon"
-                    className="bg-peach border  text-gray-900 text-sm rounded-full focus:ring-contColor focus:border-contColor  w-40 pl-5 p-2.5"
-                    placeholder="Your email" />
-                    <div className="absolute  inset-y-0 md:right-[529px] flex items-center pl-3 cursor-pointer">
-                    <img className="w-5 h-5 text-gray-500 "
-                        src="/assets/sendicon.svg"
-                        onClick={()=>{}}
+        
+                <div className="bg-peach border  text-gray-900 text-sm rounded-full focus:ring-contColor focus:border-contColor w-3/4  md:w-2/6 px-5 p-2.5 flex space-x-3">
+                    <input
+                        type="email"
+                        id="email-address-icon"
+                        className=" bg-transparent w-full"
+                        placeholder="Your email"
                     />
-
+                    
+                        <img
+                            className="w-5 h-5 text-gray-500 cursor-pointer"
+                            src="/assets/sendicon.svg"
+                            alt="email_icon"
+                            onClick={() => {}}
+                        />
+                   
                 </div>
             </div>
 
-            <div className="relative">
-                
-              
-            </div>
+            <div className="relative"></div>
         </div>
-    )
+    );
 }
 
 

@@ -71,6 +71,7 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
                     />
                     <button
                         className="btn1 mt-10 rounded-full flex"
+                        type="button"
                         onClick={capture}
                     >
                         <div>
@@ -89,7 +90,7 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
                         className="w-full self-center mb-5"
                     />
                 )}
-                <button
+                <div
                     className="w-full bg-primaryColor text-secondaryColor py-5 rounded-md  flex justify-center items-center"
                     onClick={() => setShowWebCam(true)}
                 >
@@ -97,7 +98,7 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
                         <BsFillCameraFill className=" text-2xl mr-2" />
                     </div>
                     <h1>Capture photo</h1>
-                </button>
+                </div>
                 <div className="text-xs text-red-900 pt-2 w-full flex justify-center ">
                     {errorMessage}
                 </div>

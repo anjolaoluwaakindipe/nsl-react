@@ -50,7 +50,7 @@ function Form1() {
         resolver: joiResolver(loanApplicationFormSchema, {
             abortEarly: false,
         }),
- 
+
         reValidateMode: "onChange",
         criteriaMode: "firstError",
         shouldFocusError: true,
@@ -80,8 +80,8 @@ function Form1() {
     const onSubmit = handleSubmit(async (data) => {
         const isOkay = loanAmountCheck();
 
-        if(!isOkay){
-            return
+        if (!isOkay) {
+            return;
         }
 
         setButtonLoading(true);
@@ -141,6 +141,7 @@ function Form1() {
             );
         }
     };
+
     const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
     useEffect(() => {
         if (!watchAmount || !watchTenor.value) return;
@@ -166,11 +167,10 @@ function Form1() {
             ) {
                 setError("amount", {
                     type: "server",
-                    message:
-                        "Amount must be less than your portfolio amount",
+                    message: "Amount must be less than your portfolio amount",
                 });
                 console.log(errors);
-                return false
+                return false;
             }
         }
         return true;
@@ -218,7 +218,7 @@ function Form1() {
                 <p>
                     Maximum loan amount based on your portfolio is:{" "}
                     {maximumLoanAmmount ? (
-                      "N  " +  maximumLoanAmmount
+                        "N  " + maximumLoanAmmount
                     ) : (
                         <>
                             Error loading Max Loan Amount, please{" "}
@@ -233,13 +233,7 @@ function Form1() {
                     )}{" "}
                 </p>
             </div>
-            <form
-                onSubmit={onSubmit}
-                className="w-full py-20 space-y-16  text-darkTextColor"
-                autoComplete="off"
-                autoSave="off"
-                autoCorrect="off"
-            >
+            <div className="w-full py-20 space-y-16  text-darkTextColor">
                 {/*amount*/}
                 <div className=" col-span-12 md:col-span-6 ">
                     <Controller
@@ -369,7 +363,12 @@ function Form1() {
                             )}
                         </div>
                     </label>
-                    <span>I agree to the Terms and Conditions</span>
+                    <span>
+                        I agree to the Terms and Conditions{" "}
+                        <span className="text-primaryColor">
+                            {errors.termsAndCondition?.message ? "*" : ""}
+                        </span>
+                    </span>
                     <input
                         type="checkbox"
                         id="LoanApplication__termsAndCondition"
@@ -380,12 +379,13 @@ function Form1() {
 
                 <button
                     className={`w-full md:w-1/2 btn1 `}
-                    type="submit"
+                    type="button"
                     disabled={isButtonLoading}
+                    onClick={onSubmit}
                 >
                     {isButtonLoading ? "Loading..." : "Proceed"}
                 </button>
-            </form>
+            </div>
         </div>
     );
 }

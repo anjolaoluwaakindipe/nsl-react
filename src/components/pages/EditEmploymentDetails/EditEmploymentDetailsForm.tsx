@@ -180,7 +180,7 @@ function EditEmploymentDetailsForm() {
     });
 
     const navigateToProfile = () =>{
-        navigate(paths.PROFILE, {replace: true})
+        navigate(paths.SUMMARY, {replace: true})
     }
 
     return (
