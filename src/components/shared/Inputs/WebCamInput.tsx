@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 type WebCamInputProps = {
     errorMessage?: string;
-    value?: string;
+    value?: string | null;
     onChange?: (...event: string[]) => void;
 };
 
@@ -35,7 +35,7 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
 
     const videoConstraints = {
         facingMode: "user",
-        width: 1280,
+        width: 1080,
         height: 720,
     };
 
@@ -66,19 +66,18 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
                         audio={false}
                         mirrored
                         screenshotFormat="image/png"
-                        className=" md:w-[600px] md:h-[600px}"
+                        className="md:w-[900px] md:h-[600px]"
                         videoConstraints={videoConstraints}
                     />
-                    <button
-                        className="btn1 mt-10 rounded-full flex"
-                        type="button"
+                    <div
+                        className="btn1 mt-10 rounded-full flex hover:bg-secondaryColor"
                         onClick={capture}
                     >
                         <div>
                             <BsFillCameraFill className=" text-2xl mr-2" />
                         </div>
                         <h1>Capture photo</h1>
-                    </button>
+                    </div>
                 </div>
             )}
 
@@ -91,7 +90,7 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
                     />
                 )}
                 <div
-                    className="w-full bg-primaryColor text-secondaryColor py-5 rounded-md  flex justify-center items-center"
+                    className="w-full bg-primaryColor text-secondaryColor py-5 rounded-md  flex justify-center items-center cursor-pointer"
                     onClick={() => setShowWebCam(true)}
                 >
                     <div>

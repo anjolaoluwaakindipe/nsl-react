@@ -21,7 +21,7 @@ export const updatePersonalDetailsFormSchema = Joi.object({
     maritalStatus: Joi.required().label("Marital Status"),
     cscsNumber: Joi.string().required().label("CSCS Number"),
     residentialAddress: Joi.string().required().label("Residential Address"),
-    picture: Joi.string().required().label("Picture"),
+    picture: Joi.string().required().label("Your Picture"),
     proofOfIdentification: Joi.string()
         .required()
         .label("Proof of Identification"),

@@ -10,9 +10,10 @@ import { Header } from "../components/pages/EmailVerification";
 import EmailVerificationPinCode from "../components/pages/EmailVerification/EmailVerificationPinCode";
 import { useModal } from "../services/customHooks/useModal";
 import { verificationRequests } from "../services/requests/verificationRequests";
+import { authSelector, createUserFull } from "../state/authSlice";
 import {
+    clearSignUpInfo,
     setEmailCode,
-    setSmsCode,
     signUpInfoSelector,
 } from "../state/signUpInfoSlice";
 import { AppDispatch } from "../state/store";
@@ -20,8 +21,22 @@ import { paths } from "../utils/constants/allPaths";
 
 function EmailVerification() {
     // signUpInfo selector
-    const { email, firstName, password, phoneNumber, emailCode } =
-        useSelector(signUpInfoSelector);
+    const {
+        email,
+        firstName,
+        password,
+        phoneNumber,
+        emailCode,
+        bvn,
+        dateOfBirth,
+        lastName,
+        gender,
+    } = useSelector(signUpInfoSelector);
+
+    // loading state variables
+    const { isLoading, isSuccess, errorMessage, isError } =
+        useSelector(authSelector);
+
     // react router variables
     const navigate = useNavigate();
 
@@ -40,7 +55,6 @@ function EmailVerification() {
         control,
         formState: { errors },
         watch,
-        getValues,
     } = useForm({
         defaultValues: {
             emailCode: ["", "", "", ""],
@@ -56,12 +70,17 @@ function EmailVerification() {
         ),
     });
 
-    console.log(getValues());
+
 
     useEffect(() => {
         toast("Please make sure code is 4 digits", {
             position: "top-right",
+            id:toastId
         });
+
+        return () =>{
+            toast.remove(toastId)
+        }
     }, []);
 
     const inputedEmailCode = watch("emailCode");
@@ -71,6 +90,7 @@ function EmailVerification() {
             navigate(paths.CREATE_ACCOUNT, { replace: true });
         }
     }, [email, firstName, password, phoneNumber]); // eslint-disable-line
+
     const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
     useEffect(() => {
         setIsButtonDisable(true);
@@ -116,70 +136,70 @@ function EmailVerification() {
     }, [inputedEmailCode, emailCode]); //eslint-disable-line
 
     //correct
-    const { openModalFunc } = useModal("EmailVerificationSuccessModal", false);
+    const { openModalFunc } = useModal(
+        "PhoneEmailVerificationSuccessModal ",
+        false
+    );
 
     const resendEmailVerificationCode = async () => {
         const newEmailCode = verificationRequests.generateVerificationCode();
+
+         if (inputedEmailCode.join("") === emailCode) {
+             toast.success("Inputed code is already correct");
+             return;
+         }
         const loadingToastId = toast.loading(
             "Sending a new code to your email...",
             {
                 position: "top-right",
             }
         );
-
-        await verificationRequests
-            .verifyEmail({
-                fourDigitCode: newEmailCode,
-                toEmail: email,
-            })
-            .then((res) => {
-                dispatch(setEmailCode({ emailCode: newEmailCode }));
-                toast.success("New verification code sent to your email.", {
-                    id: loadingToastId,
+       
+            await verificationRequests
+                .verifyEmail({
+                    fourDigitCode: newEmailCode,
+                    toEmail: email,
+                })
+                .then((res) => {
+                    dispatch(setEmailCode({ emailCode: newEmailCode }));
+                    toast.success("New verification code sent to your email.", {
+                        id: loadingToastId,
+                    });
+                })
+                .catch((err) => {
+                    toast.error(
+                        "Something went wrong while sending a new verification code to your email. Please try again later",
+                        { id: loadingToastId }
+                    );
                 });
-            })
-            .catch((err) => {
-                console.log("hello");
-                toast.error(
-                    "Something went wrong while sending a new verification code to your email. Please try again later",
-                    { id: loadingToastId }
-                );
-            });
     };
+
+    // checks if account creation was successful or not
+    useEffect(() => {
+        if (!isLoading && isSuccess) {
+            setButtonLoading(false);
+            dispatch(clearSignUpInfo);
+            openModalFunc();
+        }
+        if (!isLoading && isError && errorMessage) {
+            setButtonLoading(false);
+        }
+    }, [isLoading, openModalFunc]); //
 
     const onSubmit = handleSubmit(async (data) => {
         setButtonLoading(true);
-
-        // const phoneCode = verificationRequests.generateVerificationCode();
-        // const verificationResponse = await verificationRequests
-        //     .verifySms({
-        //         fourDigitCode: phoneCode,
-        //         recipient: phoneNumber.replace("+", ""),
-        //     })
-        //     .then((res) => {
-        //         if (res.data.sentOk === true) {
-        //             dispatch(setSmsCode({ smsCode: phoneCode }));
-        //             toast.success("Verification code sent to your phone", {
-        //                 id: loadingToastId,
-        //             });
-
-        //         } else {
-        //             toast.error(
-        //                 "Could not send sms to the phone number given. Please go back and try again",
-        //                 { id: loadingToastId }
-        //             );
-        //             setButtonLoading(false);
-        //         }
-        //     })
-        //     .catch((err) => {
-        //         console.log("hello");
-        //         toast.error(
-        //             "Something went wrong while sending verification code. Please try again later",
-        //             { id: loadingToastId }
-        //         );
-        //         setButtonLoading(false);
-        //     });
-        openModalFunc();
+        await dispatch(
+            createUserFull({
+                firstName: firstName.trim(),
+                lastName: lastName.trim(),
+                bvn: bvn.trim(),
+                dateOfBirth: dateOfBirth.trim(),
+                gender: gender?.value?.trim()!,
+                email: email.trim(),
+                phoneNumber: phoneNumber.trim(),
+                password: password.trim(),
+            })
+        );
     });
 
     return (

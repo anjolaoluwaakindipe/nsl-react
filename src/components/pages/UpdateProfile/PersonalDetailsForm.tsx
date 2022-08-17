@@ -25,6 +25,7 @@ import FileInput from "../../shared/Inputs/FileInput";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 import { AiOutlineClose } from "react-icons/ai";
+import WebCamInput from "../../shared/Inputs/WebCamInput";
 
 function PersonalDetailsForm() {
     // redux auth state
@@ -100,6 +101,8 @@ function PersonalDetailsForm() {
         resolver: joiResolver(updatePersonalDetailsFormSchema),
         mode: "onChange",
     });
+
+    console.log(errors)
 
     // submit personal details for update
     const onSubmitForm = handleSubmit(async (data) => {
@@ -405,7 +408,7 @@ function PersonalDetailsForm() {
                                 value={value}
                                 onChange={onChange}
                                 options={genderDropdownOptions}
-                                errorMessage={errors?.gender?.value?.message}
+                                errorMessage={errors?.gender?.message}
                             />
                         )}
                     />
@@ -413,18 +416,28 @@ function PersonalDetailsForm() {
 
                 {/* Date of Birth */}
                 <div className=" col-span-12 md:col-span-6">
-                    <DateInputField
-                        register={register("dateOfBirth")}
-                        errorMessage={errors.dateOfBirth?.message}
-                        placeholder="Date of Birth"
-                        id="dateOfBirth"
-                        max={new Date(
-                            new Date().setFullYear(
-                                new Date().getFullYear() - 18
-                            )
-                        )
-                            .toISOString()
-                            .substring(0, 10)}
+                    <Controller
+                        control={control}
+                        name="dateOfBirth"
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <DateInputField
+                                    register={register("dateOfBirth")}
+                                    value={value}
+                                    onChange={onChange}
+                                    errorMessage={errors.dateOfBirth?.message}
+                                    placeholder="Date of Birth"
+                                    id="dateOfBirth"
+                                    max={new Date(
+                                        new Date().setFullYear(
+                                            new Date().getFullYear() - 18
+                                        )
+                                    )
+                                        .toISOString()
+                                        .substring(0, 10)}
+                                />
+                            );
+                        }}
                     />
                 </div>
 
@@ -439,9 +452,7 @@ function PersonalDetailsForm() {
                                 options={maritalStatusDropdownOptions}
                                 onChange={onChange}
                                 value={value}
-                                errorMessage={
-                                    errors?.maritalStatus?.value?.message
-                                }
+                                errorMessage={errors?.maritalStatus?.message}
                             />
                         )}
                     />
@@ -508,7 +519,7 @@ function PersonalDetailsForm() {
                                 onChange={onChange}
                                 value={value}
                                 errorMessage={
-                                    errors?.documentType?.value?.message
+                                    errors?.documentType?.message
                                 }
                             />
                         )}
@@ -528,25 +539,55 @@ function PersonalDetailsForm() {
 
                 {/* expiry Date  */}
                 <div className=" col-span-12 md:col-span-6">
-                    <DateInputField
-                        register={register("IdexpiryDate")}
-                        placeholder="Expiry Date"
-                        id="IdexpiryDate"
-                        errorMessage={errors.IdexpiryDate?.message}
-                        min={new Date().toISOString().substring(0, 10)}
+                    <Controller
+                        control={control}
+                        name="IdexpiryDate"
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <DateInputField
+                                    onChange={onChange}
+                                    value={value}
+                                    register={register("IdexpiryDate")}
+                                    placeholder="Expiry Date"
+                                    id="IdexpiryDate"
+                                    errorMessage={errors.IdexpiryDate?.message}
+                                    min={new Date()
+                                        .toISOString()
+                                        .substring(0, 10)}
+                                />
+                            );
+                        }}
                     />
                 </div>
 
                 {/* issue Date  */}
                 <div className=" col-span-12 md:col-span-6">
-                    <DateInputField
-                        register={register("IdissueDate")}
-                        placeholder="Issue Date"
-                        id="IdissueDate"
-                        errorMessage={errors.IdissueDate?.message}
-                        max={new Date().toISOString().substring(0, 10)}
+                    <Controller
+                        control={control}
+                        name="IdissueDate"
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <DateInputField
+                                    onChange={onChange}
+                                    value={value}
+                                    register={register("IdissueDate")}
+                                    placeholder="Issue Date"
+                                    id="IdissueDate"
+                                    errorMessage={errors.IdissueDate?.message}
+                                    max={new Date()
+                                        .toISOString()
+                                        .substring(0, 10)}
+                                />
+                            );
+                        }}
                     />
                 </div>
+
+                {/* Proof of Identification with image */}
+                {displayImage(
+                    watch("proofOfIdentification")!,
+                    identificationDocumentImage!
+                )}
 
                 <div className="col-span-12">
                     <Controller
@@ -566,15 +607,10 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-                {displayImage(
-                    watch("proofOfIdentification")!,
-                    identificationDocumentImage!
-                )}
-
                 <div className="col-span-12" />
 
                 {/* Profile Picture */}
-                <div className="col-span-12">
+                {/* <div className="col-span-12">
                     <Controller
                         control={control}
                         name="picture"
@@ -588,9 +624,12 @@ function PersonalDetailsForm() {
                             />
                         )}
                     />
-                </div>
+                </div> */}
 
-                {displayImage(watch("picture")!, picture!)}
+                {/* {displayImage(watch("picture")!, picture!)} */}
+
+                {/* Proof of residence and image */}
+                {displayImage(watch("proofOfResidence")!, proofOfAddressImage!)}
 
                 <div className="col-span-12">
                     <Controller
@@ -608,7 +647,20 @@ function PersonalDetailsForm() {
                     />
                 </div>
 
-                {displayImage(watch("proofOfResidence")!, proofOfAddressImage!)}
+                {/* WebCam image */}
+                <div className="col-span-12">
+                    <Controller
+                        control={control}
+                        name="picture"
+                        render={({ field: { onChange, value } }) => (
+                            <WebCamInput
+                                value={value}
+                                onChange={onChange}
+                                errorMessage={errors.picture?.message}
+                            />
+                        )}
+                    />
+                </div>
 
                 <div className="col-span-12">
                     <button

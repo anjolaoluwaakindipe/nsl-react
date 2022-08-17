@@ -79,14 +79,16 @@ function FileInput({
                     </div>
 
                     <div className="flex">
-                        <AiOutlineCloudUpload
-                            className="text-2xl"
-                            strokeWidth={50}
-                        />
                         {value || fileValue ? (
-                            <BsCheckAll className="text-2xl ml-4 text-successColor" />
+                            <AiOutlineCloudUpload
+                                className="text-2xl text-successColor"
+                                strokeWidth={50}
+                            />
                         ) : (
-                            ""
+                            <AiOutlineCloudUpload
+                                className="text-2xl"
+                                strokeWidth={50}
+                            />
                         )}
                     </div>
                 </label>

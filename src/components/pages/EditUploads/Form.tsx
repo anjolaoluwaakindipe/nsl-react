@@ -243,21 +243,47 @@ function Form() {
 
                 {/* expiry Date  */}
                 <div className=" col-span-12 md:col-span-6">
-                    <DateInputField
-                        register={register("IdexpiryDate")}
-                        placeholder="Expiry Date"
-                        id="IdexpiryDate"
-                        errorMessage={errors.IdexpiryDate?.message}
+                    <Controller
+                        control={control}
+                        name="IdexpiryDate"
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <DateInputField
+                                    onChange={onChange}
+                                    value={value}
+                                    register={register("IdexpiryDate")}
+                                    placeholder="Expiry Date"
+                                    id="IdexpiryDate"
+                                    errorMessage={errors.IdexpiryDate?.message}
+                                    min={new Date()
+                                        .toISOString()
+                                        .substring(0, 10)}
+                                />
+                            );
+                        }}
                     />
                 </div>
 
                 {/* issue Date  */}
                 <div className=" col-span-12 md:col-span-6">
-                    <DateInputField
-                        register={register("IdissueDate")}
-                        placeholder="Issue Date"
-                        id="IdissueDate"
-                        errorMessage={errors.IdissueDate?.message}
+                    <Controller
+                        control={control}
+                        name="IdissueDate"
+                        render={({ field: { onChange, value } }) => {
+                            return (
+                                <DateInputField
+                                    onChange={onChange}
+                                    value={value}
+                                    register={register("IdissueDate")}
+                                    placeholder="Issue Date"
+                                    id="IdissueDate"
+                                    errorMessage={errors.IdissueDate?.message}
+                                    max={new Date()
+                                        .toISOString()
+                                        .substring(0, 10)}
+                                />
+                            );
+                        }}
                     />
                 </div>
 

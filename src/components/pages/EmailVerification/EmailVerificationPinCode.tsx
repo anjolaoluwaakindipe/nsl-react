@@ -58,14 +58,12 @@ function EmailVerificationPinCode({ value, onChange }: EmailVerificaitonPinCodeP
 
     useEffect(() => {
         onChange(pin);
-        console.log(pin);
     }, [pin, onChange]);
 
     useEffect(() => {
         if (firstDigit || firstDigit === "") {
             setPin((prevpin: string[]) => {
                 prevpin[0] = firstDigit;
-                console.log(prevpin);
                 return [...prevpin];
             });
         }

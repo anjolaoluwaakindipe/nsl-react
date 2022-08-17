@@ -33,7 +33,7 @@ function Welcome() {
                 <img src="/assets/welcomelogo.svg" alt="welcome_img" />
 
                 {/* Welcome page header */}
-                <h1 className="heading1">
+                <h1 className="heading1 text-center">
                     Welcome {capitalize(user?.firstName || "")}
                 </h1>
 

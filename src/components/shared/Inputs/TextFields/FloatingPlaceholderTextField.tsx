@@ -15,6 +15,16 @@ type FloatinPlaceholderTextFieldProps = {
     //  onChange?: React.HTMLInputElement;
     formNoValidate?: boolean;
     readOnly?: boolean;
+    inputMode?:
+        | "email"
+        | "search"
+        | "text"
+        | "tel"
+        | "url"
+        | "none"
+        | "numeric"
+        | "decimal"
+        | undefined;
 };
 
 function FloatingPlaceholderTextField(props: FloatinPlaceholderTextFieldProps) {
@@ -26,13 +36,14 @@ function FloatingPlaceholderTextField(props: FloatinPlaceholderTextFieldProps) {
                 <input
                     type={showPassword ? "text" : props.type}
                     {...props.register}
-                    className="outline-none pb-4   w-full "
+                    className="outline-none pb-4  border-0 focus:border-0 focus:outline-none  w-full  "
                     id={props.id}
                     placeholder={props.readOnly ? undefined : " "}
                     step={props.step}
                     pattern={props.pattern}
                     value={props.value}
                     readOnly={props.readOnly}
+                    inputMode={props.inputMode}
                     // onChange={props.onChange}
                     formNoValidate={props.formNoValidate}
                 />

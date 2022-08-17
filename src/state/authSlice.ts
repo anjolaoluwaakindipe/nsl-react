@@ -208,6 +208,7 @@ export const createUserFull = createAsyncThunk(
     }
 );
 
+// get user full
 export const getUserFull = createAsyncThunk(
     "auth/getUserFullStatus",
     async (_, thunkAPI) => {
@@ -531,7 +532,8 @@ export const loginUser = createAsyncThunk(
                                         tokenResponse.data.refresh_token,
                                     rfidStatus:
                                         accountStatusResponse.data.rqStatus,
-                                    customerNo: accountStatusResponse.data.rqStatusInfo
+                                    customerNo:
+                                        accountStatusResponse.data.rqStatusInfo,
                                 };
                             } else {
                                 return thunkApi.rejectWithValue(
@@ -929,7 +931,7 @@ const authSlice = createSlice({
                     ? action?.payload.rfid
                     : "";
                 state.user!.rfStatus = action?.payload.rfidStatus;
-                if(action?.payload.customerNo){
+                if (action?.payload.customerNo) {
                     state.user!.customerNo = action?.payload.customerNo;
                 }
                 state.user!.keycloakId = action?.payload?.keycloakId

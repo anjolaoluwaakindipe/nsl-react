@@ -11,9 +11,7 @@ import "react-phone-number-input/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../services/customHooks/useModal";
 import { verificationRequests } from "../../../services/requests/verificationRequests";
-import { authSelector, createUserFull } from "../../../state/authSlice";
 import {
-    setEmailCode,
     setSignUpInfo,
     setSmsCode,
     signUpInfoSelector,
@@ -27,14 +25,18 @@ import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
+import { render } from '@testing-library/react';
+
+
 
 function Form() {
+    // gender drop down options
     const genderDropdownOptions = [
         { value: "M", label: "Male" },
         { value: "F", label: "Female" },
     ];
 
-    // sign up selector for e
+    // variables from sign up selector state
     const {
         email,
         firstName,
@@ -47,10 +49,12 @@ function Form() {
     const dispatch = useDispatch<AppDispatch>();
     const [disableButton, setDisableButton] = useState(false);
 
+    // react hook form variables
     const {
         register,
         handleSubmit,
         control,
+        getValues,
         formState: { errors },
         setValue,
     } = useForm<CreateAccountFormData>({
@@ -65,8 +69,12 @@ function Form() {
         resolver: joiResolver(createAccountSchema),
     });
 
+    console.log(getValues())
+
+    // open the begin verification modal to prompt users to check phone verification
     const { openModalFunc } = useModal("BeginVerificationModal", false);
 
+    // check if fields are within signupinfo state and populates accordingly (except password and confirm password)
     useEffect(() => {
         if (email) {
             setValue("emailAddress", email);
@@ -131,8 +139,6 @@ function Form() {
         //     })
         // );
 
-        // generate email and phone code
-        const emailCode = verificationRequests.generateVerificationCode();
         const phoneCode = verificationRequests.generateVerificationCode();
 
         // create loading toaster
@@ -144,57 +150,43 @@ function Form() {
         );
 
         // send email verification
-        const verificationResponse = await verificationRequests
-            .verifyEmail({
-                fourDigitCode: emailCode,
-                toEmail: data.emailAddress,
+        await verificationRequests
+            .verifySms({
+                fourDigitCode: phoneCode,
+                recipient: data.phoneNumber.replace("+", ""),
             })
             .then(async (res) => {
-                dispatch(
-                    setSignUpInfo({
-                        email: data.emailAddress,
-                        firstName: data.firstName,
-                        password: data.password,
-                        phoneNumber: data.phoneNumber.toString(),
-                        bvn: data.bvn,
-                        gender: data?.gender!,
-                        dateOfBirth: data.dateOfBirth.split("T")[0].replaceAll("-", ""),
-                        lastName: data.lastName,
-                    })
-                );
-                console.log(data.phoneNumber.replace("+", ""));
-                dispatch(setEmailCode({ emailCode }));
-                await verificationRequests
-                    .verifySms({
-                        fourDigitCode: phoneCode,
-                        recipient: data.phoneNumber.replace("+", ""),
-                    })
-                    .then((res) => {
-                        console.log(res.data);
-                        if (res.data.sentOK === true) {
-                            dispatch(setSmsCode({ smsCode: phoneCode }));
-                            toast.success(
-                                "Verification code sent to your email and phone number",
-                                {
-                                    id: loading,
-                                }
-                            );
-                            openModalFunc();
-                        } else {
-                            toast.error(
-                                "Could not send sms. Please check your phone number",
-                                { id: loading }
-                            );
+                console.log(res.data);
+                if (res.data.sentOK === true) {
+                    dispatch(setSmsCode({ smsCode: phoneCode }));
+                    dispatch(
+                        setSignUpInfo({
+                            email: data.emailAddress,
+                            firstName: data.firstName,
+                            password: data.password,
+                            phoneNumber: data.phoneNumber.toString(),
+                            bvn: data.bvn,
+                            gender: data?.gender!,
+                            dateOfBirth: data.dateOfBirth
+                                .split("T")[0]
+                                .replaceAll("-", ""),
+                            lastName: data.lastName,
+                        })
+                    );
+                    toast.success(
+                        "Verification code sent to your email and phone number",
+                        {
+                            id: loading,
                         }
-                        console.log(res.data);
-                    })
-                    .catch((err) => {
-                        console.log("hello");
-                        toast.error(
-                            "Something went wrong while sending verification code. Please try again later",
-                            { id: loading }
-                        );
-                    });
+                    );
+                    openModalFunc();
+                } else {
+                    toast.error(
+                        "Could not send sms. Please check your phone number",
+                        { id: loading }
+                    );
+                }
+                console.log(res.data);
             })
             .catch((err) => {
                 console.log("hello");
@@ -203,8 +195,6 @@ function Form() {
                     { id: loading }
                 );
             });
-
-        console.log(verificationResponse);
 
         // if (
         //     verificationResponse.status &&
@@ -315,18 +305,27 @@ function Form() {
 
             {/*Date Of Birth*/}
             <div className=" col-span-12 md:col-span-6">
-                <DateInputField
-                    register={register("dateOfBirth")}
-                    errorMessage={errors.dateOfBirth?.message}
-                    id="dateOfBirth"
-                    placeholder="Date of Birth"
-                    max={new Date(
-                        new Date().setFullYear(new Date().getFullYear() - 18)
-                    )
-                        .toISOString()
-                        .substring(0, 10)}
-                />
+                <Controller control={control} name="dateOfBirth" render={({field:{onChange, value}})=>{
+                    return (
+                        <DateInputField
+                            errorMessage={errors.dateOfBirth?.message}
+                            id="dateOfBirth"
+                            onChange={onChange}
+                            value= {value}
+                            placeholder="Date of Birth"
+                            max={new Date(
+                                new Date().setFullYear(
+                                    new Date().getFullYear() - 18
+                                )
+                            )
+                                .toISOString()
+                                .substring(0, 10)}
+                        />
+                    );
+                }}/>
+                
             </div>
+
 
             {/* BVN */}
 
@@ -337,6 +336,7 @@ function Form() {
                     registerName="password"
                     register={register("bvn")}
                     type="text"
+                    inputMode="numeric"
                 />
             </div>
 

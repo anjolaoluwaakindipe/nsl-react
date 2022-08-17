@@ -51,7 +51,7 @@ function CurrencyInputField({
                 <CurrencyInput
                     {...register}
                     id="LoanApplication__amount"
-                    className="outline-none pb-4  w-full inline-block"
+                    className="outline-none pb-4 border-0 w-full inline-block"
                     placeholder=" "
                     value={inputValue}
                     onValueChange={handleChange}

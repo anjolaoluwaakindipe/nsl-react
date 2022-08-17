@@ -7,7 +7,7 @@ function BeginVerificationModal(prop: { cancelModal: () => void }) {
     const onProceed: React.MouseEventHandler<HTMLButtonElement> = (e) => {
         e.preventDefault();
 
-        navigate(paths.EMAIL_VERIFICATION);
+        navigate(paths.PHONE_VERIFICATION);
         prop.cancelModal();
     };
     return (

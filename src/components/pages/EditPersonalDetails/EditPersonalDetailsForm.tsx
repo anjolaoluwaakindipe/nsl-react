@@ -229,7 +229,7 @@ function EditPersonalDetailsForm() {
                 proofOfAddressImage,
                 picture,
                 inputStatus: "Draft",
-                cb: navigateToProfile,
+                cb: navigateToSubmissionSummary,
             })
         );
         // navigate("/update-profile/employment-details");
@@ -237,7 +237,7 @@ function EditPersonalDetailsForm() {
         setButtonLoading(false);
     });
 
-    const navigateToProfile = () => {
+    const navigateToSubmissionSummary = () => {
         navigate(paths.SUMMARY, { replace: true });
     };
 
@@ -284,6 +284,7 @@ function EditPersonalDetailsForm() {
                 />
             </div>
 
+            {/* Middle name */}
             <div className=" col-span-12 md:col-span-6 ">
                 <FloatingPlaceholderTextField
                     placeholder="Middle Name"
@@ -354,11 +355,28 @@ function EditPersonalDetailsForm() {
 
             {/* Date of Birth */}
             <div className=" col-span-12 md:col-span-6">
-                <DateInputField
-                    register={register("dateOfBirth")}
-                    errorMessage={errors.dateOfBirth?.message}
-                    placeholder="Date of Birth"
-                    id="dateOfBirth"
+                <Controller
+                    control={control}
+                    name="dateOfBirth"
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <DateInputField
+                                register={register("dateOfBirth")}
+                                value={value}
+                                onChange={onChange}
+                                errorMessage={errors.dateOfBirth?.message}
+                                placeholder="Date of Birth"
+                                id="dateOfBirth"
+                                max={new Date(
+                                    new Date().setFullYear(
+                                        new Date().getFullYear() - 18
+                                    )
+                                )
+                                    .toISOString()
+                                    .substring(0, 10)}
+                            />
+                        );
+                    }}
                 />
             </div>
 

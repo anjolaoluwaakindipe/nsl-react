@@ -10,15 +10,14 @@ import {
 // form
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../services/customHooks/useModal";
 import { verificationRequests } from "../services/requests/verificationRequests";
-import { authSelector, createUserFull } from "../state/authSlice";
 import {
-    clearSignUpInfo,
+    setEmailCode,
     setSmsCode,
     signUpInfoSelector
 } from "../state/signUpInfoSlice";
@@ -26,6 +25,7 @@ import { AppDispatch } from "../state/store";
 import { paths } from "../utils/constants/allPaths";
 
 function PhoneVerification() {
+    // sign up state variables
     const {
         email,
         firstName,
@@ -37,16 +37,22 @@ function PhoneVerification() {
         phoneNumber,
         smsCode,
     } = useSelector(signUpInfoSelector);
+
+    // navigation (react-router)
     const navigate = useNavigate();
-    const { isLoading, isSuccess, errorMessage, isError } =
-        useSelector(authSelector);
+
+    // react redux
     const dispatch = useDispatch<AppDispatch>();
+
+    // button state
     const [isButtonDisable, setIsButtonDisable] = useState(true);
-    const pinToastId = "pinToastId";
     const [buttonLoading, setButtonLoading] = useState(false);
 
+    // toast id
+    const pinToastId = "pinToastId";
+
     // sends a toast message to advice the user to input a 4 digits code
-    useEffect(() => {}, []);
+    // useEffect(() => {}, []);
 
     // component state
     const {
@@ -68,11 +74,14 @@ function PhoneVerification() {
     });
 
     const inputedSmsCode = watch("phoneCode");
-    const timerRef = useRef<NodeJS.Timeout | undefined>(undefined)
+    const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
     // checks if inputed code matches code sent to phone number
     useEffect(() => {
         setIsButtonDisable(true);
-        if (inputedSmsCode.join("").length === 4 && inputedSmsCode.join("") === smsCode) {
+        if (
+            inputedSmsCode.join("").length === 4 &&
+            inputedSmsCode.join("") === smsCode
+        ) {
             if (timerRef.current) {
                 clearTimeout(timerRef.current);
             }
@@ -94,8 +103,11 @@ function PhoneVerification() {
             setIsButtonDisable(true);
         }
 
-        if (inputedSmsCode.join("").length === 4 && inputedSmsCode.join("") !== smsCode) {
-            if(timerRef.current){
+        if (
+            inputedSmsCode.join("").length === 4 &&
+            inputedSmsCode.join("") !== smsCode
+        ) {
+            if (timerRef.current) {
                 clearTimeout(timerRef.current);
             }
             toast.loading("Verifying Code...", {
@@ -114,6 +126,12 @@ function PhoneVerification() {
     // allows users to resend another verifciation code to their phone number
     const resendSmsVerificationCode = async () => {
         const newSmsCode = verificationRequests.generateVerificationCode();
+
+        if (inputedSmsCode.join("") === smsCode) {
+            toast.success("Inputed code is already correct");
+            return;
+        }
+
         const loadingToastId = toast.loading(
             "Sending a new code to your phone number...",
             {
@@ -145,7 +163,16 @@ function PhoneVerification() {
 
     // checks if the registration information are still in state otherwise go back to the create account page
     useEffect(() => {
-        if (!email || !firstName || !password || !phoneNumber) {
+        if (
+            !email ||
+            !firstName ||
+            !password ||
+            !phoneNumber ||
+            !bvn ||
+            !lastName ||
+            !dateOfBirth ||
+            !gender
+        ) {
             navigate(paths.CREATE_ACCOUNT, { replace: true });
             return;
         }
@@ -154,40 +181,41 @@ function PhoneVerification() {
             position: "top-right",
             id: pinToastId,
         });
+
+        return () =>{
+            toast.remove(pinToastId)
+        }
     }, [email, firstName, password, phoneNumber]); // eslint-disable-line
 
-    const { openModalFunc } = useModal(
-        "PhoneEmailVerificationSuccessModal",
-        false
-    );
-
-    // checks if account creation was successful or not
-    useEffect(() => {
-        if (!isLoading && isSuccess) {
-            setButtonLoading(false);
-            dispatch(clearSignUpInfo);
-            openModalFunc();
-        }
-        if (!isLoading && isError && errorMessage) {
-            setButtonLoading(false);
-        }
-    }, [isLoading, openModalFunc]); //
+    const { openModalFunc } = useModal("PhoneVerificationSuccessModal", false);
 
     // submits user sign up information
     const onSubmit = handleSubmit(async (data) => {
         setButtonLoading(true);
-        await dispatch(
-            createUserFull({
-                firstName: firstName.trim(),
-                lastName: lastName.trim(),
-                bvn: bvn.trim(),
-                dateOfBirth: dateOfBirth.trim(),
-                gender: gender?.value?.trim()!,
-                email: email.trim(),
-                phoneNumber: phoneNumber.trim(),
-                password: password.trim(),
+
+        const emailCode = verificationRequests.generateVerificationCode();
+        toast.loading('Sending code to your email', {id: pinToastId})
+        await verificationRequests
+            .verifyEmail({
+                fourDigitCode: emailCode,
+                toEmail: email,
             })
-        );
+            .then((res) => {
+                
+                dispatch(setEmailCode({ emailCode: emailCode }));
+                toast.success("Verification code sent to your email", {
+                    id: pinToastId,
+                });
+                openModalFunc();
+            })
+            .catch((err) => {
+                
+                toast.error(
+                    "Something went wrong while sending verification code. Please try again later",
+                    { id: pinToastId }
+                );
+                setButtonLoading(false);
+            });
     });
 
     return (
