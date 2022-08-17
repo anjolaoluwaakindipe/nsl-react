@@ -1,8 +1,8 @@
 import React from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import DateTime from "react-datetime";
-import "react-datetime/css/react-datetime.css";
-import { useState, useEffect } from 'react';
+import "/node_modules/react-datetime/css/react-datetime.css";
+import { useState, useEffect } from "react";
 import moment from "moment";
 
 type DateInputFieldProp = {
@@ -37,8 +37,6 @@ function DateInputField({
         ""
     );
 
-    
-
     const [isPlaceholderVisilble, setPlaceholderVisibiltiy] = useState(true);
 
     const normalPlaceholderState = () => "";
@@ -57,16 +55,15 @@ function DateInputField({
         } else {
             setPlaceholderVisibiltiy(true);
             setDateValue("");
-            if (onChange){
+            if (onChange) {
                 onChange("");
             }
-            
         }
     };
 
-    useEffect(()=>{
-        value && changeDateValue(value)
-    },[value])
+    useEffect(() => {
+        value && changeDateValue(value);
+    }, [value]);
 
     const showViewDate = () => {
         if (min && !max) {
