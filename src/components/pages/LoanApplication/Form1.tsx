@@ -18,6 +18,8 @@ import { loanApplicationFormSchema } from "../../../utils/validation/loanApplica
 import CurrencyInputField from "../../shared/Inputs/TextFields/CurrencyInputField";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import WebCamInput from "../../shared/Inputs/WebCamInput";
+import Popup from "reactjs-popup";
+import { PopupActions } from "reactjs-popup/dist/types";
 
 function Form1() {
     const {
@@ -52,10 +54,11 @@ function Form1() {
         }),
 
         reValidateMode: "onChange",
-        criteriaMode: "firstError",
         shouldFocusError: true,
         shouldUnregister: true,
     });
+
+    console.log(errors);
 
     // watches
     const watchTermsAndCond = watch("termsAndCondition");
@@ -64,9 +67,8 @@ function Form1() {
 
     const loanInfoToastId = "loanInfoToastId";
 
-    const [maximumLoanAmmount, setMaximumLoanAmmount] = useState<string | null>(
-        ""
-    );
+    const [portfolioAmount, setPortfolioAmount] = useState<number | null>(0);
+    const [loadingPortfolioAmount, setLoadingPortfolioAmount] = useState(true);
 
     const tenorDropdownOptions = [
         { value: "30", label: "30 days" },
@@ -158,13 +160,10 @@ function Form1() {
     const loanAmountCheck = () => {
         if (
             !isNaN(parseFloat(watchAmount.replaceAll(",", ""))) &&
-            maximumLoanAmmount &&
-            !isNaN(parseFloat(maximumLoanAmmount))
+            portfolioAmount &&
+            !isNaN(portfolioAmount)
         ) {
-            if (
-                parseFloat(watchAmount.replaceAll(",", "")) >
-                parseFloat(maximumLoanAmmount)
-            ) {
+            if (parseFloat(watchAmount.replaceAll(",", "")) > portfolioAmount) {
                 setError("amount", {
                     type: "server",
                     message: "Amount must be less than your portfolio amount",
@@ -181,7 +180,7 @@ function Form1() {
     }, [watchAmount]);
 
     const calculateMaximumLoanAmount = async () => {
-        setMaximumLoanAmmount("Loading...");
+        setLoadingPortfolioAmount(true);
         const portfolioInfoAmount = await loanRequests.getPortforlioInfo();
         if (portfolioInfoAmount.status === 200) {
             let totalAmount = 0;
@@ -189,9 +188,11 @@ function Form1() {
                 totalAmount += portfolio.portfolio;
             });
             totalAmount = totalAmount * 0.5;
-            setMaximumLoanAmmount(totalAmount.toString());
+            setPortfolioAmount(totalAmount);
+            setLoadingPortfolioAmount(false);
         } else {
-            setMaximumLoanAmmount("400000");
+            setPortfolioAmount(400000);
+            setLoadingPortfolioAmount(false);
         }
     };
 
@@ -217,17 +218,24 @@ function Form1() {
 
                 <p>
                     Maximum loan amount based on your portfolio is:{" "}
-                    {maximumLoanAmmount ? (
-                        "N  " + maximumLoanAmmount
+                    {portfolioAmount !== null ? (
+                        loadingPortfolioAmount ? (
+                            "Loading "
+                        ) : (
+                            "N  " + portfolioAmount
+                        )
                     ) : (
                         <>
-                            Error loading Max Loan Amount, please{" "}
+                            {
+                                "(An error occured while loading your max loan amount, please "
+                            }
                             <span
+                                className="hover:underline text-primaryColor cursor-pointer"
                                 onClick={() => {
                                     calculateMaximumLoanAmount();
                                 }}
                             >
-                                Refresh
+                                {"refresh)"}
                             </span>
                         </>
                     )}{" "}
@@ -351,7 +359,7 @@ function Form1() {
                 </div>
 
                 {/*terms tick box*/}
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3 relative">
                     <label htmlFor="LoanApplication__termsAndCondition">
                         <div
                             className={` border-2 rounded-sm border-primaryColor w-5 h-5 items-center justify-center`}
@@ -363,12 +371,13 @@ function Form1() {
                             )}
                         </div>
                     </label>
-                    <span>
+                    <span className="text-sm">
                         I agree to the Terms and Conditions{" "}
-                        <span className="text-primaryColor">
+                        <span className="text-primaryColor text-xl font-bold">
                             {errors.termsAndCondition?.message ? "*" : ""}
                         </span>
                     </span>
+
                     <input
                         type="checkbox"
                         id="LoanApplication__termsAndCondition"
@@ -380,7 +389,11 @@ function Form1() {
                 <button
                     className={`w-full md:w-1/2 btn1 `}
                     type="button"
-                    disabled={isButtonLoading}
+                    disabled={
+                        isButtonLoading ||
+                        loadingPortfolioAmount ||
+                        portfolioAmount === null
+                    }
                     onClick={onSubmit}
                 >
                     {isButtonLoading ? "Loading..." : "Proceed"}

@@ -50,7 +50,7 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
                         />
                     </div>
 
-                    <div className=" max-w-xs xl:max-w-2xl p-2 text-left absolute bottom-5 left-5 xl:top-10 xl:bottom-auto xl:left-auto  bg-white   text-primaryColor rounded-lg space-y-1 xl:space-y-2 text-xs xl:text-base">
+                    <div className=" max-w-[60%]  md:max-w-xs xl:max-w-2xl p-2 text-left absolute top-5 left-5 xl:top-10 xl:bottom-auto xl:left-auto  bg-white   text-primaryColor rounded-lg space-y-1 xl:space-y-2 text-xs xl:text-base">
                         <h1>
                             Please know that your picture will be used in making
                             a decision for your loan application.
@@ -61,22 +61,24 @@ function WebCamInput({ value, onChange, errorMessage }: WebCamInputProps) {
                             your picture!
                         </h1>
                     </div>
-                    <Webcam
-                        ref={webcamRef}
-                        audio={false}
-                        mirrored
-                        screenshotFormat="image/png"
-                        className="md:w-[900px] md:h-[600px]"
-                        videoConstraints={videoConstraints}
-                    />
-                    <div
-                        className="btn1 mt-10 rounded-full flex hover:bg-secondaryColor"
-                        onClick={capture}
-                    >
-                        <div>
-                            <BsFillCameraFill className=" text-2xl mr-2" />
+                    <div className="relative">
+                        <Webcam
+                            ref={webcamRef}
+                            audio={false}
+                            mirrored
+                            screenshotFormat="image/png"
+                            className="h-[350px] md:w-[900px] md:h-[600px]"
+                            videoConstraints={videoConstraints}
+                        />
+                        <div
+                            className="btn1 mt-10 rounded-full w-min flex justify-center items-center hover:bg-secondaryColor absolute bottom-4 right-0 left-0 mx-auto"
+                            onClick={capture}
+                        >
+                            <div className="">
+                                <BsFillCameraFill className=" text-2xl " />
+                            </div>
+                            {/* <h1>Capture photo</h1> */}
                         </div>
-                        <h1>Capture photo</h1>
                     </div>
                 </div>
             )}

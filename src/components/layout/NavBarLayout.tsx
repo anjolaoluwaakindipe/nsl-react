@@ -63,7 +63,7 @@ function NavBarLayout({ children }: { children?: React.ReactElement }) {
                             >
                                 {user?.picture ? (
                                     <img
-                                        className="h-full w-full"
+                                        className="h-full w-full object-cover object-top"
                                         src={
                                             "data:image/png;base64," +
                                             user?.picture

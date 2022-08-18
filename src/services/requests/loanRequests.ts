@@ -103,7 +103,7 @@ export const loanRequests = {
 
         return await axios
             .get("/isslapi/cscs-api/1.0/portfolioxbvn/1234566", {
-                timeout: 500,
+                timeout: 1000,
             })
             .then((data) => {
                 res.data = data.data;

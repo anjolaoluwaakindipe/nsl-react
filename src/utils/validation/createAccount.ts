@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { isValidPhoneNumber } from "react-phone-number-input";
 import { onlyNumberReg } from "../constants/inputValidationPatterns";
 
 // import {  onlyNumberReg } from "../constants/inputValidationPatterns";
@@ -18,7 +19,18 @@ export const createAccountSchema = Joi.object({
         .trim()
         .email({ tlds: { allow: false } })
         .label("Email Address"),
-    phoneNumber: Joi.string().trim().required().label("Phone Number"),
+    phoneNumber: Joi.string()
+        .trim()
+        .required()
+        .label("Phone Number")
+        .custom((value, helper) => {
+            if (isValidPhoneNumber(value)) {
+                return true;
+            } else {
+                return helper.error("any.invalid");
+            }
+        })
+        .messages({ "any.invalid": "Phone number is not valid" }),
     bvn: Joi.string()
         .required()
         .pattern(onlyNumberReg)
