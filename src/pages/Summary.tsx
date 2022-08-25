@@ -10,9 +10,9 @@ import {
     authSelector,
     setRfStatusToNew,
     submitUserInfoToNslDb,
-} from "../state/authSlice";
+} from "../state/redux/authSlice";
 import { paths } from "../utils/constants/allPaths";
-import { AppDispatch } from "../state/store";
+import { AppDispatch } from "../state/redux/store";
 import { useModal } from "../services/customHooks/useModal";
 import { useEffect, useState } from "react";
 import { isAnyKeyEmptyInAnObj } from "../utils/objectChecker";

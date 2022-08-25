@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import authRequest from "../services/requests/authRequest";
+import authRequest from "../../services/requests/authRequest";
 import {
     AuthState,
     ProofOfIdentificationFromGetUserAppResponse,
     UserInfoAppResponse,
-} from "../typings";
+} from "../../typings";
 
 import toast from "react-hot-toast";
 import { RootState } from "./store";
-import { nslRequests } from "../services/requests/nslrequests";
+import { nslRequests } from "../../services/requests/nslrequests";
 import { object } from "joi";
 
 const initialState: AuthState = {
@@ -83,16 +83,7 @@ export const createUserFull = createAsyncThunk(
     ) => {
         try {
             // response from creating user on main application
-            console.log({
-                firstName,
-                lastName,
-                dateOfBirth,
-                gender,
-                email,
-                bvn,
-                phoneNumber,
-                password,
-            });
+            
             const createUserOnAppResponse = await authRequest.registerUserApp({
                 firstName,
                 lastName,
@@ -103,7 +94,7 @@ export const createUserFull = createAsyncThunk(
                 phoneNumber,
             });
 
-            console.log(createUserOnAppResponse);
+            
 
             if (
                 createUserOnAppResponse.status === 200 &&
@@ -138,7 +129,7 @@ export const createUserFull = createAsyncThunk(
                             adminToken: adminTokenResponse.data["access_token"],
                         });
 
-                    console.log(registerUserResponse);
+                    
 
                     // check if user registration response was successful or not
                     if (registerUserResponse.status === 201) {
@@ -189,7 +180,7 @@ export const createUserFull = createAsyncThunk(
             } else if (createUserOnAppResponse.code === "ECONNABORTED") {
                 return thunkApi.rejectWithValue("Network timeout");
             } else {
-                console.log("hello");
+                
                 switch (createUserOnAppResponse.status) {
                     case 400:
                         return thunkApi.rejectWithValue(
@@ -202,7 +193,7 @@ export const createUserFull = createAsyncThunk(
                 }
             }
         } catch (e: any) {
-            console.log(e);
+            
             return thunkApi.rejectWithValue(e);
         }
     }
@@ -215,7 +206,7 @@ export const getUserFull = createAsyncThunk(
         try {
             const { rfid } = ((await thunkAPI.getState()) as RootState).auth
                 .user!;
-            console.log(rfid);
+            
             if (rfid === "" || rfid === null) {
                 return thunkAPI.rejectWithValue(
                     "Problems getting your information, please login again"
@@ -540,15 +531,18 @@ export const loginUser = createAsyncThunk(
                                     "Something went wrong while getting your account status"
                                 );
                             }
-
+                        case 500:
+                            return thunkApi.rejectWithValue(
+                                "Something went wrong with our servers. Please try again later."
+                            );
                         default:
                             return thunkApi.rejectWithValue(
-                                "Something went wrong while login you in"
+                                "Something went wrong while getting your information. Please try again Later."
                             );
                     }
                 } else {
                     return thunkApi.rejectWithValue(
-                        "Something went wrong while login you in"
+                        "Something went wrong while logging you in. Please try again later."
                     );
                 }
             } else {
@@ -576,7 +570,7 @@ export const loginUser = createAsyncThunk(
                 }
             }
         } catch (e: any) {
-            console.log(e);
+            
             return thunkApi.rejectWithValue(e);
         }
     }
@@ -606,14 +600,14 @@ export const createUserAuth = createAsyncThunk(
         try {
             // get admin token response
             const adminTokenResponse = await authRequest.getAdminToken();
-            console.log(adminTokenResponse);
+            
 
             // check if admin token response was successful or not
             if (
                 adminTokenResponse.status &&
                 adminTokenResponse.status === 200
             ) {
-                console.log(adminTokenResponse);
+                
 
                 // use the access token of the admin token and user inputed fields to register user
                 const registerUserResponse =
@@ -626,7 +620,7 @@ export const createUserAuth = createAsyncThunk(
                         adminToken: adminTokenResponse.data["access_token"],
                     });
 
-                console.log(registerUserResponse);
+                
 
                 // check if user registration response was successful or not
                 if (registerUserResponse.status === 201) {
@@ -675,7 +669,7 @@ export const createUserAuth = createAsyncThunk(
                 }
             }
         } catch (e: any) {
-            console.log(e);
+            
             return thunkAPI.rejectWithValue(e);
         }
     }
@@ -695,7 +689,7 @@ export const refreshUserTokens = createAsyncThunk(
             const accessTokenResponse = await authRequest.getUserKeycloak(
                 accessToken
             );
-            console.log(accessTokenResponse);
+            
 
             if (accessTokenResponse.status === 200) {
                 return thunkAPI.fulfillWithValue(null);
@@ -722,7 +716,7 @@ export const refreshUserTokens = createAsyncThunk(
                 await thunkAPI.dispatch<unknown, any>(logoutUser());
             }
         } catch (e: any) {
-            console.log(e);
+            
             return thunkAPI.rejectWithValue(e);
         }
     }
@@ -799,7 +793,7 @@ export const submitUserInfoToNslDb = createAsyncThunk(
                 );
             }
         } catch (e: any) {
-            console.log(e);
+          
             return thunkApi.rejectWithValue(e);
         }
     }
@@ -829,7 +823,7 @@ export const logoutUser = createAsyncThunk<
 
         return thunkAPI.fulfillWithValue("yes");
     } catch (e: any) {
-        console.log(e);
+       
         return thunkAPI.rejectWithValue(e);
     }
 });
@@ -839,7 +833,6 @@ const userInformationStateSetter = (
     allUserInformation: UserInfoAppResponse
 ) => {
     // personal information
-    console.log(allUserInformation);
     state.user!.email = allUserInformation.email;
     state.user!.dateOfBirth = allUserInformation.dob;
     state.user!.maritalStatus = allUserInformation.maritalStatus;
@@ -926,7 +919,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
-                console.log(action.payload);
+                
                 state.user!.rfid = action?.payload?.rfid
                     ? action?.payload.rfid
                     : "";
@@ -1000,7 +993,7 @@ const authSlice = createSlice({
                 });
             })
             .addCase(createUserFull.rejected, (state, action) => {
-                console.log(action.payload);
+                
                 state.isError = true;
                 state.isLoading = false;
                 state.isSuccess = false;
@@ -1016,7 +1009,7 @@ const authSlice = createSlice({
                 state.isError = false;
             })
             .addCase(logoutUser.rejected, (state, action) => {
-                console.log(action.payload);
+               
                 state = initialState;
                 state.errorMessage = action.payload as string;
             })
@@ -1032,7 +1025,7 @@ const authSlice = createSlice({
                 state.isError = false;
             })
             .addCase(getUserFull.rejected, (state, action) => {
-                console.log(action.payload);
+                
                 if (
                     action.payload ===
                     "Problems getting your information, please login again"

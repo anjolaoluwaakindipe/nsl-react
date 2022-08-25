@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { paths } from '../../../utils/constants/allPaths';
-import { authSelector } from '../../../state/authSlice';
+import { authSelector } from '../../../state/redux/authSlice';
 import { useEffect } from 'react';
 
 function DraftUserPage({ children }: { children: React.ReactElement }) {

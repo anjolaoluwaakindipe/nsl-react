@@ -2,7 +2,7 @@ import { CgProfile } from "react-icons/cg";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authSelector } from "../../../state/authSlice";
+import { authSelector } from "../../../state/redux/authSlice";
 
 function SummaryHeader() {
     const navigate = useNavigate();

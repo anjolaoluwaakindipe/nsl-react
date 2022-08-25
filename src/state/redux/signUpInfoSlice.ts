@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SignUpInfoState } from "../typings";
+import { SignUpInfoState } from "../../typings";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 

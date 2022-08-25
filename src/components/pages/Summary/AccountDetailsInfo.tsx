@@ -2,7 +2,7 @@ import React from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../utils/constants/allPaths";
-import { authSelector } from "../../../state/authSlice";
+import { authSelector } from "../../../state/redux/authSlice";
 import { useSelector } from "react-redux";
 
 function AccountDetailsSummaryInfo() {

@@ -23,7 +23,7 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
             onClick={() => navigate(paths.TERM_LOAN)}
         >
             <div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between container">
                     <h2 className="  text-black text-md ">Loan Amount</h2>
                     <Popup
                         trigger={
@@ -31,17 +31,18 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                                 <BsThreeDotsVertical className="cursor-pointer" />
                             </div>
                         }
-                        position="bottom left"
+                        position={["bottom left", "left bottom"]}
                         on="click"
+                        keepTooltipInside=".container"
                         closeOnDocumentClick
                         mouseLeaveDelay={0}
                         mouseEnterDelay={0}
                         contentStyle={{ padding: "0px", border: "none" }}
-                        arrow={false}
+                        arrow={true}
                     >
                         <div className=" space-y-2">
                             <div
-                                className="px-5 py-3 bg-white text-primaryColor cursor-pointer"
+                                className="px-5 py-3 bg-secondaryColor rounded-lg text-primaryColor cursor-pointer"
                                 onClick={() =>
                                     navigate(paths.LOAN_PAYMENT_OPTIONS)
                                 }
@@ -49,7 +50,7 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                                 {" "}
                                 Repay
                             </div>
-                            <div className="px-5 py-3 bg-white text-primaryColor cursor-pointer">
+                            <div className="px-5 py-3 bg-secondaryColor rounded-lg text-primaryColor cursor-pointer">
                                 {" "}
                                 Rollover
                             </div>

@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../../../state/store";
+import { RootState, AppDispatch } from "../../../state/redux/store";
 import { useEffect } from "react";
 
-import { closeModal } from "../../../state/modalSlice";
+import { closeModal } from "../../../state/redux/modalSlice";
 
 import { ModalState } from "../../../typings";
 import PhoneEmailVerificationSuccessModal from "./Content/PhoneEmailVerificationSuccessModal";
@@ -19,6 +19,7 @@ import LogOutModal from "./Content/LogOutModal";
 import CardDetailsModal from "./Content/CardDetailsModal";
 import ProfileSuccessfullySubmitted from "./Content/ProfileSuccessfullySubmitted";
 import PhoneVerificationSuccessModal from "./Content/PhoneVerificationSuccessModal";
+import SignLoanContractModal from "./Content/SignLoanContractModal";
 
 function ModalContent(
     modalName: string,
@@ -53,6 +54,8 @@ function ModalContent(
             return <ProfileSuccessfullySubmitted cancelModal={cancelModal}/>
         case "PhoneVerificationSuccessModal":
             return <PhoneVerificationSuccessModal cancelModal = {cancelModal}/>
+        case "SignLoanContractModal":
+            return <SignLoanContractModal cancelModal={cancelModal} />
         default:
             return <div></div>;
     }

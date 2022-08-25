@@ -5,7 +5,7 @@ import { CgProfile } from "react-icons/cg";
 import { VscBellDot } from "react-icons/vsc";
 import { paths } from "../../../utils/constants/allPaths";
 import { useModal } from "../../../services/customHooks/useModal";
-import { authSelector } from "../../../state/authSlice";
+import { authSelector } from "../../../state/redux/authSlice";
 import { useSelector } from "react-redux";
 
 function Layout({ children }: { children?: React.ReactElement }) {

@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import {
     authSelector,
     updateUserPersonalDetailsFull,
-} from "../../../state/authSlice";
-import { AppDispatch } from "../../../state/store";
+} from "../../../state/redux/authSlice";
+import { AppDispatch } from "../../../state/redux/store";
 import { paths } from "../../../utils/constants/allPaths";
 
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";

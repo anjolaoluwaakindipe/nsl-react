@@ -8,10 +8,10 @@ import { paths } from "../../../utils/constants/allPaths";
 
 import { useModal } from "../../../services/customHooks/useModal";
 import { useSelector, useDispatch } from "react-redux";
-import { authSelector, loginUser } from "../../../state/authSlice";
-import { AppDispatch } from "../../../state/store";
+import { authSelector, loginUser } from "../../../state/redux/authSlice";
+import { AppDispatch } from "../../../state/redux/store";
 import { useEffect, useState } from "react";
-import { makeUnCancellable, setModalName } from "../../../state/modalSlice";
+import { makeUnCancellable, setModalName } from "../../../state/redux/modalSlice";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 
 function Form() {

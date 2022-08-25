@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { authSelector } from "../../../state/authSlice";
+import { authSelector } from "../../../state/redux/authSlice";
 import { paths } from '../../../utils/constants/allPaths';
 
 function ProcessedUserPage({ children }: { children: React.ReactElement }) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import HalfNavBarLayout from '../components/layout/HalfNavBarLayout';
 import { useSelector } from 'react-redux';
-import { authSelector } from '../state/authSlice';
+import { authSelector } from '../state/redux/authSlice';
 import { capitalize } from '../utils/stringFormatting';
 
 function Waiting() {

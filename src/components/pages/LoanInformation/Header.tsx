@@ -1,6 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
+import { authSelector } from '../../../state/redux/authSlice';
 
 function Header() {
+    const user = useSelector(authSelector).user
     return (
         <form>
             <div className="space-y-5 pt-10 ">
@@ -11,7 +14,7 @@ function Header() {
 
             <div className="pt-8 py-10 space-y-2">
                 <h3 className="font-bold text-justify text-accentColor dark:">
-                    Oluwatosin Ajayi
+                    {`${user?.lastName?.toLocaleUpperCase()} ${user?.firstName?.toLocaleUpperCase()} ${user?.middleName?.toLocaleUpperCase()}`}
                 </h3>
 
                 <div>

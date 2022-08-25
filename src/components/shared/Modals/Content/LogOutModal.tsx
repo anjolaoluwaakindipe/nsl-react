@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { clearAuthState } from "../../../../state/authSlice";
-import { AppDispatch } from "../../../../state/store";
+import { clearAuthState } from "../../../../state/redux/authSlice";
+import { AppDispatch } from "../../../../state/redux/store";
 import { paths } from "../../../../utils/constants/allPaths";
 
 function LogOutModal(prop: { cancelModal: () => void }) {

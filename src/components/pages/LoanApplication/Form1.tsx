@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useModal } from "../../../services/customHooks/useModal";
 import { loanRequests } from "../../../services/requests/loanRequests";
-import { authSelector } from "../../../state/authSlice";
+import { authSelector } from "../../../state/redux/authSlice";
 import formatMoney from "../../../utils/moneyFormatter";
 import { loanApplicationFormSchema } from "../../../utils/validation/loanApplication";
 import CurrencyInputField from "../../shared/Inputs/TextFields/CurrencyInputField";
@@ -88,7 +88,13 @@ function Form1() {
 
         setButtonLoading(true);
         const submissionResponse = await loanRequests.submitLoanApplication({
-            applicationReference: rfid!,
+            applicationReference:
+                customerNo! +
+                new Date()
+                    .toUTCString()
+                    .replaceAll(":", "")
+                    .replaceAll(" ", "")
+                    .replaceAll(",", ""),
             customerNo: customerNo!,
             amount: data.amount.replaceAll(",", ""),
             channel: "web",

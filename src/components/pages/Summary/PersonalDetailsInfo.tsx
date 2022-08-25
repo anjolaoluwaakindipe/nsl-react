@@ -1,7 +1,7 @@
 import React from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
-import { authSelector } from "../../../state/authSlice";
+import { authSelector } from "../../../state/redux/authSlice";
 import { paths } from '../../../utils/constants/allPaths';
 import { useSelector } from 'react-redux';
 

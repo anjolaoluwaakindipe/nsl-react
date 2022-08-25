@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useModal } from "../../services/customHooks/useModal";
-import { authSelector } from "../../state/authSlice";
+import { authSelector } from "../../state/redux/authSlice";
 import { paths } from '../../utils/constants/allPaths';
 
 function HalfNavBarLayout({ children }: { children?: JSX.Element }) {

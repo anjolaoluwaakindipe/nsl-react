@@ -10,13 +10,13 @@ import { Header } from "../components/pages/EmailVerification";
 import EmailVerificationPinCode from "../components/pages/EmailVerification/EmailVerificationPinCode";
 import { useModal } from "../services/customHooks/useModal";
 import { verificationRequests } from "../services/requests/verificationRequests";
-import { authSelector, createUserFull } from "../state/authSlice";
+import { authSelector, createUserFull } from "../state/redux/authSlice";
 import {
     clearSignUpInfo,
     setEmailCode,
     signUpInfoSelector,
-} from "../state/signUpInfoSlice";
-import { AppDispatch } from "../state/store";
+} from "../state/redux/signUpInfoSlice";
+import { AppDispatch } from "../state/redux/store";
 import { paths } from "../utils/constants/allPaths";
 
 function EmailVerification() {

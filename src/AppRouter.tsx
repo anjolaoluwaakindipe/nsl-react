@@ -124,7 +124,7 @@ function AppRouter() {
                         }
                     />
                     <Route
-                        path={paths.LOAN_INFORMATION}
+                        path={paths.LOAN_INFORMATION + "/:applicationreference"}
                         element={
                             <React.Suspense>
                                 <NoUpdateProtectedRoute>
@@ -150,7 +150,7 @@ function AppRouter() {
                     />
 
                     <Route
-                        path={paths.LOAN_CONTRACT}
+                        path={paths.LOAN_CONTRACT+ "/:applicationreference"}
                         element={
                             <React.Suspense>
                                 <NoUpdateProtectedRoute>

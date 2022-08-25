@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../../utils/constants/allPaths";
 import { useSelector } from "react-redux";
-import { authSelector } from "../../../../state/authSlice";
+import { authSelector } from "../../../../state/redux/authSlice";
 
 function LoginSuccessModal(prop: { cancelModal: () => void }) {
     const { rfStatus } = useSelector(authSelector).user!;

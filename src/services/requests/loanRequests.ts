@@ -1,4 +1,6 @@
 import axios from "axios";
+import { Loan } from "../../typings";
+import { X_TENANTID } from "./authSettings";
 
 export const loanRequests = {
     async getLoanTenureRepaymentAndDate({
@@ -103,7 +105,7 @@ export const loanRequests = {
 
         return await axios
             .get("/isslapi/cscs-api/1.0/portfolioxbvn/1234566", {
-                timeout: 1000,
+                timeout: 500,
             })
             .then((data) => {
                 res.data = data.data;
@@ -118,6 +120,88 @@ export const loanRequests = {
                 }
                 res.code = err.code;
                 console.log(res);
+                return res;
+            });
+    },
+
+    async getUserLoans(customerNo: string) {
+        const response = await axios.get<Loan[]>(
+            "/isslapi/ibank/api/v1/getLoanApplicationsxCustomer?customerno=" +
+                customerNo,
+            {
+                headers: {
+                    "X-TENANTID": X_TENANTID,
+                },
+            }
+        );
+        return response.data;
+    },
+
+    async getALoan(applicationReference: string) {
+        const response = await axios.get<Loan>(
+            "/isslapi/ibank/api/v1/getLoanApplicationxReference?applicationreference=" +
+                applicationReference,
+            {
+                headers: {
+                    "X-TENANTID": X_TENANTID,
+                },
+            }
+        );
+
+        return response.data;
+    },
+
+    async generateLoanContractOtp(applicationreference: string) {
+        const res: {
+            status: number;
+            code: string;
+            data: string | null;
+        } = {
+            status: 0,
+            code: "",
+            data: null,
+        };
+
+        await axios
+            .get(
+                "/isslapi/ibank/api/v1/generateotp?userId=loancontract" +
+                    applicationreference
+            )
+            .then((data) => {
+                res.status = data.status;
+                res.data = data.data;
+            })
+            .catch((err) => {
+                res.status = err.response.status;
+                res.code = err.code;
+            });
+
+        return res;
+    },
+
+    async getLoanContractOtp(applicationreference: string) {
+        const res: {
+            status: number;
+            code: string;
+            data: number | null;
+        } = {
+            status: 0,
+            code: "",
+            data: null,
+        };
+        return await axios
+            .get(
+                "/isslapi/ibank/api/v1/getotp?userId=loancontract" +
+                    applicationreference
+            )
+            .then((data) => {
+                res.status = data.status;
+                res.data = data.data;
+                return res;
+            })
+            .catch((err) => {
+                res.status = err.response.status;
+                res.code = err.code;
                 return res;
             });
     },

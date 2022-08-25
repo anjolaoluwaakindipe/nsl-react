@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authSelector, getUserFull } from "../../../state/authSlice";
+import { authSelector, getUserFull } from "../../../state/redux/authSlice";
 import { paths } from "../../../utils/constants/allPaths";
 import { useEffect, useState } from "react";
-import { AppDispatch } from "../../../state/store";
+import { AppDispatch } from "../../../state/redux/store";
 
 function NoUpdateProtectedRoute({ children }: { children: React.ReactElement }) {
     // react-redux variable

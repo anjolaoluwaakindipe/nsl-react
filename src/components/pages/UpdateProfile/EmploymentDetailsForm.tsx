@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import {
     authSelector,
     updateUserEmploymentDetailsFull,
-} from "../../../state/authSlice";
-import { AppDispatch } from "../../../state/store";
+} from "../../../state/redux/authSlice";
+import { AppDispatch } from "../../../state/redux/store";
 import { EmploymentDetailsFormInfo } from "../../../typings";
 import { paths } from "../../../utils/constants/allPaths";
 import { updateEmploymentDetailsFormSchema } from "../../../utils/validation/updateProfile";

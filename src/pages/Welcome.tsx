@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 
 // custom selector
-import { authSelector } from "../state/authSlice";
+import { authSelector } from "../state/redux/authSlice";
 
 // app routes
 import { paths } from "../utils/constants/allPaths";

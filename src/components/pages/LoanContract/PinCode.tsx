@@ -7,70 +7,81 @@ type PinCodeProps = {
 };
 
 function PinCode({ value, onChange }: PinCodeProps) {
-    const [pin, setPin] = useState(value);
+    const [pin, setPin] = useState("");
 
-    const preventLetters: React.KeyboardEventHandler<HTMLInputElement> = (
-        e
-    ) => {
-        if (!RegExp("[0-9]").test(e.key)) {
-            e.preventDefault();
-            return;
-        }
-
-        return e.key;
-    };
-
-    const firstDigitRef = useRef<HTMLInputElement>(null);
-    const secondDigitRef = useRef<HTMLInputElement>(null);
-    const thirdDigitRef = useRef<HTMLInputElement>(null);
-    const fourthDigitRef = useRef<HTMLInputElement>(null);
-
-    const [firstDigit, setFirstDigit] = useState("");
-    const [secondDigit, setSecondDigit] = useState("");
-    const [thirdDigit, setThirdDigit] = useState("");
-    const [fourthDigit, setFourthDigit] = useState("");
 
     useEffect(()=>{
         onChange(pin)
-    }, [pin, onChange])
+    },[pin]) // eslint-disable-line
 
-    useEffect(() => {
-        if (firstDigit) {
-            setPin((prevpin: string) => {
-                const prevpinChar = prevpin.split("");
-                prevpinChar[0] = firstDigit;
-                return prevpinChar.join("");
-            });
+    useEffect(()=>{
+        if(value !== null || value !== undefined){
+            setPin(value)
         }
-    }, [firstDigit]);
+    }, [value])
 
-    useEffect(() => {
-        if (secondDigit) {
-            setPin((prevpin: string) => {
-                const prevpinChar = prevpin.split("");
-                prevpinChar[1] = secondDigit;
-                return prevpinChar.join("");
-            });
-        }
-    }, [secondDigit]);
-    useEffect(() => {
-        if (thirdDigit) {
-            setPin((prevpin: string) => {
-                const prevpinChar = prevpin.split("");
-                prevpinChar[2] = thirdDigit;
-                return prevpinChar.join("");
-            });
-        }
-    }, [thirdDigit]);
-    useEffect(() => {
-        if (fourthDigit) {
-            setPin((prevpin: string) => {
-                const prevpinChar = prevpin.split("");
-                prevpinChar[3] = fourthDigit;
-                return prevpinChar.join("");
-            });
-        }
-    }, [fourthDigit]);
+    // const preventLetters: React.KeyboardEventHandler<HTMLInputElement> = (
+    //     e
+    // ) => {
+    //     if (!RegExp("[0-9]").test(e.key)) {
+    //         e.preventDefault();
+    //         return;
+    //     }
+
+    //     return e.key;
+    // };
+
+    // const firstDigitRef = useRef<HTMLInputElement>(null);
+    // const secondDigitRef = useRef<HTMLInputElement>(null);
+    // const thirdDigitRef = useRef<HTMLInputElement>(null);
+    // const fourthDigitRef = useRef<HTMLInputElement>(null);
+
+    // const [firstDigit, setFirstDigit] = useState("");
+    // const [secondDigit, setSecondDigit] = useState("");
+    // const [thirdDigit, setThirdDigit] = useState("");
+    // const [fourthDigit, setFourthDigit] = useState("");
+
+    // useEffect(()=>{
+    //     onChange(pin)
+    // }, [pin, onChange])
+
+    // useEffect(() => {
+    //     if (firstDigit) {
+    //         setPin((prevpin: string) => {
+    //             const prevpinChar = prevpin.split("");
+    //             prevpinChar[0] = firstDigit;
+    //             return prevpinChar.join("");
+    //         });
+    //     }
+    // }, [firstDigit]);
+
+    // useEffect(() => {
+    //     if (secondDigit) {
+    //         setPin((prevpin: string) => {
+    //             const prevpinChar = prevpin.split("");
+    //             prevpinChar[1] = secondDigit;
+    //             return prevpinChar.join("");
+    //         });
+    //     }
+    // }, [secondDigit]);
+    // useEffect(() => {
+    //     if (thirdDigit) {
+    //         setPin((prevpin: string) => {
+    //             const prevpinChar = prevpin.split("");
+    //             prevpinChar[2] = thirdDigit;
+    //             return prevpinChar.join("");
+    //         });
+    //     }
+    // }, [thirdDigit]);
+    // useEffect(() => {
+    //     if (fourthDigit) {
+    //         setPin((prevpin: string) => {
+    //             const prevpinChar = prevpin.split("");
+    //             prevpinChar[3] = fourthDigit;
+    //             return prevpinChar.join("");
+    //         });
+    //     }
+    // }, [fourthDigit]);
 
     return (
         <div
@@ -79,7 +90,7 @@ function PinCode({ value, onChange }: PinCodeProps) {
                 onChange(e)
             }}
         >
-            <input
+            {/* <input
                 type="text"
                 className="w-16 h-16 bg-gray-300 text-darkTextColor   text-center rounded-md"
                 placeholder="*"
@@ -126,7 +137,8 @@ function PinCode({ value, onChange }: PinCodeProps) {
                     fourthDigitRef.current?.blur();
                 }}
                 ref={fourthDigitRef}
-            />
+            /> */}
+            <input type="text" className="border-2 border-secondaryColor rounded-md h-10 max-w-md p-4" value={pin} onChange={(e) => {setPin(e.target.value)}} />
         </div>
     );
 }

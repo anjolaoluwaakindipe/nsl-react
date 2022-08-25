@@ -2,7 +2,7 @@ import { AiFillEdit, AiOutlineCloudUpload } from "react-icons/ai";
 import { GrDocumentText } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authSelector } from "../../../state/authSlice";
+import { authSelector } from "../../../state/redux/authSlice";
 import { paths } from "../../../utils/constants/allPaths";
 
 function UploadSummaryInfo() {

@@ -4,32 +4,76 @@ import { Link, Navigate } from "react-router-dom";
 import EmptyStatus from "./EmptyStatus";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../utils/constants/allPaths";
+import { Loan } from "../../../typings";
+import { useModal } from "../../../services/customHooks/useModal";
+import { useDispatch, useSelector } from "react-redux";
+import { setListState, loanSelector } from "../../../state/redux/loanSlice";
 
 type StatusProp = {
     loantype: string;
     amount: string;
-    statustype: number;
-    statusview: number;
+    applicationReference: string;
+    statustype: Loan["statusCode"];
+    status: string;
 };
 
-function Status(prop: StatusProp) {
+function Status(props: StatusProp) {
+    const navigate = useNavigate();
+    const { openModalFunc } = useModal("SignLoanContractModal", true);
+    const dispatch = useDispatch();
+    const loanList = useSelector(loanSelector).loanList;
+
+    const navigateToContract = () => {
+        if (loanList) {
+            dispatch(
+                setListState({
+                    selectedLoan: loanList.find(
+                        (loan) =>
+                            loan.applicationReference ===
+                            props.applicationReference
+                    ),
+                })
+            );
+            if (props.statustype === "AWAITINGCUSTOMERAGREEMENT") {
+                openModalFunc();
+                // dispatch(setListState({selectedLoan: }))
+                // navigate(paths.LOAN_CONTRACT + "/" + props.applicationReference);
+            } else {
+                navigate(
+                    paths.LOAN_INFORMATION + "/" + props.applicationReference
+                );
+            }
+        }
+    };
+
     return (
-        <div>
-            <div className="md:p-10 p-5 w-full grid grid-cols-4 gap-20  font-semibold ">
-                <h3 className="flex justify-center items-center">
-                    {prop.loantype}
-                </h3>
+        <div
+            className="md:p-10 p-5 w-full grid grid-cols-4 gap-20  font-semibold bg-bgColor3 hover:bg-secondaryColor rounded-xl transition-colors duration-75 ease-in cursor-pointer "
+            onClick={navigateToContract}
+        >
+            <h3 className="flex justify-center items-center">
+                {props.loantype}
+            </h3>
 
-                <h3 className=" flex justify-center  items-center">
-                    {prop.amount}
-                </h3>
+            <h3 className=" flex justify-center  items-center">
+                {props.amount}
+            </h3>
 
-                <div className=" flex justify-center  items-center text-center ">
-                    <StatusType status={prop.statustype} />
-                </div>
+            <div className=" flex justify-center  items-center text-center ">
+                <StatusType
+                    status={props.statustype}
+                    statusText={props.status}
+                />
+            </div>
 
-                <div className="flex justify-center items-center">
-                    <StatusView status={prop.statusview} />
+            <div className="flex justify-center items-center">
+                <div
+                    className="text-primaryColor hover:underline cursor-pointer flex justify-center items-center"
+                    onClick={navigateToContract}
+                >
+                    {props.statustype !== "AWAITINGCUSTOMERAGREEMENT"
+                        ? "View"
+                        : "Sign Contract"}
                 </div>
             </div>
         </div>
@@ -39,18 +83,26 @@ function Status(prop: StatusProp) {
 export default Status;
 
 //status type
-function StatusType({ status }: { status: Number }) {
+function StatusType({
+    status,
+    statusText,
+}: {
+    status: StatusProp["statustype"];
+    statusText: string;
+}) {
     const PendingApproval = (
         <div className="flex items-center justify-center  space-x-2">
             <div className="w-[10px] h-[10px]  bg-red-400 border-2 rounded-full " />
-            <h3 className="max-w-[200px]">Pending Approval {"      "} </h3>
+            <h3 className="max-w-[200px]">
+                {statusText} {"      "}{" "}
+            </h3>
         </div>
     );
 
     const PendingContractApproval = (
         <div className="flex  items-center justify-center space-x-2">
             <div className="min-w-[14px] min-h-[14px] bg-red-900 border-2 rounded-full " />
-            <h3 className="max-w-[200px]">Pending Contract Approval </h3>
+            <h3 className="max-w-[200px]">{statusText}</h3>
         </div>
     );
 
@@ -62,16 +114,8 @@ function StatusType({ status }: { status: Number }) {
     );
 
     switch (status) {
-        case 1: {
-            return PendingApproval;
-        }
-
-        case 2: {
+        case "AWAITINGCUSTOMERAGREEMENT": {
             return PendingContractApproval;
-        }
-
-        case 3: {
-            return Approved;
         }
 
         default: {

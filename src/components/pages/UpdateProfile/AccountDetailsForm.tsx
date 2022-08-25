@@ -9,7 +9,7 @@ import { BASE_URL } from "../../../services/requests/authSettings";
 import { useModal } from "../../../services/customHooks/useModal";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import { useSelector } from "react-redux";
-import { authSelector } from "../../../state/authSlice";
+import { authSelector } from "../../../state/redux/authSlice";
 import { usePaystackPayment } from "react-paystack";
 import { PaystackProps } from "react-paystack/dist/types";
 import axios from "axios";

@@ -1,4 +1,4 @@
-import { authSelector } from "../../../../state/authSlice";
+import { authSelector } from "../../../../state/redux/authSlice";
 import { useSelector } from "react-redux";
 import FloatingPlaceholderTextField from "../../Inputs/TextFields/FloatingPlaceholderTextField";
 import SingleTextField from "../../Inputs/TextFields/SingleTextField";

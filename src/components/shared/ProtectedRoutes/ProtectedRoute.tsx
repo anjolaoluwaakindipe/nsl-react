@@ -5,8 +5,8 @@ import {
     authSelector,
     getUserFull,
     refreshUserTokens,
-} from "../../../state/authSlice";
-import { AppDispatch } from "../../../state/store";
+} from "../../../state/redux/authSlice";
+import { AppDispatch } from "../../../state/redux/store";
 import { paths } from "../../../utils/constants/allPaths";
 
 function ProtectedRoute({ children }: { children: React.ReactElement }) {

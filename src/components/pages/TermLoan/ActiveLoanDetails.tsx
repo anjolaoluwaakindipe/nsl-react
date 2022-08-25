@@ -3,7 +3,7 @@ import {paths} from "../../../utils/constants/allPaths";
 import {useNavigate} from "react-router-dom";
 
 function ActiveLoanDetails() {
-    const [progress, setProgress] = useState("0%");
+    const [progress, setProgress] = useState("90%");
 
 
     const onClickFunc:React.FormEventHandler = (e)=>{
@@ -18,7 +18,7 @@ function ActiveLoanDetails() {
             className="  w-full py-20 space-y-16 text-darkTextColor "
         >
             <div className="w-full bg-white p-5 md:p-10 text-sm rounded-md space-y-5">
-                <h1 className=" text-14px text-primaryColor dark:text- flex flex-col md:grid md:grid-cols-6  ">
+                <h1 className=" text-14px text-primaryColor  flex flex-col md:grid md:grid-cols-6  ">
                     <div className="md:space-y-2">
                         <div className="w-full">CSCS Account Number</div>
                         <div className="text-gray-400 dark:text- ">
@@ -84,14 +84,14 @@ function ActiveLoanDetails() {
 
             <div className="md:p-10 p-5 w-full  md:w-7/12 flex flex-col  space-y-3 bg-white rounded-md">
                 <div className="flex justify-between mb-1">
-                    <h1 className="text-base font-medium text-primaryColor dark:text-white">
+                    <h1 className="text-base font-medium text-primaryColor ">
                         Days Left
                     </h1>
-                    <h1 className="text-sm font-medium text-primaryColor dark:text-white">
+                    <h1 className="text-sm font-medium text-primaryColor ">
                         40 days
                     </h1>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                <div className="w-full bg-gray-200 rounded-full h-2.5 ">
                     <div
                         className={`bg-yellow-400 h-2.5 rounded-full transition-all duration-700 ease-in-out`}
                         style={{ maxWidth: progress }}

@@ -45,3 +45,24 @@ module.exports = {
     },
     plugins: [],
 };
+
+
+For ssl dev
+set HTTPS=true&&set SSL_CRT_FILE=./server/ssl/localhost.pem&&set SSL_KEY_FILE=./server/ssl/localhost-key.pem&&
+
+
+
+processingStatus: "IN_PROCESS"
+purpose: "For education"
+rate: "5"
+repaymentAmount: "213499.65"
+status: "Pending Loan Agreement"
+statusCode: "AWAITINGLOANAGREEMENT"
+statusComments: "test"
+
+processingStatus: "IN_PROCESS"
+purpose: "For education"
+rate: "5"
+repaymentAmount: "213499.65"
+status: "Pending Customer Agreement/Signoff"
+statusCode: "AWAITINGCUSTOMERAGREEMENT"

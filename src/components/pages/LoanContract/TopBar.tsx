@@ -13,14 +13,14 @@ function TopBar() {
       <div className="w-full flex justify-between ">
          
             <FaAngleLeft className="text-2xl cursor-pointer"
-            onClick={()=>{navigate(paths.USER_DASHBOARD)}} />
+            onClick={()=>{navigate(paths.USER_DASHBOARD, {replace: true})}} />
             
 
           
               
-          <IoMdClose className="text-2xl cursor-pointer" 
+          {/* <IoMdClose className="text-2xl cursor-pointer" 
           onClick={()=>{navigate(paths.USER_DASHBOARD)}}/>
-
+ */}
             
       </div>
   );

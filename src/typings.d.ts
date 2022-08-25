@@ -202,6 +202,34 @@ interface SignUpInfoState {
     smsCode: string;
 }
 
+// loan state
+export type Loan = {
+    _id: string;
+    applicationReference: string;
+    customerNo: string;
+    amount: string;
+    emailAddress: string;
+    applicantName: string;
+    phoneNumber: string;
+    rate: string;
+    repaymentAmount: string;
+    tenor: string;
+    purpose: string;
+    txnDate: string;
+    loanProduct: "60";
+    loanProductName: "TERM LOANS";
+    loanProductClass: "L";
+    statusComments: string;
+    processingStatus: string;
+    statusCode: "AWAITINGCUSTOMERAGREEMENT" | "AWAITINGLOANAGREEMENT" | "APPROVED";
+    status: string;
+};
+
+type LoanState = {
+    loanList: Loan[] | null;
+    selectedLoan: Loan | null;
+};
+
 // Requests
 interface TokenResponse {
     access_token: string;
@@ -271,3 +299,6 @@ type PictureFromGetUserAppResponse = {
     documentType: "Photo";
     documentImage: string | null;
 };
+
+
+

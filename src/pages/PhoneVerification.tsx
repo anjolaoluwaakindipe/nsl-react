@@ -4,7 +4,7 @@ import HalfNavBarLayout from "../components/layout/HalfNavBarLayout";
 // components
 import {
     Header,
-    PhoneVerificationPinCode
+    PhoneVerificationPinCode,
 } from "../components/pages/PhoneVerification";
 
 // form
@@ -19,9 +19,9 @@ import { verificationRequests } from "../services/requests/verificationRequests"
 import {
     setEmailCode,
     setSmsCode,
-    signUpInfoSelector
-} from "../state/signUpInfoSlice";
-import { AppDispatch } from "../state/store";
+    signUpInfoSelector,
+} from "../state/redux/signUpInfoSlice";
+import { AppDispatch } from "../state/redux/store";
 import { paths } from "../utils/constants/allPaths";
 
 function PhoneVerification() {
@@ -142,7 +142,7 @@ function PhoneVerification() {
         await verificationRequests
             .verifySms({
                 fourDigitCode: newSmsCode,
-                recipient: phoneNumber,
+                recipientPhoneNumber: phoneNumber,
             })
             .then((res) => {
                 dispatch(setSmsCode({ smsCode: newSmsCode }));
@@ -182,9 +182,9 @@ function PhoneVerification() {
             id: pinToastId,
         });
 
-        return () =>{
-            toast.remove(pinToastId)
-        }
+        return () => {
+            toast.remove(pinToastId);
+        };
     }, [email, firstName, password, phoneNumber]); // eslint-disable-line
 
     const { openModalFunc } = useModal("PhoneVerificationSuccessModal", false);
@@ -194,14 +194,13 @@ function PhoneVerification() {
         setButtonLoading(true);
 
         const emailCode = verificationRequests.generateVerificationCode();
-        toast.loading('Sending code to your email', {id: pinToastId})
+        toast.loading("Sending code to your email", { id: pinToastId });
         await verificationRequests
             .verifyEmail({
                 fourDigitCode: emailCode,
                 toEmail: email,
             })
             .then((res) => {
-                
                 dispatch(setEmailCode({ emailCode: emailCode }));
                 toast.success("Verification code sent to your email", {
                     id: pinToastId,
@@ -209,7 +208,6 @@ function PhoneVerification() {
                 openModalFunc();
             })
             .catch((err) => {
-                
                 toast.error(
                     "Something went wrong while sending verification code. Please try again later",
                     { id: pinToastId }

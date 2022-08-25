@@ -45,9 +45,11 @@
         "react-icons": "^4.3.1",
         "react-paystack": "^3.0.5",
         "react-phone-number-input": "^3.1.52",
+        "react-query": "^3.39.2",
         "react-redux": "^8.0.1",
         "react-router-dom": "^6.3.0",
         "react-scripts": "^5.0.1",
+        "react-spinners": "^0.13.4",
         "react-webcam": "^7.0.1",
         "reactjs-popup": "^2.0.5",
         "redux-persist": "^6.0.0",
@@ -57,7 +59,7 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start": "set HTTPS=true&&set SSL_CRT_FILE=./server/ssl/localhost.pem&&set SSL_KEY_FILE=./server/ssl/localhost-key.pem&&react-scripts start",
+        "start": "react-scripts start",
         "serverdev": "cross-env NODE_ENV=development NODE_PORT=3000 npx nodemon ./server.js",
         "build": "craco build",
         "test": "craco test",

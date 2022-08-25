@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
-import { closeModal, makeUnCancellable, openModal,  setModalName } from '../../state/modalSlice';
-import { AppDispatch } from '../../state/store';
+import { closeModal, makeUnCancellable, openModal,  setModalName } from '../../state/redux/modalSlice';
+import { AppDispatch } from '../../state/redux/store';
 
 export const useModal = (modalName:string, isCancellable:boolean = true)=>{
     const dispatch = useDispatch<AppDispatch>();

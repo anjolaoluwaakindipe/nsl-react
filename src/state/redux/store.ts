@@ -4,6 +4,7 @@ import authReducer from "./authSlice";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import signUpInfoReducer from "./signUpInfoSlice";
+import loanReducer from "./loanSlice"
 
 const rootReducer = combineReducers({
     modal: modalReducer,
@@ -16,13 +17,14 @@ const rootReducer = combineReducers({
         authReducer
     ),
     signUpInfo: signUpInfoReducer,
+    loan: loanReducer
 });
 
 const persistedReducer = persistReducer(
     {
         key: "root",
         storage,
-        blacklist: ["modal", "signUpInfo"],
+        blacklist: ["modal", "signUpInfo", "loan"],
     },
     rootReducer
 );

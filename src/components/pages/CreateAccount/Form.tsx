@@ -15,8 +15,8 @@ import {
     setSignUpInfo,
     setSmsCode,
     signUpInfoSelector,
-} from "../../../state/signUpInfoSlice";
-import { AppDispatch } from "../../../state/store";
+} from "../../../state/redux/signUpInfoSlice";
+import { AppDispatch } from "../../../state/redux/store";
 import { CreateAccountFormData } from "../../../typings";
 import { paths } from "../../../utils/constants/allPaths";
 import { createAccountSchema } from "../../../utils/validation/createAccount";
@@ -25,9 +25,7 @@ import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
-import { render } from '@testing-library/react';
-
-
+import { render } from "@testing-library/react";
 
 function Form() {
     // gender drop down options
@@ -69,7 +67,7 @@ function Form() {
         resolver: joiResolver(createAccountSchema),
     });
 
-    console.log(getValues())
+    console.log(getValues());
 
     // open the begin verification modal to prompt users to check phone verification
     const { openModalFunc } = useModal("BeginVerificationModal", false);
@@ -153,7 +151,7 @@ function Form() {
         await verificationRequests
             .verifySms({
                 fourDigitCode: phoneCode,
-                recipient: data.phoneNumber.replace("+", ""),
+                recipientPhoneNumber: data.phoneNumber.replace("+", ""),
             })
             .then(async (res) => {
                 console.log(res.data);
@@ -305,27 +303,29 @@ function Form() {
 
             {/*Date Of Birth*/}
             <div className=" col-span-12 md:col-span-6">
-                <Controller control={control} name="dateOfBirth" render={({field:{onChange, value}})=>{
-                    return (
-                        <DateInputField
-                            errorMessage={errors.dateOfBirth?.message}
-                            id="dateOfBirth"
-                            onChange={onChange}
-                            value= {value}
-                            placeholder="Date of Birth"
-                            max={new Date(
-                                new Date().setFullYear(
-                                    new Date().getFullYear() - 18
+                <Controller
+                    control={control}
+                    name="dateOfBirth"
+                    render={({ field: { onChange, value } }) => {
+                        return (
+                            <DateInputField
+                                errorMessage={errors.dateOfBirth?.message}
+                                id="dateOfBirth"
+                                onChange={onChange}
+                                value={value}
+                                placeholder="Date of Birth"
+                                max={new Date(
+                                    new Date().setFullYear(
+                                        new Date().getFullYear() - 18
+                                    )
                                 )
-                            )
-                                .toISOString()
-                                .substring(0, 10)}
-                        />
-                    );
-                }}/>
-                
+                                    .toISOString()
+                                    .substring(0, 10)}
+                            />
+                        );
+                    }}
+                />
             </div>
-
 
             {/* BVN */}
 

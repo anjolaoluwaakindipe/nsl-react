@@ -16,8 +16,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
     authSelector,
     updateUserPersonalDetailsFull,
-} from "../../../state/authSlice";
-import { AppDispatch } from "../../../state/store";
+} from "../../../state/redux/authSlice";
+import { AppDispatch } from "../../../state/redux/store";
 import { paths } from "../../../utils/constants/allPaths";
 import { useNavigate } from "react-router-dom";
 

@@ -6,11 +6,11 @@ import { isValidPhoneNumber } from 'react-phone-number-input';
 import { EditEmploymentInfo } from "../../../typings";
 import { editEmploymentDetailsFormSchema } from '../../../utils/validation/editProfile';
 import CurrencyInputField from '../../shared/Inputs/TextFields/CurrencyInputField';
-import { authSelector, updateUserEmploymentDetailsFull } from '../../../state/authSlice';
+import { authSelector, updateUserEmploymentDetailsFull } from '../../../state/redux/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { AppDispatch } from '../../../state/store';
+import { AppDispatch } from '../../../state/redux/store';
 import { useNavigate } from 'react-router-dom';
 import { paths } from '../../../utils/constants/allPaths';
 
