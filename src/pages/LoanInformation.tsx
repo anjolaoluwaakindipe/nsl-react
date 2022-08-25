@@ -46,7 +46,7 @@ function LoanInformation() {
         <DefaultLayout>
             <>
                 <TopBar />
-                <Header />
+                <Header status={pendingLoan.data?.status || ""} />
                 {invalidLoan ? (
                     <div className="py-44 w-full justify-center items-center flex text-primaryColor">
                         Loan is invalid
@@ -61,6 +61,7 @@ function LoanInformation() {
                         key={pendingLoan.data._id}
                         originalAmount={pendingLoan.data.amount}
                         rate={pendingLoan.data.rate}
+                        
                     />
                 ) : (
                     <div className="py-44 w-full justify-center items-center flex text-primaryColor">

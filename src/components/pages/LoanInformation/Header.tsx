@@ -2,7 +2,11 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import { authSelector } from '../../../state/redux/authSlice';
 
-function Header() {
+type HeaderProp = {
+    status:string
+}
+
+function Header({status}: HeaderProp) {
     const user = useSelector(authSelector).user
     return (
         <form>
@@ -22,7 +26,7 @@ function Header() {
                         {" "}
                         Status
                     </span>
-                    <span className="font-sm dark:">Pending Approval</span>
+                    <span className="font-sm dark:">{status|| ""}</span>
                 </div>
             </div>
         </form>

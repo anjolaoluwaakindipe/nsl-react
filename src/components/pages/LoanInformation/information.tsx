@@ -4,12 +4,14 @@ type InformationProp = {
     repaymentAmount?: string;
     originalAmount?: string;
     rate?: string;
+   
 };
 
 function Information({
     repaymentAmount,
     rate,
     originalAmount,
+ 
 }: InformationProp) {
     return (
         <div className="  w-full py-20 space-y-16 text-darkTextColor ">
