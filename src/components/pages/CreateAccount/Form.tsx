@@ -6,7 +6,6 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../services/customHooks/useModal";
@@ -14,7 +13,7 @@ import { verificationRequests } from "../../../services/requests/verificationReq
 import {
     setSignUpInfo,
     setSmsCode,
-    signUpInfoSelector,
+    signUpInfoSelector
 } from "../../../state/redux/signUpInfoSlice";
 import { AppDispatch } from "../../../state/redux/store";
 import { CreateAccountFormData } from "../../../typings";
@@ -25,7 +24,6 @@ import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 
 import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
-import { render } from "@testing-library/react";
 
 function Form() {
     // gender drop down options
@@ -66,8 +64,6 @@ function Form() {
         },
         resolver: joiResolver(createAccountSchema),
     });
-
-    console.log(getValues());
 
     // open the begin verification modal to prompt users to check phone verification
     const { openModalFunc } = useModal("BeginVerificationModal", false);
@@ -120,7 +116,8 @@ function Form() {
     // }, [isLoading, isSuccess, isError]);
 
     const onSubmit = handleSubmit(async (data) => {
-        console.log(data.dateOfBirth.split("T")[0].replaceAll("-", ""));
+
+
         // disable button on click
         setDisableButton(true);
 
@@ -146,53 +143,57 @@ function Form() {
                 position: "top-right",
             }
         );
+        
 
-        // send email verification
-        await verificationRequests
-            .verifySms({
-                fourDigitCode: phoneCode,
-                recipientPhoneNumber: data.phoneNumber.replace("+", ""),
-            })
-            .then(async (res) => {
-                console.log(res.data);
-                if (res.data.sentOK === true) {
-                    dispatch(setSmsCode({ smsCode: phoneCode }));
-                    dispatch(
-                        setSignUpInfo({
-                            email: data.emailAddress,
-                            firstName: data.firstName,
-                            password: data.password,
-                            phoneNumber: data.phoneNumber.toString(),
-                            bvn: data.bvn,
-                            gender: data?.gender!,
-                            dateOfBirth: data.dateOfBirth
-                                .split("T")[0]
-                                .replaceAll("-", ""),
-                            lastName: data.lastName,
-                        })
-                    );
-                    toast.success(
-                        "Verification code sent to your email and phone number",
-                        {
-                            id: loading,
-                        }
-                    );
-                    openModalFunc();
-                } else {
+        if(typeof data.phoneNumber === "string"){
+            // send email verification
+            await verificationRequests
+                .verifySms({
+                    fourDigitCode: phoneCode,
+                    recipientPhoneNumber: data.phoneNumber.replace("+", ""),
+                })
+                .then(async (res) => {
+                    console.log(res.data);
+                    if (res.data.sentOK === true) {
+                        dispatch(setSmsCode({ smsCode: phoneCode }));
+                        dispatch(
+                            setSignUpInfo({
+                                email: data.emailAddress,
+                                firstName: data.firstName,
+                                password: data.password,
+                                phoneNumber: data.phoneNumber.toString(),
+                                bvn: data.bvn,
+                                gender: data?.gender!,
+                                dateOfBirth: data.dateOfBirth
+                                    .split("T")[0]
+                                    .replaceAll("-", ""),
+                                lastName: data.lastName,
+                            })
+                        );
+                        toast.success(
+                            "Verification code sent to your email and phone number",
+                            {
+                                id: loading,
+                            }
+                        );
+                        openModalFunc();
+                    } else {
+                        toast.error(
+                            "Could not send sms. Please check your phone number",
+                            { id: loading }
+                        );
+                    }
+                    console.log(res.data);
+                })
+                .catch((err) => {
+                    console.log("hello");
+                    console.log(err)
                     toast.error(
-                        "Could not send sms. Please check your phone number",
+                        "Something went wrong while sending verification code. Please try again later",
                         { id: loading }
                     );
-                }
-                console.log(res.data);
-            })
-            .catch((err) => {
-                console.log("hello");
-                toast.error(
-                    "Something went wrong while sending verification code. Please try again later",
-                    { id: loading }
-                );
-            });
+                });
+        }
 
         // if (
         //     verificationResponse.status &&
@@ -283,11 +284,6 @@ function Form() {
                 <Controller
                     name="phoneNumber"
                     control={control}
-                    rules={{
-                        validate: (value) =>
-                            isValidPhoneNumber(value || "") ||
-                            "Not a valid International Number",
-                    }}
                     render={({ field: { onChange, value } }) => (
                         <PhoneField
                             placeholder="Phone Number"

@@ -1,15 +1,6 @@
-import React from "react";
 
 import {
-    Header,
-    Footer3,
-    Layout,
-    Form,
-    LoanCalculator,
-    Faq,
-    Footer2,
-    Footer,
-    LoanProcess,
+    Faq, Footer, Footer2, Header, Layout, LoanCalculator, LoanProcess
 } from "../components/pages/LandingPage";
 
 function LandingPage() {

@@ -44,7 +44,7 @@ function DateInputField({
 
     const changeDateValue = (value: moment.Moment | string) => {
         if (typeof value === "object") {
-            console.log(value.format("YYYY-MM-DD"));
+            // console.log(value.format("YYYY-MM-DD"));
         }
         if (value) {
             setPlaceholderVisibiltiy(false);

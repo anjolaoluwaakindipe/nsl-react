@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import "./slider.css";
 import formatMoney from "../../../utils/moneyFormatter";
-import { useNavigate } from 'react-router-dom';
-import { paths } from '../../../utils/constants/allPaths';
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../../utils/constants/allPaths";
 
 function LoanCalculator() {
     const [loanvalue, setloanvalue] = useState<number>(50000);
     const [tenorvalue, settenorvalue] = useState<number>(90);
-    const  navigate = useNavigate();
+    const navigate = useNavigate();
 
-    const navigateToCreateAccount = () =>{
+    const navigateToCreateAccount = () => {
         navigate(paths.CREATE_ACCOUNT);
-    }
+    };
 
     var interest = (loanvalue * tenorvalue * 0.05) / 100;
     return (
@@ -83,7 +83,6 @@ function LoanCalculator() {
                                 type="range"
                                 min={"30"}
                                 max="180"
-                                defaultValue={"90"}
                                 className={` h-2.5 slider rounded-full transition-all duration-700 ease-in-out w-full mt-5`}
                                 value={tenorvalue}
                                 step={30}
@@ -126,7 +125,7 @@ function LoanCalculator() {
                         </span>
                     </div>
                     <div className="text-primaryColor bg-gray-300 text-sm px- py-4 flex items-center justify-center rounded-lg space-x-1">
-                        <span >Tenor:</span>{" "}
+                        <span>Tenor:</span>{" "}
                         <span className="font-semibold">
                             {" "}
                             {tenorvalue} days
@@ -135,7 +134,10 @@ function LoanCalculator() {
                 </div>
 
                 <div className="w-full p-10 flex items-center justify-center ">
-                    <button className=" btn1 items-center md:px-15 md:py-5" onClick={()=>navigateToCreateAccount()}>
+                    <button
+                        className=" btn1 items-center md:px-15 md:py-5"
+                        onClick={() => navigateToCreateAccount()}
+                    >
                         Get Started
                     </button>
                 </div>

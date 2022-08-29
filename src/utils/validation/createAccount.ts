@@ -25,7 +25,7 @@ export const createAccountSchema = Joi.object({
         .label("Phone Number")
         .custom((value, helper) => {
             if (isValidPhoneNumber(value)) {
-                return true;
+                return value;
             } else {
                 return helper.error("any.invalid");
             }

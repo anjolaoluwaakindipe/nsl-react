@@ -1,6 +1,3 @@
-import React from "react";
-import LoanCalculator from "./LoanCalculator";
-
 function Header() {
     return (
         <div className=" py-4 bg-peach min-h-screen ">
@@ -22,7 +19,7 @@ function Header() {
                     <p>
                         <span className="font-normal"> and E</span>ffective.
                     </p>
-                    <p className="text-darkTextColor text-md md:text-xl xl:text-3xl font-light md:max-w-md xl:max-w-xl py-10">
+                    <div className="text-darkTextColor text-md md:text-xl xl:text-3xl font-light md:max-w-md xl:max-w-xl py-10">
                         Lörem ipsum räst social selling, kassalösa butiker fer i
                         vittneslitteratur.
                         <p>
@@ -30,7 +27,7 @@ function Header() {
                             Tosm röserade: trilig astronar. Ögosade ivis, #metoo
                             om.
                         </p>
-                    </p>
+                    </div>
                 </div>
 
                 {/* <div className=" absolute top- z-10">

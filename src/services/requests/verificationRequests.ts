@@ -1,4 +1,5 @@
 import axios from "axios";
+import { X_TENANTID } from "./authSettings";
 
 // verificationMessage type
 type VerificationMessageType = "normal" | "loancontract";
@@ -24,7 +25,6 @@ export const verificationRequests = {
         }: {
             fourDigitCode: string;
             recipientPhoneNumber: string;
-           
         },
         messageType: VerificationMessageType = "normal",
         firstName: string = ""
@@ -50,9 +50,9 @@ export const verificationRequests = {
                     message,
                     recipient,
                 },
-                // headers:{
-
-                // }
+                headers: {
+                    "X-TENANTID": X_TENANTID,
+                },
             }
         );
     },
@@ -65,7 +65,6 @@ export const verificationRequests = {
         }: {
             fourDigitCode: string;
             toEmail: string;
-            
         },
         messageType: VerificationMessageType = "normal",
         firstName: string = ""
@@ -90,7 +89,9 @@ export const verificationRequests = {
             to: toEmail,
         };
 
-        return await axios.post("/isslapi/onboarding-api/1.0/sendmail", body);
+        return await axios.post("/isslapi/onboarding-api/1.0/sendmail", body, {
+            headers: { "X-TENANTID": X_TENANTID },
+        });
     },
 };
 
