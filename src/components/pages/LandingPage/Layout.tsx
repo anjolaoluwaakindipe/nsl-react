@@ -16,7 +16,7 @@ function Layout({ children }: { children?: React.ReactElement }) {
 
     return (
         <div className=" w-full ">
-            <div className="w-full py-5 shadow-xl z-10 bg-bgColor overscroll-x-contain">
+            <div className="w-full py-5 shadow-xl z-10 bg-bgColor4 overscroll-x-contain">
                 <div className=" md:max-w-7xl m-auto w-full px-5 md:px-10 flex items-center justify-between ">
                     <div>
                         <img
@@ -30,7 +30,7 @@ function Layout({ children }: { children?: React.ReactElement }) {
                         {/*login*/}
                         <div>
                             <button
-                                className="btn1  text-sm py-3 w-32 border-transparent bg-transparent text-primaryColor"
+                                className="btn1  text-sm py-3 w-32 border-transparent bg-transparent font-medium"
                                 onClick={() => {
                                     navigate(paths.LOGIN);
                                 }}
@@ -41,7 +41,7 @@ function Layout({ children }: { children?: React.ReactElement }) {
 
                         <div>
                             <button
-                                className="btn1  text-sm py-3 w-32 border-primaryColor border-2 bg-transparent text-primaryColor"
+                                className="btn1  text-sm py-3 w-32 font-medium "
                                 onClick={() => {
                                     navigate(paths.CREATE_ACCOUNT);
                                 }}

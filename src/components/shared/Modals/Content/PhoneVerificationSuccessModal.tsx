@@ -18,10 +18,14 @@ function PhoneVerificationSuccessModal(prop: { cancelModal: () => void }) {
             <h3 className="pt-5 text-2xl md:text-4xl text-center font-bold text-primaryColor">
                 Verification Successful
             </h3>
-            <h5 className="md:max-w-[600px]  max-w-[500px] min-w-[200px] text-center md:text-xl  py-10">
+            <h5 className="md:max-w-[600px]  max-w-[500px] min-w-[200px]  md:text-xl  pt-10 pb-2">
                 You have successfully verified your phone number. Proceed to
                 verify your Email Address.
             </h5>
+            <p className="md:max-w-[600px]  max-w-[500px] min-w-[200px] text-sm md:text-xl  pb-10">
+                <span className="text-primaryColor font-bold">NOTE:</span>{" "}
+                Please make sure to check your spam
+            </p>
 
             <button className="btn1  w-full" onClick={onProceed}>
                 Proceed

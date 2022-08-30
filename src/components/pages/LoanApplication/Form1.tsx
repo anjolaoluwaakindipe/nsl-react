@@ -40,7 +40,7 @@ function Form1() {
         watch,
         setValue,
         control,
-        unregister,
+
         setError,
     } = useForm<LoanApplicationFormInfo>({
         defaultValues: {
@@ -90,11 +90,14 @@ function Form1() {
         const submissionResponse = await loanRequests.submitLoanApplication({
             applicationReference:
                 customerNo! +
+                "_" +
                 new Date()
-                    .toUTCString()
+                    .toISOString()
                     .replaceAll(":", "")
-                    .replaceAll(" ", "")
-                    .replaceAll(",", ""),
+                    .replaceAll(".", "")
+                    .replaceAll("-", "")
+                    .replaceAll("T", "")
+                    .replaceAll("Z", ""),
             customerNo: customerNo!,
             amount: data.amount.replaceAll(",", ""),
             channel: "web",

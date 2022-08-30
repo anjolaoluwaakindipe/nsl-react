@@ -9,7 +9,7 @@ function LandingPage() {
             <div className="">
                 <Header />
 
-                <LoanCalculator />
+                {/* <LoanCalculator /> */}
                 <LoanProcess />
 
                 <Faq />
