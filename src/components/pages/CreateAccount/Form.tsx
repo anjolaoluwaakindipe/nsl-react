@@ -138,7 +138,7 @@ function Form() {
 
         // create loading toaster
         const loading = toast.loading(
-            "Sending code to your email and phone number...",
+            "Sending code to your phone number...",
             {
                 position: "top-right",
             }
@@ -171,7 +171,7 @@ function Form() {
                             })
                         );
                         toast.success(
-                            "Verification code sent to your email and phone number",
+                            "Verification code sent to your phone number",
                             {
                                 id: loading,
                             }

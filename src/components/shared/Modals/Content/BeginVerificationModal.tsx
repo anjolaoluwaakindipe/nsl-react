@@ -16,8 +16,8 @@ function BeginVerificationModal(prop: { cancelModal: () => void }) {
                 You are 2 steps away from creating your online profile
             </h2>
             <p className="md:text-xl font-light text-center pt-4 pb-6">
-                A <span className="font-bold text-primaryColor"> FOUR (4)</span> digit code has been sent to your email address and phone
-                number for verification.
+                A <span className="font-bold text-primaryColor"> FOUR (4)</span> digit code has been sent to your phone number. After verifying that code another code will be sent to your email address
+                for verification.
             </p>
             <button
                 className="md:text-xl py-5 px-4 bg-secondaryColor w-full rounded-xl"

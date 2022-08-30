@@ -233,7 +233,7 @@ function EmailVerification() {
                         <h6>
                             Didn't get code?{" "}
                             <span
-                                className="text-primaryColor hover:undeline cursor-pointer"
+                                className="text-primaryColor hover:undeline cursor-pointer hover:underline"
                                 onClick={resendEmailVerificationCode}
                             >
                                 Resend Code

@@ -126,6 +126,7 @@ function PhoneVerification() {
     // allows users to resend another verifciation code to their phone number
     const resendSmsVerificationCode = async () => {
         const newSmsCode = verificationRequests.generateVerificationCode();
+        const copyPhoneNumber = phoneNumber
 
         if (inputedSmsCode.join("") === smsCode) {
             toast.success("Inputed code is already correct");
@@ -142,7 +143,7 @@ function PhoneVerification() {
         await verificationRequests
             .verifySms({
                 fourDigitCode: newSmsCode,
-                recipientPhoneNumber: phoneNumber,
+                recipientPhoneNumber: copyPhoneNumber.replace("+", ""),
             })
             .then((res) => {
                 dispatch(setSmsCode({ smsCode: newSmsCode }));
@@ -246,7 +247,7 @@ function PhoneVerification() {
                         <h6>
                             Didn't get code?{" "}
                             <span
-                                className="text-primaryColor hover:underline"
+                                className="text-primaryColor hover:underline cursor-pointer"
                                 onClick={resendSmsVerificationCode}
                             >
                                 Resend
