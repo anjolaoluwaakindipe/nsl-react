@@ -56,7 +56,7 @@ function Layout({ children }: { children?: React.ReactElement }) {
                 {children}
                 <Outlet />
 
-                <div className="text-accentColor items-center p-10  justify-center flex center">
+                <div className="text-accentColor items-center p-10  justify-center flex center bg-peach">
                     copyright @nsl 2022
                 </div>
             </div>

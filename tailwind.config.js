@@ -24,6 +24,7 @@ module.exports = {
                 peach: "#FFFCF0",
                 lightPink: "rgba(109, 32, 27, 0.14)",
                 bgColor4: "rgba(255, 252, 240, 1)",
+                bgColor5: "rgba(240, 233, 232, 1)",
             },
             fontFamily: {
                 sans: ["Poppins", ...defaultTheme.fontFamily.sans],

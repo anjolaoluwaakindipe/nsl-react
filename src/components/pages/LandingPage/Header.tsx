@@ -6,9 +6,9 @@ function Header() {
     const [tenorvalue, settenorvalue] = useState<number>(150);
     var interest = (loanvalue * tenorvalue * 0.05) / 100;
     return (
-        <div className=" w-full min-h-screen bg-white">
+        <div className=" w-full  z-10  bg-white">
             <div className=" py-4 bg-peach   ">
-                <div className="max-w-[90%] mx-auto pt-32 flex flex-col md:flex-row justify-between">
+                <div className="max-w-[90%] mx-auto pt-24 md:pt-32 flex flex-col md:flex-row justify-between">
                     {/* <img
                     src="/assets/landingguy.svg"
                     alt="logo"
@@ -41,8 +41,8 @@ function Header() {
                         </button>
                     </div>
                     {/* Loan Calculator */}
-                    <div className="w-full px-5 relative h-[90vh] md:h-auto">
-                        <div className="bg-white shadow-md w-full px-4 pt-10 pb-8 flex flex-col rounded-lg absolute top-5 ">
+                    <div className="w-full px-5 relative  md:h-auto mb-10">
+                        <div className="bg-white shadow-md w-full px-4 pt-10 pb-8 flex flex-col rounded-lg md:absolute md:top-5 ">
                             {/* title */}
                             <h1 className="mx-auto text-xl font-semibold mb-8">
                                 Simulate Your Loan
@@ -53,7 +53,7 @@ function Header() {
 
                             {/* loan amount slider */}
                             <div className="  w-full flex justify-center itens-center flex-col  rounded-md">
-                                <div className="grid grid-cols-3 mb-1 ">
+                                <div className="grid grid-cols-1 md:grid-cols-3 mb-1 ">
                                     <h1 className="text-sm font-medium text-gray-400 ">
                                         50,000
                                     </h1>
@@ -96,11 +96,11 @@ function Header() {
                             <p className="my-8">For how long?</p>
                             {/* tenor */}
                             <div className=" w-full  flex justify-center flex-col  rounded-md">
-                                <div className="grid grid-cols-3 mb-1">
+                                <div className="grid grid-cols-1 md:grid-cols-3 mb-1">
                                     <h1 className="text-sm font-medium text-gray-400 ">
                                         0
                                     </h1>
-                                    <h1 className="text-sm font-medium text-primaryColor text-center ">
+                                    <h1 className="text-sm font-medium text-primaryColor text-center  ">
                                         {`${tenorvalue} days`}
                                     </h1>
                                     <h1 className="text-sm font-medium text-gray-400 text-right ">
@@ -153,7 +153,7 @@ function Header() {
                             <div className="space-y-2 my-7">
                                 <div className="p-4 bg-bgColor4">
                                     Monthly Payment:{" "}
-                                    <span className="text-primaryColor  font-semibold">
+                                    <span className="text-primaryColor  font-semibold whitespace-nowrap">
                                         {"N " +
                                             formatMoney(
                                                 (loanvalue + interest) /
@@ -163,18 +163,23 @@ function Header() {
                                 </div>
                                 <div className="p-4 bg-bgColor4">
                                     Total to be refunded:{" "}
-                                    <span className="text-primaryColor  font-semibold">
+                                    <span className="text-primaryColor  font-semibold whitespace-nowrap">
                                         {"N " +
                                             formatMoney(loanvalue + interest)}
                                     </span>
                                 </div>
                                 <div className=" p-4 bg-bgColor4">
                                     Interest included:{" "}
-                                    <span className="text-primaryColor  font-semibold">
+                                    <span className="text-primaryColor  font-semibold whitespace-nowrap">
                                         {"N " + formatMoney(interest)}
                                     </span>
                                 </div>
                             </div>
+
+                            {/* Get Started Button */}
+                            <button className="btn1 text-base py-3">
+                                Get Started
+                            </button>
                         </div>
                     </div>
 
