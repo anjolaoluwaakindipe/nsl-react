@@ -12,7 +12,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 type AllSections = "Why NSL" | "FAQs" | "OurProcess";
 
 function LandingPage() {
-    const [sectionsRef, setPagesRef] = useState<
+    const [sectionsRef, setSectionsRef] = useState<
         Record<string, React.RefObject<HTMLDivElement> | undefined>
     >({});
     const scrollToFunc = useCallback(
@@ -34,11 +34,11 @@ function LandingPage() {
                 {/* <LoanCalculator /> */}
                 {/* <LoanProcess /> */}
                 <TopicLinkerSection scrollTo={scrollToFunc} />
-                <WhyChooseNslSection setScrollerFunc={setPagesRef} />
+                <WhyChooseNslSection setScrollerFunc={setSectionsRef} />
 
-                <LoanApplicationProcessSection setScrollerFunc={setPagesRef} />
+                <LoanApplicationProcessSection setScrollerFunc={setSectionsRef} />
 
-                <Faq />
+                <Faq setScrollerFunc={setSectionsRef} />
                 <Footer2 />
 
                 <div className="md:px-0">
@@ -86,7 +86,7 @@ const TopicLinkerSection = ({ scrollTo }: TopicLinkerProp) => {
 };
 
 type WhyChooseNslSectionProp = {
-    setScrollerFunc: React.Dispatch<
+    setScrollerFunc?: React.Dispatch<
         React.SetStateAction<
             Record<string, React.RefObject<HTMLDivElement> | undefined>
         >
@@ -96,7 +96,7 @@ type WhyChooseNslSectionProp = {
 const WhyChooseNslSection = ({ setScrollerFunc }: WhyChooseNslSectionProp) => {
     const sectionRef = useRef(null);
     useEffect(() => {
-        setScrollerFunc((prev) => {
+        setScrollerFunc && setScrollerFunc((prev) => {
             return { ...prev, "Why NSL": sectionRef };
         });
     }, []);
@@ -165,7 +165,7 @@ const WhyChooseNslSection = ({ setScrollerFunc }: WhyChooseNslSectionProp) => {
 };
 
 type LoanApplicationProcessSectionProp = {
-    setScrollerFunc: React.Dispatch<
+    setScrollerFunc?: React.Dispatch<
         React.SetStateAction<
             Record<string, React.RefObject<HTMLDivElement> | undefined>
         >
@@ -182,7 +182,7 @@ const LoanApplicationProcessSection = ({
         return "transition-all duration-75 ease-in";
     };
     useEffect(() => {
-        setScrollerFunc((prev) => {
+        setScrollerFunc && setScrollerFunc((prev) => {
             return { ...prev, OurProcess: sectionRef };
         });
 

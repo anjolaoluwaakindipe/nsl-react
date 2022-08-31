@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./faqdrop.css";
+import { useRef } from "react";
 
+type FaqSectionProp = {
+    setScrollerFunc?: React.Dispatch<
+        React.SetStateAction<
+            Record<string, React.RefObject<HTMLDivElement> | undefined>
+        >
+    >;
+};
 
-function Faq() {
+function Faq({ setScrollerFunc }: FaqSectionProp) {
+    const sectionRef = useRef(null);
+    useEffect(() => {
+        setScrollerFunc &&
+            setScrollerFunc((prev) => {
+                return { ...prev, "FAQs": sectionRef };
+            });
+    }, []);
+
     return (
-        <div className="pt-10 pb-10 px-14 bg-white">
-
-
+        <div className="pt-10 pb-10 px-14 bg-white" ref={sectionRef}>
             <div className="text-primaryColor font-bold text-center text-xl space-y-10 pb-10">
                 FAQs
                 <p className="text-accentColor ">Frequently Asked Questions</p>
@@ -17,61 +31,68 @@ function Faq() {
                     Is there free Loan Available?
                 </summary>
                 <p className="px-4 py-3">
-                    Yes of course! Probably, you should just come and take over the company, then be collectin free loan for yourself! The location of the office is on the footer of the page            </p>
+                    Yes of course! Probably, you should just come and take over
+                    the company, then be collectin free loan for yourself! The
+                    location of the office is on the footer of the page{" "}
+                </p>
             </details>
 
             <details className="w-full bg-transparent cursor-pointer mb-3 border-0 border-b-4 border-underlineColor">
                 <summary className="w-full bg-transparent text-dark flex justify-between px-4 py-3  after:content-['+']">
-
                     Can I take a Loan without paying back?
                 </summary>
                 <p className="px-4 py-3">
-                    Yes of course! Probably, you should just come and take over the company, then be collectin free loan for yourself! The location of the office is on the footer of the page            </p>
-            </details>
-
-
-            <details className="w-full bg-transparent cursor-pointer mb-3 border-0 border-b-4 border-underlineColor">
-                <summary className="w-full bg-transparent text-dark flex justify-between px-4 py-3  after:content-['+']">
-
-                    Can I take a Loan without paying back?
-                </summary>
-                <p className="px-4 py-3">
-                    Yes of course! Probably, you should just come and take over the company, then be collectin free loan for yourself! The location of the office is on the footer of the page            </p>
+                    Yes of course! Probably, you should just come and take over
+                    the company, then be collectin free loan for yourself! The
+                    location of the office is on the footer of the page{" "}
+                </p>
             </details>
 
             <details className="w-full bg-transparent cursor-pointer mb-3 border-0 border-b-4 border-underlineColor">
                 <summary className="w-full bg-transparent text-dark flex justify-between px-4 py-3  after:content-['+']">
-
                     Can I take a Loan without paying back?
                 </summary>
                 <p className="px-4 py-3">
-                    Yes of course! Probably, you should just come and take over the company, then be collectin free loan for yourself! The location of the office is on the footer of the page            </p>
+                    Yes of course! Probably, you should just come and take over
+                    the company, then be collectin free loan for yourself! The
+                    location of the office is on the footer of the page{" "}
+                </p>
             </details>
-
 
             <details className="w-full bg-transparent cursor-pointer mb-3 border-0 border-b-4 border-underlineColor">
                 <summary className="w-full bg-transparent text-dark flex justify-between px-4 py-3  after:content-['+']">
-
                     Can I take a Loan without paying back?
                 </summary>
                 <p className="px-4 py-3">
-                    Yes of course! Probably, you should just come and take over the company, then be collectin free loan for yourself! The location of the office is on the footer of the page            </p>
+                    Yes of course! Probably, you should just come and take over
+                    the company, then be collectin free loan for yourself! The
+                    location of the office is on the footer of the page{" "}
+                </p>
             </details>
-
-
 
             <details className="w-full bg-transparent cursor-pointer mb-3 border-0 border-b-4 border-underlineColor">
                 <summary className="w-full bg-transparent text-dark flex justify-between px-4 py-3  after:content-['+']">
-
                     Can I take a Loan without paying back?
                 </summary>
                 <p className="px-4 py-3">
-                    Yes of course! Probably, you should just come and take over the company, then be collectin free loan for yourself! The location of the office is on the footer of the page            </p>
+                    Yes of course! Probably, you should just come and take over
+                    the company, then be collectin free loan for yourself! The
+                    location of the office is on the footer of the page{" "}
+                </p>
             </details>
 
-
+            <details className="w-full bg-transparent cursor-pointer mb-3 border-0 border-b-4 border-underlineColor">
+                <summary className="w-full bg-transparent text-dark flex justify-between px-4 py-3  after:content-['+']">
+                    Can I take a Loan without paying back?
+                </summary>
+                <p className="px-4 py-3">
+                    Yes of course! Probably, you should just come and take over
+                    the company, then be collectin free loan for yourself! The
+                    location of the office is on the footer of the page{" "}
+                </p>
+            </details>
         </div>
-    )
+    );
 }
 
 export default Faq;
