@@ -151,28 +151,30 @@ function Header() {
                             </div>
                             {/* values */}
                             <div className="space-y-2 my-7">
-                                <div className="p-4 bg-bgColor4">
-                                    Monthly Payment:{" "}
-                                    <span className="text-primaryColor  font-semibold whitespace-nowrap">
-                                        {"N " +
+                                <div className="p-4 bg-bgColor4 flex flex-col lg:flex-row md:space-x-1">
+                                    <p>Monthly Payment: </p>
+
+                                    <p className="text-primaryColor font-semibold whitespace-nowrap">
+                                        {" N " +
                                             formatMoney(
                                                 (loanvalue + interest) /
                                                     (tenorvalue / 30)
                                             )}
-                                    </span>
+                                    </p>
                                 </div>
-                                <div className="p-4 bg-bgColor4">
-                                    Total to be refunded:{" "}
-                                    <span className="text-primaryColor  font-semibold whitespace-nowrap">
-                                        {"N " +
+                                <div className="p-4 bg-bgColor4 flex flex-col lg:flex-row md:space-x-1">
+                                    <p>Total to be refunded: </p>
+                                    <p className="text-primaryColor  font-semibold whitespace-nowrap">
+                                        {" N " +
                                             formatMoney(loanvalue + interest)}
-                                    </span>
+                                    </p>
                                 </div>
-                                <div className=" p-4 bg-bgColor4">
-                                    Interest included:{" "}
-                                    <span className="text-primaryColor  font-semibold whitespace-nowrap">
-                                        {"N " + formatMoney(interest)}
-                                    </span>
+                                <div className=" p-4 bg-bgColor4 flex flex-col lg:flex-row md:space-x-1">
+                                    <p> Interest included: </p>
+
+                                    <p className="text-primaryColor  font-semibold whitespace-nowrap">
+                                        {" N " + formatMoney(interest)}
+                                    </p>
                                 </div>
                             </div>
 
