@@ -6,9 +6,9 @@ function Header() {
     const [tenorvalue, settenorvalue] = useState<number>(150);
     var interest = (loanvalue * tenorvalue * 0.05) / 100;
     return (
-        <div className=" w-full  z-10  bg-white">
-            <div className=" py-4 bg-peach   ">
-                <div className="max-w-[90%] mx-auto pt-24 md:pt-32 flex flex-col md:flex-row justify-between">
+        <div className=" w-full md:h-[120vh] xl:h-auto xl:min-h-screen  z-10  bg-white">
+            <div className=" py-10 bg-peach   ">
+                <div className="max-w-[90%] mx-auto  flex flex-col md:flex-row justify-between">
                     {/* <img
                     src="/assets/landingguy.svg"
                     alt="logo"

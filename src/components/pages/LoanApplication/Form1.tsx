@@ -20,6 +20,7 @@ import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/Floatin
 import WebCamInput from "../../shared/Inputs/WebCamInput";
 import Popup from "reactjs-popup";
 import { PopupActions } from "reactjs-popup/dist/types";
+import AsyncDropdown from "../../shared/Dropdowns/AsyncDropdown";
 
 function Form1() {
     const {
@@ -33,6 +34,16 @@ function Form1() {
     } = useSelector(authSelector).user!;
     const [isButtonLoading, setButtonLoading] = useState(false);
 
+    const [allBanks, setAllBanks] = useState<
+        {
+            label: string;
+            value: {
+                disbursementBankCode: string;
+                disbursementBankName: string;
+            };
+        }[]
+    >([]);
+
     const {
         register,
         formState: { errors },
@@ -40,7 +51,6 @@ function Form1() {
         watch,
         setValue,
         control,
-
         setError,
     } = useForm<LoanApplicationFormInfo>({
         defaultValues: {
@@ -58,14 +68,15 @@ function Form1() {
         shouldUnregister: true,
     });
 
-    console.log(errors);
-
     // watches
     const watchTermsAndCond = watch("termsAndCondition");
     const watchAmount = watch("amount");
     const watchTenor = watch("tenor");
+    const watchAccountNumber = watch("disbursementNUBAN");
+    const watchBankInfo = watch("disbursementBankInfo");
 
     const loanInfoToastId = "loanInfoToastId";
+    const accountNameToastId = "accountNameToastId";
 
     const [portfolioAmount, setPortfolioAmount] = useState<number | null>(0);
     const [loadingPortfolioAmount, setLoadingPortfolioAmount] = useState(true);
@@ -111,6 +122,12 @@ function Form1() {
                 .trim(),
             tenor: data.tenor.value,
             purpose: data.purpose,
+            disbursementAccountName: data.disbursementAccountName,
+            disbursementBankCode:
+                data.disbursementBankInfo.disbursementBankCode,
+            disbursementNUBAN: data.disbursementNUBAN,
+            disbursementBankName:
+                data.disbursementBankInfo.disbursementBankName,
         });
 
         if (submissionResponse.status === 200) {
@@ -126,6 +143,7 @@ function Form1() {
         setButtonLoading(false);
     });
 
+    // get other loan information
     const getOtherLoanInformation = async () => {
         const response = await loanRequests.getLoanTenureRepaymentAndDate({
             amount: parseFloat(watchAmount.replace(",", "")),
@@ -153,18 +171,73 @@ function Form1() {
         }
     };
 
-    const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+    const loanInfotimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+    // update fields with other loan information
     useEffect(() => {
         if (!watchAmount || !watchTenor.value) return;
-        clearTimeout(timerRef.current!);
+        clearTimeout(loanInfotimerRef.current!);
 
         toast.loading("loading interest and repayment info...", {
             id: loanInfoToastId,
         });
-        timerRef.current = setTimeout(async () => {
+        loanInfotimerRef.current = setTimeout(async () => {
             await getOtherLoanInformation();
         }, 1000);
     }, [watchAmount, watchTenor]); // eslint-disable-line
+
+    const accountNameTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+    const getAccountName = async () => {
+        try {
+            console.log(watchBankInfo);
+            const accountNameResponse = await loanRequests.getAccountName({
+                bankcode: watchBankInfo.disbursementBankCode,
+                accountNumber: watchAccountNumber,
+            });
+
+            if (accountNameResponse.account_name !== null) {
+                toast.success("Account Name discovered", {
+                    id: accountNameToastId,
+                });
+                setValue(
+                    "disbursementAccountName",
+                    accountNameResponse.account_name
+                );
+            } else {
+                setValue("disbursementAccountName", "");
+                toast.error(
+                    "Could not get Account Name. Please check your account number!",
+                    { id: accountNameToastId }
+                );
+            }
+        } catch (e) {
+            setValue("disbursementAccountName", "");
+            toast.error(
+                "An error occured while getting Account Name. Please try again later",
+                { id: accountNameToastId }
+            );
+        }
+    };
+
+    useEffect(() => {
+        if (!watchBankInfo || watchAccountNumber.length < 10) {
+            setValue("disbursementAccountName", "");
+            return;
+        }
+        const timerId = accountNameTimerRef.current;
+        clearTimeout(accountNameTimerRef.current!);
+
+        toast.loading("Getting Account Name...", {
+            id: accountNameToastId,
+        });
+        loanInfotimerRef.current = setTimeout(async () => {
+            await getAccountName();
+        }, 1000);
+
+        return () => {
+            clearTimeout(timerId);
+            toast.dismiss();
+        };
+    }, [watchBankInfo, watchAccountNumber]); // eslint-disable-line
 
     const loanAmountCheck = () => {
         if (
@@ -208,6 +281,34 @@ function Form1() {
     useEffect(() => {
         calculateMaximumLoanAmount();
     }, []);
+
+    const getBankInfo = async (
+        inputValue: string,
+        callBack: (option: any) => void
+    ) => {
+        if (allBanks.length === 0) {
+            const getBankOptions = (
+                await loanRequests.getAllBanksWithTheirCodes()
+            ).map((bank) => {
+                return {
+                    label: bank.name,
+                    value: {
+                        disbursementBankCode: bank.code,
+                        disbursementBankName: bank.name,
+                    },
+                };
+            });
+            setAllBanks(getBankOptions);
+
+            return getBankOptions.filter((bank) =>
+                bank.label.toLowerCase().includes(inputValue.toLowerCase())
+            );
+        }
+
+        return allBanks.filter((bank) =>
+            bank.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    };
 
     return (
         <div>
@@ -313,7 +414,7 @@ function Form1() {
                         errorMessage={errors?.interest?.message}
                     />
                 </div>
-                {/*interest (should be fixed )*/}
+                {/* repaymentAmount (should be gotten from backend )*/}
                 <div>
                     <FloatingPlaceholderTextField
                         register={register("repaymentAmount")}
@@ -323,7 +424,7 @@ function Form1() {
                         errorMessage={errors?.interest?.message}
                     />
                 </div>
-                {/*interest (should be fixed )*/}
+                {/* repayment date (gotten from backend )*/}
                 <div>
                     <FloatingPlaceholderTextField
                         register={register("repaymentDate")}
@@ -331,6 +432,47 @@ function Form1() {
                         placeholder="Repayment Date"
                         readOnly={true}
                         errorMessage={errors?.interest?.message}
+                    />
+                </div>
+                {/* Account Number */}
+                <div>
+                    <FloatingPlaceholderTextField
+                        register={register("disbursementNUBAN")}
+                        type="text"
+                        placeholder="Account Number"
+                        errorMessage={errors?.disbursementNUBAN?.message}
+                    />
+                </div>
+                {/* Bank */}
+                <div>
+                    <Controller
+                        name="disbursementBankInfo"
+                        control={control}
+                        render={({ field: { onChange } }) => {
+                            return (
+                                <AsyncDropdown
+                                    loadOptions={getBankInfo}
+                                    defaultOptions
+                                    cacheOptions
+                                    placeholder="Select A Bank"
+                                    onChange={onChange}
+                                    errorMessage={
+                                        errors.disbursementBankInfo?.message
+                                    }
+                                />
+                            );
+                        }}
+                    />
+                </div>
+
+                {/* Account Name */}
+                <div>
+                    <FloatingPlaceholderTextField
+                        register={register("disbursementAccountName")}
+                        type="text"
+                        readOnly={true}
+                        placeholder="Account Name"
+                        errorMessage={errors?.disbursementNUBAN?.message}
                     />
                 </div>
                 {/*purpose*/}

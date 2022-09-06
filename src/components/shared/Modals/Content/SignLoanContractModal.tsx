@@ -96,7 +96,11 @@ function SignLoanContractModal(prop: { cancelModal: () => void }) {
                 >
                     {buttonLoading ? "Loading..." : "OK"}
                 </button>
-                <button className="btn1 w-full" onClick={onCancel}>
+                <button
+                    className="btn1 w-full"
+                    onClick={onCancel}
+                    disabled={buttonLoading}
+                >
                     Cancel
                 </button>
             </div>

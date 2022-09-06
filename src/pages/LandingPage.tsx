@@ -36,7 +36,9 @@ function LandingPage() {
                 <TopicLinkerSection scrollTo={scrollToFunc} />
                 <WhyChooseNslSection setScrollerFunc={setSectionsRef} />
 
-                <LoanApplicationProcessSection setScrollerFunc={setSectionsRef} />
+                <LoanApplicationProcessSection
+                    setScrollerFunc={setSectionsRef}
+                />
 
                 <Faq setScrollerFunc={setSectionsRef} />
                 <Footer2 />
@@ -55,25 +57,25 @@ type TopicLinkerProp = {
 };
 const TopicLinkerSection = ({ scrollTo }: TopicLinkerProp) => {
     return (
-        <div className="md:pt-48 md py-24 bg-white w-full">
+        <div className="md:pt-20 md py-16 bg-white w-full">
             <div className="border-y-[1px] border-gray-300 py-10 md:py-20 shadow-md ">
-                <div className="flex-col md:flex-row max-w-max md:max-w-sm lg:max-w-xl mx-auto flex md:justify-between items-start md:items-center text-gray-500 space-y-8 md:space-y-0">
+                <div className="flex-row max-w-sm lg:max-w-xl mx-auto flex justify-between  items-center text-gray-500 px-5">
                     <div
-                        className=" flex  space-x-4 items-center cursor-pointer hover:text-primaryColor"
+                        className=" flex  md:space-x-4 items-center cursor-pointer hover:text-primaryColor flex-col md:flex-row text-sm md:text-base"
                         onClick={() => scrollTo && scrollTo("Why NSL")}
                     >
                         <img src="assets/landingpagediamond.svg" alt="" />
                         <h1>Why NSL 24</h1>
                     </div>
                     <div
-                        className=" flex space-x-4 items-center cursor-pointer hover:text-primaryColor"
+                        className=" flex md:space-x-4 items-center cursor-pointer hover:text-primaryColor flex-col md:flex-row space-y-1 md:space-y-0 text-sm md:text-base"
                         onClick={() => scrollTo && scrollTo("FAQs")}
                     >
                         <img src="assets/landingpagelist.svg" alt="" />
                         <h1>FAQs</h1>
                     </div>
                     <div
-                        className=" flex space-x-2 items-center cursor-pointer hover:text-primaryColor"
+                        className=" flex md:space-x-2 items-center cursor-pointer hover:text-primaryColor flex-col md:flex-row text-sm md:text-base"
                         onClick={() => scrollTo && scrollTo("OurProcess")}
                     >
                         <img src="assets/landingpageprocess.svg" alt="" />
@@ -96,9 +98,10 @@ type WhyChooseNslSectionProp = {
 const WhyChooseNslSection = ({ setScrollerFunc }: WhyChooseNslSectionProp) => {
     const sectionRef = useRef(null);
     useEffect(() => {
-        setScrollerFunc && setScrollerFunc((prev) => {
-            return { ...prev, "Why NSL": sectionRef };
-        });
+        setScrollerFunc &&
+            setScrollerFunc((prev) => {
+                return { ...prev, "Why NSL": sectionRef };
+            });
     }, []);
 
     return (
@@ -155,7 +158,7 @@ const WhyChooseNslSection = ({ setScrollerFunc }: WhyChooseNslSectionProp) => {
                 </div>
 
                 <div className="mt-20 mx-auto w-48 h-10 relative rounded-sm border-[1px] border-black group">
-                    <button className="btn1 w-48 h-10 p-0 text-base absolute top-1 left-1 rounded-sm group-hover:top-0 group-hover:left-0 group-hover:bg-transparent ">
+                    <button className="btn1 w-48 h-10 p-0 text-base absolute top-1 left-1 rounded-sm group-hover:top-0 group-hover:left-0 group-hover:bg-transparent hover:text-primaryColor ">
                         Get Started
                     </button>
                 </div>
@@ -178,18 +181,20 @@ const LoanApplicationProcessSection = ({
     const [index, setIndex] = useState(0);
     const sectionRef = useRef(null);
     const changeBgColor = (selectedIndex: number) => {
-        if (selectedIndex === index) return "transition-all duration-75 ease-in  bg-secondaryColor";
+        if (selectedIndex === index)
+            return "transition-all duration-75 ease-in  bg-secondaryColor";
         return "transition-all duration-75 ease-in";
     };
     useEffect(() => {
-        setScrollerFunc && setScrollerFunc((prev) => {
-            return { ...prev, OurProcess: sectionRef };
-        });
+        setScrollerFunc &&
+            setScrollerFunc((prev) => {
+                return { ...prev, OurProcess: sectionRef };
+            });
 
         const timer = setInterval(() => {
             setIndex((prev) => {
                 if (prev === 3) {
-                    return 0; 
+                    return 0;
                 }
                 return (prev += 1);
             });
@@ -200,12 +205,20 @@ const LoanApplicationProcessSection = ({
         };
     }, []);
     return (
-        <div ref={sectionRef} className=" bg-bgColor5 py-24 flex px-10 md:px-0">
-            <div className="hidden pt-10 md:block md:w-1/2 px-20 ">
+        <div
+            ref={sectionRef}
+            className=" bg-bgColor5 py-24 pb-40 flex px-10 md:px-0"
+        >
+            <div className="hidden  md:block md:w-1/2 px-20 relative">
                 <img
                     src="assets/landingPageLoanApplicationFiller.svg"
                     alt="filler_image"
-                    className="object-contain mx-auto"
+                    className="object-contain mx-auto absolute -top-20 w-full right-0 left-0"
+                />
+                <img
+                    src="assets/loanApplicationProcessImage.svg"
+                    alt="application_process"
+                    className="absolute top-5 w-[90%] left-8 object-contain"
                 />
             </div>
             <div className=" w-full md:w-1/2  md:pr-10">
@@ -312,7 +325,7 @@ const LoanApplicationProcessSection = ({
                 </div>
 
                 <div className="mt-5 mx-auto md:ml-[120px] w-48 h-10 relative rounded-sm border-[1px] border-black group">
-                    <button className="btn1 w-48 h-10 p-0 text-base absolute top-1 left-1 rounded-sm group-hover:top-0 group-hover:left-0 group-hover:bg-transparent ">
+                    <button className="btn1 w-48 h-10 p-0 text-base absolute top-1 left-1 rounded-sm group-hover:top-0 group-hover:left-0 group-hover:bg-transparent hover:text-primaryColor ">
                         Get Started
                     </button>
                 </div>

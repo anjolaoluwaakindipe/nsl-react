@@ -11,7 +11,7 @@ import {
 import FileInput from "../../shared/Inputs/FileInput";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
-import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
+import SyncDropdown from "../../shared/Dropdowns/SyncDropdown";
 import { useSelector, useDispatch } from "react-redux";
 import {
     authSelector,
@@ -217,7 +217,7 @@ function Form() {
                         name="documentType"
                         control={control}
                         render={({ field: { onChange, value } }) => (
-                            <DropDownOptions
+                            <SyncDropdown
                                 placeholder="Document Type"
                                 options={documentTypeDropdownOptions}
                                 onChange={onChange}

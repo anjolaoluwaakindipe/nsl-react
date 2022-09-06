@@ -12,6 +12,12 @@ type LoanApplicationFormInfo = {
     repaymentDate: string;
     termsAndCondition: boolean;
     picture: string;
+    disbursementAccountName: string,
+    disbursementNUBAN: string,
+    disbursementBankInfo: {
+        disbursementBankCode: string,
+        disbursementBankName: string,
+    }
 };
 
 // Update Personal Details Form

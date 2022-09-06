@@ -19,7 +19,7 @@ type StatusProp = {
 
 function Status(props: StatusProp) {
     const navigate = useNavigate();
-    const { openModalFunc } = useModal("SignLoanContractModal", true);
+    const { openModalFunc } = useModal("SignLoanContractModal", false);
     const dispatch = useDispatch();
     const loanList = useSelector(loanSelector).loanList;
 
@@ -68,7 +68,7 @@ function Status(props: StatusProp) {
 
             <div className="flex justify-center items-center">
                 <div
-                    className="text-primaryColor hover:underline cursor-pointer flex justify-center items-center"
+                    className="text-primaryColor hover:underline cursor-pointer flex justify-center items-center text-center"
                     onClick={navigateToContract}
                 >
                     {props.statustype !== "AWAITINGCUSTOMERAGREEMENT"

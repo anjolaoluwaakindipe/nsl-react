@@ -94,7 +94,7 @@ input[type="number"] {
         @apply text-darkTextColor text-base md:text-xl;
     }
     .btn1 {
-        @apply px-7 py-4 bg-secondaryColor text-primaryColor font-semibold rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all disabled:hover:bg-secondaryColor disabled:cursor-default disabled:opacity-60 md:text-xl md:py-6;
+        @apply px-7 py-4 bg-secondaryColor text-primaryColor font-semibold rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all disabled:hover:bg-secondaryColor disabled:cursor-default disabled:opacity-60 md:text-xl md:py-6 hover:text-white;
     }
     .error1 {
         @apply text-xs text-red-900;

@@ -1,7 +1,6 @@
-import { useModal } from "../../../services/customHooks/useModal";
-import StatusDet from "./StatusDet";
-import { paths } from '../../../utils/constants/allPaths';
 import { useNavigate } from 'react-router-dom';
+import { paths } from '../../../utils/constants/allPaths';
+import StatusDet from "./StatusDet";
 
 
 function LoanActivity() {

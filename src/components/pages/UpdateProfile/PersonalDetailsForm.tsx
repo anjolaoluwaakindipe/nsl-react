@@ -20,7 +20,7 @@ import { AppDispatch } from "../../../state/redux/store";
 import { PersonalDetailsFormInfo } from "../../../typings";
 import { paths } from "../../../utils/constants/allPaths";
 import { updatePersonalDetailsFormSchema } from "../../../utils/validation/updateProfile";
-import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
+import SyncDropdown from "../../shared/Dropdowns/SyncDropdown";
 import FileInput from "../../shared/Inputs/FileInput";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
@@ -102,7 +102,7 @@ function PersonalDetailsForm() {
         mode: "onChange",
     });
 
-    console.log(errors)
+    console.log(errors);
 
     // submit personal details for update
     const onSubmitForm = handleSubmit(async (data) => {
@@ -403,7 +403,7 @@ function PersonalDetailsForm() {
                         name="gender"
                         control={control}
                         render={({ field: { onChange, value } }) => (
-                            <DropDownOptions
+                            <SyncDropdown
                                 placeholder="Gender"
                                 value={value}
                                 onChange={onChange}
@@ -447,7 +447,7 @@ function PersonalDetailsForm() {
                         name="maritalStatus"
                         control={control}
                         render={({ field: { onChange, value } }) => (
-                            <DropDownOptions
+                            <SyncDropdown
                                 placeholder="Marital Status"
                                 options={maritalStatusDropdownOptions}
                                 onChange={onChange}
@@ -513,14 +513,12 @@ function PersonalDetailsForm() {
                         name="documentType"
                         control={control}
                         render={({ field: { onChange, value } }) => (
-                            <DropDownOptions
+                            <SyncDropdown
                                 placeholder="Document Type"
                                 options={documentTypeDropdownOptions}
                                 onChange={onChange}
                                 value={value}
-                                errorMessage={
-                                    errors?.documentType?.message
-                                }
+                                errorMessage={errors?.documentType?.message}
                             />
                         )}
                     />

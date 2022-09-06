@@ -25,6 +25,9 @@ function LoanContract() {
         applicationreference: string;
     }>();
 
+    // navigation
+    const navigate = useNavigate();
+
     // state variable from authslice
     const { user } = useSelector(authSelector);
 
@@ -59,16 +62,16 @@ function LoanContract() {
         handleSubmit,
         setError,
         clearErrors,
-        reset
+        reset,
     } = useForm<{ pin: string }>({
         defaultValues: {
             pin: "",
         },
-        mode: "onSubmit"
+        mode: "onSubmit",
     });
 
     const resendLoanContractPin = async () => {
-        reset()
+        reset();
         clearErrors("pin");
         if (applicationreference) {
             setCodeResending(true);
@@ -126,7 +129,7 @@ function LoanContract() {
     const onSubmit = handleSubmit(async (data) => {
         setButtonLoading(true);
         console.log(data);
-        if (applicationreference) {
+        if (applicationreference && user && user.customerNo) {
             const otp = await loanRequests.getLoanContractOtp(
                 applicationreference
             );
@@ -137,16 +140,37 @@ function LoanContract() {
                     setError("pin", {
                         message: "Pin has expired please resend a new code",
                     });
-                  
+
                     return;
                 }
 
                 if (otp.data === parseInt(data.pin)) {
-                    toast.success("Pin is valid");
+                    const loanSigningId = toast.loading(
+                        "Signing Loan Contract..."
+                    );
+
+                    const signContractResponse =
+                        await loanRequests.signLoanContract({
+                            applicationReference: applicationreference,
+                            fullName: `${user.firstName} ${user.middleName} ${user.lastName}`,
+                            customerNo: user.customerNo,
+                        });
+                    if (signContractResponse.status === 200) {
+                        toast.success("Contract has been signed!!!", {
+                            id: loanSigningId,
+                        });
+                        navigate(paths.USER_DASHBOARD);
+                    } else {
+                        toast.error(
+                            "An error occured when signing your contract. Please try again later",
+                            { id: loanSigningId }
+                        );
+                        setButtonLoading(false);
+                    }
                 } else {
                     setButtonLoading(false);
                     setError("pin", { message: "Incorrect pin" });
-                   
+
                     return;
                 }
             } else {
@@ -157,7 +181,7 @@ function LoanContract() {
         }
         setButtonLoading(false);
     });
-    const navigate = useNavigate();
+
     return (
         <DefaultLayout>
             <>
@@ -234,7 +258,7 @@ function LoanContract() {
                                 </h2>
                             </div>
 
-                            <div className=" pt-10 space-x-6 w-full ">
+                            <div className=" pt-10 space-x-6 w-full flex ">
                                 <button
                                     className="btn1 md:w-52 w-1/2"
                                     type="submit"

@@ -1,10 +1,8 @@
-import { UseFormRegisterReturn } from "react-hook-form";
+import { useEffect, useState } from "react";
 import Dropdown, { Group, Option } from "react-dropdown";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
-import { Controller, useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
 
-type DropDownOptionsProps = {
+type SyncDropdownProps = {
     placeholder: string;
     errorMessage?: string;
     options: (string | Option | Group | { label: string; value: string })[];
@@ -12,7 +10,7 @@ type DropDownOptionsProps = {
     value?: Option | undefined;
 };
 
-function DropDownOptions(props: DropDownOptionsProps) {
+function SyncDropdown(props: SyncDropdownProps) {
     const [options, setOptions] = useState<(string | Option | Group)[]>([]);
     const [value, setValue] = useState<Option | undefined>(undefined);
 
@@ -33,11 +31,9 @@ function DropDownOptions(props: DropDownOptionsProps) {
         }
     }, [props.value]); //eslint-disable-line
 
-
-
     return (
         <div className="w-full ">
-            <div className=" border-0 border-b-2   border-underlineColor relative floating-placeholder  ">
+            <div className=" border-0 border-b-2   border-underlineColor relative floating-placeholder">
                 <Dropdown
                     options={options}
                     onChange={handleChange}
@@ -79,6 +75,6 @@ function DropDownOptions(props: DropDownOptionsProps) {
     );
 }
 
-export default DropDownOptions;
+export default SyncDropdown;
 
 // {errors?.gender?.value.message}

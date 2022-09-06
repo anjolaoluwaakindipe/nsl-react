@@ -13,7 +13,7 @@ import { verificationRequests } from "../../../services/requests/verificationReq
 import {
     setSignUpInfo,
     setSmsCode,
-    signUpInfoSelector
+    signUpInfoSelector,
 } from "../../../state/redux/signUpInfoSlice";
 import { AppDispatch } from "../../../state/redux/store";
 import { CreateAccountFormData } from "../../../typings";
@@ -22,7 +22,7 @@ import { createAccountSchema } from "../../../utils/validation/createAccount";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 
-import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
+import SyncDropdown from "../../shared/Dropdowns/SyncDropdown";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
 
 function Form() {
@@ -116,8 +116,6 @@ function Form() {
     // }, [isLoading, isSuccess, isError]);
 
     const onSubmit = handleSubmit(async (data) => {
-
-
         // disable button on click
         setDisableButton(true);
 
@@ -137,15 +135,11 @@ function Form() {
         const phoneCode = verificationRequests.generateVerificationCode();
 
         // create loading toaster
-        const loading = toast.loading(
-            "Sending code to your phone number...",
-            {
-                position: "top-right",
-            }
-        );
-        
+        const loading = toast.loading("Sending code to your phone number...", {
+            position: "top-right",
+        });
 
-        if(typeof data.phoneNumber === "string"){
+        if (typeof data.phoneNumber === "string") {
             // send email verification
             await verificationRequests
                 .verifySms({
@@ -187,7 +181,7 @@ function Form() {
                 })
                 .catch((err) => {
                     console.log("hello");
-                    console.log(err)
+                    console.log(err);
                     toast.error(
                         "Something went wrong while sending verification code. Please try again later",
                         { id: loading }
@@ -268,7 +262,7 @@ function Form() {
                     name="gender"
                     control={control}
                     render={({ field: { onChange, value } }) => (
-                        <DropDownOptions
+                        <SyncDropdown
                             placeholder="Gender"
                             onChange={onChange}
                             value={value}

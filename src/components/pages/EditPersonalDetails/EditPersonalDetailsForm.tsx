@@ -11,7 +11,7 @@ import {
 import { AppDispatch } from "../../../state/redux/store";
 import { paths } from "../../../utils/constants/allPaths";
 
-import DropDownOptions from "../../shared/Dropdowns/DropDownOptions";
+import SyncDropdown from "../../shared/Dropdowns/SyncDropdown";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
@@ -39,7 +39,7 @@ function EditPersonalDetailsForm() {
         identificationDocumentImage,
         identificationIssueDate,
         proofOfAddressImage,
-        picture
+        picture,
     } = useSelector(authSelector).user!;
 
     // raact-router variables
@@ -342,7 +342,7 @@ function EditPersonalDetailsForm() {
                     name="gender"
                     control={control}
                     render={({ field: { onChange, value } }) => (
-                        <DropDownOptions
+                        <SyncDropdown
                             placeholder="Gender"
                             value={value}
                             onChange={onChange}
@@ -386,7 +386,7 @@ function EditPersonalDetailsForm() {
                     name="maritalStatus"
                     control={control}
                     render={({ field: { onChange, value } }) => (
-                        <DropDownOptions
+                        <SyncDropdown
                             placeholder="Marital Status"
                             options={maritalStatusDropdownOptions}
                             onChange={onChange}

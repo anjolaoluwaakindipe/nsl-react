@@ -57,6 +57,10 @@ export const loanRequests = {
         tenor: string;
         emailAddress: string;
         purpose: string;
+        disbursementBankName: string;
+        disbursementBankCode: string;
+        disbursementAccountName: string;
+        disbursementNUBAN: string;
     }) {
         const res: {
             status: number;
@@ -205,9 +209,94 @@ export const loanRequests = {
                 return res;
             });
     },
+
+    async signLoanContract({
+        applicationReference,
+        fullName,
+        customerNo,
+    }: {
+        applicationReference: string;
+        fullName: string;
+        customerNo: string;
+    }) {
+        const res: {
+            status: number;
+            code: string;
+            data: {
+                resourceId: "string";
+                responseCode: "string";
+                responseMessage: "string";
+            } | null;
+        } = {
+            status: 0,
+            code: "",
+            data: null,
+        };
+
+        const ipAddressResponse = await axios.get(
+            "https://api.ipify.org?format=json"
+        );
+
+        if (ipAddressResponse.status !== 200) return res;
+
+        const body = {
+            actionDate: new Date().toISOString().split(".")[0],
+            actionFlds: "",
+            actionType: "SendforDisbursement",
+            applicationReference: applicationReference,
+            comment: "",
+            user: {
+                fullName: fullName,
+                ipAddress: ipAddressResponse.data.ip,
+                screenName: customerNo,
+            },
+        };
+
+        return await axios
+            .post("/isslapi/ibank/api/v1/loanapplicationaction", body, {
+                headers: { "X-TENANTID": X_TENANTID },
+            })
+            .then((data) => {
+                res.status = data.status;
+                res.data = data.data;
+                console.log(data);
+                return res;
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status = err.response.status;
+                res.code = err.code;
+                return res;
+            });
+    },
+
+    async getAllBanksWithTheirCodes() {
+        return await axios
+            .get("/isslapi/ibank/api/v1/getAllBanks", {
+                headers: { "X-TENANTID": X_TENANTID },
+            })
+            .then((res) => res.data as { name: string; code: string }[]);
+    },
+
+    async getAccountName({
+        bankcode,
+        accountNumber,
+    }: {
+        bankcode: string;
+        accountNumber: string;
+    }) {
+        return await axios
+            .get("/isslapi/ibank/api/v1/accountNameLookup", {
+                params: {
+                    bankcode: bankcode,
+                    nuban: accountNumber,
+                },
+            })
+            .then((res) => res.data as { account_name: string | null });
+    },
 };
 
 // async function doWork() {
-//     await loanRequests.getPortforlioInfo();
+//     await loanRequests.signLoanContract({applicationReference:"1", customerNo: "2", fullName: "33"});
 // }
 // doWork();

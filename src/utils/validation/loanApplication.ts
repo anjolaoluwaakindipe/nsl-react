@@ -21,6 +21,13 @@ export const loanApplicationFormSchema = Joi.object({
         .required()
         .messages({ "any.invalid": "Terms and agreement must be accepted" }),
     picture: Joi.string().label("Your Picture"),
+
     repaymentAmount: Joi.string().required().label("Repayment Amount"),
     repaymentDate: Joi.string().required().label("Repayment Date"),
+    disbursementAccountName: Joi.string().required().label("Account Name"),
+    disbursementNUBAN: Joi.string().required().min(10).label("Account Number"),
+    disbursementBankInfo: Joi.object({
+        disbursementBankCode: Joi.string().required().min(3),
+        disbursementBankName: Joi.string().required(),
+    }).required().label("Bank"),
 });
