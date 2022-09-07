@@ -155,7 +155,7 @@ function LoanContract() {
                             fullName: `${user.firstName} ${user.middleName} ${user.lastName}`,
                             customerNo: user.customerNo,
                         });
-                    if (signContractResponse.status === 200) {
+                    if (signContractResponse.status === 200 && signContractResponse.data && signContractResponse.data.responseCode === "00") {
                         toast.success("Contract has been signed!!!", {
                             id: loanSigningId,
                         });

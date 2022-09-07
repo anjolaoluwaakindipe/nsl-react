@@ -115,7 +115,7 @@ function Form1() {
             emailAddress: email!,
             applicantName: `${lastName} ${firstName} ${middleName}`,
             phoneNumber: phoneNumber!,
-            rate: data.interest.replaceAll("%", ""),
+            interestRate: data.interest.replaceAll("%", ""),
             repaymentAmount: data.repaymentAmount
                 .replaceAll(",", "")
                 .replaceAll("N", "")

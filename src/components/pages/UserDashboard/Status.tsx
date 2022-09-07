@@ -92,8 +92,8 @@ function StatusType({
 }) {
     const PendingApproval = (
         <div className="flex items-center justify-center  space-x-2">
-            <div className="w-[10px] h-[10px]  bg-red-400 border-2 rounded-full " />
-            <h3 className="max-w-[200px]">
+            <div className="min-w-[10px] min-h-[10px]  bg-red-400 border-2 rounded-full " />
+            <h3 className="max-w-[150px]">
                 {statusText} {"      "}{" "}
             </h3>
         </div>
@@ -101,8 +101,8 @@ function StatusType({
 
     const PendingContractApproval = (
         <div className="flex  items-center justify-center space-x-2">
-            <div className="min-w-[14px] min-h-[14px] bg-red-900 border-2 rounded-full " />
-            <h3 className="max-w-[200px]">{statusText}</h3>
+            <div className="min-w-[10px] min-h-[10px] bg-red-900 border-2 rounded-full " />
+            <h3 className="max-w-[150px]">{statusText}</h3>
         </div>
     );
 

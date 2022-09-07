@@ -52,7 +52,7 @@ export const loanRequests = {
         channel: string;
         applicantName: string;
         phoneNumber: string;
-        rate: string;
+        interestRate: string;
         repaymentAmount: string;
         tenor: string;
         emailAddress: string;
@@ -75,6 +75,7 @@ export const loanRequests = {
         } = { status: 0, code: "", data: {} };
         const body = {
             ...params,
+            instantLoan: true,
             // repaymentAmount,
         };
         return await axios
@@ -223,9 +224,9 @@ export const loanRequests = {
             status: number;
             code: string;
             data: {
-                resourceId: "string";
-                responseCode: "string";
-                responseMessage: "string";
+                resourceId: string;
+                responseCode: string;
+                responseMessage: string;
             } | null;
         } = {
             status: 0,
