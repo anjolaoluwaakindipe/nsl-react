@@ -22,7 +22,7 @@ function LoanBalanceDet() {
     useEffect(() => {
         if (loanList) {
             setActiveLoans(
-                loanList?.filter((loan) => loan.statusCode === "APPROVED")
+                loanList?.filter((loan) => loan.statusCode === "DISBURSED")
             );
         }
     }, [loanList]);
@@ -32,22 +32,26 @@ function LoanBalanceDet() {
 
     
     return (
-        <div className="w-full px-5 md:px-10">
+        <div className="w-full px-5 md:px-10 container">
             <div className="flex justify-start md:justify-between items-center overflow-x-scroll space-x-10 scrollbar ">
-                {activeLoans?.length !== 0 && activeLoans
-                    ? activeLoans.map((loan) => {
-                          return (
-                              <LoanBalanceCard
-                                    key={loan._id}
-                                  status="#active"
-                                  title="Term Loan"
-                                  amount={parseFloat(loan.amount || "0")}
-                                  tenor={`${loan.tenor} ${loan && "days"}`}
-                                  days=" 32"
-                              />
-                          );
-                      })
-                    : (activeLoans=== null ? <LoanLoaderIcon/> : <NoActiveLoanElement/>)}
+                {activeLoans?.length !== 0 && activeLoans ? (
+                    activeLoans.map((loan) => {
+                        return (
+                            <LoanBalanceCard
+                                key={loan._id}
+                                status={loan.status}
+                                title="Term Loan"
+                                amount={parseFloat(loan.amount || "0")}
+                                tenor={`${loan.tenor} ${loan && "days"}`}
+                                days=" 32"
+                            />
+                        );
+                    })
+                ) : activeLoans === null ? (
+                    <LoanLoaderIcon />
+                ) : (
+                    <NoActiveLoanElement />
+                )}
             </div>
         </div>
     );

@@ -23,7 +23,7 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
             onClick={() => navigate(paths.TERM_LOAN)}
         >
             <div>
-                <div className="flex items-center justify-between container">
+                <div className="flex items-center justify-between  ">
                     <h2 className="  text-black text-md ">Loan Amount</h2>
                     <Popup
                         trigger={
@@ -31,7 +31,7 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                                 <BsThreeDotsVertical className="cursor-pointer" />
                             </div>
                         }
-                        position={["bottom left", "left bottom"]}
+                        position={["top right", "top left"]}
                         on="click"
                         keepTooltipInside=".container"
                         closeOnDocumentClick
@@ -40,9 +40,9 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                         contentStyle={{ padding: "0px", border: "none" }}
                         arrow={true}
                     >
-                        <div className=" space-y-2">
+                        <div className="rounded-md bg-secondaryColor bg-opacity-5 overflow-hidden">
                             <div
-                                className="px-5 py-3 bg-secondaryColor rounded-lg text-primaryColor cursor-pointer"
+                                className="px-5 py-3   text-primaryColor cursor-pointer"
                                 onClick={() =>
                                     navigate(paths.LOAN_PAYMENT_OPTIONS)
                                 }
@@ -50,7 +50,8 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                                 {" "}
                                 Repay
                             </div>
-                            <div className="px-5 py-3 bg-secondaryColor rounded-lg text-primaryColor cursor-pointer">
+                            <div className="w-full h-[1px] bg-primaryColor" />
+                            <div className="px-5 py-3  text-primaryColor cursor-pointer">
                                 {" "}
                                 Rollover
                             </div>
@@ -63,7 +64,14 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                 </h4>
             </div>
 
-            <h6 className=" font-light italic text-[15px] flex justify-between">
+            <div className="text-sm italic">
+                <span className="font-light">Status: </span>
+                <span className="font-semibold text-primaryColor">
+                    {prop.status.toUpperCase()}
+                </span>
+            </div>
+
+            <div className=" font-light italic text-[15px] flex justify-between">
                 <div> Tenor: {prop.tenor}</div>
 
                 <div className=" text-sm inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline  text-secondaryColor rounded-full float-right">
@@ -71,7 +79,7 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                     {prop.days}
                     {" days left"}
                 </div>
-            </h6>
+            </div>
         </div>
     );
 }

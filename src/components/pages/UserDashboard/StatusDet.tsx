@@ -13,22 +13,20 @@ function StatusDet() {
             <div className="space-y-5  p-0  text-sm md:text-md">
                 {loanList ? (
                     loanList
-                        // .filter(
-                        //     (loan) =>
-                        //         loan.statusCode === "AWAITINGCUSTOMERAGREEMENT" ||
-                        //         loan.statusCode === "AWAITINGLOANAGREEMENT"
-                        // )
+                        .filter((loan) => loan.statusCode !== "DISBURSED")
                         .map((loan) => {
                             return (
                                 <Status
                                     key={loan._id}
-                                    applicationReference={loan.applicationReference}
+                                    applicationReference={
+                                        loan.applicationReference
+                                    }
                                     loantype={loan.loanProductName}
                                     amount={formatMoney(
                                         parseFloat(loan.amount)
                                     )}
                                     statustype={loan.statusCode}
-                                    status = {loan.status}
+                                    status={loan.status}
                                 />
                             );
                         })

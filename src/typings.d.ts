@@ -12,12 +12,12 @@ type LoanApplicationFormInfo = {
     repaymentDate: string;
     termsAndCondition: boolean;
     picture: string;
-    disbursementAccountName: string,
-    disbursementNUBAN: string,
+    disbursementAccountName: string;
+    disbursementNUBAN: string;
     disbursementBankInfo: {
-        disbursementBankCode: string,
-        disbursementBankName: string,
-    }
+        disbursementBankCode: string;
+        disbursementBankName: string;
+    };
 };
 
 // Update Personal Details Form
@@ -133,7 +133,7 @@ type LoanApplicationValidationErrors = {
     tenor?: Record<string, any> | undefined;
     interest?: string;
     repaymentAmount?: string;
-    repaymentDate?:string;
+    repaymentDate?: string;
     narration?: string;
 };
 
@@ -193,7 +193,6 @@ interface AuthState {
     requestStatus: number;
 }
 
-
 // signUpInfo state
 interface SignUpInfoState {
     firstName: string;
@@ -227,7 +226,11 @@ export type Loan = {
     loanProductClass: "L";
     statusComments: string;
     processingStatus: string;
-    statusCode: "AWAITINGCUSTOMERAGREEMENT" | "AWAITINGLOANAGREEMENT" | "APPROVED";
+    statusCode:
+        | string
+        | "AWAITINGCUSTOMERAGREEMENT"
+        | "AWAITINGLOANAGREEMENT"
+        | "DISBURSED";
     status: string;
 };
 
@@ -273,7 +276,7 @@ interface UserInfoAppResponse {
     address: string | null;
     memberShipNo: string | null /* cscsNumber */;
     // employment Info
-    employmentStatus: string | null; /* company name*/
+    employmentStatus: string | null /* company name*/;
     occupationDesc: string | null /* Job title*/;
     employerAddress: string | null;
     officeEmail: string | null;
@@ -305,6 +308,3 @@ type PictureFromGetUserAppResponse = {
     documentType: "Photo";
     documentImage: string | null;
 };
-
-
-
