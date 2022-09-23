@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import AsyncSelect from "react-select/async";
 import {
     ActionMeta,
@@ -61,6 +61,7 @@ function AsyncDropdown({
 }: AsyncDropdownProps) {
     const dropdownRef = useRef<Select<any, false, any>>(null);
     const [inputValue, setInputValue] = useState("");
+    const [isInputActive, setIsInputActive] = useState(false);
     const [optionSelected, setOptionSelected] = useState<{
         label: string;
         value: object | string;
@@ -68,15 +69,19 @@ function AsyncDropdown({
 
     const handleInputChange = (newValue: string) => {
         const modifyNewValue = newValue.replace(/\W/g, "");
+
         setInputValue(modifyNewValue);
         return inputValue;
     };
+
+    useEffect(() => {
+        console.log(inputValue);
+    }, [inputValue]);
 
     const onOptionChange = (
         newValue: { label: string; value: object | string },
         actionMeta: ActionMeta<any>
     ) => {
-        console.log(newValue);
         onChange && onChange(newValue.value);
         setOptionSelected(newValue);
     };
@@ -94,13 +99,20 @@ function AsyncDropdown({
                     onChange={onOptionChange}
                     value={optionSelected}
                     placeholder={" "}
+                    onFocus= {()=>{
+                        setIsInputActive(true)
+                    }}
+                    onBlur={()=>{
+                        setIsInputActive(false)
+                    }}
                 />
 
                 <label
                     htmlFor="gender"
                     className={`absolute bottom-[15px] left-14 origin-left cursor-pointer text-gray-400 pointer-events-none transition-all delay-200 ease-in-out
                         ${
-                            optionSelected && optionSelected?.label! !== ""
+                            (optionSelected && optionSelected?.label! !== "") ||
+                            isInputActive   
                                 ? "-translate-y-8  scale-75"
                                 : ""
                         }`}

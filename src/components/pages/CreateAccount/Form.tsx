@@ -24,6 +24,7 @@ import PhoneField from "../../shared/Inputs/TextFields/PhoneField";
 
 import SyncDropdown from "../../shared/Dropdowns/SyncDropdown";
 import DateInputField from "../../shared/Inputs/TextFields/DateInputField";
+import authRequest from "../../../services/requests/authRequest";
 
 function Form() {
     // gender drop down options
@@ -64,6 +65,31 @@ function Form() {
         },
         resolver: joiResolver(createAccountSchema),
     });
+
+    const doesUserEmailExist = async (email: string): Promise<boolean> => {
+        const adminTokenRequest = await authRequest.getAdminToken();
+
+        if (adminTokenRequest.status === 200) {
+            const userExistResponse = await authRequest.doesUserExist(
+                adminTokenRequest.data.access_token,
+                email
+            );
+            if (
+                userExistResponse.status === 200 &&
+                userExistResponse.data === true
+            ) {
+                return true;
+            } else if (
+                userExistResponse.status === 200 &&
+                userExistResponse.data === false
+            ) {
+                return false;
+            } else {
+                throw new Error("Error occured while validating your info");
+            }
+        }
+        throw new Error("Error occured while validating your info");
+    };
 
     // open the begin verification modal to prompt users to check phone verification
     const { openModalFunc } = useModal("BeginVerificationModal", false);
@@ -118,6 +144,19 @@ function Form() {
     const onSubmit = handleSubmit(async (data) => {
         // disable button on click
         setDisableButton(true);
+        let doesUserExistVar: boolean;
+        try {
+            doesUserExistVar = await doesUserEmailExist(data.emailAddress);
+            if (doesUserExistVar) {
+                toast.error("Email already in use", { position: "top-right" });
+                setDisableButton(false);
+                return;
+            }
+        } catch (e: any) {
+            e.message && toast.error(e.message, { position: "top-right" });
+            setDisableButton(false);
+            return;
+        }
 
         // await dispatch(
         //     createUserFull({

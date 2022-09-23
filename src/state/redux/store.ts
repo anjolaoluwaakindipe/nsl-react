@@ -1,10 +1,12 @@
-import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import modalReducer from "./modalSlice";
-import authReducer from "./authSlice";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import signUpInfoReducer from "./signUpInfoSlice";
-import loanReducer from "./loanSlice"
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+import authReducer from './authSlice';
+import cardReducer from './cardSlice';
+import loanReducer from './loanSlice';
+import modalReducer from './modalSlice';
+import signUpInfoReducer from './signUpInfoSlice';
 
 const rootReducer = combineReducers({
     modal: modalReducer,
@@ -17,14 +19,15 @@ const rootReducer = combineReducers({
         authReducer
     ),
     signUpInfo: signUpInfoReducer,
-    loan: loanReducer
+    loan: loanReducer,
+    card: cardReducer,
 });
 
 const persistedReducer = persistReducer(
     {
         key: "root",
         storage,
-        blacklist: ["modal", "signUpInfo", "loan"],
+        blacklist: ["modal", "signUpInfo", "loan", "card"],
     },
     rootReducer
 );

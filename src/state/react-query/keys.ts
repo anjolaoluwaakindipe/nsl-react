@@ -9,3 +9,7 @@ export const pendingLoanQueryKey = ()=>{
 export const pendingSignatureLoanQueryKey = () =>{
     return "pendingSignatureLoanQueryKey"
 }
+
+export const allCardsQueryKey = () =>{
+    return "allCardsQueryKey";
+}

@@ -51,10 +51,15 @@ function PhoneField({
 
     return (
         <div className="w-full">
-            <div className="border-0 border-b-2  border-underlineColor  ">
+            <div
+                className={
+                    "border-0 border-b-2  border-underlineColor  " +
+                    (readOnly ? "pointer-events-none" : "")
+                }
+            >
                 <div className="relative floating-placeholder ">
                     <PhoneInput
-                        className={phoneElementClassName + "bg-transparent" }
+                        className={phoneElementClassName + "bg-transparent"}
                         onChange={(value) => {
                             onChange && onChange(value);
 
@@ -71,7 +76,6 @@ function PhoneField({
                         value={phoneValue}
                         style={style}
                         international={true}
-                        
                     />
                     <div
                         className={` absolute bottom-[15px] left-16 origin-left text-gray-400 ${

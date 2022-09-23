@@ -137,7 +137,7 @@ function EmailVerification() {
 
     //correct
     const { openModalFunc } = useModal(
-        "PhoneEmailVerificationSuccessModal ",
+        "PhoneEmailVerificationSuccessModal",
         false
     );
 

@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 
 // paths
 import { paths } from "./utils/constants/allPaths";
-import Summary from "./pages/Summary";
 
 // components
 const ProtectedRoute = lazy(
@@ -50,6 +49,8 @@ const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Welcome = lazy(() => import("./pages/Welcome"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Waiting = lazy(() => import("./pages/Waiting"));
+const AddCardInfo = lazy(()=> import("./pages/AddCardInfo"));
+const Summary = lazy(()=> import("./pages/Summary"))
 
 function AppRouter() {
     return (
@@ -215,6 +216,18 @@ function AppRouter() {
                                 <ProtectedRoute>
                                     <ProcessedUserPage>
                                         <Profile />
+                                    </ProcessedUserPage>
+                                </ProtectedRoute>
+                            </React.Suspense>
+                        }
+                    />
+                    <Route
+                        path={paths.ADD_CARD_INFO}
+                        element={
+                            <React.Suspense>
+                                <ProtectedRoute>
+                                    <ProcessedUserPage>
+                                        <AddCardInfo />
                                     </ProcessedUserPage>
                                 </ProtectedRoute>
                             </React.Suspense>

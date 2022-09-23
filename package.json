@@ -19,6 +19,7 @@
         "@types/react": "^18.0.8",
         "@types/react-dom": "^18.0.0",
         "@types/react-select": "^5.0.1",
+        "atm-card-react": "^1.4.1",
         "axios": "^0.27.2",
         "chart.js": "^3.7.1",
         "compression-webpack-plugin": "^10.0.0",

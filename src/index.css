@@ -96,6 +96,10 @@ input[type="number"] {
     .btn1 {
         @apply px-7 py-4 bg-secondaryColor text-primaryColor font-semibold rounded-lg cursor-pointer hover:shadow-sm hover:bg-accentColor duration-100 ease-in-out transition-all disabled:hover:bg-secondaryColor disabled:cursor-default disabled:opacity-60 md:text-xl md:py-6 hover:text-white;
     }
+
+    .btn2 {
+        @apply px-7 py-4 font-semibold rounded-lg cursor-pointer hover:shadow-sm duration-100 ease-in-out transition-all disabled:hover:bg-secondaryColor disabled:cursor-default disabled:opacity-60 md:text-xl md:py-6 hover:border-white  bg-transparent border-2 hover:bg-transparent border-primaryColor text-primaryColor;
+    }
     .error1 {
         @apply text-xs text-red-900;
     }

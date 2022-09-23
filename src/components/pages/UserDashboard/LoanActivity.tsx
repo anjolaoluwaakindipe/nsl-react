@@ -1,11 +1,67 @@
-import { useNavigate } from 'react-router-dom';
-import { paths } from '../../../utils/constants/allPaths';
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../../utils/constants/allPaths";
 import StatusDet from "./StatusDet";
-
+import { useSelector } from "react-redux";
+import { cardSelector } from "../../../state/redux/cardSlice";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
+import { useModal } from "../../../services/customHooks/useModal";
 
 function LoanActivity() {
-    const navigate = useNavigate()
+    const cardstate = useSelector(cardSelector);
+    const navigate = useNavigate();
+    const cardInfoId = {
+        loadingState: "cardInfo.loading",
+        errorState: "cardInfo.error",
+    };
 
+    const { openModalFunc } = useModal("AddCardModal", true);
+
+    const newLoanFunc = () => {
+        if (cardstate.isLoading) {
+            toast.loading("Getting your card info, please wait...", {
+                id: cardInfoId.loadingState,
+                position: "top-right",
+            });
+        }
+
+        if (
+            cardstate.cardList &&
+            cardstate.cardList.length === 0 &&
+            !cardstate.isLoading
+        ) {
+            openModalFunc();
+        }
+
+        if (
+            !cardstate.isError &&
+            cardstate.cardList &&
+            cardstate.cardList.length > 0 &&
+            !cardstate.isLoading
+        ) {
+            navigate(paths.LOAN_APPLICATION);
+            return;
+        }
+
+        if (cardstate.isError && !cardstate.isLoading) {
+            toast.error(
+                "An error occured while getting your card info. Please refresh the page",
+                {
+                    id: cardInfoId.errorState,
+                    position: "top-right",
+                }
+            );
+        }
+    };
+
+    useEffect(() => {
+        if (!cardstate.isLoading) {
+            toast.dismiss(cardInfoId.loadingState);
+        }
+        if (!cardstate.isError) {
+            toast.dismiss(cardInfoId.errorState);
+        }
+    }, [cardstate.isLoading, cardstate.isError]);
 
     return (
         <div className="mt-10 md:p-10 p-5">
@@ -13,8 +69,7 @@ function LoanActivity() {
                 <h3 className="md:text-justify font-bold">Loan Requests</h3>
                 <button
                     className="btn1 py-1 px-2 flex md:px-4 md:py-4"
-                    onClick={()=>{navigate(paths.LOAN_APPLICATION)}}
-                  
+                    onClick={newLoanFunc}
                 >
                     <div>+</div>
                     <div className="hidden md:block pl-2"> New Loan</div>

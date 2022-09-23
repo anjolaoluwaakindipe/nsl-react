@@ -36,7 +36,9 @@ function FloatingPlaceholderTextField(props: FloatinPlaceholderTextFieldProps) {
                 <input
                     type={showPassword ? "text" : props.type}
                     {...props.register}
-                    className="outline-none pb-4  border-0 focus:border-0 focus:outline-none  w-full  "
+                    className={`outline-none pb-4  border-0 focus:border-0 focus:outline-none  w-full ${
+                        props.readOnly ? "pointer-events-none" : ""
+                    } `}
                     id={props.id}
                     placeholder={props.readOnly ? undefined : " "}
                     step={props.step}

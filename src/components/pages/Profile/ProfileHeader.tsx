@@ -15,7 +15,9 @@ function ProfileHeader() {
             <IoIosArrowDropleftCircle
                 size={32}
                 className="absolute  md:right-10 md:left-auto left-4 top-4 md:top-20  text-2xl text-primaryColor cursor-pointer"
-                onClick={() => navigate(-1)}
+                onClick={() =>
+                    navigate(paths.USER_DASHBOARD, { replace: true })
+                }
             />
 
             {/* Yellow Banner */}
@@ -33,7 +35,7 @@ function ProfileHeader() {
                     {/* <div className="w-24 h-24 md:w-40 md:h-40 rounded-full border-2 border-white flex justify-center items-center"></div> */}
                     {user?.picture ? (
                         <img
-                        className="h-full w-full object-cover object-top"
+                            className="h-full w-full object-cover object-top"
                             src={"data:image/png;base64," + user?.picture}
                             alt="profile_picture"
                             // width={90}

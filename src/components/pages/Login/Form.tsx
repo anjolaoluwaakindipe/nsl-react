@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { loginSchema } from "../../../utils/validation/login";
-import { LoginInfo } from "../../../typings";
+import { LoginInfo, ModalNames } from "../../../typings";
 import { paths } from "../../../utils/constants/allPaths";
 
 import { useModal } from "../../../services/customHooks/useModal";
@@ -40,7 +40,7 @@ function Form() {
     const { openModalFunc } = useModal(
         // "LoginSucessModal",
         //"LoginUnsucessfulModal",
-        modalOptions.name,
+        modalOptions.name as ModalNames,
         modalOptions.isCancellable
     );
 
@@ -53,6 +53,7 @@ function Form() {
         }
         if (isError) {
             dispatch(setModalName("LoginUnsucessfulModal"));
+            setButtonLoading(false);
         }
     }, [isError, isSuccess, dispatch, openModalFunc]);
 
@@ -63,7 +64,7 @@ function Form() {
         );
 
         openModalFunc();
-        setButtonLoading(false);
+        
     });
 
     return (

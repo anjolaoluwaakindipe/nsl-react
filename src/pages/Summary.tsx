@@ -143,7 +143,7 @@ function Summary() {
                     <div className="w-full mt-48 grid grid-cols-1 grid-flow-row-dense px-5  md:px-16 gap-10">
                         <PersonalDetailsSummaryInfo />
                         <EmploymentDetailsSummaryInfo />
-                        <AccountDetailsSummaryInfo />
+                        {/* <AccountDetailsSummaryInfo /> */}
                         <UploadSummaryInfo />
 
                         <div className="w-full  flex justify-end py-5">

@@ -1,11 +1,11 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../state/redux/store";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { closeModal } from "../../../state/redux/modalSlice";
 
-import { ModalState } from "../../../typings";
+import { ModalNames, ModalState } from "../../../typings";
 import PhoneEmailVerificationSuccessModal from "./Content/PhoneEmailVerificationSuccessModal";
 import EmailVerificationSuccessModal from "./Content/EmailVerificationSucessModal";
 import AccountCreatedSuccessModal from "./Content/AccountCreatedSucessModal";
@@ -20,12 +20,14 @@ import CardDetailsModal from "./Content/CardDetailsModal";
 import ProfileSuccessfullySubmitted from "./Content/ProfileSuccessfullySubmitted";
 import PhoneVerificationSuccessModal from "./Content/PhoneVerificationSuccessModal";
 import SignLoanContractModal from "./Content/SignLoanContractModal";
+import AddCardModal from "./Content/AddCardModal";
+import DeleteCardModal from "./Content/DeleteCardModal";
 
 function ModalContent(
-    modalName: string,
+    modalName: ModalNames,
     cancelModal: () => void
 ): ReactElement {
-    switch (modalName.trim()) {
+    switch (modalName) {
         case "PhoneEmailVerificationSuccessModal":
             return (
                 <PhoneEmailVerificationSuccessModal cancelModal={cancelModal} />
@@ -49,19 +51,26 @@ function ModalContent(
         case "LogOutModal":
             return <LogOutModal cancelModal={cancelModal} />;
         case "CardDetailsModal":
-            return <CardDetailsModal cancelModal={cancelModal} />
+            return <CardDetailsModal cancelModal={cancelModal} />;
         case "ProfileSuccessfullySubmitted":
-            return <ProfileSuccessfullySubmitted cancelModal={cancelModal}/>
+            return <ProfileSuccessfullySubmitted cancelModal={cancelModal} />;
         case "PhoneVerificationSuccessModal":
-            return <PhoneVerificationSuccessModal cancelModal = {cancelModal}/>
+            return <PhoneVerificationSuccessModal cancelModal={cancelModal} />;
         case "SignLoanContractModal":
-            return <SignLoanContractModal cancelModal={cancelModal} />
+            return <SignLoanContractModal cancelModal={cancelModal} />;
+        case "AddCardModal":
+            return <AddCardModal cancelModal={cancelModal} />;
+        case "DeleteCardModal":
+            return <DeleteCardModal cancelModal={cancelModal} />;
         default:
             return <div></div>;
     }
 }
 
 function ModalProvider() {
+    const [isMounted, setIsMounted] = useState(false);
+    const timer = useRef<NodeJS.Timeout | undefined>(undefined);
+
     const modalState = useSelector<RootState>(
         (state) => state.modal
     ) as ModalState;
@@ -69,11 +78,25 @@ function ModalProvider() {
 
     useEffect(() => {
         if (modalState.isOpen) {
+            timer.current = setTimeout(() => {
+                setIsMounted(true);
+            }, 100);
+        } else {
+            setIsMounted(false);
+            if (timer.current) {
+                clearTimeout(timer.current);
+            }
+        }
+        if (modalState.isOpen) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "unset";
         }
+        console.log(isMounted);
+        return () => {};
     }, [modalState.isOpen]);
+
+    useEffect(() => {}, []);
 
     if (!modalState.isOpen) {
         return <div></div>;
@@ -89,11 +112,15 @@ function ModalProvider() {
 
     return (
         <div
-            className="bg-opacity-25 bg-black fixed top-0 left 0 w-full h-screen z-10 flex items-center justify-center"
+            className={`bg-opacity-25 bg-black fixed top-0 left 0 w-full h-screen z-10 flex items-center justify-center`}
             onClick={modalState.isCancellable ? onClickBackground : undefined}
         >
             <div
-                className=""
+                className={`transition-all duration-300 ease-in ${
+                    isMounted
+                        ? "opacity-100 translate-y-0"
+                        : "-translate-y-16 opacity-0 "
+                }`}
                 onClick={(e) => {
                     e.stopPropagation();
                 }}

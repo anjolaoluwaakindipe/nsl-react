@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { RootState } from "./store";
 import { nslRequests } from "../../services/requests/nslrequests";
 import { object } from "joi";
+import { clearLoanState } from "./loanSlice";
 
 const initialState: AuthState = {
     accessToken: "",
@@ -83,7 +84,7 @@ export const createUserFull = createAsyncThunk(
     ) => {
         try {
             // response from creating user on main application
-            
+
             const createUserOnAppResponse = await authRequest.registerUserApp({
                 firstName,
                 lastName,
@@ -93,8 +94,6 @@ export const createUserFull = createAsyncThunk(
                 bvn,
                 phoneNumber,
             });
-
-            
 
             if (
                 createUserOnAppResponse.status === 200 &&
@@ -129,8 +128,6 @@ export const createUserFull = createAsyncThunk(
                             adminToken: adminTokenResponse.data["access_token"],
                         });
 
-                    
-
                     // check if user registration response was successful or not
                     if (registerUserResponse.status === 201) {
                         return {
@@ -154,7 +151,7 @@ export const createUserFull = createAsyncThunk(
                         }
                     }
                 } else {
-                    switch (adminTokenResponse.response.status) {
+                    switch (adminTokenResponse.status) {
                         case 0:
                             return thunkApi.rejectWithValue(
                                 "A network error occured. Please check your connection"
@@ -180,7 +177,6 @@ export const createUserFull = createAsyncThunk(
             } else if (createUserOnAppResponse.code === "ECONNABORTED") {
                 return thunkApi.rejectWithValue("Network timeout");
             } else {
-                
                 switch (createUserOnAppResponse.status) {
                     case 400:
                         return thunkApi.rejectWithValue(
@@ -193,7 +189,6 @@ export const createUserFull = createAsyncThunk(
                 }
             }
         } catch (e: any) {
-            
             return thunkApi.rejectWithValue(e);
         }
     }
@@ -206,7 +201,7 @@ export const getUserFull = createAsyncThunk(
         try {
             const { rfid } = ((await thunkAPI.getState()) as RootState).auth
                 .user!;
-            
+
             if (rfid === "" || rfid === null) {
                 return thunkAPI.rejectWithValue(
                     "Problems getting your information, please login again"
@@ -570,7 +565,6 @@ export const loginUser = createAsyncThunk(
                 }
             }
         } catch (e: any) {
-            
             return thunkApi.rejectWithValue(e);
         }
     }
@@ -600,15 +594,12 @@ export const createUserAuth = createAsyncThunk(
         try {
             // get admin token response
             const adminTokenResponse = await authRequest.getAdminToken();
-            
 
             // check if admin token response was successful or not
             if (
                 adminTokenResponse.status &&
                 adminTokenResponse.status === 200
             ) {
-                
-
                 // use the access token of the admin token and user inputed fields to register user
                 const registerUserResponse =
                     await authRequest.registerUserKeycloak({
@@ -619,8 +610,6 @@ export const createUserAuth = createAsyncThunk(
                         password,
                         adminToken: adminTokenResponse.data["access_token"],
                     });
-
-                
 
                 // check if user registration response was successful or not
                 if (registerUserResponse.status === 201) {
@@ -645,7 +634,7 @@ export const createUserAuth = createAsyncThunk(
                     }
                 }
             } else {
-                switch (adminTokenResponse.response.status) {
+                switch (adminTokenResponse.status) {
                     case 0:
                         return thunkAPI.rejectWithValue(
                             "A network error occured. Please check your connection"
@@ -669,7 +658,6 @@ export const createUserAuth = createAsyncThunk(
                 }
             }
         } catch (e: any) {
-            
             return thunkAPI.rejectWithValue(e);
         }
     }
@@ -689,7 +677,6 @@ export const refreshUserTokens = createAsyncThunk(
             const accessTokenResponse = await authRequest.getUserKeycloak(
                 accessToken
             );
-            
 
             if (accessTokenResponse.status === 200) {
                 return thunkAPI.fulfillWithValue(null);
@@ -716,7 +703,6 @@ export const refreshUserTokens = createAsyncThunk(
                 await thunkAPI.dispatch<unknown, any>(logoutUser());
             }
         } catch (e: any) {
-            
             return thunkAPI.rejectWithValue(e);
         }
     }
@@ -793,7 +779,6 @@ export const submitUserInfoToNslDb = createAsyncThunk(
                 );
             }
         } catch (e: any) {
-          
             return thunkApi.rejectWithValue(e);
         }
     }
@@ -820,10 +805,8 @@ export const logoutUser = createAsyncThunk<
         //         );
         //     }
         // }
-
         return thunkAPI.fulfillWithValue("yes");
     } catch (e: any) {
-       
         return thunkAPI.rejectWithValue(e);
     }
 });
@@ -919,7 +902,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
-                
+
                 state.user!.rfid = action?.payload?.rfid
                     ? action?.payload.rfid
                     : "";
@@ -993,7 +976,6 @@ const authSlice = createSlice({
                 });
             })
             .addCase(createUserFull.rejected, (state, action) => {
-                
                 state.isError = true;
                 state.isLoading = false;
                 state.isSuccess = false;
@@ -1009,7 +991,6 @@ const authSlice = createSlice({
                 state.isError = false;
             })
             .addCase(logoutUser.rejected, (state, action) => {
-               
                 state = initialState;
                 state.errorMessage = action.payload as string;
             })
@@ -1025,7 +1006,6 @@ const authSlice = createSlice({
                 state.isError = false;
             })
             .addCase(getUserFull.rejected, (state, action) => {
-                
                 if (
                     action.payload ===
                     "Problems getting your information, please login again"

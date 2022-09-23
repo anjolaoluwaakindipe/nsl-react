@@ -296,7 +296,7 @@ function PersonalDetailsForm() {
     ]); // eslint-disable-line
 
     return (
-        <div>
+        <div className="">
             <div className="flex justify-between items-center pt-10 pb-5 border-b-2 border-gray-200">
                 <h4 className="text-accentColor ">Personal Details</h4>
                 <Progress />
@@ -307,6 +307,7 @@ function PersonalDetailsForm() {
                 className="w-full grid grid-cols-12 py-20 md:gap-x-10 gap-y-20 text-darkTextColor"
                 autoComplete="off"
                 autoSave="off"
+                autoCorrect="off"
             >
                 {/*Title */}
                 <div className=" col-span-12 md:col-span-6 ">
@@ -491,6 +492,8 @@ function PersonalDetailsForm() {
                                 validate: (value) =>
                                     value.length > 30 || "Make it more",
                             })}
+                            autoComplete={"none"}
+                            autoCorrect={"off"}
                             id="UpdateProfile_narration"
                             className="outline-none bg-bgColor pb-4  resize-none h-25 p-3 w-full border-0 "
                             placeholder="Residential Address"
@@ -662,7 +665,7 @@ function PersonalDetailsForm() {
 
                 <div className="col-span-12">
                     <button
-                        className={`btn1  float-right w-full md:w-48`}
+                        className={`btn2  float-right w-full md:w-48`}
                         type="submit"
                         disabled={isButtonLoading}
                     >

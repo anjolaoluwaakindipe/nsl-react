@@ -22,7 +22,7 @@ function LoanBalanceDet() {
     useEffect(() => {
         if (loanList) {
             setActiveLoans(
-                loanList?.filter((loan) => loan.statusCode === "DISBURSED")
+                loanList?.filter((loan) => ["DISBURSED"].includes(loan.statusCode))
             );
         }
     }, [loanList]);

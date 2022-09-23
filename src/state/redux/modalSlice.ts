@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ModalState } from "../../typings";
+import { ModalNames, ModalState } from "../../typings";
 
 const initialState: ModalState = {
     isOpen: false,
@@ -31,7 +31,7 @@ const modalSlice = createSlice({
             state.isCancellable = action.payload.cancellable;
         },
         setModalName(state: ModalState, action: PayloadAction<string>) {
-            state.modalName = action.payload;
+            state.modalName = action.payload as ModalNames;
         },
     },
 });

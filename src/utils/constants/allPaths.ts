@@ -27,4 +27,5 @@ export const paths = {
     LANDINGPAGE: "/",
     SUMMARY: "/submission-summary",
     WAITING: "/waiting",
+    ADD_CARD_INFO: "/add-card"
 };

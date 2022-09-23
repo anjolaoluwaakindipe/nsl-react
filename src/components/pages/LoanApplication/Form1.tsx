@@ -15,24 +15,21 @@ import { loanRequests } from "../../../services/requests/loanRequests";
 import { authSelector } from "../../../state/redux/authSlice";
 import formatMoney from "../../../utils/moneyFormatter";
 import { loanApplicationFormSchema } from "../../../utils/validation/loanApplication";
+import AsyncDropdown from "../../shared/Dropdowns/AsyncDropdown";
 import CurrencyInputField from "../../shared/Inputs/TextFields/CurrencyInputField";
 import FloatingPlaceholderTextField from "../../shared/Inputs/TextFields/FloatingPlaceholderTextField";
 import WebCamInput from "../../shared/Inputs/WebCamInput";
-import Popup from "reactjs-popup";
-import { PopupActions } from "reactjs-popup/dist/types";
-import AsyncDropdown from "../../shared/Dropdowns/AsyncDropdown";
+import { useCards } from "../../../services/customHooks/useCards";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../../utils/constants/allPaths";
+import cardRequest from "../../../services/requests/cardRequest";
 
 function Form1() {
-    const {
-        customerNo,
-        firstName,
-        lastName,
-        middleName,
-        phoneNumber,
-        email,
-        rfid,
-    } = useSelector(authSelector).user!;
+    const { customerNo, firstName, lastName, middleName, phoneNumber, email } =
+        useSelector(authSelector).user!;
     const [isButtonLoading, setButtonLoading] = useState(false);
+    const navigate = useNavigate();
+    const { cardState, cardRequestState } = useCards(customerNo!);
 
     const [allBanks, setAllBanks] = useState<
         {
@@ -91,11 +88,11 @@ function Form1() {
     const { openModalFunc } = useModal("LoanApplicationSucessModal", false);
 
     const onSubmit = handleSubmit(async (data) => {
-        const isOkay = loanAmountCheck();
+        // const isOkay = loanAmountCheck();
 
-        if (!isOkay) {
-            return;
-        }
+        // if (!isOkay) {
+        //     return;
+        // }
 
         setButtonLoading(true);
         const submissionResponse = await loanRequests.submitLoanApplication({
@@ -172,6 +169,17 @@ function Form1() {
     };
 
     const loanInfotimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+
+    useEffect(() => {
+        if (cardState.cardList && cardState.cardList.length === 0) {
+            toast.error(
+                "You do not have any cards saved to your profile. Please add a card then try again.",
+                { position: "top-right" }
+            );
+            navigate(paths.USER_DASHBOARD, { replace: true });
+        }
+    }, [cardRequestState.isLoading]);
+
     // update fields with other loan information
     useEffect(() => {
         if (!watchAmount || !watchTenor.value) return;
@@ -257,9 +265,9 @@ function Form1() {
         return true;
     };
 
-    useEffect(() => {
-        loanAmountCheck();
-    }, [watchAmount]);
+    // useEffect(() => {
+    //     loanAmountCheck();
+    // }, [watchAmount]);
 
     const calculateMaximumLoanAmount = async () => {
         setLoadingPortfolioAmount(true);
@@ -326,7 +334,7 @@ function Form1() {
                     range from 30 days – 90 days
                 </h4>
 
-                <p>
+                {/* <p>
                     Maximum loan amount based on your portfolio is:{" "}
                     {portfolioAmount !== null ? (
                         loadingPortfolioAmount ? (
@@ -349,7 +357,7 @@ function Form1() {
                             </span>
                         </>
                     )}{" "}
-                </p>
+                </p> */}
             </div>
             <div className="w-full py-20 space-y-16  text-darkTextColor">
                 {/*amount*/}

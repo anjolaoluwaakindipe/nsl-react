@@ -21,7 +21,7 @@ const AccountDetailsForm = lazy(
 
 function Header() {
     return (
-        <div>
+        <div className="">
             <h1 className="heading1">Update Profile</h1>
             <Outlet />
         </div>

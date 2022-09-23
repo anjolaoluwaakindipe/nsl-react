@@ -1,46 +1,60 @@
-import React from "react";
-import { useQuery } from "react-query";
-import NavBarLayout from "../components/layout/NavBarLayout";
-import { allLoanQueryKey } from "../state/react-query/keys";
-import { authSelector } from "../state/redux/authSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { loanRequests } from "../services/requests/loanRequests";
-import ClipLoader from "react-spinners/ClipLoader";
+import React from 'react';
+import { useEffect } from 'react';
+import { useQuery } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
+import ClipLoader from 'react-spinners/ClipLoader';
 
-import {
-    Header,
-    LoanActivity,
-    LoanBalanceDet,
-    ZeroState,
-} from "../components/pages/UserDashboard";
-import { setListState } from "../state/redux/loanSlice";
-import { Loan } from "../typings";
+import NavBarLayout from '../components/layout/NavBarLayout';
+import { Header, LoanActivity, LoanBalanceDet, ZeroState } from '../components/pages/UserDashboard';
+import { useLoans } from '../services/customHooks/useLoans';
+import cardRequest from '../services/requests/cardRequest';
+import { allCardsQueryKey } from '../state/react-query/keys';
+import { authSelector } from '../state/redux/authSlice';
+import { cardSelector, setCardState } from '../state/redux/cardSlice';
+import { AppDispatch } from '../state/redux/store';
+import { CardInfo } from '../typings';
 
 function Dashboard() {
     const { customerNo } = useSelector(authSelector).user!;
-    const dispatch = useDispatch();
-    const loans = useQuery<Loan[], Error>(
-        allLoanQueryKey(),
-        () => loanRequests.getUserLoans(customerNo!),
+    const cardState = useSelector(cardSelector);
+    const dispatch = useDispatch<AppDispatch>();
+    const {loansRequestState} = useLoans(customerNo!);
+
+    const cards = useQuery<CardInfo[], Error>(
+        allCardsQueryKey(),
+        () => cardRequest.getAllCards(customerNo!),
         {
             onSuccess: (data) => {
-                dispatch(setListState({ loanList: data }));
+                dispatch(
+                    setCardState({
+                        cardList: data,
+                        isError: false,
+                        isLoading: false,
+                    })
+                );
+            },
+            onError: (err) => {
+                if (cardState.cardList) return;
+                dispatch(setCardState({ isError: true, isLoading: false }));
             },
         }
     );
 
+    useEffect(() => {
+        dispatch(setCardState({ isLoading: cards.isLoading }));
+    }, [cards.isLoading]); // eslint-disable-line
 
     return (
         <NavBarLayout>
             <div className="bg-bgColor2 min-h-screen">
                 <div className="md:max-w-6xl md:mx-auto w-full">
                     <Header />
-                    {loans.isLoading ? (
+                    {loansRequestState.isLoading ? (
                         <div className="w-full bg-bgColor h-[40vh] flex justify-center items-center">
                             <ClipLoader color="rgba(23, 120, 7, 1)" />
                         </div>
-                    ) : loans.isSuccess ? (
-                        !loans.data.length ? (
+                    ) : loansRequestState.isSuccess ? (
+                        !loansRequestState.data.length ? (
                             <ZeroState />
                         ) : (
                             <>

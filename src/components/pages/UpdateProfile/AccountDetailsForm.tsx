@@ -49,7 +49,7 @@ function AccountDetailsForm() {
     const secretKey = "sk_test_dc69b7578ef52aac1712ac353d04b871b4c6ca8a";
     const text = "Add Card";
 
-    console.log(email, firstName, lastName, middleName, phoneNumber);
+   
 
     const config: PaystackProps = {
         reference: new Date().getTime().toString(),

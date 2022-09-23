@@ -48,7 +48,7 @@ function EmploymentDetailsForm() {
 
     const navigateToAccountDetailForm = () => {
         navigate(
-            paths.UPDATE_PROFILE.base + paths.UPDATE_PROFILE.ACCOUNT_DETAILS
+            paths.SUMMARY
         );
     };
 
@@ -265,7 +265,7 @@ function EmploymentDetailsForm() {
                 <div className="col-span-12 flex justify-between space-x-10">
                     <button
                         type="button"
-                        className={`btn1 bg-transparent border-2 hover:bg-transparent border-primaryColor text-primaryColor  w-full md:w-48`}
+                        className={`btn2  w-full md:w-48`}
                         onClick={() =>
                             navigate(
                                 paths.UPDATE_PROFILE.base +

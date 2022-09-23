@@ -125,7 +125,19 @@ const authRequest = {
         const body = xformurlencoder(adminTokenInfo);
 
         // response data format
-        let res: { status: number; data: any } = {
+        let res: {
+            status: number;
+            data:
+                | {
+                      access_token: string;
+                      expires_in: number;
+                      refresh_expires_in: number;
+                      token_type: number;
+                      "not-before-policy": number;
+                      scope: string;
+                  }
+                | Record<string, any>;
+        } = {
             status: 0,
             data: {},
         };
@@ -150,13 +162,12 @@ const authRequest = {
             .then((response) => {
                 res.status = response.status;
                 res.data = response.data;
-                console.log(res);
 
                 return res;
             })
             .catch((err) => {
-                console.log(err);
-                return err;
+                res.status = err.response.status;
+                return res;
             });
     },
 
@@ -393,7 +404,7 @@ const authRequest = {
         identificationDocumentImage,
         proofOfAddressImage,
         picture,
-        inputStatus
+        inputStatus,
     }: {
         rfid?: string;
         firstName?: string | null;
@@ -415,7 +426,7 @@ const authRequest = {
         identificationDocumentImage?: string | null;
         proofOfAddressImage?: string | null;
         picture?: string | null;
-        inputStatus?: "New" | "Processed" | "Draft" | null
+        inputStatus?: "New" | "Processed" | "Draft" | null;
     }) => {
         // required information to get
 
@@ -444,12 +455,12 @@ const authRequest = {
         if (dateOfBirth) {
             body.dateOfBirth = dateOfBirth;
         }
-        if (email) {
-            body.email = email;
-        }
-        if (phoneNumber) {
-            body.mobileNo = phoneNumber;
-        }
+        // if (email) {
+        //     body.email = email;
+        // }
+        // if (phoneNumber) {
+        //     body.mobileNo = phoneNumber;
+        // }
         if (cscsNumber) {
             body.cscsno = cscsNumber;
         }
@@ -476,8 +487,8 @@ const authRequest = {
             body.photo = picture;
         }
 
-        if(inputStatus){
-            body.inputStatus = inputStatus
+        if (inputStatus) {
+            body.inputStatus = inputStatus;
         }
 
         // response data format
@@ -525,7 +536,7 @@ const authRequest = {
         companyEmail,
         grossIncome,
         companyAddress,
-        inputStatus
+        inputStatus,
     }: {
         rfid: string;
         jobTitle: string;
@@ -535,9 +546,8 @@ const authRequest = {
         companyEmail: string;
         grossIncome: string;
         companyAddress: string;
-        inputStatus?: "New" | "Processed" | "Draft" | null
+        inputStatus?: "New" | "Processed" | "Draft" | null;
     }) => {
-
         // required information to get
         const body: Record<string, string> = {
             jobtitle: jobTitle,
@@ -549,8 +559,8 @@ const authRequest = {
             grossIncome: grossIncome,
         };
 
-        if( inputStatus){
-            body.inputStatus = inputStatus
+        if (inputStatus) {
+            body.inputStatus = inputStatus;
         }
 
         // response data format
@@ -613,7 +623,7 @@ const authRequest = {
             .then((response) => {
                 res.status = response.status;
                 res.data = response.data;
-              
+
                 return res;
             })
             .catch((error) => {
@@ -758,18 +768,13 @@ const authRequest = {
         const body = { inputStatus: "New" };
 
         return await axios
-            .patch(
-                "/isslapi/onboarding-api/1.0/newcustomer/" +
-                    rfid,
-                body,
-                {
-                    headers: {
-                        "content-type": "application/json",
-                        "X-TENANTID": "islandbankpoc",
-                    },
-                    timeout: 20000000,
-                }
-            )
+            .patch("/isslapi/onboarding-api/1.0/newcustomer/" + rfid, body, {
+                headers: {
+                    "content-type": "application/json",
+                    "X-TENANTID": "islandbankpoc",
+                },
+                timeout: 20000000,
+            })
 
             .then((response) => {
                 res.status = response.status;
@@ -792,18 +797,13 @@ const authRequest = {
         const body = { inputStatus: "Draft" };
 
         return await axios
-            .patch(
-                "/isslapi/onboarding-api/1.0/newcustomer/" +
-                    rfid,
-                body,
-                {
-                    headers: {
-                        "content-type": "application/json",
-                        "X-TENANTID": "islandbankpoc",
-                    },
-                    timeout: 20000000,
-                }
-            )
+            .patch("/isslapi/onboarding-api/1.0/newcustomer/" + rfid, body, {
+                headers: {
+                    "content-type": "application/json",
+                    "X-TENANTID": "islandbankpoc",
+                },
+                timeout: 20000000,
+            })
 
             .then((response) => {
                 res.status = response.status;
@@ -817,6 +817,36 @@ const authRequest = {
                 return res;
             });
     },
+
+    async doesUserExist(adminToken: string, email:string){
+        const res: {status: number, code: string, data: boolean | null} = { status:0, code: "", data: null };
+
+        return axios.get(
+            "/sentryapi/auth/admin/realms/" +
+                CUSTOM_REALM +
+                "/users"
+            ,{
+                params: {
+                    email: email
+                },
+                headers: {
+                    "Authorization" : `Bearer ${adminToken}`,
+                }
+            }
+        ).then(response=>{
+            res.status = response.status;
+            if(response.data.length > 0){
+                res.data = true;
+            }else{
+                res.data = false;
+            }
+            return res;
+        }).catch(err=>{
+            res.status = err.response.status;
+            res.code = err.code;
+            return res;
+        });
+    }
 };
 
 export default authRequest;

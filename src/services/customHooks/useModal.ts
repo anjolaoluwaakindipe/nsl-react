@@ -1,11 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { closeModal, makeUnCancellable, openModal,  setModalName } from '../../state/redux/modalSlice';
 import { AppDispatch } from '../../state/redux/store';
+import { ModalNames } from '../../typings';
 
-export const useModal = (modalName:string, isCancellable:boolean = true)=>{
+export const useModal = (modalName:ModalNames, isCancellable:boolean = true)=>{
     const dispatch = useDispatch<AppDispatch>();
 
-    const openModalFunc = (newModalName?:string) =>{
+    const openModalFunc = (newModalName?:ModalNames) =>{
         if(newModalName){
 
                 dispatch(setModalName(newModalName));

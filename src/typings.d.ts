@@ -1,6 +1,27 @@
 import { HTMLInputTypeAttribute } from "react";
 import keycloak from "./services/keycloak/keycloak";
 
+// All modal names
+
+type ModalNames =
+    | "PhoneEmailVerificationSuccessModal"
+    | "EmailVerificationSuccessModal"
+    | "AccountCreatedSucessModal"
+    | "LoginSucessModal"
+    | "LoginUnsucessfulModal"
+    | "ProfileUpdateModal"
+    | "BeginVerificationModal"
+    | "ProfileUpdateSuccessfulModal"
+    | "LoanApplicationSucessModal"
+    | "LogOutModal"
+    | "CardDetailsModal"
+    | "ProfileSuccessfullySubmitted"
+    | "PhoneVerificationSuccessModal"
+    | "SignLoanContractModal"
+    | "AddCardModal"
+    | "DeleteCardModal"
+    | "";
+
 // Form Information
 // Loan Application Form
 type LoanApplicationFormInfo = {
@@ -143,7 +164,7 @@ interface ModalState {
     isOpen: boolean;
     isCancellable: boolean;
     // callBack: () => void | undefined;
-    modalName: string;
+    modalName: ModalNames;
 }
 
 // auth state
@@ -239,6 +260,44 @@ type LoanState = {
     selectedLoan: Loan | null;
 };
 
+// card state
+type CardInfo = {
+    accountNo: string;
+    authorizationCode: string;
+    authorizationData: {
+        authorization_code: string;
+        bin: string;
+        last4: string;
+        exp_month: string;
+        exp_year: string;
+        channel: string;
+        card_type: string;
+        bank: string;
+        country_code: string;
+        brand: string;
+        reusable: boolean;
+        signature: string;
+        account_name: string | null;
+        receiver_bank_account_number: string | null;
+        receiver_bank: string | null;
+    };
+    cardType: string;
+    customerNo: string;
+    defaultCard: boolean;
+    gateway: string;
+    id: number;
+    loanRef: string;
+    panLast4: string;
+    panLast6: string;
+};
+
+type CardState = {
+    cardList: CardInfo[] | null;
+    isError: boolean;
+    isLoading: boolean;
+    selectedCard: CardInfo | null;
+};
+
 // Requests
 interface TokenResponse {
     access_token: string;
@@ -308,3 +367,5 @@ type PictureFromGetUserAppResponse = {
     documentType: "Photo";
     documentImage: string | null;
 };
+
+type GetCardsInfoResponse = CardInfo[];

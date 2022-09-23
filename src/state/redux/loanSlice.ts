@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Action } from "react-query/types/core/query";
+
 import { LoanState } from "../../typings";
-import { RootState } from './store';
-
-
+import { RootState } from "./store";
 
 const initialLoanState: LoanState = {
     loanList: null,
@@ -18,28 +16,32 @@ const loanSlice = createSlice({
             state: LoanState,
             action: PayloadAction<Partial<LoanState>>
         ) {
-             let key: keyof LoanState;
+            let key: keyof LoanState;
             for (key in action.payload) {
-               
                 if (action.payload[key]) {
                     if (key === "loanList") {
                         state[key] = action.payload[key] || state[key];
                     }
 
-                    if (key=== "selectedLoan") {
+                    if (key === "selectedLoan") {
                         state[key] = action.payload[key] || state[key];
                     }
                 }
             }
 
-            return state
+            return state;
+        },
+        clearLoanState() {
+            return {
+                loanList: null,
+                selectedLoan: null,
+            };
         },
     },
 });
 
 export const loanSelector = (state: RootState) => state.loan;
 
-
-export const {setListState} = loanSlice.actions;
+export const { setListState, clearLoanState } = loanSlice.actions;
 
 export default loanSlice.reducer;
