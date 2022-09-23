@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { cardSelector } from "../../../state/redux/cardSlice";
 import { useModal } from "../../../services/customHooks/useModal";
 import toast from "react-hot-toast";
+import { useEffect } from 'react';
 
 function ZeroState() {
     const cardInfoId = {
@@ -50,6 +51,15 @@ function ZeroState() {
             );
         }
     };
+
+     useEffect(() => {
+         if (!cardstate.isLoading) {
+             toast.dismiss(cardInfoId.loadingState);
+         }
+         if (!cardstate.isError) {
+             toast.dismiss(cardInfoId.errorState);
+         }
+     }, [cardstate.isLoading, cardstate.isError]);
     return (
         <div className="bg-white relative flex flex-col-reverse md:flex-row items-center pt-10">
             <div className="p-5 md:p-10 md:min-w-[100px] md:max-w[200px] lg:min-w-[400px] md:max-w-[500px] w-full text-justify text-sm md:text-base">
