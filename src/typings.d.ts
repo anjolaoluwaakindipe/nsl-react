@@ -229,7 +229,7 @@ interface SignUpInfoState {
 }
 
 // loan state
-export type Loan = {
+export type SubmittedLoanApplication = {
     _id: string;
     applicationReference: string;
     customerNo: string;
@@ -255,9 +255,89 @@ export type Loan = {
     status: string;
 };
 
+export type DisbursedLoan = {
+    branch: string;
+    primaryAccountNo: string;
+    accountNo: string;
+    altAccountNo: string;
+    accountTitle: string;
+    customerNo: string;
+    customerName: string;
+    accountName: string;
+    productCode: string;
+    product: string;
+    productClass: string;
+    productClassDescription: string;
+    ledgerCode: string;
+    ledger: string;
+    controlAccount: null;
+    ccy: "NGN";
+    ccyCode: "NGN";
+    ccyName: "Nigeria Naira";
+    dateOpened: string;
+    periodOpened: number;
+    dealno: string;
+    lapno: string;
+    lendingModel: "WEB";
+    loanPurpose: "60";
+    loanAmount: number;
+    bookDate: string;
+    loanDate: string;
+    lastMovementDate: string;
+    availableBalance: number;
+    clearedBalance: number;
+    bookBalance: number;
+    lccyAvailableBalance: number;
+    lccyClearedBalance: number;
+    lccyBookBalance: number;
+    accruedCOT: number;
+    lastCOTAccrualDate: null;
+    accruedCRInt: number;
+    lastCRIntAccrualDate: null;
+    limitChecktype: string;
+    accountLimit: number;
+    limitEffDate: string;
+    limitExpDate: string;
+    useDRBaseRate: boolean;
+    drBaseRateCode: null;
+    drBaseRate: null;
+    drMarginOverBaseRate: null;
+    drFixedRate: number;
+    lastDRRateChange: null;
+    minimumDRInterestRate: null;
+    maximumDRInterestRate: null;
+    minimumDRInterestAmount: null;
+    maximumDRInterestAmount: null;
+    drInterestRate: number;
+    drEffectiveYield: number;
+    drInterestBaseDays: null;
+    drInterestFreq: null;
+    drInterestApplicationMethod: null;
+    automaticRepaymentProcessing: true;
+    noofInstalments: number;
+    repaymentFrequency: "M";
+    dueOn: string;
+    repaymentStartDate: string;
+    repaymentAccountNo: string;
+    loanServicingAccountNo: string;
+    loanServicingBank: null;
+    loanServicingMode: null;
+    repaymentSchedule: any[];
+    lastDRInt: number;
+    lastDRIntDate: null;
+    accruedDRInt: number;
+    lastDRIntAccrualDate: null;
+    active: boolean;
+    blockedforPostings: boolean;
+    status: "A";
+};
+
+
 type LoanState = {
-    loanList: Loan[] | null;
-    selectedLoan: Loan | null;
+    loanApplicationList: SubmittedLoanApplication[] | null;
+    selectedLoanApplication: SubmittedLoanApplication | null;
+    disbursedLoanList: DisbursedLoan[] | null;
+    selectedDisbursedLoan: DisbursedLoan | null;
 };
 
 // card state

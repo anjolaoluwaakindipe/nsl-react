@@ -1,20 +1,21 @@
-import React, { useState } from "react";
-import {paths} from "../../../utils/constants/allPaths";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { paths } from '../../../utils/constants/allPaths';
 
 function ActiveLoanDetails() {
     const [progress, setProgress] = useState("90%");
 
-
-    const onClickFunc:React.FormEventHandler = (e)=>{
+    const onClickFunc: React.FormEventHandler = (e) => {
         e.preventDefault();
-        setProgress("90%")
+        setProgress("90%");
     };
-     const navigate= useNavigate();
+    const navigate = useNavigate();
+
+    const { id } = useParams<{ id: string }>();
 
     return (
-        <form
-            action="/"
+        <div
             className="  w-full py-20 space-y-16 text-darkTextColor "
         >
             <div className="w-full bg-white p-5 md:p-10 text-sm rounded-md space-y-5">
@@ -99,10 +100,15 @@ function ActiveLoanDetails() {
                 </div>
             </div>
 
-            <button className="btn1 float-right" onClick={()=>{navigate(paths.LOAN_PAYMENT_OPTIONS)}}>
+            <button
+                className="btn1 float-right"
+                onClick={() => {
+                    navigate(paths.LOAN_PAYMENT_OPTIONS + "/" + id);
+                }}
+            >
                 Repay Loan
             </button>
-        </form>
+        </div>
     );
 }
 

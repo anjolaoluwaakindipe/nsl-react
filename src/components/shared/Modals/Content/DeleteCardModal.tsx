@@ -10,19 +10,23 @@ import { AppDispatch } from "../../../../state/redux/store";
 import { cardSelector, setCardState } from "../../../../state/redux/cardSlice";
 import toast from "react-hot-toast";
 import cardRequest from "../../../../services/requests/cardRequest";
-import { useLoans } from '../../../../services/customHooks/useLoans';
+import { useLoans } from "../../../../services/customHooks/useLoans";
 
 function DeleteCardModal(prop: { cancelModal: () => void }) {
     const dispatch = useDispatch<AppDispatch>();
-   
+
     const selectedCard = useSelector(cardSelector).selectedCard;
     const cardList = useSelector(cardSelector).cardList;
     const user = useSelector(authSelector).user;
-     const {loanState} = useLoans(user?.customerNo!);
+    const { loanState } = useLoans(user?.customerNo!);
 
     const onDeleteCard = async () => {
-        if (selectedCard && user && cardList && loanState.loanList) {
-            if(loanState.loanList.find(loan => loan.statusCode === "DISBURSED")){
+        if (selectedCard && user && cardList && loanState.loanApplicationList) {
+            if (
+                loanState.loanApplicationList.find(
+                    (loan) => loan.statusCode === "DISBURSED"
+                )
+            ) {
                 toast.error(
                     "Cannot delete this card. You have a disbursed loan already active on your account!!!",
                     { position: "top-right" }

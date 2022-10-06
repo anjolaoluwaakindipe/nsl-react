@@ -4,16 +4,16 @@ import { Link, Navigate } from "react-router-dom";
 import EmptyStatus from "./EmptyStatus";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../utils/constants/allPaths";
-import { Loan } from "../../../typings";
+import { SubmittedLoanApplication } from "../../../typings";
 import { useModal } from "../../../services/customHooks/useModal";
 import { useDispatch, useSelector } from "react-redux";
-import { setListState, loanSelector } from "../../../state/redux/loanSlice";
+import { setLoanState, loanSelector } from "../../../state/redux/loanSlice";
 
 type StatusProp = {
     loantype: string;
     amount: string;
     applicationReference: string;
-    statustype: Loan["statusCode"];
+    statustype: SubmittedLoanApplication["statusCode"];
     status: string;
 };
 
@@ -21,13 +21,13 @@ function Status(props: StatusProp) {
     const navigate = useNavigate();
     const { openModalFunc } = useModal("SignLoanContractModal", false);
     const dispatch = useDispatch();
-    const loanList = useSelector(loanSelector).loanList;
+    const loanList = useSelector(loanSelector).loanApplicationList;
 
     const navigateToContract = () => {
         if (loanList) {
             dispatch(
-                setListState({
-                    selectedLoan: loanList.find(
+                setLoanState({
+                    selectedLoanApplication: loanList.find(
                         (loan) =>
                             loan.applicationReference ===
                             props.applicationReference

@@ -10,7 +10,7 @@ import { authSelector } from "../../../../state/redux/authSlice";
 
 function SignLoanContractModal(prop: { cancelModal: () => void }) {
     const navigate = useNavigate();
-    const selectedLoan = useSelector(loanSelector).selectedLoan;
+    const selectedLoan = useSelector(loanSelector).selectedLoanApplication;
     const user = useSelector(authSelector).user;
     const [buttonLoading, setButtonLoading] = useState(false);
     const onCancel = () => {

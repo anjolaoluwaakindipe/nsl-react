@@ -92,7 +92,6 @@ function ModalProvider() {
         } else {
             document.body.style.overflow = "unset";
         }
-        console.log(isMounted);
         return () => {};
     }, [modalState.isOpen]);
 

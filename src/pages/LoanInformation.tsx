@@ -10,9 +10,9 @@ import {
     Information,
     TopBar,
 } from "../components/pages/LoanInformation";
-import { Loan } from "../typings";
+import { SubmittedLoanApplication } from "../typings";
 import { loanRequests } from "../services/requests/loanRequests";
-import { pendingLoanQueryKey } from "../state/react-query/keys";
+import { pendingLoanApplicationQueryKey } from "../state/react-query/keys";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { loanSelector } from "../state/redux/loanSlice";
@@ -24,15 +24,18 @@ function LoanInformation() {
     }>();
 
     const { user } = useSelector(authSelector);
-    const pendingLoan = useQuery<Loan, Error>(pendingLoanQueryKey(), () => {
-        return loanRequests.getALoan(applicationreference!);
-    });
+    const pendingLoan = useQuery<SubmittedLoanApplication, Error>(
+        pendingLoanApplicationQueryKey(),
+        () => {
+            return loanRequests.getALoanApplication(applicationreference!);
+        }
+    );
 
     const [invalidLoan, setInvalidLoan] = useState(false);
 
     useEffect(() => {
         if (pendingLoan.isSuccess) {
-            console.log(pendingLoan.data.customerNo)
+            console.log(pendingLoan.data.customerNo);
             if (
                 !user ||
                 (user && pendingLoan.data.customerNo !== user.customerNo)
@@ -61,7 +64,6 @@ function LoanInformation() {
                         key={pendingLoan.data._id}
                         originalAmount={pendingLoan.data.amount}
                         rate={pendingLoan.data.rate}
-                        
                     />
                 ) : (
                     <div className="py-44 w-full justify-center items-center flex text-primaryColor">

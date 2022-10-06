@@ -117,6 +117,7 @@ function Form1() {
                 .replaceAll(",", "")
                 .replaceAll("N", "")
                 .trim(),
+            liveImage: data.picture,
             tenor: data.tenor.value,
             purpose: data.purpose,
             disbursementAccountName: data.disbursementAccountName,

@@ -1,9 +1,9 @@
 import React from "react";
 
 interface LoanOptionProps {
-    value: string;
+    value: "bankCard" | "transfer";
     label: string;
-    onClick: (value: string) => void;
+    onClick: (value: "bankCard" | "transfer") => void;
     isSelected: boolean;
     children?:JSX.Element
 }

@@ -18,7 +18,7 @@ function Dashboard() {
     const { customerNo } = useSelector(authSelector).user!;
     const cardState = useSelector(cardSelector);
     const dispatch = useDispatch<AppDispatch>();
-    const {loansRequestState} = useLoans(customerNo!);
+    const {loansApplicationRequestState} = useLoans(customerNo!);
 
     const cards = useQuery<CardInfo[], Error>(
         allCardsQueryKey(),
@@ -49,12 +49,12 @@ function Dashboard() {
             <div className="bg-bgColor2 min-h-screen">
                 <div className="md:max-w-6xl md:mx-auto w-full">
                     <Header />
-                    {loansRequestState.isLoading ? (
+                    {loansApplicationRequestState.isLoading ? (
                         <div className="w-full bg-bgColor h-[40vh] flex justify-center items-center">
                             <ClipLoader color="rgba(23, 120, 7, 1)" />
                         </div>
-                    ) : loansRequestState.isSuccess ? (
-                        !loansRequestState.data.length ? (
+                    ) : loansApplicationRequestState.isSuccess ? (
+                        !loansApplicationRequestState.data.length ? (
                             <ZeroState />
                         ) : (
                             <>

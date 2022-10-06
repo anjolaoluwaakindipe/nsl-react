@@ -32,40 +32,8 @@ export function transferFormValidation(
     return validationError;
 }
 
-export function bankCardValidation(
-    values: Record<string, any>
-): LoanApplicationValidationErrors {
-    const validationError: Record<string, any> = {
-        amount: Joi.number()
-            .required()
-            .greater(1)
-            .label("Amount")
-            .validate(values.amount).error?.message,
-        cardNumber: Joi.string()
-            .required()
-            .label("Card Number")
-            .validate(values.cardNumber?.trim()).error?.message,
-        cvv: Joi.string()
-            .required()
-            .min(3)
-            .max(3)
-
-            .label("CVV")
-            .validate(values.cvv?.trim()).error?.message,
-
-        cardName: Joi.string()
-            .required()
-            .min(2)
-            .max(255)
-            .label("Card Name")
-            .validate(values.cardName?.trim()).error?.message,
-    };
-
-    Object.keys(validationError).forEach((key) => {
-        if (validationError[key] === undefined) {
-            delete validationError[key];
-        }
-    });
-
-    return validationError;
-}
+export const bankCardValidation = Joi.object({
+    amount: Joi.string().required().min(4).label("Amount").messages({
+        "string.min": "{{label}} must be greater than N1,000",
+    }),
+});

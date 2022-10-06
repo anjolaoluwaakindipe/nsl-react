@@ -5,7 +5,7 @@ import { loanSelector } from "../../../state/redux/loanSlice";
 
 function Header() {
     const user = useSelector(authSelector).user;
-    const selectedLoan = useSelector(loanSelector).selectedLoan;
+    const selectedLoan = useSelector(loanSelector).selectedLoanApplication;
     return (
         <form>
             <div className="space-y-5 pt-10 ">

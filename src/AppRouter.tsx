@@ -49,8 +49,8 @@ const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const Welcome = lazy(() => import("./pages/Welcome"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const Waiting = lazy(() => import("./pages/Waiting"));
-const AddCardInfo = lazy(()=> import("./pages/AddCardInfo"));
-const Summary = lazy(()=> import("./pages/Summary"))
+const AddCardInfo = lazy(() => import("./pages/AddCardInfo"));
+const Summary = lazy(() => import("./pages/Summary"));
 
 function AppRouter() {
     return (
@@ -113,7 +113,10 @@ function AppRouter() {
                         }
                     />
                     <Route
-                        path={paths.LOAN_PAYMENT_OPTIONS}
+                        path={
+                            paths.LOAN_PAYMENT_OPTIONS +
+                            "/:applicationreference"
+                        }
                         element={
                             <React.Suspense>
                                 <NoUpdateProtectedRoute>
@@ -151,7 +154,7 @@ function AppRouter() {
                     />
 
                     <Route
-                        path={paths.LOAN_CONTRACT+ "/:applicationreference"}
+                        path={paths.LOAN_CONTRACT + "/:applicationreference"}
                         element={
                             <React.Suspense>
                                 <NoUpdateProtectedRoute>
@@ -165,7 +168,7 @@ function AppRouter() {
 
                     {/* <Route
                         path={paths.TOTAL_ADMIN_DASHBOARD}
-                        element={
+                        element={?
                             <React.Suspense>
                                 <TotalAdminDashboard />
                             </React.Suspense>
@@ -197,7 +200,7 @@ function AppRouter() {
                     />
 
                     <Route
-                        path={paths.TERM_LOAN}
+                        path={paths.TERM_LOAN + "/:id"}
                         element={
                             <React.Suspense>
                                 <NoUpdateProtectedRoute>

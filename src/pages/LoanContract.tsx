@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { loanRequests } from "../services/requests/loanRequests";
 import { pendingSignatureLoanQueryKey } from "../state/react-query/keys";
 import { authSelector } from "../state/redux/authSlice";
-import { Loan } from "../typings";
+import { SubmittedLoanApplication } from "../typings";
 import toast from "react-hot-toast";
 import { verificationRequests } from "../services/requests/verificationRequests";
 function LoanContract() {
@@ -32,10 +32,10 @@ function LoanContract() {
     const { user } = useSelector(authSelector);
 
     // react-query variables
-    const pendingSignatureLoan = useQuery<Loan, Error>(
+    const pendingSignatureLoan = useQuery<SubmittedLoanApplication, Error>(
         pendingSignatureLoanQueryKey(),
         () => {
-            return loanRequests.getALoan(applicationreference!);
+            return loanRequests.getALoanApplication(applicationreference!);
         }
     );
 
@@ -155,7 +155,11 @@ function LoanContract() {
                             fullName: `${user.firstName} ${user.middleName} ${user.lastName}`,
                             customerNo: user.customerNo,
                         });
-                    if (signContractResponse.status === 200 && signContractResponse.data && signContractResponse.data.responseCode === "00") {
+                    if (
+                        signContractResponse.status === 200 &&
+                        signContractResponse.data &&
+                        signContractResponse.data.responseCode === "00"
+                    ) {
                         toast.success("Contract has been signed!!!", {
                             id: loanSigningId,
                         });

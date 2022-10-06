@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Popup from "reactjs-popup";
 
 // icons
@@ -6,21 +6,46 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../utils/constants/allPaths";
 import formatMoney from "../../../utils/moneyFormatter";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../state/redux/store";
+import { setLoanState } from "../../../state/redux/loanSlice";
+import { DisbursedLoan } from "../../../typings";
 
 type LoanBalanceCardProp = {
     title: string;
     amount: number;
     tenor: string;
     days: string;
+    dueOn: string;
     status: string;
+    id: string;
+    disbursedLoan: DisbursedLoan;
 };
 
 function LoanBalanceCard(prop: LoanBalanceCardProp) {
     const navigate = useNavigate();
+
+    const goToLoanPaymentOption = () => {
+        navigate(paths.LOAN_PAYMENT_OPTIONS + "/" + prop.id);
+    };
+    const goToTermLoan = () => {
+        navigate(paths.TERM_LOAN + "/" + prop.id);
+    };
+
+    const dueOnLoanDays = useMemo(() => {
+        let dueOn: number = -1;
+        if (prop.dueOn) {
+            dueOn = Math.ceil(
+                (Date.parse(prop.dueOn) - Date.now()) / (1000 * 60 * 60 * 24)
+            );
+        }
+
+        return dueOn;
+    }, []);
     return (
         <div
             className="flex flex-col justify-between space-y-3  bg-white p-5 rounded-md shadow-lg h-62 min-w-[300px] cursor-pointer hover:animate-pulser  "
-            onClick={() => navigate(paths.TERM_LOAN)}
+            onClick={goToTermLoan}
         >
             <div>
                 <div className="flex items-center justify-between  ">
@@ -43,9 +68,7 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
                         <div className="rounded-md bg-secondaryColor bg-opacity-5 overflow-hidden">
                             <div
                                 className="px-5 py-3   text-primaryColor cursor-pointer"
-                                onClick={() =>
-                                    navigate(paths.LOAN_PAYMENT_OPTIONS)
-                                }
+                                onClick={goToLoanPaymentOption}
                             >
                                 {" "}
                                 Repay
@@ -76,7 +99,7 @@ function LoanBalanceCard(prop: LoanBalanceCardProp) {
 
                 <div className=" text-sm inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline  text-secondaryColor rounded-full float-right">
                     {" "}
-                    {prop.days}
+                    {dueOnLoanDays}
                     {" days left"}
                 </div>
             </div>

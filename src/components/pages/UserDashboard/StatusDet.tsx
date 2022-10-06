@@ -6,7 +6,7 @@ import { loanSelector } from "../../../state/redux/loanSlice";
 import formatMoney from "../../../utils/moneyFormatter";
 
 function StatusDet() {
-    const loanList = useSelector(loanSelector).loanList;
+    const loanList = useSelector(loanSelector).loanApplicationList;
 
     return (
         <div className="w-full">

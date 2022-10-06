@@ -1,5 +1,6 @@
-import axios from "axios";
-import { Loan } from "../../typings";
+import axios, { AxiosError } from "axios";
+import { AiOutlineConsoleSql } from "react-icons/ai";
+import { DisbursedLoan, SubmittedLoanApplication } from "../../typings";
 import { X_TENANTID } from "./authSettings";
 
 export const loanRequests = {
@@ -61,6 +62,7 @@ export const loanRequests = {
         disbursementBankCode: string;
         disbursementAccountName: string;
         disbursementNUBAN: string;
+        liveImage: string;
     }) {
         const res: {
             status: number;
@@ -115,22 +117,19 @@ export const loanRequests = {
             .then((data) => {
                 res.data = data.data;
                 res.status = data.status;
-                console.log(res.data?.data);
                 return res;
             })
             .catch((err) => {
-                console.log(err);
                 if (err.code !== "ECONNABORTED") {
                     res.status = err.response.status;
                 }
                 res.code = err.code;
-                console.log(res);
                 return res;
             });
     },
 
-    async getUserLoans(customerNo: string) {
-        const response = await axios.get<Loan[]>(
+    async getUserLoanApplications(customerNo: string) {
+        const response = await axios.get<SubmittedLoanApplication[]>(
             "/isslapi/ibank/api/v1/getLoanApplicationsxCustomer?customerno=" +
                 customerNo,
             {
@@ -142,8 +141,8 @@ export const loanRequests = {
         return response.data;
     },
 
-    async getALoan(applicationReference: string) {
-        const response = await axios.get<Loan>(
+    async getALoanApplication(applicationReference: string) {
+        const response = await axios.get<SubmittedLoanApplication>(
             "/isslapi/ibank/api/v1/getLoanApplicationxReference?applicationreference=" +
                 applicationReference,
             {
@@ -260,11 +259,9 @@ export const loanRequests = {
             .then((data) => {
                 res.status = data.status;
                 res.data = data.data;
-                console.log(data);
                 return res;
             })
             .catch((err) => {
-                console.log(err);
                 res.status = err.response.status;
                 res.code = err.code;
                 return res;
@@ -294,6 +291,147 @@ export const loanRequests = {
                 },
             })
             .then((res) => res.data as { account_name: string | null });
+    },
+
+    async getUserDisbursedLoans(customerNo: string) {
+        const response = await axios.get<DisbursedLoan[]>(
+            "/isslapi/ibank/api/v1/getCustomerLoans",
+            {
+                params: {
+                    customerno: customerNo,
+                },
+                headers: {
+                    "X-TENANTID": X_TENANTID,
+                },
+            }
+        );
+
+        return response.data;
+    },
+
+    async loanRepayment(
+        amount: number,
+        contraparty: "Paystack",
+        loanRef: string,
+        repaymentMode: "Card",
+        fullName: string,
+        paymentReference: string,
+        customerNo: string
+    ) {
+        const res: {
+            status: number;
+            data:
+                | {
+                      postedOK: boolean;
+                      statusCode: string;
+                      statusMessage: string;
+                  }
+                | Record<string, any>;
+            code: string;
+        } = {
+            status: 0,
+            data: {},
+            code: "",
+        };
+        const ipAddressResponse = await axios.get(
+            "https://api.ipify.org?format=json"
+        );
+
+        if (ipAddressResponse.status !== 200) return res;
+        const requestTime = new Date().toISOString();
+
+        const body: {
+            amount: number;
+            contraparty: "Paystack";
+            loanRef: string;
+            ownNarrative: string;
+            reference: string;
+            repaymentMode: "Card";
+            txndate: string;
+            user: {
+                fullName: string;
+                ipAddress: string;
+                screenName: string;
+            };
+            valuedate: string;
+        } = {
+            amount: amount,
+            contraparty: contraparty,
+            loanRef: loanRef,
+            ownNarrative: "loan repayment via paystack",
+            reference: paymentReference,
+            repaymentMode: repaymentMode,
+            txndate: requestTime,
+            user: {
+                fullName: fullName,
+                ipAddress: ipAddressResponse.data.ip,
+                screenName: customerNo,
+            },
+            valuedate: requestTime,
+        };
+
+        return await axios
+            .post("/isslapi/ibank/api/v1/cfl/Payment2Collections", body, {
+                headers: { "X-TENANTID": X_TENANTID },
+            })
+            .then((response) => {
+                res.data = response.data;
+                res.status = response.status;
+                console.log(response);
+                return res;
+            })
+            .catch((err) => {
+                const requestError = err as unknown as AxiosError;
+                res.status = requestError.response?.status!;
+                res.code = requestError.code!;
+                return res;
+            });
+    },
+
+    async getLoanTransactionHistory(accountNo: string, todate: string) {
+        const res: {
+            status: number;
+            data:
+                | {
+                      content: {
+                          id: number;
+                          channel: string;
+                          postDate: string;
+                          narrative: string;
+                          reference: string;
+                          valueDate: string;
+                          amount: number;
+                          balanceCF: number;
+                          ccy: string;
+                      }[];
+                  }
+                | Record<string, any>;
+            code: string;
+        } = { status: 0, data: {}, code: "" };
+
+        return await axios
+            .get("/isslapi/ibank/api/v1/getAccountTransactionsPaged", {
+                params: {
+                    accountno: accountNo,
+                    fromdate: "19500201",
+                    todate: todate,
+                    page: "0",
+                    size: "50",
+                    sort: "ascending",
+                },
+            })
+            .then((response) => {
+                res.status = response.status;
+                res.data = response.data;
+                return res;
+            })
+            .catch((err) => {
+                const errRes = err as unknown as AxiosError;
+                res.status = errRes.response?.status!;
+                res.code = errRes.code!;
+
+                return res;
+            });
     },
 };
 

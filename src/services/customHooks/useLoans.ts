@@ -1,24 +1,45 @@
-import { useQuery } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
+import { useQuery } from "react-query";
+import { useDispatch, useSelector } from "react-redux";
 
-import { allLoanQueryKey } from '../../state/react-query/keys';
-import { loanSelector, setListState } from '../../state/redux/loanSlice';
-import { AppDispatch } from '../../state/redux/store';
-import { Loan } from '../../typings';
-import { loanRequests } from '../requests/loanRequests';
+import {
+    allLoanApplicationQueryKey,
+    allDisbursedLoanQueryKey,
+} from "../../state/react-query/keys";
+import { loanSelector, setLoanState } from "../../state/redux/loanSlice";
+import { AppDispatch } from "../../state/redux/store";
+import { DisbursedLoan, SubmittedLoanApplication } from "../../typings";
+import { loanRequests } from "../requests/loanRequests";
 
 export const useLoans = (customerNo: string) => {
     const dispatch = useDispatch<AppDispatch>();
-    const loansRequestState = useQuery<Loan[], Error>(
-        allLoanQueryKey(),
-        () => loanRequests.getUserLoans(customerNo!),
+    const loansApplicationRequestState = useQuery<
+        SubmittedLoanApplication[],
+        Error
+    >(
+        allLoanApplicationQueryKey(),
+        () => loanRequests.getUserLoanApplications(customerNo!),
         {
             onSuccess: (data) => {
-                dispatch(setListState({ loanList: data }));
+                dispatch(setLoanState({ loanApplicationList: data }));
             },
         }
     );
+
+    const disbursedLoanRequestState = useQuery<DisbursedLoan[], Error>(
+        allDisbursedLoanQueryKey(),
+        () => loanRequests.getUserDisbursedLoans(customerNo!),
+        {
+            onSuccess: (data) => {
+                dispatch(setLoanState({ disbursedLoanList: data }));
+            },
+        }
+    );
+
     const loanState = useSelector(loanSelector);
 
-    return { loanState, loansRequestState };
+    return {
+        loanState,
+        loansApplicationRequestState,
+        disbursedLoanRequestState,
+    };
 };
