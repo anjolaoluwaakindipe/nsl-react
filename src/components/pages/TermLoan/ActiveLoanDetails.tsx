@@ -1,41 +1,73 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-import { paths } from '../../../utils/constants/allPaths';
+import { paths } from "../../../utils/constants/allPaths";
+import { useMemo } from "react";
+import moment from "moment";
 
-function ActiveLoanDetails() {
-    const [progress, setProgress] = useState("90%");
+type ActiveLoanDetailsProps = {
+    accountNumber?: string | null;
+    totalLoanRepayment?: number | null;
+    loanAmount?: number | null;
+    interest?: number | null;
+    tenor?: string | null;
+    effectivateDate?: string | null;
+    dueDate?: string | null;
+    balance?: number | null;
+};
 
-    const onClickFunc: React.FormEventHandler = (e) => {
-        e.preventDefault();
-        setProgress("90%");
-    };
+function ActiveLoanDetails({
+    accountNumber: cscsAccountNumber,
+    totalLoanRepayment,
+    loanAmount,
+    interest,
+    tenor,
+    effectivateDate,
+    dueDate,
+    balance,
+}: ActiveLoanDetailsProps) {
+    const progress = useMemo(() => {
+        const totalTime = moment(dueDate).diff(effectivateDate, "days");
+        let daysLeft = moment(dueDate).diff(moment.now(), "days");
+
+        if (daysLeft < 0) {
+            daysLeft = 0;
+        }
+
+        console.log(totalTime);
+        console.log(daysLeft);
+
+        return {
+            totalTime,
+            daysLeft,
+            daysPassed: totalTime - daysLeft,
+        };
+    }, [dueDate, effectivateDate]);
+
     const navigate = useNavigate();
 
     const { id } = useParams<{ id: string }>();
 
     return (
-        <div
-            className="  w-full py-20 space-y-16 text-darkTextColor "
-        >
+        <div className="  w-full py-20 space-y-16 text-darkTextColor ">
             <div className="w-full bg-white p-5 md:p-10 text-sm rounded-md space-y-5">
                 <h1 className=" text-14px text-primaryColor  flex flex-col md:grid md:grid-cols-6  ">
                     <div className="md:space-y-2">
-                        <div className="w-full">CSCS Account Number</div>
+                        <div className="w-full">Account Number</div>
                         <div className="text-gray-400 dark:text- ">
-                            2392004900
+                            {cscsAccountNumber}
                         </div>
                     </div>
                 </h1>
                 <div className="border-solid w-full h-[1px] bg-gray-300" />
 
-                <div className=" w-full flex flex-col md:grid md:grid-cols-6 md:gap-20 space-y-4 md:space-y-0">
-                    <h1 className=" text-14px text-primaryColor dark:text-  md:space-y-2">
+                <div className=" w-full flex flex-col md:grid md:grid-cols-4 md:gap-20 space-y-4 md:space-y-0">
+                    {/* <h1 className=" text-14px text-primaryColor dark:text-  md:space-y-2">
                         {" "}
                         <div className="w-full">Total Loan Repayment</div>
                         <div className="text-gray-400 dark:text- ">
                             {" "}
-                            2392004900
+                            {totalLoanRepayment}
                         </div>
                     </h1>
 
@@ -44,31 +76,39 @@ function ActiveLoanDetails() {
                         <div className="w-full">Loan Amount</div>
                         <div className=" text-gray-400 dark:text- ">
                             {" "}
-                            N493,903{" "}
+                            {loanAmount}
                         </div>
                     </h1>
 
                     <h1 className="flex flex-col md:justify-between text-14px text-primaryColor dark:text- md:space-y-2 ">
                         {" "}
                         <div className="w-full">Interest </div>
-                        <span className=" text-gray-400 dark:text-"> %59</span>
+                        <span className=" text-gray-400 dark:text-">
+                            {" "}
+                            {interest}
+                        </span>
+                    </h1> */}
+                    <h1 className="flex flex-col md:justify-between text-14px text-primaryColor dark:text- md:space-y-2 ">
+                        {" "}
+                        <div className="w-full">Balance (₦) </div>
+                        <span className=" text-gray-400 dark:text-">
+                            {" "}
+                            {balance}
+                        </span>
                     </h1>
 
                     <h1 className="flex flex-col md:justify-between text-14px text-primaryColor dark:text-  md:space-y-2">
                         <div className="w-full"> Tenor</div>
 
-                        <div className="text-gray-400 dark:text-">
-                            {" "}
-                            N983,940
-                        </div>
+                        <div className="text-gray-400 dark:text-"> {tenor}</div>
                     </h1>
 
                     <h1 className="  flex flex-col md:justify-between text-14px text-primaryColor dark:text- md:space-y-2">
                         {" "}
-                        <div className="w-full">Effective</div>
+                        <div className="w-full">Effectivate Date</div>
                         <div className="text-gray-400 dark:text- ">
                             {" "}
-                            2392004900
+                            {effectivateDate}
                         </div>
                     </h1>
 
@@ -77,7 +117,7 @@ function ActiveLoanDetails() {
                         <div className="w-full">Due Date</div>
                         <div className="text-gray-400 dark:text- ">
                             {" "}
-                            2392004900
+                            {dueDate}
                         </div>
                     </h1>
                 </div>
@@ -89,13 +129,19 @@ function ActiveLoanDetails() {
                         Days Left
                     </h1>
                     <h1 className="text-sm font-medium text-primaryColor ">
-                        40 days
+                        {progress.daysLeft} days
                     </h1>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5 ">
                     <div
                         className={`bg-yellow-400 h-2.5 rounded-full transition-all duration-700 ease-in-out`}
-                        style={{ maxWidth: progress }}
+                        style={{
+                            maxWidth:
+                                (
+                                    (progress.daysPassed / progress.totalTime) *
+                                    100
+                                ).toString() + "%",
+                        }}
                     ></div>
                 </div>
             </div>

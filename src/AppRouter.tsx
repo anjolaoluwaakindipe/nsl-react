@@ -202,7 +202,7 @@ function AppRouter() {
                     <Route
                         path={paths.TERM_LOAN + "/:id"}
                         element={
-                            <React.Suspense>
+                            <React.Suspense fallback={<div />}>
                                 <NoUpdateProtectedRoute>
                                     <ProcessedUserPage>
                                         <TermLoan />
