@@ -84,7 +84,7 @@ export const verificationRequests = {
         const body = {
             attachments: [{}],
             body: message,
-            from: "mailsend@isslng.com",
+            from: "devops@issl.ng",
             subject: "string",
             to: toEmail,
         };
